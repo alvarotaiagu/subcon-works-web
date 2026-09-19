@@ -51,19 +51,37 @@ export function Proceso() {
       <div className="grid gap-16 md:h-screen md:grid-cols-2 md:items-center">
         <div>
           <p className="font-mono-label mb-10">Proceso</p>
-          <div className="space-y-10 md:space-y-12">
-            {proceso.map((paso, i) => (
-              <div
-                key={paso.numero}
-                className="transition-opacity duration-500"
-                style={{ opacity: !pinned || active === i ? 1 : 0.3 }}
-              >
-                <p className="font-mono-label mb-2">{paso.numero}</p>
-                <p className="text-3xl font-medium text-text-primary md:text-5xl">{paso.titulo}</p>
-                <p className="mt-2 max-w-sm text-text-muted">{paso.descripcion}</p>
-              </div>
-            ))}
-          </div>
+          {pinned ? (
+            // Fijado: solo el paso activo ocupa espacio (superpuestos, no apilados),
+            // así el bloque nunca puede desbordar la altura fijada de la pantalla.
+            <div className="relative min-h-[13rem] md:min-h-[16rem]">
+              {proceso.map((paso, i) => (
+                <div
+                  key={paso.numero}
+                  className="absolute inset-0 transition-[opacity,transform] duration-500 ease-out"
+                  style={{
+                    opacity: active === i ? 1 : 0,
+                    transform: active === i ? "translateY(0)" : "translateY(8px)",
+                  }}
+                  aria-hidden={active === i ? undefined : true}
+                >
+                  <p className="font-mono-label mb-2">{paso.numero}</p>
+                  <p className="text-3xl font-medium text-text-primary md:text-5xl">{paso.titulo}</p>
+                  <p className="mt-2 max-w-sm text-text-muted">{paso.descripcion}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-10 md:space-y-12">
+              {proceso.map((paso) => (
+                <div key={paso.numero}>
+                  <p className="font-mono-label mb-2">{paso.numero}</p>
+                  <p className="text-3xl font-medium text-text-primary md:text-5xl">{paso.titulo}</p>
+                  <p className="mt-2 max-w-sm text-text-muted">{paso.descripcion}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="relative hidden h-80 items-center justify-center md:flex">
