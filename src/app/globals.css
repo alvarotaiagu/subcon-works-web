@@ -175,6 +175,35 @@ h3 {
   transform: scale(1);
 }
 
+/* Retícula de columnas: líneas de 1px que crecen desde arriba al entrar */
+@keyframes reticula-in {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.reticula-line {
+  transform-origin: top;
+  animation: reticula-in 1.4s var(--ease-out) both;
+}
+
+/* Hero: eyebrow mono que precede al H1 */
+@keyframes eyebrow-in {
+  from {
+    opacity: 0;
+    letter-spacing: 0.4em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.14em;
+  }
+}
+.hero-eyebrow {
+  animation: eyebrow-in 0.9s var(--ease-out) both;
+}
+
 /* Hero: capa de fondo "el umbral" */
 .umbral {
   --umbral-x: 50%;
@@ -198,9 +227,19 @@ h3 {
   animation: scroll-dot 1.8s var(--ease-inout) infinite;
 }
 
-/* Cursor personalizado: se oculta el nativo solo cuando hay puntero fino (no táctil) */
+/* Cursor personalizado: se oculta el nativo solo cuando hay puntero fino (no táctil).
+   Se declara también en los elementos interactivos porque su cursor por defecto del
+   navegador (pointer/default en a, button, inputs) no es heredado y pisaría el `none`
+   puesto solo en body. */
 @media (pointer: fine) {
-  body {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"] {
     cursor: none;
   }
 }

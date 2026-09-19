@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { servicios } from "@/content/servicios";
 import { useReveal } from "@/hooks/useReveal";
+import { WorkImage } from "@/components/ui/WorkImage";
 
 export function Servicios() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -52,6 +52,18 @@ export function Servicios() {
     };
   }, [isTouch]);
 
+  // El panel arranca cerrado por GSAP, no por un `style` de React: un `style`
+  // en JSX se reescribe en cada re-render (cada cambio de `active`) y pisaba
+  // la animación en curso, dejando la imagen casi siempre clipeada a un punto.
+  useEffect(() => {
+    const float = floatRef.current;
+    if (!float || isTouch) return;
+    registerGsap();
+    gsap.set(float, { opacity: 0, clipPath: "inset(50% 50% 50% 50%)" });
+  }, [isTouch]);
+
+  const prevActive = useRef<number | null>(null);
+
   useEffect(() => {
     const float = floatRef.current;
     if (!float || isTouch) return;
@@ -60,14 +72,24 @@ export function Servicios() {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
       gsap.set(float, { opacity: active !== null ? 1 : 0 });
+      prevActive.current = active;
       return;
     }
 
     if (active !== null) {
-      gsap.to(float, {
+      const switchingService = prevActive.current !== null && prevActive.current !== active;
+      const tl = gsap.timeline();
+      if (switchingService) {
+        // Cambiar de servicio: cortina rápida que cierra y vuelve a abrir con la nueva imagen.
+        tl.to(float, { clipPath: "inset(0% 100% 0% 0%)", duration: 0.25, ease: "power2.in" }).set(
+          float,
+          { clipPath: "inset(0% 0% 0% 100%)" }
+        );
+      }
+      tl.to(float, {
         opacity: 1,
         clipPath: "inset(0% 0% 0% 0%)",
-        duration: 0.5,
+        duration: switchingService ? 0.45 : 0.5,
         ease: "power3.out",
       });
     } else {
@@ -78,6 +100,7 @@ export function Servicios() {
         ease: "power3.in",
       });
     }
+    prevActive.current = active;
   }, [active, isTouch]);
 
   return (
@@ -90,11 +113,10 @@ export function Servicios() {
         <div
           ref={floatRef}
           className="pointer-events-none fixed left-0 top-0 z-30 h-56 w-80 overflow-hidden rounded-xl opacity-0"
-          style={{ clipPath: "inset(50% 50% 50% 50%)" }}
           aria-hidden="true"
         >
           {active !== null && (
-            <Image src={servicios[active].imagen} alt="" fill className="object-cover" sizes="320px" />
+            <WorkImage src={servicios[active].imagen} alt="" fill className="object-cover" sizes="320px" />
           )}
         </div>
       )}
@@ -123,7 +145,7 @@ export function Servicios() {
               <div className="grid gap-4 pb-8 md:grid-cols-2">
                 <p className="text-text-muted">{servicio.descripcion}</p>
                 <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-                  <Image src={servicio.imagen} alt="" fill className="object-cover" sizes="90vw" />
+                  <WorkImage src={servicio.imagen} alt="" fill className="object-cover" sizes="90vw" />
                 </div>
               </div>
             )}
