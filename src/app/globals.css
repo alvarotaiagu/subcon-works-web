@@ -204,6 +204,14 @@ h3 {
   animation: eyebrow-in 0.9s var(--ease-out) both;
 }
 
+/* PageTransition: posición inicial fuera de pantalla.
+   No usar la utilidad translate-y-full de Tailwind aquí: en Tailwind v4 anima
+   la propiedad `translate` independiente, que se compone con el `transform`
+   que mueve GSAP y el resultado neto se queda a medio camino (pantalla tapada). */
+.page-transition-hidden {
+  transform: translateY(100%);
+}
+
 /* Hero: capa de fondo "el umbral" */
 .umbral {
   --umbral-x: 50%;

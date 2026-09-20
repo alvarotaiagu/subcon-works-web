@@ -50,8 +50,17 @@ export function Plantillas() {
   }, []);
 
   return (
-    <section id="plantillas" ref={sectionRef} className="overflow-hidden py-[var(--space-section)]">
-      <div ref={revealRef} className="container-max mb-12">
+    <section
+      id="plantillas"
+      ref={sectionRef}
+      className="overflow-hidden py-[var(--space-section)] md:flex md:min-h-screen md:flex-col md:justify-center md:py-16"
+    >
+      {/* En desktop la sección queda pin:true durante el scrub horizontal, así que
+          su alto se congela tal cual está al empezar el pin: si el bloque de título +
+          tarjetas es más alto que eso, las tarjetas quedan por debajo del punto donde
+          se congeló y se ven "muy abajo". Centrarlo en min-h-screen evita que el
+          padding superior empuje las tarjetas fuera del alto pineado. */}
+      <div ref={revealRef} className="container-max mb-12 md:mb-8">
         <p className="font-mono-label mb-4" data-reveal>
           Plantillas
         </p>

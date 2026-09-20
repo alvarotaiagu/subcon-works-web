@@ -5,6 +5,7 @@ import { gsap, registerGsap, SplitText, EASE_OUT } from "@/lib/gsap";
 import { PRELOADER_DONE_EVENT, PRELOADER_SESSION_KEY } from "@/components/layout/Preloader";
 import { Boton } from "@/components/ui/Boton";
 import { site } from "@/content/site";
+import { HeroGears } from "@/components/three/HeroGears";
 
 export function Hero() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -99,6 +100,7 @@ export function Hero() {
     <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-20 pt-32 md:pt-40">
       <Reticula />
       <UmbralFondo />
+      <HeroGears />
       <div ref={contentRef} className="container-max relative z-10 will-change-transform">
         <p ref={eyebrowRef} className="font-mono-label mb-6">
           Estudio de diseño, desarrollo y automatización con IA

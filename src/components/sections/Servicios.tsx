@@ -5,6 +5,28 @@ import { gsap, registerGsap } from "@/lib/gsap";
 import { servicios } from "@/content/servicios";
 import { useReveal } from "@/hooks/useReveal";
 import { WorkImage } from "@/components/ui/WorkImage";
+import { NodesScene } from "@/components/three/NodesScene";
+
+// El servicio "Agentes y chatbots con IA" muestra la malla de nodos en vez de
+// una imagen estática: es el mismo lenguaje visual que la automatización del
+// hero, aplicado al único servicio que es literalmente una red de IA.
+const NODES_SERVICE_NUMERO = "03";
+
+function NodesPreview() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const scene = new NodesScene(canvas, { count: 22, maxDist: 1.5, cameraZ: 9 });
+    scene.start((dt, elapsed) => scene.tick(dt, elapsed));
+    return () => scene.dispose();
+  }, []);
+
+  return <canvas ref={canvasRef} className="h-full w-full" aria-hidden="true" />;
+}
 
 export function Servicios() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -12,7 +34,7 @@ export function Servicios() {
   const revealRef = useReveal<HTMLParagraphElement>();
   const [active, setActive] = useState<number | null>(null);
   const [isTouch, setIsTouch] = useState(false);
-  const [openMobile, setOpenMobile] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
 
   useEffect(() => {
     // Detección de capacidad del cliente: difiere del prerender a propósito.
@@ -112,12 +134,23 @@ export function Servicios() {
       {!isTouch && (
         <div
           ref={floatRef}
-          className="pointer-events-none fixed left-0 top-0 z-30 h-56 w-80 overflow-hidden rounded-xl opacity-0"
+          className="pointer-events-none fixed left-0 top-0 z-30 h-56 w-56 opacity-0"
           aria-hidden="true"
         >
-          {active !== null && (
-            <WorkImage src={servicios[active].imagen} alt="" fill className="object-cover" sizes="320px" />
-          )}
+          {active !== null &&
+            (servicios[active].numero === NODES_SERVICE_NUMERO ? (
+              <NodesPreview />
+            ) : (
+              servicios[active].icono && (
+                <WorkImage
+                  src={servicios[active].icono}
+                  alt=""
+                  fill
+                  className="object-contain"
+                  sizes="224px"
+                />
+              )
+            ))}
         </div>
       )}
 
@@ -130,18 +163,34 @@ export function Servicios() {
               style={{ opacity: isTouch || active === null || active === i ? 1 : 0.35 }}
               onMouseEnter={() => !isTouch && setActive(i)}
               onFocus={() => !isTouch && setActive(i)}
-              onClick={() => isTouch && setOpenMobile(openMobile === i ? null : i)}
-              aria-expanded={isTouch ? openMobile === i : undefined}
+              onClick={() => isTouch && setOpen(open === i ? null : i)}
+              aria-expanded={isTouch ? open === i : undefined}
             >
               <span className="font-mono-label w-10 shrink-0 text-sm">{servicio.numero}</span>
               <span className="flex-1 text-2xl font-medium text-text-primary md:text-4xl">
                 {servicio.nombre}
               </span>
               <span className="font-mono-label text-2xl" aria-hidden="true">
-                {isTouch && openMobile === i ? "–" : "+"}
+                {isTouch && open === i ? "–" : "+"}
               </span>
             </button>
-            {isTouch && openMobile === i && (
+
+            {/* Vista previa en el hover: un texto corto que aparece bajo el
+                título mientras el cursor está encima, sin necesidad de clic.
+                En touch no hay hover que la dispare — ahí sigue el acordeón
+                de clic de siempre, más abajo. */}
+            {!isTouch && (
+              <div
+                className="grid transition-[grid-template-rows] duration-400 ease-out"
+                style={{ gridTemplateRows: active === i ? "1fr" : "0fr" }}
+              >
+                <div className="overflow-hidden">
+                  <p className="max-w-md pb-6 text-text-muted">{servicio.descripcion}</p>
+                </div>
+              </div>
+            )}
+
+            {isTouch && open === i && (
               <div className="grid gap-4 pb-8 md:grid-cols-2">
                 <p className="text-text-muted">{servicio.descripcion}</p>
                 <div className="relative aspect-[4/3] overflow-hidden rounded-xl">

@@ -9,6 +9,7 @@ import { Preloader } from "@/components/layout/Preloader";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollLine } from "@/components/layout/ScrollLine";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -79,6 +80,7 @@ export default function RootLayout({
         <SmoothScroll />
         <Cursor />
         <Grain />
+        <ScrollLine />
         <Nav />
         <main id="contenido">{children}</main>
         <Footer />

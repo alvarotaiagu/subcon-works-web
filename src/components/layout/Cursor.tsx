@@ -5,9 +5,9 @@ import { useCursor } from "@/hooks/useCursor";
 
 /** Cursor personalizado en desktop. Oculto por completo en táctil. */
 export function Cursor() {
-  const { dotRef, ringRef } = useCursor();
   const labelRef = useRef<HTMLSpanElement>(null);
   const [enabled, setEnabled] = useState(false);
+  const { dotRef, ringRef } = useCursor(enabled);
 
   useEffect(() => {
     // Detección de capacidad del cliente (puntero fino/táctil): server y cliente
@@ -39,11 +39,26 @@ export function Cursor() {
       el.addEventListener("pointerleave", onLeave);
     });
 
+    // Las escenas 3D del hero (canvas con pointer-events:none) no pueden usar
+    // pointerenter/leave por elemento: avisan de su propio hover/drag por evento.
+    const onSceneCursor = (e: Event) => {
+      const detail = (e as CustomEvent<{ state: "hover" | "label" | null; label?: string }>).detail;
+      if (!detail || !detail.state) {
+        delete document.documentElement.dataset.cursorState;
+        if (labelRef.current) labelRef.current.textContent = "";
+        return;
+      }
+      document.documentElement.dataset.cursorState = detail.state;
+      if (labelRef.current) labelRef.current.textContent = detail.label ?? "";
+    };
+    window.addEventListener("subcon:cursor", onSceneCursor);
+
     return () => {
       els.forEach((el) => {
         el.removeEventListener("pointerenter", onEnter);
         el.removeEventListener("pointerleave", onLeave);
       });
+      window.removeEventListener("subcon:cursor", onSceneCursor);
     };
   }, [enabled]);
 

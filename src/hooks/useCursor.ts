@@ -6,11 +6,16 @@ import { useEffect, useRef } from "react";
  * Cursor personalizado: punto con lerp rápido, anillo con más retardo.
  * No se monta en táctil (comprobado por el propio componente Cursor).
  */
-export function useCursor() {
+export function useCursor(ready: boolean) {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // `ready` llega en false en el primer render (el propio Cursor decide si se
+    // monta tras comprobar "pointer: coarse"), así que en ese momento dot/ring
+    // todavía no existen. Sin `ready` en las deps este efecto no se repetía
+    // cuando las refs por fin quedaban attacheadas: el cursor no se movía nunca.
+    if (!ready) return;
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
@@ -51,7 +56,7 @@ export function useCursor() {
       window.removeEventListener("pointermove", onMove);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [ready]);
 
   return { dotRef, ringRef };
 }

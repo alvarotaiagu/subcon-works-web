@@ -1,89 +1,59 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap, registerGsap, EASE_INOUT } from "@/lib/gsap";
+import { useEffect, useState } from "react";
+import { PreloaderGearIris } from "./preloaders/PreloaderGearIris";
+import { PreloaderGearTrain } from "./preloaders/PreloaderGearTrain";
+import { PreloaderGearMorph } from "./preloaders/PreloaderGearMorph";
+import { PRELOADER_SESSION_KEY } from "./preloaderShared";
 
-export const PRELOADER_SESSION_KEY = "subcon-preloader-seen";
-export const PRELOADER_DONE_EVENT = "subcon:preloader-done";
+export { PRELOADER_SESSION_KEY, PRELOADER_DONE_EVENT } from "./preloaderShared";
+
+type Variant = "iris" | "train" | "morph";
+const VARIANTS: Record<string, Variant> = { a: "iris", b: "train", c: "morph" };
+const DEFAULT_VARIANT: Variant = "iris";
 
 /**
- * Preloader de 2s máximo, solo en la primera visita de la sesión.
- * Al llegar a 100 dispara PRELOADER_DONE_EVENT y la cortina sube revelando
- * el hero: el H1 del hero escucha ese evento para arrancar solapado, no después.
+ * TEMPORAL — comparador de 3 engranajes candidatos para la cortina de
+ * entrada. Se elige con ?preloader=a|b|c en la URL (a=iris, b=tren,
+ * c=dientes que se retraen); ese parámetro también salta el gate de
+ * sessionStorage para poder recargar y ver la misma variante varias veces.
+ * Una vez elegida una, esto se pliega de vuelta a un único componente fijo.
  */
 export function Preloader() {
   const [shouldRender, setShouldRender] = useState(false);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const countRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
+  const [variant, setVariant] = useState<Variant>(DEFAULT_VARIANT);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
-    if (sessionStorage.getItem(PRELOADER_SESSION_KEY)) return;
-    // Depende de sessionStorage, no disponible durante el prerender estático.
+
+    const param = new URLSearchParams(window.location.search).get("preloader");
+    const forced = param ? VARIANTS[param] : undefined;
+    if (forced) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setVariant(forced);
+    } else if (sessionStorage.getItem(PRELOADER_SESSION_KEY)) {
+      return;
+    }
+
+    sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setShouldRender(true);
   }, []);
 
-  useEffect(() => {
-    if (!shouldRender) return;
-    const overlay = overlayRef.current;
-    const count = countRef.current;
-    if (!overlay || !count) return;
+  if (!shouldRender || !visible) return null;
 
-    sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
-    registerGsap();
-    document.body.style.overflow = "hidden";
+  const onDone = () => {
+    // No usar overlay.remove(): React sigue creyendo montado este nodo; al
+    // navegar de página la siguiente reconciliación intenta hacer
+    // removeChild sobre un nodo que ya no es hijo de nadie. El desmontado
+    // tiene que pasar por React.
+    setVisible(false);
+    document.body.style.overflow = "";
+  };
 
-    const counter = { value: 0 };
-    const tl = gsap.timeline({
-      onComplete: () => {
-        overlay.remove();
-        document.body.style.overflow = "";
-      },
-    });
-
-    tl.to(counter, {
-      value: 100,
-      duration: 1.3,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        count.textContent = String(Math.floor(counter.value)).padStart(3, "0");
-      },
-    })
-      .call(() => {
-        window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
-      })
-      .to(
-        overlay,
-        {
-          yPercent: -100,
-          duration: 0.9,
-          ease: EASE_INOUT,
-        },
-        "-=0.05"
-      );
-
-    return () => {
-      tl.kill();
-      document.body.style.overflow = "";
-    };
-  }, [shouldRender]);
-
-  if (!shouldRender) return null;
-
-  return (
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[90] flex items-end justify-end bg-bg-base p-6 md:p-10"
-      aria-hidden="true"
-    >
-      <div
-        ref={countRef}
-        className="font-mono-label text-[18vw] leading-none text-text-primary md:text-[8vw]"
-      >
-        000
-      </div>
-    </div>
-  );
+  if (variant === "train") return <PreloaderGearTrain onDone={onDone} />;
+  if (variant === "morph") return <PreloaderGearMorph onDone={onDone} />;
+  return <PreloaderGearIris onDone={onDone} />;
 }

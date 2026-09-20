@@ -68,6 +68,17 @@ function placeholder({ width, height, title, subtitle, variant = "frame" }) {
 </svg>`;
 }
 
+// Solo el trazo del icono, sin fondo/rejilla/etiqueta: para el panel que sigue
+// al cursor al hacer hover en Servicios, donde no queremos que se vea como
+// una tarjeta/pestaña sino como un icono suelto (mismo lenguaje que la red
+// de nodos de "Agentes y chatbots con IA", que ya es transparente).
+function iconOnly({ width, height, variant = "frame" }) {
+  const icon = icons[variant]?.(width / 2, height / 2, Math.min(width, height) * 0.3) ?? "";
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  ${icon}
+</svg>`;
+}
+
 const jobs = [
   // Trabajos — 1600x1000
   { dir: "work", file: "oito-portada.svg", title: "Oito", subtitle: "Placeholder — sustituir", variant: "frame", width: 1600, height: 1000 },
@@ -87,6 +98,12 @@ const jobs = [
   { dir: "servicios", file: "automatizacion.svg", title: "Automatización de procesos", subtitle: "Servicio 02", variant: "flow", width: 900, height: 700 },
   { dir: "servicios", file: "agentes-ia.svg", title: "Agentes y chatbots con IA", subtitle: "Servicio 03", variant: "chat", width: 900, height: 700 },
   { dir: "servicios", file: "marketing-ia.svg", title: "Marketing y contenido con IA", subtitle: "Servicio 04", variant: "graph", width: 900, height: 700 },
+  // Servicios — icono suelto y transparente, para el panel que sigue al
+  // cursor en el hover de escritorio (ver Servicios.tsx). "Agentes y
+  // chatbots con IA" no necesita uno: ese hover ya muestra la red de nodos.
+  { dir: "servicios", file: "diseno-desarrollo-icono.svg", variant: "browser", width: 240, height: 240, iconOnly: true },
+  { dir: "servicios", file: "automatizacion-icono.svg", variant: "flow", width: 240, height: 240, iconOnly: true },
+  { dir: "servicios", file: "marketing-ia-icono.svg", variant: "graph", width: 240, height: 240, iconOnly: true },
   // Plantillas — 1200x800, mockup de contenido dentro del browser chrome
   { dir: "plantillas", file: "mesa.svg", title: "Mesa", subtitle: "Hostelería", variant: "frame", width: 1200, height: 800 },
   { dir: "plantillas", file: "taller.svg", title: "Taller", subtitle: "Oficios y servicios", variant: "frame", width: 1200, height: 800 },
@@ -98,7 +115,7 @@ const jobs = [
 for (const job of jobs) {
   const dir = join(publicDir, job.dir);
   mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, job.file), placeholder(job));
+  writeFileSync(join(dir, job.file), job.iconOnly ? iconOnly(job) : placeholder(job));
 }
 
 console.log(`Generados ${jobs.length} placeholders.`);

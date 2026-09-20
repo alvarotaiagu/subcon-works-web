@@ -7,6 +7,7 @@ import { proceso } from "@/content/proceso";
 export function Proceso() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const pulseRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [pinned, setPinned] = useState(false);
 
@@ -34,6 +35,7 @@ export function Proceso() {
           const idx = Math.min(steps - 1, Math.floor(self.progress * steps));
           setActive(idx);
           gsap.set(line, { scaleY: self.progress });
+          if (pulseRef.current) pulseRef.current.style.top = `${self.progress * 100}%`;
         },
       });
 
@@ -84,19 +86,44 @@ export function Proceso() {
           )}
         </div>
 
-        <div className="relative hidden h-80 items-center justify-center md:flex">
-          <div className="relative h-full w-px bg-line">
-            <div ref={lineRef} className="absolute left-0 top-0 h-full w-full origin-top scale-y-0 bg-accent" />
+        <div className="relative hidden h-80 flex-col items-center md:flex">
+          {pinned && (
+            <p className="font-mono-label mb-6 tabular-nums text-text-faint">
+              {String(active + 1).padStart(2, "0")} / {String(proceso.length).padStart(2, "0")}
+            </p>
+          )}
+          <div className="relative w-px flex-1">
+            {/* Marcas de cota: un plano técnico, no una barra de progreso genérica. */}
+            <div
+              className="absolute inset-0 w-px"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(to bottom, var(--text-faint) 0, var(--text-faint) 3px, transparent 3px, transparent 11px)",
+                opacity: 0.5,
+              }}
+            />
+            <div ref={lineRef} className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-accent" />
+            <div
+              ref={pulseRef}
+              className="pointer-events-none absolute left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_10px_2px_var(--accent)]"
+              style={{ top: 0 }}
+              aria-hidden="true"
+            />
             <div className="absolute inset-0 flex flex-col justify-between">
               {proceso.map((paso, i) => (
                 <span
                   key={paso.numero}
-                  className="-ml-[5px] flex h-[11px] w-[11px] items-center justify-center rounded-full border transition-colors duration-500"
+                  className="-ml-[6px] flex h-[13px] w-[13px] items-center justify-center rounded-[2px] border transition-colors duration-500"
                   style={{
                     borderColor: active >= i ? "var(--accent)" : "var(--line)",
                     backgroundColor: active >= i ? "var(--accent)" : "var(--bg-base)",
                   }}
-                />
+                >
+                  <span
+                    className="h-[3px] w-[3px] transition-colors duration-500"
+                    style={{ backgroundColor: active >= i ? "var(--bg-base)" : "var(--line)" }}
+                  />
+                </span>
               ))}
             </div>
           </div>
