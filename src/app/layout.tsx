@@ -57,9 +57,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
+  // Sin `icons` a propósito: Next lo genera solo a partir de src/app/favicon.ico
+  // y ahí sí le pone el basePath. Declarándolo a mano como "/favicon.ico" se
+  // publicaba sin prefijo y daba 404 en GitHub Pages.
 };
 
 export default function RootLayout({
