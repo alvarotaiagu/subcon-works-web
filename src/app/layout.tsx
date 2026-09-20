@@ -10,6 +10,7 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollLine } from "@/components/layout/ScrollLine";
+import { AvisoCookies } from "@/components/layout/AvisoCookies";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -34,8 +35,8 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-// Web de venta con casos de clientes reales: no debe indexarse ni aparecer
-// en buscadores mientras no se decida lo contrario.
+// Ninguna web de la casa se indexa mientras no haya nada vendido: meta robots
+// noindex en todas las páginas, y robots.ts bloqueando el rastreo entero.
 export const metadata: Metadata = {
   metadataBase: new URL("https://alvarotaiagu.github.io/subcon-works-web/"),
   title: `${site.nombre} — ${site.tagline}`,
@@ -81,6 +82,7 @@ export default function RootLayout({
         <Cursor />
         <Grain />
         <ScrollLine />
+        <AvisoCookies />
         <Nav />
         <main id="contenido">{children}</main>
         <Footer />

@@ -44,15 +44,22 @@ export function CtaFinal() {
         className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-40"
       />
       <div className="relative z-10">
-        <p className="font-mono-label mb-8">¿Hablamos?</p>
+        <p className="font-mono-label mb-8">¿Empezamos?</p>
         <h2
           ref={textRef}
           className="text-balance text-[clamp(3rem,10vw,9rem)] font-medium leading-[0.95] text-text-primary will-change-transform"
         >
           Cuéntanos qué te está costando dinero.
         </h2>
-        <div className="mt-12">
-          <Boton href={`mailto:${site.email}`}>Escríbenos</Boton>
+        <p className="mx-auto mt-8 max-w-md text-lg text-text-muted">
+          Diez minutos de formulario y te decimos dónde se te está yendo el tiempo. Gratis, y sin
+          que tengas que hablar con nadie todavía.
+        </p>
+        <div className="mt-12 flex flex-wrap justify-center gap-4">
+          <Boton href="/auditoria/">Pedir la auditoría</Boton>
+          <Boton href={`mailto:${site.email}`} variante="secundario">
+            O escríbenos
+          </Boton>
         </div>
       </div>
     </section>

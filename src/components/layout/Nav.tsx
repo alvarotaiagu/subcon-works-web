@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { useMagnetic } from "@/hooks/useMagnetic";
@@ -42,27 +43,27 @@ export function Nav() {
       )}
     >
       <div className="container-max flex h-16 items-center justify-between md:h-20">
-        <a href="#" className="font-mono-label text-xs text-text-primary md:text-sm">
+        <Link href="/" className="font-mono-label text-xs text-text-primary md:text-sm">
           {site.nombre}
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Navegación principal">
           {site.nav.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="nav-link font-mono-label text-xs text-text-muted hover:text-text-primary"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             ref={ctaRef}
-            href="#contacto"
+            href={site.ctaHref}
             className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim"
           >
             {site.cta}
-          </a>
+          </Link>
         </nav>
 
         <button
@@ -106,7 +107,7 @@ export function Nav() {
             aria-label="Navegación móvil"
           >
             {site.nav.map((item, i) => (
-              <a
+              <Link
                 key={item.href}
                 ref={i === 0 ? firstLinkRef : undefined}
                 href={item.href}
@@ -115,16 +116,16 @@ export function Nav() {
                 style={{ transitionDelay: `${i * 0.06}s` }}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
-            <a
-              href="#contacto"
+            <Link
+              href={site.ctaHref}
               onClick={() => setOpen(false)}
               className="menu-movil-item mt-6 inline-flex w-fit rounded-full bg-accent px-6 py-3 text-base font-medium text-bg-base"
               style={{ transitionDelay: `${site.nav.length * 0.06}s` }}
             >
               {site.cta}
-            </a>
+            </Link>
           </nav>
         </div>
       )}

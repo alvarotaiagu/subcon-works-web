@@ -1,13 +1,12 @@
 export interface Servicio {
   numero: string;
   nombre: string;
+  /** Una línea: qué resuelve, en la lengua del cliente. */
   descripcion: string;
-  imagen: string;
-  /** Icono suelto y transparente para el panel que sigue al cursor en el
-   * hover de escritorio (ver Servicios.tsx). Si falta, ese hover no muestra
-   * ningún panel para este servicio — como ya pasa con "Agentes y chatbots
-   * con IA", que en su lugar muestra la red de nodos 3D. */
-  icono?: string;
+  /** Lo que entra en el paquete. Se pintan como etiquetas. */
+  incluye: string[];
+  /** Icono de línea para el panel que sigue al cursor (ver Servicios.tsx). */
+  icono: string;
 }
 
 export const servicios: Servicio[] = [
@@ -15,31 +14,114 @@ export const servicios: Servicio[] = [
     numero: "01",
     nombre: "Diseño y desarrollo web",
     descripcion:
-      "Webs rápidas, propias y mantenibles. Nada de plantillas genéricas ni constructores que te atan.",
-    imagen: "/servicios/diseno-desarrollo.svg",
-    icono: "/servicios/diseno-desarrollo-icono.svg",
+      "Una web escrita a mano para tu negocio, no un tema comprado con tu logo encima. Es tuya, se puede cambiar y no paga cuota a nadie por seguir existiendo.",
+    incluye: [
+      "Diseño propio",
+      "Código sin constructores",
+      "Móvil primero",
+      "Textos incluidos",
+      "Logotipo redibujado",
+      "Avisos legales",
+    ],
+    icono: "/servicios/web.svg",
   },
   {
     numero: "02",
-    nombre: "Automatización de procesos",
+    nombre: "Plantillas por sector",
     descripcion:
-      "Facturación, reservas, pedidos, informes. Lo que hoy haces a mano, funcionando solo.",
-    imagen: "/servicios/automatizacion.svg",
-    icono: "/servicios/automatizacion-icono.svg",
+      "Treinta bases ya construidas y publicadas. Si una encaja con lo tuyo, se adapta con tus datos y tus fotos: en línea en dos semanas y por bastante menos que empezar de cero.",
+    incluye: [
+      "30 bases vivas",
+      "Dos semanas",
+      "Precio cerrado",
+      "Adaptación completa",
+      "Puedes verla antes",
+    ],
+    icono: "/servicios/plantillas.svg",
   },
   {
     numero: "03",
-    nombre: "Agentes y chatbots con IA",
+    nombre: "Rescate de webs y migraciones",
     descripcion:
-      "Atención en web, WhatsApp y llamadas. Responden, reservan y filtran sin que estés tú.",
-    imagen: "/servicios/agentes-ia.svg",
+      "Tienes algo hecho en WordPress, Wix o Webnode que va lento, ya no lo toca nadie o nadie te da las claves. Se saca todo de ahí sin perder lo que ya te posiciona en Google.",
+    incluye: [
+      "Rastreo de la web vieja",
+      "Redirecciones 301",
+      "Se conserva el posicionamiento",
+      "Convivencia si hace falta",
+      "Dominio y correo",
+    ],
+    icono: "/servicios/rescate.svg",
   },
   {
     numero: "04",
+    nombre: "Aparecer en Google",
+    descripcion:
+      "La mitad de los negocios de aquí se buscan por el móvil a dos calles de distancia. Eso se trabaja con la ficha de Google, las reseñas y una web que cargue rápido de verdad.",
+    incluye: [
+      "Ficha de Google",
+      "SEO local",
+      "Reseñas",
+      "Datos estructurados",
+      "Core Web Vitals",
+      "Medición sin cookies",
+    ],
+    icono: "/servicios/google.svg",
+  },
+  {
+    numero: "05",
+    nombre: "Automatización de procesos",
+    descripcion:
+      "Presupuestos, citas, recordatorios, facturas, informes. Lo que hoy copias de un sitio a otro a mano, funcionando solo mientras tú atiendes.",
+    incluye: [
+      "Reservas y citas",
+      "Recordatorios",
+      "Facturación",
+      "Conexión entre programas",
+      "Informes automáticos",
+    ],
+    icono: "/servicios/automatizacion.svg",
+  },
+  {
+    numero: "06",
+    nombre: "Agentes y chatbots con IA",
+    descripcion:
+      "Atención en la web, en WhatsApp y al teléfono. Contestan lo de siempre, cogen la cita y te pasan solo lo que de verdad necesita que estés tú.",
+    incluye: [
+      "Web y WhatsApp",
+      "Fuera de horario",
+      "Reserva de cita",
+      "Filtra y te avisa",
+      "Habla como tu negocio",
+    ],
+    icono: "/servicios/agentes.svg",
+  },
+  {
+    numero: "07",
     nombre: "Marketing y contenido con IA",
     descripcion:
-      "Email, reseñas, redes y contenido, con sistemas que se sostienen sin dedicarles el día.",
-    imagen: "/servicios/marketing-ia.svg",
-    icono: "/servicios/marketing-ia-icono.svg",
+      "Un sistema que se sostiene sin que le dediques el día: correo a tus clientes, publicaciones, fichas de producto y respuesta a las reseñas.",
+    incluye: [
+      "Email a clientes",
+      "Redes",
+      "Fichas de producto",
+      "Respuesta a reseñas",
+      "Fotografía y retoque",
+    ],
+    icono: "/servicios/contenido.svg",
+  },
+  {
+    numero: "08",
+    nombre: "Mantenimiento y soporte",
+    descripcion:
+      "Cambiar la carta, subir precios, abrir los domingos de verano. Se hace y ya está: sin abrir una incidencia, sin esperar tres semanas y sin que se caiga nada por el camino.",
+    incluye: [
+      "Cambios de contenido",
+      "Copias de seguridad",
+      "Actualizaciones",
+      "Vigilancia de caídas",
+      "Sin permanencia",
+    ],
+    icono: "/servicios/mantenimiento.svg",
   },
 ];

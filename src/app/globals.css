@@ -8,7 +8,11 @@
   --line: #1c1f23;
   --text-primary: #f2f3f4;
   --text-muted: #8a9099;
-  --text-faint: #6b7178;
+  /* #6b7178 se quedaba en 4,04:1 sobre el fondo y 3,87:1 sobre bg-raised, por
+     debajo del 4,5:1 de la AA — y lo usa `.font-mono-label`, que está en toda
+     la web. Subido lo justo para pasar sobre los tres fondos (4,73 / 4,52 /
+     4,83) sin dejar de leerse como el gris tenue del sistema. */
+  --text-faint: #767c83;
   --accent: #c9f24d;
   --accent-dim: #8fa832;
 
@@ -91,11 +95,19 @@ h3 {
   letter-spacing: -0.01em;
 }
 
-.font-mono-label {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-faint);
+/* Va en @layer components a propósito. Suelta, fuera de capa, le ganaba a
+   *todas* las utilidades text-* de Tailwind v4 (lo no encapsulado gana a lo
+   encapsulado, sin importar el orden del archivo): el logotipo del encabezado,
+   el CTA sobre el acento y el paso activo del formulario salían todos en gris
+   tenue aunque pidieran otro color. Dentro de components, el gris sigue siendo
+   el valor por defecto y cualquier text-* lo puede pisar. */
+@layer components {
+  .font-mono-label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-faint);
+  }
 }
 
 .container-max {
@@ -158,21 +170,75 @@ h3 {
   animation: menu-item-in var(--dur-base) var(--ease-out) both;
 }
 
-/* Trabajos: recorte + desaturación en reposo, revela al hover */
-.trabajo-img {
-  clip-path: inset(6%);
-  filter: grayscale(1);
-  transform: scale(1.15);
+/* Plantillas: desaturación y leve acercamiento en reposo, revela al hover.
+   A diferencia del recorte que había aquí antes, la captura no se clipea: son
+   webs reales y lo que interesa es poder leerlas, no insinuarlas. */
+.plantilla-img {
+  filter: grayscale(0.85) contrast(1.02);
+  transform: scale(1.04);
   transition:
-    clip-path var(--dur-base) var(--ease-out),
     filter var(--dur-base) var(--ease-out),
     transform var(--dur-base) var(--ease-out);
 }
-.trabajo-card:hover .trabajo-img,
-.trabajo-card:focus-visible .trabajo-img {
-  clip-path: inset(0%);
+.plantilla-card:hover .plantilla-img,
+.plantilla-card:focus-visible .plantilla-img {
   filter: grayscale(0);
   transform: scale(1);
+}
+
+/* Campos del formulario de auditoría. Un solo estilo para input y textarea:
+   línea inferior, sin caja, para que un formulario de 36 preguntas no parezca
+   un impreso de la administración. */
+.campo {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0.6rem 0.1rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+.campo::placeholder {
+  color: var(--text-faint);
+}
+.campo:hover {
+  border-bottom-color: var(--text-faint);
+}
+.campo:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+  background: color-mix(in oklch, var(--accent) 4%, transparent);
+}
+.campo[aria-invalid="true"] {
+  border-bottom-color: var(--accent);
+}
+/* El autorrelleno de Chrome pinta un fondo blanco que se come el texto claro. */
+.campo:-webkit-autofill,
+.campo:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-raised) inset;
+}
+
+/* Aviso de almacenamiento: entra una vez, desde abajo, sin robar el foco. */
+@keyframes aviso-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.aviso-cookies {
+  animation: aviso-in var(--dur-base) var(--ease-out) 0.6s both;
 }
 
 /* Retícula de columnas: líneas de 1px que crecen desde arriba al entrar */

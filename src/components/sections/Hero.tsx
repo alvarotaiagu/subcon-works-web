@@ -116,9 +116,9 @@ export function Hero() {
             {site.descripcion}
           </p>
           <div className="mt-10 flex flex-wrap gap-4" data-reveal>
-            <Boton href="#contacto">Hablemos</Boton>
-            <Boton href="#trabajos" variante="secundario">
-              Ver trabajos
+            <Boton href="/auditoria/">Auditoría gratis</Boton>
+            <Boton href="#plantillas" variante="secundario">
+              Ver plantillas
             </Boton>
           </div>
         </div>

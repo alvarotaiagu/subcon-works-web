@@ -11,6 +11,14 @@ export class BlobScene extends SceneBase {
   private core: THREE.Mesh;
   private wire: THREE.LineSegments;
   private group = new THREE.Group();
+  /**
+   * Grupo interior que se lleva TODO el giro continuo. La entrada anima
+   * `group.rotation`, y GSAP reescribe esa propiedad entera en cada fotograma
+   * a partir del valor que cacheó al crear el tween: si el tick sumara sobre
+   * la misma rotación, sus incrementos se perderían y la figura se vería
+   * clavada hasta que el tween termina (2,3 s). Separados, se componen.
+   */
+  private spin = new THREE.Group();
   private velocity = { x: 0, y: 0.28 };
   private drag: { active: boolean; lastX: number; lastY: number } = {
     active: false,
@@ -28,6 +36,7 @@ export class BlobScene extends SceneBase {
     this.interactive = opts.interactive ?? true;
     this.camera.position.set(0, 0, 6.5);
     this.scene.add(this.group);
+    this.group.add(this.spin);
 
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.2));
     const key = new THREE.DirectionalLight(0xffffff, 0.6);
@@ -53,18 +62,19 @@ export class BlobScene extends SceneBase {
       clearcoatRoughness: 0.25,
     });
     this.core = new THREE.Mesh(geo, material);
-    this.group.add(this.core);
+    this.spin.add(this.core);
 
     const edgeGeo = new THREE.EdgesGeometry(geo, 1);
     const edgeMat = new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.55 });
     this.wire = new THREE.LineSegments(edgeGeo, edgeMat);
     this.wire.scale.setScalar(1.012);
-    this.group.add(this.wire);
+    this.spin.add(this.wire);
 
     this.group.scale.setScalar(0.001);
     this.group.rotation.set(0.6, -0.8, 0);
     gsap.to(this.group.scale, { x: 1, y: 1, z: 1, duration: 1.7, ease: "power3.out", delay: 0.1 });
     gsap.to(this.group.rotation, { x: 0.15, y: 0.4, duration: 2.2, ease: "power3.out", delay: 0.1 });
+
 
     this.onDownBound = (e) => this.onPointerDown(e);
     this.onMoveBound = (e) => this.onPointerMove(e);
@@ -97,8 +107,8 @@ export class BlobScene extends SceneBase {
       this.drag.lastY = e.clientY;
       this.velocity.y = dx * 0.006;
       this.velocity.x = dy * 0.006;
-      this.group.rotation.y += this.velocity.y;
-      this.group.rotation.x += this.velocity.x;
+      this.spin.rotation.y += this.velocity.y;
+      this.spin.rotation.x += this.velocity.x;
       return;
     }
     if (this.hitTest(e.clientX, e.clientY)) {
@@ -121,9 +131,9 @@ export class BlobScene extends SceneBase {
     if (!this.drag.active) {
       this.velocity.x *= 0.94;
       this.velocity.y += (0.28 - this.velocity.y) * 0.01;
-      this.group.rotation.y += this.velocity.y * dt * 6 + this.pointer.x * 0.01;
-      this.group.rotation.x += this.velocity.x * dt * 6;
-      this.group.rotation.x += (this.pointer.y * 0.15 - this.group.rotation.x) * 0.01;
+      this.spin.rotation.y += this.velocity.y * dt * 6 + this.pointer.x * 0.01;
+      this.spin.rotation.x += this.velocity.x * dt * 6;
+      this.spin.rotation.x += (this.pointer.y * 0.15 - this.spin.rotation.x) * 0.01;
       const float = Math.sin(elapsed * 0.6) * 0.12;
       this.group.position.y = float;
     }

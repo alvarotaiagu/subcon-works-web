@@ -5,12 +5,13 @@ import { gsap, registerGsap } from "@/lib/gsap";
 import { servicios } from "@/content/servicios";
 import { useReveal } from "@/hooks/useReveal";
 import { WorkImage } from "@/components/ui/WorkImage";
+import { Etiqueta } from "@/components/ui/Etiqueta";
 import { NodesScene } from "@/components/three/NodesScene";
 
 // El servicio "Agentes y chatbots con IA" muestra la malla de nodos en vez de
-// una imagen estática: es el mismo lenguaje visual que la automatización del
+// un icono estático: es el mismo lenguaje visual que la automatización del
 // hero, aplicado al único servicio que es literalmente una red de IA.
-const NODES_SERVICE_NUMERO = "03";
+const NODES_SERVICE_NUMERO = "06";
 
 function NodesPreview() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,7 +32,7 @@ function NodesPreview() {
 export function Servicios() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const floatRef = useRef<HTMLDivElement>(null);
-  const revealRef = useReveal<HTMLParagraphElement>();
+  const revealRef = useReveal<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
   const [isTouch, setIsTouch] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
@@ -102,7 +103,7 @@ export function Servicios() {
       const switchingService = prevActive.current !== null && prevActive.current !== active;
       const tl = gsap.timeline();
       if (switchingService) {
-        // Cambiar de servicio: cortina rápida que cierra y vuelve a abrir con la nueva imagen.
+        // Cambiar de servicio: cortina rápida que cierra y vuelve a abrir con el nuevo icono.
         tl.to(float, { clipPath: "inset(0% 100% 0% 0%)", duration: 0.25, ease: "power2.in" }).set(
           float,
           { clipPath: "inset(0% 0% 0% 100%)" }
@@ -127,9 +128,18 @@ export function Servicios() {
 
   return (
     <section id="servicios" className="container-max py-[var(--space-section)]">
-      <p ref={revealRef} className="font-mono-label mb-12" data-reveal>
-        Servicios
-      </p>
+      <div ref={revealRef} className="mb-12">
+        <p className="font-mono-label mb-4" data-reveal>
+          Servicios
+        </p>
+        <h2 className="max-w-3xl text-4xl font-medium text-text-primary md:text-6xl" data-reveal>
+          Ocho cosas, y las ocho se pueden contratar sueltas.
+        </h2>
+        <p className="mt-6 max-w-xl text-text-muted" data-reveal>
+          Casi ningún negocio necesita las ocho a la vez. Por eso la primera conversación es una
+          auditoría y no un presupuesto: primero se mira qué falta, y después se dice qué cuesta.
+        </p>
+      </div>
 
       {!isTouch && (
         <div
@@ -141,15 +151,13 @@ export function Servicios() {
             (servicios[active].numero === NODES_SERVICE_NUMERO ? (
               <NodesPreview />
             ) : (
-              servicios[active].icono && (
-                <WorkImage
-                  src={servicios[active].icono}
-                  alt=""
-                  fill
-                  className="object-contain"
-                  sizes="224px"
-                />
-              )
+              <WorkImage
+                src={servicios[active].icono}
+                alt=""
+                fill
+                className="object-contain"
+                sizes="224px"
+              />
             ))}
         </div>
       )}
@@ -159,7 +167,7 @@ export function Servicios() {
           <div key={servicio.numero} className="border-b border-line first:border-t">
             <button
               type="button"
-              className="flex w-full items-center gap-6 py-8 text-left transition-opacity duration-300"
+              className="flex w-full items-center gap-6 py-7 text-left transition-opacity duration-300"
               style={{ opacity: isTouch || active === null || active === i ? 1 : 0.35 }}
               onMouseEnter={() => !isTouch && setActive(i)}
               onFocus={() => !isTouch && setActive(i)}
@@ -175,27 +183,40 @@ export function Servicios() {
               </span>
             </button>
 
-            {/* Vista previa en el hover: un texto corto que aparece bajo el
-                título mientras el cursor está encima, sin necesidad de clic.
-                En touch no hay hover que la dispare — ahí sigue el acordeón
-                de clic de siempre, más abajo. */}
+            {/* Vista previa en el hover: la descripción y lo que incluye aparecen
+                bajo el título mientras el cursor está encima, sin necesidad de
+                clic. En touch no hay hover que la dispare — ahí sigue el acordeón
+                de clic de siempre, justo debajo. */}
             {!isTouch && (
               <div
-                className="grid transition-[grid-template-rows] duration-400 ease-out"
+                className="grid transition-[grid-template-rows] duration-500 ease-out"
                 style={{ gridTemplateRows: active === i ? "1fr" : "0fr" }}
               >
                 <div className="overflow-hidden">
-                  <p className="max-w-md pb-6 text-text-muted">{servicio.descripcion}</p>
+                  <div className="pb-7 pl-16">
+                    <p className="max-w-xl text-text-muted">{servicio.descripcion}</p>
+                    <ul className="mt-4 flex flex-wrap gap-2">
+                      {servicio.incluye.map((item) => (
+                        <li key={item}>
+                          <Etiqueta>{item}</Etiqueta>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             )}
 
             {isTouch && open === i && (
-              <div className="grid gap-4 pb-8 md:grid-cols-2">
+              <div className="pb-8">
                 <p className="text-text-muted">{servicio.descripcion}</p>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-                  <WorkImage src={servicio.imagen} alt="" fill className="object-cover" sizes="90vw" />
-                </div>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {servicio.incluye.map((item) => (
+                    <li key={item}>
+                      <Etiqueta>{item}</Etiqueta>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>

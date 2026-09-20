@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, registerGsap } from "@/lib/gsap";
-import { trabajos } from "@/content/trabajos";
+import { plantillas } from "@/content/plantillas";
 
-const nombres = trabajos.map((t) => t.cliente);
+// Los sectores del catálogo de plantillas: es lo que sabemos construir y está
+// respaldado por una demo viva de cada uno. No son clientes, y no se presentan
+// como tales — la sección Plantillas lo dice con todas las letras.
+const nombres = Array.from(new Set(plantillas.map((p) => p.sector)));
 
 export function Marquee() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -65,7 +68,7 @@ export function Marquee() {
 
   return (
     <div className="border-y border-line py-8">
-      <p className="sr-only">Negocios con los que trabajamos: {nombres.join(", ")}.</p>
+      <p className="sr-only">Sectores con plantilla propia publicada: {nombres.join(", ")}.</p>
       <div ref={wrapperRef} className="overflow-hidden" aria-hidden="true">
         <div ref={trackRef} className="flex w-max items-center whitespace-nowrap">
         {[...nombres, ...nombres].map((nombre, i) => (
