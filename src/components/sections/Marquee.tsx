@@ -4,12 +4,37 @@ import { useEffect, useRef } from "react";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { plantillas } from "@/content/plantillas";
 
-// Los sectores del catálogo de plantillas: es lo que sabemos construir y está
-// respaldado por una demo viva de cada uno. No son clientes, y no se presentan
-// como tales — la sección Plantillas lo dice con todas las letras.
-const nombres = Array.from(new Set(plantillas.map((p) => p.sector)));
+// Banda de arriba: los sectores del catálogo. Es lo que sabemos construir y
+// cada uno tiene detrás una demo viva que se puede abrir. No son clientes, y
+// la sección Plantillas lo dice con todas las letras.
+const sectores = Array.from(new Set(plantillas.map((p) => p.sector)));
 
-export function Marquee() {
+// Banda de abajo, en sentido contrario: las condiciones. Un listado de sectores
+// dice de qué sabemos; esto dice cómo se trabaja, que es lo que de verdad
+// decide alguien que está mirando si nos llama. Todas son comprobables en la
+// propia web: el precio está en Proceso, la auditoría en /auditoria/.
+const condiciones = [
+  "Código propio",
+  "Sin constructores",
+  "Sin cuotas de plataforma",
+  "La web es tuya",
+  "Dos semanas",
+  "Precio cerrado antes de empezar",
+  "Sin permanencia",
+  "La ves funcionando antes de pagar",
+  "Auditoría gratis",
+];
+
+interface BandaProps {
+  items: string[];
+  /** -1 recorre hacia la izquierda; 1, hacia la derecha. */
+  sentido: 1 | -1;
+  duracion: number;
+  separador: string;
+  className?: string;
+}
+
+function Banda({ items, sentido, duracion, separador, className }: BandaProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -29,11 +54,13 @@ export function Marquee() {
 
     const build = () => {
       tween?.kill();
+      // La pista lleva la lista dos veces: al recorrer justo la mitad, el
+      // segundo juego está donde estaba el primero y el salto no se ve.
       const distance = track.scrollWidth / 2;
-      gsap.set(track, { x: 0 });
+      gsap.set(track, { x: sentido === -1 ? 0 : -distance });
       tween = gsap.to(track, {
-        x: -distance,
-        duration: 32,
+        x: sentido === -1 ? -distance : 0,
+        duration: duracion,
         ease: "none",
         repeat: -1,
       });
@@ -64,22 +91,47 @@ export function Marquee() {
       wrapper.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [sentido, duracion]);
 
   return (
-    <div className="border-y border-line py-8">
-      <p className="sr-only">Sectores con plantilla propia publicada: {nombres.join(", ")}.</p>
-      <div ref={wrapperRef} className="overflow-hidden" aria-hidden="true">
-        <div ref={trackRef} className="flex w-max items-center whitespace-nowrap">
-        {[...nombres, ...nombres].map((nombre, i) => (
-          <span key={i} className="flex items-center gap-12 px-6">
-            <span className="font-mono-label text-sm normal-case tracking-normal text-text-muted">
-              {nombre}
+    <div ref={wrapperRef} className="overflow-hidden" aria-hidden="true">
+      <div ref={trackRef} className="flex w-max items-center whitespace-nowrap">
+        {[...items, ...items].map((item, i) => (
+          <span key={i} className="flex items-center gap-10 px-5">
+            <span
+              className={`font-mono-label text-sm normal-case tracking-normal ${
+                className ?? "text-text-muted"
+              }`}
+            >
+              {item}
             </span>
-            <span className="text-accent">/</span>
+            <span className="text-accent">{separador}</span>
           </span>
         ))}
-        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Marquee() {
+  return (
+    <div className="border-y border-line">
+      <p className="sr-only">
+        Sectores con plantilla propia publicada: {sectores.join(", ")}. Cómo se trabaja:{" "}
+        {condiciones.join(", ")}.
+      </p>
+
+      <div className="border-b border-line/60 py-6">
+        <Banda items={sectores} sentido={-1} duracion={38} separador="/" />
+      </div>
+      <div className="py-6">
+        <Banda
+          items={condiciones}
+          sentido={1}
+          duracion={30}
+          separador="·"
+          className="text-text-faint"
+        />
       </div>
     </div>
   );

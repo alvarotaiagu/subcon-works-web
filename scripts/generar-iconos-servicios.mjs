@@ -1,9 +1,9 @@
-// Genera los ocho iconos de /public/servicios, uno por servicio de
+// Genera los nueve iconos de /public/servicios, uno por servicio de
 // src/content/servicios.ts. Son marcas de línea en el acento de la marca,
 // pensadas para el panel de 224 px que sigue al cursor en la sección Servicios:
 // dibujo técnico, sin relleno y sin texto, legibles a ese tamaño.
 //
-// Se generan desde aquí y no a mano para que los ocho compartan caja, grosor y
+// Se generan desde aquí y no a mano para que los nueve compartan caja, grosor y
 // márgenes. Si cambias uno, vuelve a lanzar `node scripts/generar-iconos-servicios.mjs`.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -96,7 +96,17 @@ const iconos = {
   <path d="M142 132l4 11 11 4-11 4-4 11-4-11-11-4 11-4z" fill="${ACCENT}" stroke="none" opacity="0.55" />
   `,
 
-  // 08 · Mantenimiento — la llave sobre el engranaje: sigue funcionando.
+  // 08 · Vídeo, reels y redes — el encuadre vertical del móvil con el play.
+  video: `
+  <rect x="58" y="18" width="84" height="150" rx="12" />
+  <path d="M86 18h28" />
+  <polygon points="88,78 88,118 122,98" />
+  <path d="M30 60v76M18 78v40" opacity="0.5" />
+  <path d="M170 60v76M182 78v40" opacity="0.5" />
+  <circle cx="100" cy="182" r="4" fill="${ACCENT}" stroke="none" />
+  `,
+
+  // 09 · Mantenimiento — la llave sobre el engranaje: sigue funcionando.
   mantenimiento: `
   <circle cx="104" cy="104" r="34" />
   <circle cx="104" cy="104" r="13" />

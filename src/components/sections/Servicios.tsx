@@ -133,10 +133,10 @@ export function Servicios() {
           Servicios
         </p>
         <h2 className="max-w-3xl text-4xl font-medium text-text-primary md:text-6xl" data-reveal>
-          Ocho cosas, y las ocho se pueden contratar sueltas.
+          Nueve cosas, y las nueve se pueden contratar sueltas.
         </h2>
         <p className="mt-6 max-w-xl text-text-muted" data-reveal>
-          Casi ningún negocio necesita las ocho a la vez. Por eso la primera conversación es una
+          Casi ningún negocio necesita las nueve a la vez. Por eso la primera conversación es una
           auditoría y no un presupuesto: primero se mira qué falta, y después se dice qué cuesta.
         </p>
       </div>

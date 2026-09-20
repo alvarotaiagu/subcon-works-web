@@ -100,18 +100,33 @@ export const servicios: Servicio[] = [
     numero: "07",
     nombre: "Marketing y contenido con IA",
     descripcion:
-      "Un sistema que se sostiene sin que le dediques el día: correo a tus clientes, publicaciones, fichas de producto y respuesta a las reseñas.",
+      "Lo que se puede dejar funcionando solo: el correo a tus clientes, las fichas de producto, los textos de la web y la respuesta a cada reseña que entra.",
     incluye: [
       "Email a clientes",
-      "Redes",
       "Fichas de producto",
       "Respuesta a reseñas",
-      "Fotografía y retoque",
+      "Textos de la web",
+      "Avisos automáticos",
     ],
     icono: "/servicios/contenido.svg",
   },
   {
     numero: "08",
+    nombre: "Vídeo, reels y redes",
+    descripcion:
+      "Esto no lo hace una máquina. Vamos, grabamos en tu local y montamos: reels, vídeo corto y fotos de lo que vendes. Y si quieres, llevamos la cuenta entera y te la quitamos de encima.",
+    incluye: [
+      "Reels y vídeo corto",
+      "Grabamos en tu local",
+      "Montaje y subtítulos",
+      "Foto de producto",
+      "Calendario de publicación",
+      "Comentarios y mensajes",
+    ],
+    icono: "/servicios/video.svg",
+  },
+  {
+    numero: "09",
     nombre: "Mantenimiento y soporte",
     descripcion:
       "Cambiar la carta, subir precios, abrir los domingos de verano. Se hace y ya está: sin abrir una incidencia, sin esperar tres semanas y sin que se caiga nada por el camino.",
