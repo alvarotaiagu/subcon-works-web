@@ -22,7 +22,7 @@ El `basePath` solo se activa en el build de CI (`GITHUB_ACTIONS=true`), para que
 | Sección | Contenido |
 |---|---|
 | Hero | Engranajes WebGL y la cortina de entrada |
-| Marquesina | Dos bandas cruzadas: los sectores con plantilla y las condiciones de trabajo |
+| Marquesina | Dos bandas cruzadas: los sectores con plantilla y lo que el sistema hace solo |
 | Servicios | Los nueve servicios de `src/content/servicios.ts`, con su icono de línea |
 | Plantillas | Las 10 destacadas en carrusel horizontal anclado, y las 30 en `/plantillas/` |
 | Proceso | Los seis pasos, anclados con scrub |

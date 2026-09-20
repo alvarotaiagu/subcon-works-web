@@ -9,20 +9,26 @@ import { plantillas } from "@/content/plantillas";
 // la sección Plantillas lo dice con todas las letras.
 const sectores = Array.from(new Set(plantillas.map((p) => p.sector)));
 
-// Banda de abajo, en sentido contrario: las condiciones. Un listado de sectores
-// dice de qué sabemos; esto dice cómo se trabaja, que es lo que de verdad
-// decide alguien que está mirando si nos llama. Todas son comprobables en la
-// propia web: el precio está en Proceso, la auditoría en /auditoria/.
-const condiciones = [
-  "Código propio",
-  "Sin constructores",
-  "Sin cuotas de plataforma",
-  "La web es tuya",
-  "Dos semanas",
-  "Precio cerrado antes de empezar",
-  "Sin permanencia",
-  "La ves funcionando antes de pagar",
-  "Auditoría gratis",
+// Banda de abajo, en sentido contrario: lo que el sistema hace por sí solo.
+//
+// No son condiciones comerciales ("sin permanencia", "precio cerrado"): eso es
+// lenguaje de presupuesto y aquí lo que se enseña es capacidad. Cada una está
+// en tercera persona, como acciones que ocurren sin que estés tú, y todas
+// corresponden a un servicio de src/content/servicios.ts — nada que no se
+// pueda entregar. El estribillo en acento las encuadra cada vuelta.
+const ESTRIBILLO = "Mientras tú atiendes";
+
+const loQueHaceSolo = [
+  "Coge el teléfono",
+  "Da la cita",
+  "Recuerda la cita",
+  "Emite la factura",
+  "Reclama el pago",
+  "Contesta la reseña",
+  "Ordena el correo",
+  "Filtra lo urgente",
+  "Avisa de la revisión",
+  "Resume el mes",
 ];
 
 interface BandaProps {
@@ -32,9 +38,12 @@ interface BandaProps {
   duracion: number;
   separador: string;
   className?: string;
+  /** Va delante de la lista y en acento: al repetirse en bucle, encuadra lo
+   *  que viene detrás sin necesidad de un titular fijo. */
+  estribillo?: string;
 }
 
-function Banda({ items, sentido, duracion, separador, className }: BandaProps) {
+function Banda({ items, sentido, duracion, separador, className, estribillo }: BandaProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -96,18 +105,25 @@ function Banda({ items, sentido, duracion, separador, className }: BandaProps) {
   return (
     <div ref={wrapperRef} className="overflow-hidden" aria-hidden="true">
       <div ref={trackRef} className="flex w-max items-center whitespace-nowrap">
-        {[...items, ...items].map((item, i) => (
-          <span key={i} className="flex items-center gap-10 px-5">
-            <span
-              className={`font-mono-label text-sm normal-case tracking-normal ${
-                className ?? "text-text-muted"
-              }`}
-            >
-              {item}
+        {[...items, ...items].map((item, i) => {
+          const esEstribillo = item === estribillo;
+          return (
+            <span key={i} className="flex items-center gap-10 px-5">
+              <span
+                className={
+                  esEstribillo
+                    ? "font-mono-label text-sm text-accent"
+                    : `font-mono-label text-sm normal-case tracking-normal ${
+                        className ?? "text-text-muted"
+                      }`
+                }
+              >
+                {item}
+              </span>
+              <span className="text-accent">{separador}</span>
             </span>
-            <span className="text-accent">{separador}</span>
-          </span>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -117,8 +133,8 @@ export function Marquee() {
   return (
     <div className="border-y border-line">
       <p className="sr-only">
-        Sectores con plantilla propia publicada: {sectores.join(", ")}. Cómo se trabaja:{" "}
-        {condiciones.join(", ")}.
+        Sectores con plantilla propia publicada: {sectores.join(", ")}. Y lo que funciona solo
+        mientras tú atiendes: {loQueHaceSolo.join(", ").toLowerCase()}.
       </p>
 
       <div className="border-b border-line/60 py-6">
@@ -126,9 +142,10 @@ export function Marquee() {
       </div>
       <div className="py-6">
         <Banda
-          items={condiciones}
+          items={[ESTRIBILLO, ...loQueHaceSolo]}
+          estribillo={ESTRIBILLO}
           sentido={1}
-          duracion={30}
+          duracion={34}
           separador="·"
           className="text-text-faint"
         />
