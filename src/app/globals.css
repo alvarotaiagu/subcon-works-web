@@ -323,10 +323,15 @@ h3 {
     width 0.2s var(--ease-out),
     height 0.2s var(--ease-out),
     border-color 0.2s var(--ease-out),
-    background-color 0.2s var(--ease-out);
+    background-color 0.2s var(--ease-out),
+    opacity 0.2s var(--ease-out);
 }
 .cursor-dot {
   transition: transform 0.1s linear, opacity 0.2s var(--ease-out);
+}
+html[data-cursor-state="hidden"] .cursor-ring,
+html[data-cursor-state="hidden"] .cursor-dot {
+  opacity: 0;
 }
 html[data-cursor-state="hover"] .cursor-ring {
   width: 3rem;

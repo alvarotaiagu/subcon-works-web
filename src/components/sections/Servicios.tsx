@@ -173,6 +173,7 @@ export function Servicios() {
               onFocus={() => !isTouch && setActive(i)}
               onClick={() => isTouch && setOpen(open === i ? null : i)}
               aria-expanded={isTouch ? open === i : undefined}
+              data-cursor-hide={!isTouch ? true : undefined}
             >
               <span className="font-mono-label w-10 shrink-0 text-sm">{servicio.numero}</span>
               <span className="flex-1 text-2xl font-medium text-text-primary md:text-4xl">

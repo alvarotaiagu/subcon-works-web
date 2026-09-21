@@ -24,6 +24,11 @@ export function Cursor() {
         "a, button, [data-cursor-hover]"
       );
       if (!target) return;
+      if (target.hasAttribute("data-cursor-hide")) {
+        document.documentElement.dataset.cursorState = "hidden";
+        if (labelRef.current) labelRef.current.textContent = "";
+        return;
+      }
       const label = target.getAttribute("data-cursor-label");
       document.documentElement.dataset.cursorState = label ? "label" : "hover";
       if (label && labelRef.current) labelRef.current.textContent = label;
