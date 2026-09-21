@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap, registerGsap, EASE_INOUT } from "@/lib/gsap";
 import { gearPath } from "@/lib/gearPath";
 
@@ -14,35 +14,42 @@ export const PRELOADER_DONE_EVENT = "subcon:preloader-done";
  * de cámara sobre su propio centro, revelando el hero. Al llegar a 100
  * dispara PRELOADER_DONE_EVENT y el H1 del hero escucha ese evento para
  * arrancar solapado, no después.
+ *
+ * La cortina se renderiza siempre por defecto (server y primer render
+ * cliente) para que esté en el HTML desde el primer pintado: decidir si
+ * mostrarla dentro de un useEffect normal deja un frame de por medio en el
+ * que el sitio se ve sin cortina antes de que React la monte encima. El
+ * salto (ya vista en esta sesión / reduced-motion) se decide en
+ * useLayoutEffect, antes de que el navegador pinte.
  */
 export function Preloader() {
-  const [shouldRender, setShouldRender] = useState(false);
+  const [skip, setSkip] = useState(false);
   const [visible, setVisible] = useState(true);
   const overlayRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLDivElement>(null);
   const gearRef = useRef<SVGPathElement>(null);
   const groupRef = useRef<SVGGElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-    if (sessionStorage.getItem(PRELOADER_SESSION_KEY)) return;
-    // Depende de sessionStorage, no disponible durante el prerender estático.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setShouldRender(true);
+    if (prefersReduced || sessionStorage.getItem(PRELOADER_SESSION_KEY)) {
+      setSkip(true);
+      setVisible(false);
+      return;
+    }
+    sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
+    document.body.style.overflow = "hidden";
   }, []);
 
   useEffect(() => {
-    if (!shouldRender) return;
+    if (skip) return;
     const overlay = overlayRef.current;
     const count = countRef.current;
     const gear = gearRef.current;
     const group = groupRef.current;
     if (!overlay || !count || !gear || !group) return;
 
-    sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
     registerGsap();
-    document.body.style.overflow = "hidden";
 
     const len = gear.getTotalLength();
     gsap.set(gear, { strokeDasharray: len, strokeDashoffset: len });
@@ -61,7 +68,7 @@ export function Preloader() {
       onComplete: () => {
         idleSpin.kill();
         // No usar overlay.remove(): React sigue creyendo montado este nodo
-        // (shouldRender no cambia), y al navegar de página la siguiente
+        // (skip no cambia), y al navegar de página la siguiente
         // reconciliación intenta hacer removeChild sobre un nodo que ya no
         // es hijo de nadie. El desmontado tiene que pasar por React.
         setVisible(false);
@@ -96,9 +103,9 @@ export function Preloader() {
       idleSpin.kill();
       document.body.style.overflow = "";
     };
-  }, [shouldRender]);
+  }, [skip]);
 
-  if (!shouldRender || !visible) return null;
+  if (skip || !visible) return null;
 
   return (
     <div
