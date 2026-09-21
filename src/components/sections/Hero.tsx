@@ -47,7 +47,16 @@ export function Hero() {
     const play = () => {
       if (!split || hasPlayed) return;
       hasPlayed = true;
-      const tl = gsap.timeline();
+      // La máscara de línea de SplitText recorta las descendentes (la "g" de
+      // "funcionar") porque el line-height de los títulos es 0.98: solo hace
+      // falta durante la propia animación, así que se revierte al terminar en
+      // vez de dejar el h1 envuelto en overflow:hidden para siempre.
+      const tl = gsap.timeline({
+        onComplete: () => {
+          split?.revert();
+          split = null;
+        },
+      });
       tl.to(content, { scale: 1, filter: "blur(0px)", duration: 1.2, ease: EASE_OUT }, 0)
         .to(eyebrow, { opacity: 1, y: 0, duration: 0.6, ease: EASE_OUT }, 0.05)
         .to(
@@ -85,7 +94,13 @@ export function Hero() {
       if (!willShowPreloader) play();
     });
 
-    const onResize = () => build();
+    const onResize = () => {
+      // Tras jugar la entrada, el split ya se revirtió (arriba): no hay nada
+      // que reconstruir y volver a montar la máscara solo reintroduciría el
+      // recorte de descendentes de forma permanente.
+      if (hasPlayed) return;
+      build();
+    };
     window.addEventListener("resize", onResize);
 
     return () => {
