@@ -44,7 +44,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Base
 
-- [ ] **T01 · Rama de integración y ejecutor de tests.**
+- [x] **T01 · Rama de integración y ejecutor de tests.**
   - *Cubre*: spec §7 (ejecutor), PD-1, PD-8.
   - *Hacer*:
     - en el worktree `subcon-works-web-diagnostico`: `git fetch`, rebasar
