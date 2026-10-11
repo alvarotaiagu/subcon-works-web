@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { Etiqueta } from "@/components/ui/Etiqueta";
 import type { MensajeChat } from "@/content/sectores";
 import { cn } from "@/lib/utils";
@@ -85,9 +85,9 @@ export function ChatEjemplo({
                     ? "self-start rounded-bl-md border border-line bg-bg-sunken text-text-primary"
                     : "self-end rounded-br-md bg-accent text-bg-base",
                   "group-data-[chat=espera]:translate-y-2 group-data-[chat=espera]:opacity-0",
-                  "group-data-[chat=ver]:transition-[opacity,transform] group-data-[chat=ver]:duration-500 group-data-[chat=ver]:ease-out"
+                  "group-data-[chat=ver]:transition-[opacity,transform] group-data-[chat=ver]:duration-500 group-data-[chat=ver]:ease-out group-data-[chat=ver]:[transition-delay:var(--retraso)]"
                 )}
-                style={{ transitionDelay: `${i * 140}ms` }}
+                style={{ "--retraso": `${i * 140}ms` } as CSSProperties}
               >
                 <span className="sr-only">{delAsistente ? "Asistente: " : "Cliente: "}</span>
                 {mensaje.texto}

@@ -75,10 +75,9 @@ function slugDe(codigo: SectorConPagina): string {
   return slug;
 }
 
-export const sectores: PaginaSector[] = [
+const paginas: Omit<PaginaSector, "slug">[] = [
   {
     codigo: "dental",
-    slug: slugDe("dental"),
     nombre: "Clínicas dentales",
     etiqueta: "Clínicas dentales",
     titular: "Que el teléfono no saque a nadie del gabinete",
@@ -98,7 +97,7 @@ export const sectores: PaginaSector[] = [
       {
         titulo: "Una hora de sillón que se queda vacía",
         texto:
-          "Un paciente que no viene deja el gabinete parado. Ofrecer ese hueco a otro depende de que alguien tenga un rato para ir llamando a la lista de espera, y casi nunca lo tiene.",
+          "Un paciente que cancela la víspera deja el gabinete parado. Si las horas libres solo se saben llamando a la clínica, ese hueco no lo coge nadie, aunque haya quien lo quisiera.",
       },
       {
         titulo: "Las mismas preguntas, todos los días",
@@ -150,7 +149,6 @@ export const sectores: PaginaSector[] = [
   },
   {
     codigo: "rural",
-    slug: slugDe("rural"),
     nombre: "Casas, apartamentos y hoteles rurales",
     etiqueta: "Alojamientos rurales",
     titular: "Que no todas las reservas tengan que pasar por Booking",
@@ -168,7 +166,7 @@ export const sectores: PaginaSector[] = [
           "Quien ya estuvo en la casa y quiere volver la busca en Booking, porque es donde la encontró, y esa noche vuelve a pagar comisión. Sin una web donde reservar contigo, la plataforma se queda también con los que ya te conocen.",
       },
       {
-        titulo: "Dos calendarios que no se hablan",
+        titulo: "Calendarios que no se hablan",
         texto:
           "Las reservas por teléfono en una libreta o en el móvil; las de Booking y Airbnb, cada una en su panel. Cada reserva nueva obliga a cerrar a mano las mismas fechas en los demás sitios, y un descuido vende dos veces la misma noche.",
       },
@@ -203,7 +201,7 @@ export const sectores: PaginaSector[] = [
         texto:
           "La entrada es a partir de las cuatro de la tarde. Si llegáis más tarde se os puede dejar la llave preparada, pero hay que acordarlo antes con la casa.",
       },
-      { de: "cliente", texto: "¿Tenéis libre el puente de diciembre para cuatro personas?" },
+      { de: "cliente", texto: "¿Tenéis libre el puente de diciembre para cuatro personas y el perro?" },
       {
         de: "asistente",
         texto:
@@ -220,7 +218,6 @@ export const sectores: PaginaSector[] = [
   },
   {
     codigo: "despachos",
-    slug: slugDe("despachos"),
     nombre: "Asesorías y despachos",
     etiqueta: "Asesorías y despachos",
     titular: "Menos llamadas de «¿lleváis esto?» y menos papeles por WhatsApp",
@@ -289,6 +286,8 @@ export const sectores: PaginaSector[] = [
     plantillas: ["abogados-trinquete", "abogados-portico", "abogados-contraluz"],
   },
 ];
+
+export const sectores: PaginaSector[] = paginas.map((p) => ({ ...p, slug: slugDe(p.codigo) }));
 
 const PORSLUG: ReadonlyMap<string, PaginaSector> = new Map(sectores.map((s) => [s.slug, s]));
 
