@@ -1,4 +1,7 @@
 import * as THREE from "three";
+import { gearOutline } from "@/lib/engranaje";
+
+export { meshPhase, pitchRadius } from "@/lib/engranaje";
 
 export const ACCENT = 0xc9f24d;
 export const ACCENT_DIM = 0x8fa832;
@@ -71,7 +74,15 @@ export class SceneBase {
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
+    this.onLayout();
   }
+
+  /**
+   * Para que cada escena recoloque lo suyo tras un resize. Se llama también
+   * desde el constructor de la base, antes de que la subclase haya montado
+   * nada: quien lo sobrescriba tiene que salir si aún no tiene su escena.
+   */
+  protected onLayout() {}
 
   private onPointer(e: PointerEvent) {
     this.pointerTarget.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -109,84 +120,13 @@ export class SceneBase {
   }
 }
 
-/**
- * Perfil de un engranaje recto de INVOLUTA real (ángulo de presión 20º,
- * addendum 1·m, dedendum 1,25·m). No es un zigzag ni un trapecio que
- * «parezca» un diente: es la curva que hace que dos ruedas del mismo módulo,
- * con la distancia entre centros = suma de radios primitivos y la fase
- * resuelta, metan el diente en el hueco de la otra sin tocarse. Comprobado
- * numéricamente: 0 interferencias y ~0,18·m de holgura en todo el giro.
- *
- * El diente va A CABALLO del radio primitivo (punta fuera, valle dentro);
- * con la punta EN el primitivo —el error anterior— las dos ruedas quedan
- * tangentes y los dientes solo se rozan de canto.
- */
-const PRESSURE_ANGLE = (20 * Math.PI) / 180;
-const ADDENDUM = 1.0; // × módulo, altura del diente por fuera del primitivo
-const DEDENDUM = 1.25; // × módulo, profundidad del valle por dentro
-const BACKLASH = 0.1; // × módulo, adelgazado por flanco (juego de engrane)
-const FLANK_STEPS = 6;
-
-const involute = (a: number) => Math.tan(a) - a;
-
-/** Radio primitivo: la magnitud que fija la distancia entre centros. */
-export function pitchRadius(teeth: number, moduleSize: number) {
-  return (moduleSize * teeth) / 2;
-}
-
+/** Rueda de engranaje extruible, con el perfil de involuta de lib/engranaje. */
 export function createGearShape(teeth: number, moduleSize: number, boreR: number) {
-  const pitchR = pitchRadius(teeth, moduleSize);
-  const baseR = pitchR * Math.cos(PRESSURE_ANGLE);
-  const tipR = pitchR + ADDENDUM * moduleSize;
-  const rootR = pitchR - DEDENDUM * moduleSize;
-  const startR = Math.max(baseR, rootR);
-  // Medio espesor angular del diente en el primitivo, menos el juego.
-  const half = Math.PI / (2 * teeth) - (BACKLASH * moduleSize) / pitchR;
-  const flank = (u: number) => half + involute(PRESSURE_ANGLE) - involute(Math.acos(Math.min(1, baseR / u)));
-
-  const shape = new THREE.Shape();
-  const pitchAngle = (Math.PI * 2) / teeth;
-  let first = true;
-  const push = (angle: number, r: number) => {
-    const x = Math.cos(angle) * r;
-    const y = Math.sin(angle) * r;
-    if (first) {
-      shape.moveTo(x, y);
-      first = false;
-    } else {
-      shape.lineTo(x, y);
-    }
-  };
-
-  for (let k = 0; k < teeth; k++) {
-    const c = k * pitchAngle;
-    // Tramo radial del valle al arranque de la involuta (círculo base).
-    if (rootR < startR - 1e-9) push(c - flank(startR), rootR);
-    for (let s = 0; s <= FLANK_STEPS; s++) {
-      const u = startR + (tipR - startR) * (s / FLANK_STEPS);
-      push(c - flank(u), u);
-    }
-    for (let s = FLANK_STEPS; s >= 0; s--) {
-      const u = startR + (tipR - startR) * (s / FLANK_STEPS);
-      push(c + flank(u), u);
-    }
-    if (rootR < startR - 1e-9) push(c + flank(startR), rootR);
-    push(c + pitchAngle / 2, rootR); // fondo del valle hasta el diente siguiente
-  }
+  const shape = new THREE.Shape(gearOutline(teeth, moduleSize).map(([x, y]) => new THREE.Vector2(x, y)));
   shape.closePath();
 
   const hole = new THREE.Path();
   hole.absarc(0, 0, boreR, 0, Math.PI * 2, true);
   shape.holes.push(hole);
   return shape;
-}
-
-/**
- * Fase de engrane de una rueda hija respecto a su padre:
- * N_p(θ_p − α) + N_h(θ_h − α − π) ≡ π. La suma es constante en el tiempo si
- * la relación de dientes es exacta, así que se fija una vez al montar el tren
- * y las ruedas ya no se despegan nunca.
- */
-export function meshPhase(parentTeeth: number, parentPhase: number, childTeeth: number, alpha: number) {
-  return (Math.PI - parentTeeth * (parentPhase - alpha)) / childTeeth + (alpha + Math.PI);
 }

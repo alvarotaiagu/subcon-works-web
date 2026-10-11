@@ -35,6 +35,16 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
+// Generada en el build por src/app/og.png/route.tsx. Next la resuelve contra
+// metadataBase, que ya lleva el /subcon-works-web/ de GitHub Pages.
+const imagenCompartir = {
+  url: "og.png",
+  width: 1200,
+  height: 630,
+  alt: `${site.nombre} — ${site.tagline}`,
+  type: "image/png",
+};
+
 // Ninguna web de la casa se indexa mientras no haya nada vendido: meta robots
 // noindex en todas las páginas, y robots.ts bloqueando el rastreo entero.
 export const metadata: Metadata = {
@@ -56,6 +66,13 @@ export const metadata: Metadata = {
     description: site.descripcion,
     type: "website",
     locale: "es_ES",
+    images: [imagenCompartir],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.nombre,
+    description: site.descripcion,
+    images: [imagenCompartir],
   },
   // Sin `icons` a propósito: Next lo genera solo a partir de src/app/favicon.ico
   // y ahí sí le pone el basePath. Declarándolo a mano como "/favicon.ico" se
