@@ -195,7 +195,14 @@ export function Servicios() {
 
       <div ref={sectionRef} onMouseLeave={() => !isTouch && setActive(null)}>
         {servicios.map((servicio, i) => (
-          <div key={servicio.numero} className="border-b border-line first:border-t">
+          // Toda la fila (botón y vista previa) cede el cursor al icono flotante;
+          // solo el enlace de dentro lo recupera.
+          <div
+            key={servicio.numero}
+            className="border-b border-line first:border-t"
+            data-cursor-hover={!isTouch ? true : undefined}
+            data-cursor-hide={!isTouch ? true : undefined}
+          >
             <button
               type="button"
               className="flex w-full items-center gap-6 py-7 text-left transition-opacity duration-300"

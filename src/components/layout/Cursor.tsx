@@ -19,11 +19,13 @@ export function Cursor() {
   useEffect(() => {
     if (!enabled) return;
 
-    const onEnter = (e: Event) => {
-      const target = (e.target as HTMLElement).closest<HTMLElement>(
-        "a, button, [data-cursor-hover]"
-      );
-      if (!target) return;
+    const aplicar = (el: Element | null) => {
+      const target = el?.closest<HTMLElement>("a, button, [data-cursor-hover]");
+      if (!target) {
+        delete document.documentElement.dataset.cursorState;
+        if (labelRef.current) labelRef.current.textContent = "";
+        return;
+      }
       if (target.hasAttribute("data-cursor-hide")) {
         document.documentElement.dataset.cursorState = "hidden";
         if (labelRef.current) labelRef.current.textContent = "";
@@ -31,11 +33,17 @@ export function Cursor() {
       }
       const label = target.getAttribute("data-cursor-label");
       document.documentElement.dataset.cursorState = label ? "label" : "hover";
-      if (label && labelRef.current) labelRef.current.textContent = label;
+      if (labelRef.current) labelRef.current.textContent = label ?? "";
     };
-    const onLeave = () => {
-      delete document.documentElement.dataset.cursorState;
-      if (labelRef.current) labelRef.current.textContent = "";
+    const onEnter = (e: Event) => {
+      const target = (e.target as HTMLElement).closest("a, button, [data-cursor-hover]");
+      if (target) aplicar(target);
+    };
+    // Al salir de un elemento anidado (un enlace dentro de una zona que oculta
+    // el cursor) se vuelve al estado de lo que queda debajo, no al de reposo.
+    const onLeave = (e: Event) => {
+      const destino = (e as PointerEvent).relatedTarget;
+      aplicar(destino instanceof Element ? destino : null);
     };
 
     const els = document.querySelectorAll("a, button, [data-cursor-hover]");
