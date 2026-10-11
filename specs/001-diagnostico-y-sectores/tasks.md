@@ -174,7 +174,7 @@ Cada una tiene su fichero de test (PD-8).
       idénticos, vacíos y en blanco.
   - *Hecho*: tests en verde.
 
-- [ ] **T06 · Contenido de las páginas de sector (`sectores.ts`).**
+- [x] **T06 · Contenido de las páginas de sector (`sectores.ts`).**
   - *Cubre*: spec §3.8 (contenido), D-006, D-007, D-008, D-009.
   - *Hacer*: `src/content/sectores.ts`, con una entrada por sector:
     - `codigo`, `slug` (D-009, sin tocar) y nombre;
@@ -283,7 +283,7 @@ Cada una tiene su fichero de test (PD-8).
 
 ## Páginas
 
-- [ ] **T10 · `ChatEjemplo`.**
+- [x] **T10 · `ChatEjemplo`.**
   - *Cubre*: spec §3.8.5, §5 (dental y salud).
   - *Depende de*: T06.
   - *Hacer*: `src/components/sectores/ChatEjemplo.tsx`, que recibe la
