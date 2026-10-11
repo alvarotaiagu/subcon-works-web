@@ -1,4 +1,4 @@
-# SDD · Subcon Works (web del estudio)
+# SDD · Undertactics (web del estudio)
 
 La web ya funciona y se publicó sin SDD. Este índice empieza con la primera
 funcionalidad que se especifica antes de programarla; lo anterior (portada,

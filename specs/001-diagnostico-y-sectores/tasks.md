@@ -351,7 +351,9 @@ Cada una tiene su fichero de test (PD-8).
   - *Depende de*: T05.
   - *Hacer*:
     - en `FormularioAuditoria.tsx`, **dentro del `useEffect` que lee
-      `subcon:auditoria:v1`**:
+      `undertactics:auditoria:v1`**:
+      - deja donde está la llamada a `traerDeClaveAntigua` (migra el
+        borrador de `subcon:auditoria:v1`): la mezcla va después;
       - lee la query una vez y guárdala en una `ref`;
       - `decodificar` → `aRespuestasAuditoria` → `mezclarConBorrador`, con
         lo recién leído de `localStorage` (o vacío si no hay o si falla);

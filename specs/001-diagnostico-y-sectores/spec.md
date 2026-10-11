@@ -13,7 +13,7 @@ Esta spec añade dos cosas:
 
 - Un **diagnóstico rápido**: 6 o 7 preguntas de un toque que, al terminar,
   enseñan en la misma pantalla de 3 a 5 mejoras concretas para ese negocio.
-  Las puede montar Subcon Works u otra agencia; decirlo da confianza.
+  Las puede montar Undertactics u otra agencia; decirlo da confianza.
   El diagnóstico lleva a la auditoría con las respuestas ya puestas.
 - **Páginas por sector**: clínicas dentales, alojamientos rurales, y asesorías
   y despachos. Cada una habla de los problemas reales de su sector, trae el
@@ -253,7 +253,7 @@ La ruta `src/app/sectores/[slug]/page.tsx` tiene:
 
   Devuelve `{ respuestas, contacto, puestas, saltadas }`.
 - **Se hace en el mismo efecto que hoy carga el borrador**
-  (`FormularioAuditoria.tsx`, el `useEffect` que lee `subcon:auditoria:v1`):
+  (`FormularioAuditoria.tsx`, el `useEffect` que lee `undertactics:auditoria:v1`):
   - la mezcla se hace con lo recién leído de `localStorage`, no con el
     estado de React, que en ese momento aún está vacío;
   - la query se lee una sola vez y se guarda en una `ref`, para que el doble
@@ -269,7 +269,7 @@ La ruta `src/app/sectores/[slug]/page.tsx` tiene:
   recargar no vuelve a poner una respuesta que la persona haya borrado a
   propósito.
 - El borrador se guarda como siempre, con lo prerrellenado dentro. No cambia
-  la clave `subcon:auditoria:v1` ni el formato.
+  la clave `undertactics:auditoria:v1` ni el formato.
 - No se detecta si la auditoría «ya se envió» en una visita anterior: no hay
   rastro de eso y no se añade almacenamiento nuevo (apartado 4). Abrir el
   enlace otra vez después de enviar empieza una auditoría nueva prerrellenada,
@@ -321,7 +321,7 @@ enlace a cada una.
      `981 000 000`.
    - Si el widget real del asistente (rama `feat/chatbot`) está activo, sale
      también en estas páginas, como en toda la web. Hablan de cosas
-     distintas: el widget es el asistente de Subcon Works y el bloque es el
+     distintas: el widget es el asistente de Undertactics y el bloque es el
      ejemplo de una clínica inventada. Por eso el bloque dice «Así
      contestaría el asistente de una clínica» y no «pruébalo».
 6. **Plantillas del sector**, `id="plantillas-sector"` (distinto del
@@ -336,7 +336,7 @@ enlace a cada una.
 7. **Cierre**: llamada a la auditoría, como `CtaFinal`.
 
 **Metadatos**: `title` del tipo «Webs y automatización para clínicas
-dentales — Subcon Works», `description` propia y
+dentales — Undertactics», `description` propia y
 `robots: { index: false, follow: false }`, igual que `/auditoria/`.
 
 ### 3.9 Aspecto

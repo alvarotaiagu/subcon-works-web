@@ -59,7 +59,7 @@ Estado del plan: **aprobado** (D-012, 2026-10-11), con PD-1 a PD-11.
   - A `main` va una sola PR al final, cuando esté cerrada P-03. El motivo:
     `main` publica, y P-03 bloquea la publicación.
 - **PD-2 · Fin de la cortina** (corrige el §3.5 de la spec).
-  - `Preloader.tsx` exporta `PRELOADER_GONE_EVENT = "subcon:preloader-gone"`.
+  - `Preloader.tsx` exporta `PRELOADER_GONE_EVENT = "undertactics:preloader-gone"`.
     Se dispara en el `onComplete`, justo después de quitar `overflow`, y
     también en el cleanup si la timeline se mata a medias.
   - Exporta también `esperarCortina(): Promise<void>`, que se resuelve en el
@@ -148,7 +148,7 @@ T01 base ──┬─ T02 preguntas ─ T03 reglas ─ T04 URL ─ T05 auditorí
 ## 4. Datos
 
 Nada de base de datos, migraciones ni almacenamiento nuevo (spec §4). El
-único almacenamiento que se toca es el borrador `subcon:auditoria:v1`, con
+único almacenamiento que se toca es el borrador `undertactics:auditoria:v1`, con
 el mismo formato.
 
 ## 5. Partes del código
