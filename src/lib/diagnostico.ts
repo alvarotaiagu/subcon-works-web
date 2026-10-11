@@ -14,9 +14,11 @@ import {
   reglas,
   relleno,
   RESERVA_SIN_CITA,
+  SLUG_SECTOR,
 } from "../content/diagnostico.ts";
 import type {
   Clave,
+  ClaveRespuesta,
   Contexto,
   EnlaceMejora,
   IdMejora,
@@ -256,4 +258,136 @@ export function diagnosticar(
     }
   }
   return resultado;
+}
+
+// ── La URL (spec §3.5) ─────────────────────────────────────────────────────
+
+/** Las claves de la query, en el orden en que se escriben (el de las preguntas). */
+const CLAVES_RESPUESTA = preguntas
+  .map((p) => p.clave)
+  .filter((c): c is ClaveRespuesta => c !== "s");
+
+/**
+ * Se queda solo con lo que vale para ese sector, en el orden de las preguntas:
+ * `leer(clave)` da el valor en bruto (venga de donde venga) y aquí se valida
+ * con `respuestaValida`, que mira listas de códigos, nunca `objeto[valor]`.
+ * Valida en orden porque una respuesta puede depender de otra
+ * (`dolor=agenda` no vale con `reserva=sin-cita`). En `canales` quita los
+ * códigos desconocidos y los repetidos, y los deja en el orden de la pregunta.
+ */
+function limpiar(sector: Sector | undefined, leer: (clave: ClaveRespuesta) => unknown): Respuestas {
+  const limpias: Respuestas = {};
+  for (const clave of CLAVES_RESPUESTA) {
+    const valor = leer(clave);
+    if (clave === "canales") {
+      if (!Array.isArray(valor)) continue;
+      const marcados = new Set(valor.filter((v): v is string => typeof v === "string"));
+      const canales = opcionesPara("canales", sector, limpias)
+        .map((o) => o.codigo)
+        .filter((c) => marcados.has(c));
+      if (canales.length > 0) limpias.canales = canales;
+    } else if (typeof valor === "string" && respuestaValida(clave, valor, sector, limpias)) {
+      limpias[clave] = valor;
+    }
+  }
+  return limpias;
+}
+
+/**
+ * La query de un diagnóstico, sin `?`:
+ * `v=1&s=dental&canales=tel,wa&reserva=llamando…`. Siempre lleva `v` y `s`,
+ * también en una página de sector (la auditoría necesita el sector). Solo
+ * escribe códigos válidos para el sector; lo que no lo es, no sale.
+ */
+export function codificar(sector: Sector, respuestas: Respuestas): string {
+  const limpias = limpiar(sector, (clave) => respuestas[clave]);
+  // Los códigos son `[a-z-]` (lo comprueba un test): no hace falta codificar
+  // nada, y así las comas de `canales` se leen tal cual en la URL.
+  const partes = [`v=${VERSION_DIAGNOSTICO}`, `s=${sector}`];
+  for (const clave of CLAVES_RESPUESTA) {
+    const valor = limpias[clave];
+    if (valor === undefined) continue;
+    partes.push(`${clave}=${Array.isArray(valor) ? valor.join(",") : valor}`);
+  }
+  return partes.join("&");
+}
+
+/** Lo que sale de leer una query. */
+export interface Decodificado {
+  /** El sector fijado por la página o, si no lo hay, el `s` de la query si es válido. */
+  sector?: Sector;
+  /** Solo respuestas válidas para ese sector; lo demás se ignora. */
+  respuestas: Respuestas;
+  /** Hay sector y todas las preguntas están respondidas. */
+  completa: boolean;
+  /** La primera pregunta que falta, en el orden en que se hacen; `null` si está completa. */
+  primeraSinResponder: Clave | null;
+}
+
+/**
+ * Lee la query de un diagnóstico (con o sin `?`). Nunca lanza error.
+ *
+ * - Sin `v`, se trata como `v=1`; con una `v` desconocida se ignora entera.
+ * - `sectorFijado` (página de sector) gana a cualquier `s`. Sin él, vale el
+ *   `s` de la query si es un sector conocido; si no, no hay sector y la
+ *   primera que falta es `s`.
+ * - Ignora los códigos desconocidos, los `soloEn` de otro sector y
+ *   `dolor=agenda` con `reserva=sin-cita`. `canales` sin ningún código válido
+ *   cuenta como no respondida.
+ */
+export function decodificar(search: string, sectorFijado?: Sector): Decodificado {
+  let params: URLSearchParams;
+  try {
+    params = new URLSearchParams(typeof search === "string" ? search : "");
+  } catch {
+    params = new URLSearchParams();
+  }
+
+  const v = params.get("v");
+  const versionValida = v === null || v === String(VERSION_DIAGNOSTICO);
+
+  const s = versionValida ? params.get("s") : null;
+  const sector = esSector(sectorFijado) ? sectorFijado : esSector(s) ? s : undefined;
+
+  const respuestas = versionValida
+    ? limpiar(sector, (clave) =>
+        clave === "canales"
+          ? params.getAll("canales").flatMap((c) => c.split(","))
+          : params.get(clave),
+      )
+    : {};
+
+  const primeraSinResponder: Clave | null =
+    sector === undefined
+      ? "s"
+      : (CLAVES_RESPUESTA.find((c) => respuestas[c] === undefined) ?? null);
+
+  return {
+    ...(sector !== undefined ? { sector } : {}),
+    respuestas,
+    completa: primeraSinResponder === null,
+    primeraSinResponder,
+  };
+}
+
+/**
+ * La URL que se comparte (spec §3.5): la página del sector con
+ * `#diagnostico`, o la portada si el sector no tiene página (`otro`). No usa
+ * `location.href`: un diagnóstico de la portada con `s=dental` se comparte
+ * apuntando a la página dental.
+ *
+ * `origen` es `window.location.origin` y `basePath` el
+ * `NEXT_PUBLIC_BASE_PATH` (vacío fuera de Pages): esta función no lee nada
+ * del entorno.
+ */
+export function urlCanonica(
+  sector: Sector,
+  respuestas: Respuestas,
+  origen: string,
+  basePath: string,
+): string {
+  const base = `${origen.replace(/\/+$/, "")}${basePath.replace(/\/+$/, "")}`;
+  const slug = SLUG_SECTOR.get(sector);
+  const ruta = slug ? `/sectores/${slug}/` : "/";
+  return `${base}${ruta}?${codificar(sector, respuestas)}#diagnostico`;
 }

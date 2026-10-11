@@ -128,7 +128,7 @@ Cada una tiene su fichero de test (PD-8).
     - el recorrido tarda menos de 60 s en local (si tarda más, dilo en la
       PR).
 
-- [ ] **T04 · La URL: `codificar`, `decodificar`, `urlCanonica`.**
+- [x] **T04 · La URL: `codificar`, `decodificar`, `urlCanonica`.**
   - *Cubre*: spec §3.5 (salvo lo de cliente, que va en T09).
   - *Hacer*, en `src/lib/diagnostico.ts`:
     - `codificar(sector, respuestas)`: siempre lleva `v=1` y `s`; `canales`

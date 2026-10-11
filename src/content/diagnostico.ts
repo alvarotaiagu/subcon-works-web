@@ -238,6 +238,18 @@ export const nombresSector: NombreSector[] = [
   { codigo: "otro", negocio: "negocio", ficha: null },
 ];
 
+/**
+ * Slug de la página de cada sector (D-009). **No se cambian nunca**: van en
+ * los enlaces ya mandados. `otro` no tiene página: su diagnóstico vive en la
+ * portada. Es un `Map` para que un código que llegue de fuera no encuentre
+ * nada del prototipo. `sectores.ts` (T06) lo importa de aquí.
+ */
+export const SLUG_SECTOR: ReadonlyMap<Sector, string> = new Map<Sector, string>([
+  ["dental", "clinicas-dentales"],
+  ["rural", "alojamientos-rurales"],
+  ["despachos", "asesorias-y-despachos"],
+]);
+
 // ── Mejoras y reglas (spec §3.3 y §3.4, PD-5) ──────────────────────────────
 
 export type IdMejora =
