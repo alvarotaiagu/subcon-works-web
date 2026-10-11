@@ -150,7 +150,7 @@ Cada una tiene su fichero de test (PD-8).
     `__proto__`, `toString`).
   - *Hecho*: tests en verde; ninguna entrada lanza error.
 
-- [ ] **T05 · Paso a la auditoría: `aRespuestasAuditoria` y `mezclarConBorrador`.**
+- [x] **T05 · Paso a la auditoría: `aRespuestasAuditoria` y `mezclarConBorrador`.**
   - *Cubre*: spec §3.1 (textos prerrellenados), §3.6 (las dos funciones),
     §5 (seguridad del prerrelleno), D-004, D-010.
   - *Hacer*:

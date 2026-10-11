@@ -8,7 +8,11 @@
 import {
   DOLOR_AGENDA,
   ENLACE_PLANTILLAS_SECTOR,
+  frasesPrerrelleno,
+  INICIO_CANALES,
+  MARCA_DIAGNOSTICO,
   mejoras,
+  nombresCanal,
   nombresSector,
   preguntas,
   reglas,
@@ -21,9 +25,11 @@ import type {
   ClaveRespuesta,
   Contexto,
   EnlaceMejora,
+  FrasePrerrelleno,
   IdMejora,
   Mejora,
   Opcion,
+  PAuditoria,
   Pregunta,
   Regla,
   Respuestas,
@@ -390,4 +396,129 @@ export function urlCanonica(
   const slug = SLUG_SECTOR.get(sector);
   const ruta = slug ? `/sectores/${slug}/` : "/";
   return `${base}${ruta}?${codificar(sector, respuestas)}#diagnostico`;
+}
+
+// ── Paso a la auditoría (spec §3.6, D-004) ─────────────────────────────────
+
+/** Lo que el diagnóstico pone en la auditoría. */
+export interface Prerrelleno {
+  /** Texto de cada P, siempre acabado en `MARCA_DIAGNOSTICO`. */
+  respuestas: Partial<Record<PAuditoria, string>>;
+  /** Para `contacto.sector`, sin marca. No sale con `otro` ni sin sector. */
+  sector?: string;
+}
+
+const frasePorRespuesta = new Map<string, FrasePrerrelleno[]>();
+for (const f of frasesPrerrelleno) {
+  const clave = `${f.pregunta}=${f.codigo}`;
+  frasePorRespuesta.set(clave, [...(frasePorRespuesta.get(clave) ?? []), f]);
+}
+const nombrePorCanal = new Map(nombresCanal.map((c) => [c.codigo, c.nombre]));
+
+/** «a», «a y b», «a, b y c». */
+function enumerar(partes: string[]): string {
+  if (partes.length <= 1) return partes.join("");
+  return `${partes.slice(0, -1).join(", ")} y ${partes[partes.length - 1]}`;
+}
+
+/**
+ * Las respuestas del diagnóstico convertidas en texto para la auditoría
+ * (spec §3.1). **Ningún texto sale de la entrada**: las respuestas se vuelven
+ * a validar y solo sirven para buscar frases en `diagnostico.ts`, así que un
+ * enlace preparado no puede meter texto en la auditoría de nadie. Las «No lo
+ * sé» no producen nada.
+ */
+export function aRespuestasAuditoria(
+  sector: Sector | undefined,
+  respuestas: Respuestas,
+): Prerrelleno {
+  const sectorValido = esSector(sector) ? sector : undefined;
+  const limpias = limpiar(sectorValido, (clave) => respuestas?.[clave]);
+  const salida: Partial<Record<PAuditoria, string>> = {};
+
+  const poner = (pregunta: string, codigo: string) => {
+    for (const f of frasePorRespuesta.get(`${pregunta}=${codigo}`) ?? []) {
+      salida[f.p] = `${textoPara(f.texto, sectorValido)}${MARCA_DIAGNOSTICO}`;
+    }
+  };
+
+  if (sectorValido) poner("s", sectorValido);
+
+  if (limpias.canales) {
+    const nombres = limpias.canales.flatMap((c) => {
+      const nombre = nombrePorCanal.get(c);
+      return nombre ? [textoPara(nombre, sectorValido)] : [];
+    });
+    if (nombres.length > 0) salida.P7 = `${INICIO_CANALES}${enumerar(nombres)}${MARCA_DIAGNOSTICO}`;
+  }
+
+  for (const clave of CLAVES_RESPUESTA) {
+    const valor = limpias[clave];
+    if (clave !== "canales" && typeof valor === "string") poner(clave, valor);
+  }
+
+  const ficha = sectorValido ? sectorPorCodigo.get(sectorValido)?.ficha : null;
+  return { respuestas: salida, ...(ficha ? { sector: ficha } : {}) };
+}
+
+/** Lo que devuelve la mezcla con el borrador. */
+export interface Mezcla<C> {
+  respuestas: Record<string, string>;
+  contacto: C;
+  /** Campos vacíos (o en blanco) que se han rellenado. */
+  puestas: number;
+  /** Campos con otro texto, que no se han tocado. */
+  saltadas: number;
+}
+
+/**
+ * Junta el prerrelleno con el borrador de la auditoría, campo por campo (spec
+ * §3.6), sin pisar nunca lo que la persona escribió:
+ *
+ * - vacío, en blanco o ausente → se pone y cuenta en `puestas`;
+ * - idéntico al prerrelleno (el mismo enlace abierto dos veces) → no cuenta;
+ * - con otro texto → no se toca y cuenta en `saltadas`.
+ *
+ * Vale para las P y para `contacto.sector`. No muta la entrada. Es
+ * idempotente: mezclar el resultado otra vez da 0 puestas y 0 saltadas.
+ */
+export function mezclarConBorrador<C extends { sector: string }>(
+  borrador: { respuestas: Record<string, string>; contacto: C },
+  prerrelleno: Prerrelleno,
+): Mezcla<C> {
+  const respuestas: Record<string, string> = { ...borrador.respuestas };
+  let contacto = borrador.contacto;
+  let puestas = 0;
+  let saltadas = 0;
+
+  /** `"poner"`, `"igual"` o `"saltar"` según lo que ya hay. */
+  const decidir = (actual: unknown, nuevo: string) => {
+    if (typeof actual !== "string" || actual.trim() === "") return "poner";
+    return actual === nuevo ? "igual" : "saltar";
+  };
+
+  for (const [p, texto] of Object.entries(prerrelleno.respuestas)) {
+    // Solo claves de la auditoría (`P1`…): nada de `__proto__` ni similares.
+    if (typeof texto !== "string" || !/^P\d+$/.test(p)) continue;
+    const actual = Object.hasOwn(respuestas, p) ? respuestas[p] : undefined;
+    const que = decidir(actual, texto);
+    if (que === "poner") {
+      respuestas[p] = texto;
+      puestas++;
+    } else if (que === "saltar") {
+      saltadas++;
+    }
+  }
+
+  if (typeof prerrelleno.sector === "string") {
+    const que = decidir(contacto.sector, prerrelleno.sector);
+    if (que === "poner") {
+      contacto = { ...contacto, sector: prerrelleno.sector };
+      puestas++;
+    } else if (que === "saltar") {
+      saltadas++;
+    }
+  }
+
+  return { respuestas, contacto, puestas, saltadas };
 }
