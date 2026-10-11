@@ -1,6 +1,8 @@
 # 001 · Diagnóstico rápido y páginas por sector
 
 Estado: aprobada (D-011, 2026-10-11) · Depende de: — · Decisiones: D-001 a D-011 · Conflictos: — · Pendientes: P-01, P-02, P-03
+Plan: [plan.md](plan.md) (aprobado, D-012) · Tareas: [tasks.md](tasks.md)
+Cambiada por: D-012 (2026-10-11, §3.5)
 
 ## 1. Objetivo
 
@@ -198,11 +200,13 @@ existe donde tiene sentido y nunca dispara mejoras ni prerrelleno.
   no importa.
 - **Al abrir una página con query**:
   - completa y válida: se ve el resultado directamente.
-    - El salto a `#diagnostico` se hace **después** de la cortina de
-      entrada, al recibir `PRELOADER_DONE_EVENT`, o en el acto si la cortina
+    - El salto a `#diagnostico` se hace **después** de que la cortina de
+      entrada se haya retirado (`esperarCortina()` de `Preloader.tsx`, que
+      se resuelve con `PRELOADER_GONE_EVENT`), o en el acto si la cortina
       no sale. Se hace con Lenis y cuando el resultado ya está pintado.
-    - Antes de eso el `body` está en `overflow:hidden` y el salto se
-      perdería.
+    - Mientras tanto el `body` está en `overflow:hidden` y el salto se
+      perdería. `PRELOADER_DONE_EVENT` no sirve: llega al contar 100, ~1 s
+      antes de que se quite el `overflow:hidden`.
   - incompleta: se ve la primera pregunta sin responder, con las anteriores
     marcadas;
   - con valores desconocidos o basura: se ignoran esos valores y la página
