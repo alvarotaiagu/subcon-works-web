@@ -151,8 +151,12 @@ existe donde tiene sentido y nunca dispara mejoras ni prerrelleno.
      prioridad;
   3. ordena por prioridad y corta en 5;
   4. si salen menos de 3, completa con la lista `relleno` del sector, en
-     orden, sin repetir y con el porqué genérico del sector («Es de lo que
-     más compensa en una clínica dental»).
+     orden, sin repetir, **saltándose las mejoras excluidas** (ver abajo) y
+     con el porqué genérico del sector («Es de lo que más compensa en una
+     clínica dental»).
+
+  Antes del paso 1, `diagnosticar` calcula las **exclusiones** y las aplica
+  a las reglas y al relleno.
 
   Es pura: misma entrada, misma salida.
 - Catálogo inicial. El implementador redacta los textos definitivos y Álvaro
@@ -168,19 +172,35 @@ existe donde tiene sentido y nunca dispara mejoras ni prerrelleno.
 | `web-nueva`: una web que puedas cambiar tú | todos | `web=nada` o `antigua` | `/plantillas/` / `plantillas-sector` |
 | `informe-web`: saber qué falla en la web que ya tienes | todos | `web=al-dia` | `/herramientas/#informe` en los dos |
 | `resenas`: pedir la reseña sola tras la visita | todos | `resenas=nunca` o `a-veces` | — |
-| `documentacion`: que el cliente mande sus papeles a un sitio ordenado, no por WhatsApp | todos (texto por sector) | `dolor=papeles` | `/herramientas/#formularios` en los dos |
+| `documentacion`: que el cliente mande sus papeles a un sitio ordenado, no por WhatsApp | todos (texto por sector) | `dolor=papeles` | — |
 | `cobros`: facturas y recordatorios de cobro automáticos | todos | `dolor=cobros` | `/#servicios` en los dos |
 | `clientes-nuevos`: aparecer cuando te buscan | todos | `dolor=clientes` | `/#servicios` en los dos |
 
 - **«No lo sé» no dispara nada** (`fuera=no-se`, `web=no-se`). Si con eso
   salen menos de 3 mejoras, el hueco lo llena `relleno`.
 - **`dolor=agenda` no se puede combinar con `reserva=sin-cita`**: la opción
-  no sale (3.1). Si llega por URL, se ignora.
-- **`relleno` por sector** (primeras de la lista primero):
-  - `dental`: `reservas-online`, `resenas`, `asistente`;
-  - `rural`: `reservas-directas`, `resenas`, `ficha-google`;
-  - `despachos`: `documentacion`, `formularios`, `asistente`;
-  - `otro`: `ficha-google`, `resenas`, `asistente`.
+  no sale (3.1). Si llega por URL, `decodificar` la descarta (3.5). Aunque
+  llegara a `diagnosticar`, las exclusiones de abajo ya quitan las mejoras de
+  reserva que esa respuesta dispararía.
+- **Exclusiones por respuesta** (D-013). El diagnóstico nunca propone una
+  mejora que contradiga una respuesta. Van como lista de datos
+  (`exclusiones`: condición sobre una respuesta + mejoras que quita), no como
+  `if` sueltos, y valen para las reglas y para el relleno:
+  - `reserva=online`: no salen `reservas-online` ni `reservas-directas`,
+    aunque `dolor=agenda` o `canales` incluya `plataformas` las dispararían;
+  - `reserva=sin-cita`: tampoco salen `reservas-online` ni `reservas-directas`
+    (en `rural`, «no trabajamos con reserva»).
+- **`relleno` por sector** (primeras de la lista primero; tiene más de 3 para
+  que, saltando las excluidas, nunca salgan menos de 3 mejoras):
+  - `dental`: `reservas-online`, `resenas`, `asistente`, `ficha-google`,
+    `formularios`;
+  - `rural`: `reservas-directas`, `resenas`, `ficha-google`, `asistente`,
+    `web-nueva`;
+  - `despachos`: `documentacion`, `formularios`, `asistente`, `resenas`,
+    `ficha-google`;
+  - `otro`: `ficha-google`, `resenas`, `asistente`, `formularios`,
+    `web-nueva`.
+  Las dos últimas de cada lista son borrador para P-03.
 
 ### 3.5 La URL
 

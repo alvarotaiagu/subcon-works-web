@@ -20,6 +20,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-010 | Las respuestas que el diagnóstico pone en la auditoría acaban en « (del diagnóstico rápido)», para que el informe del kit sepa que no las escribió el negocio. El kit no se toca. | 001 | 2026-10-11 |
 | D-011 | Spec 001 (diagnóstico rápido y páginas por sector) aprobada por Álvaro tal como está, con D-001 a D-010 y los pendientes P-01 a P-03. | 001 | 2026-10-11 |
 | D-012 | Plan de la 001 aprobado con PD-1 a PD-11 (`specs/001-diagnostico-y-sectores/plan.md`). PD-2 corrige el §3.5: el salto a `#diagnostico` espera a que la cortina se retire (`esperarCortina()`), no a `PRELOADER_DONE_EVENT`, que llega ~1 s antes de que se quite `overflow:hidden`. Todo va a la rama de integración `feat/diagnostico-sectores` y a `main` solo tras P-03. | 001 | 2026-10-11 |
+| D-013 | El diagnóstico nunca propone una mejora que contradiga una respuesta: una lista de exclusiones por respuesta (`reserva=online` o `sin-cita` quitan `reservas-online` y `reservas-directas`) se aplica a las reglas y al relleno. El relleno de cada sector se alarga a 5 mejoras para que siempre salgan al menos 3. `documentacion` pierde el enlace a `/herramientas/#formularios`. Spec §3.4 actualizada. | 001 | 2026-10-11 |
 
 ## Pendientes
 
