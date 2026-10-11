@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { servicios } from "@/content/servicios";
 import { useReveal } from "@/hooks/useReveal";
@@ -11,7 +12,7 @@ import { NodesScene } from "@/components/three/NodesScene";
 // El servicio "Agentes y chatbots con IA" muestra la malla de nodos en vez de
 // un icono estático: es el mismo lenguaje visual que la automatización del
 // hero, aplicado al único servicio que es literalmente una red de IA.
-const NODES_SERVICE_NUMERO = "06";
+const NODES_SERVICE_NUMERO = "07";
 
 function NodesPreview() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,6 +28,27 @@ function NodesPreview() {
   }, []);
 
   return <canvas ref={canvasRef} className="h-full w-full" aria-hidden="true" />;
+}
+
+function EnlaceServicio({
+  enlace,
+  ...props
+}: {
+  enlace: { href: string; label: string };
+  tabIndex?: number;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}) {
+  return (
+    <Link
+      href={enlace.href}
+      className="link-underline font-mono-label mt-6 inline-flex items-center gap-2 text-xs text-accent"
+      {...props}
+    >
+      {enlace.label}
+      <span aria-hidden="true">→</span>
+    </Link>
+  );
 }
 
 export function Servicios() {
@@ -126,6 +148,16 @@ export function Servicios() {
     prevActive.current = active;
   }, [active, isTouch]);
 
+  // El icono flotante va centrado en el ratón y taparía el enlace de la vista
+  // previa justo cuando se apunta a él: se aparta mientras el ratón está encima
+  // y queda solo el anillo del cursor.
+  const apartarFlotante = (apartar: boolean) => {
+    const float = floatRef.current;
+    if (!float || isTouch) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    gsap.to(float, { opacity: apartar ? 0 : 1, duration: reduced ? 0 : 0.2, overwrite: "auto" });
+  };
+
   return (
     <section id="servicios" className="container-max py-[var(--space-section)]">
       <div ref={revealRef} className="mb-12">
@@ -133,10 +165,10 @@ export function Servicios() {
           Servicios
         </p>
         <h2 className="max-w-3xl text-4xl font-medium text-text-primary md:text-6xl" data-reveal>
-          Nueve cosas, y las nueve se pueden contratar sueltas.
+          Diez cosas, y las diez se pueden contratar sueltas.
         </h2>
         <p className="mt-6 max-w-xl text-text-muted" data-reveal>
-          Casi ningún negocio necesita las nueve a la vez. Por eso la primera conversación es una
+          Casi ningún negocio necesita las diez a la vez. Por eso la primera conversación es una
           auditoría y no un presupuesto: primero se mira qué falta, y después se dice qué cuesta.
         </p>
       </div>
@@ -164,7 +196,14 @@ export function Servicios() {
 
       <div ref={sectionRef} onMouseLeave={() => !isTouch && setActive(null)}>
         {servicios.map((servicio, i) => (
-          <div key={servicio.numero} className="border-b border-line first:border-t">
+          // Toda la fila (botón y vista previa) cede el cursor al icono flotante;
+          // solo el enlace de dentro lo recupera.
+          <div
+            key={servicio.numero}
+            className="border-b border-line first:border-t"
+            data-cursor-hover={!isTouch ? true : undefined}
+            data-cursor-hide={!isTouch ? true : undefined}
+          >
             <button
               type="button"
               className="flex w-full items-center gap-6 py-7 text-left transition-opacity duration-300"
@@ -173,6 +212,8 @@ export function Servicios() {
               onFocus={() => !isTouch && setActive(i)}
               onClick={() => isTouch && setOpen(open === i ? null : i)}
               aria-expanded={isTouch ? open === i : undefined}
+              // No es redundante con el de la fila: el cursor busca el `button`
+              // más cercano antes que la fila, y sin esto lo pondría en "hover".
               data-cursor-hide={!isTouch ? true : undefined}
             >
               <span className="font-mono-label w-10 shrink-0 text-sm">{servicio.numero}</span>
@@ -203,6 +244,16 @@ export function Servicios() {
                         </li>
                       ))}
                     </ul>
+                    {servicio.enlace && (
+                      // Plegado sigue en el DOM: fuera del orden de tabulación
+                      // hasta que su servicio se abre.
+                      <EnlaceServicio
+                        enlace={servicio.enlace}
+                        tabIndex={active === i ? undefined : -1}
+                        onMouseEnter={() => apartarFlotante(true)}
+                        onMouseLeave={() => apartarFlotante(false)}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -218,6 +269,7 @@ export function Servicios() {
                     </li>
                   ))}
                 </ul>
+                {servicio.enlace && <EnlaceServicio enlace={servicio.enlace} />}
               </div>
             )}
           </div>
