@@ -207,7 +207,7 @@ Cada una tiene su fichero de test (PD-8).
 
 ## Cortina y scroll
 
-- [ ] **T07 · Fin de la cortina y salto con Lenis.**
+- [x] **T07 · Fin de la cortina y salto con Lenis.**
   - *Cubre*: PD-2, PD-3, spec §3.5 (salto).
   - *Hacer*:
     - `Preloader.tsx`: `PRELOADER_GONE_EVENT`, variable del módulo
@@ -227,7 +227,7 @@ Cada una tiene su fichero de test (PD-8).
 
 ## Componente
 
-- [ ] **T08 · `Diagnostico`: las preguntas.**
+- [x] **T08 · `Diagnostico`: las preguntas.**
   - *Cubre*: spec §3.2, §3.9 (aspecto, sin JS), §6 (360 px), PD-6.
   - *Depende de*: T02.
   - *Hacer*: `src/components/diagnostico/Diagnostico.tsx` (cliente) y
