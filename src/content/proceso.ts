@@ -21,7 +21,7 @@ export const proceso: PasoProceso[] = [
     numero: "03",
     titulo: "Te lo contamos",
     descripcion:
-      "El informe es tuyo, gratis y sin compromiso. Si con eso te apañas solo, perfecto. Aquí no hay letra pequeña.",
+      "El informe es tuyo, gratis y sin compromiso. Si con eso te apañas solo, perfecto.",
   },
   {
     numero: "04",
@@ -39,6 +39,6 @@ export const proceso: PasoProceso[] = [
     numero: "06",
     titulo: "Lo mantenemos",
     descripcion:
-      "Sigue funcionando, se actualiza y crece contigo. Sin permanencia: se queda quien quiere quedarse.",
+      "Sigue funcionando, se actualiza y crece contigo. Y como todo está a tu nombre, si un día te vas, te lo llevas entero.",
   },
 ];

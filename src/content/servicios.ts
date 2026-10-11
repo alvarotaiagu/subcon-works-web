@@ -155,7 +155,7 @@ export const servicios: Servicio[] = [
       "Copias de seguridad",
       "Actualizaciones",
       "Vigilancia de caídas",
-      "Sin permanencia",
+      "Te lo llevas cuando quieras",
     ],
     icono: "/servicios/mantenimiento.svg",
     enlace: { href: "/herramientas/#vigilancia", label: "Ver cómo funciona" },

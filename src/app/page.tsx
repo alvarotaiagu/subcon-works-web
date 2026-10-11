@@ -4,6 +4,8 @@ import { Servicios } from "@/components/sections/Servicios";
 import { Plantillas } from "@/components/sections/Plantillas";
 import { Auditoria } from "@/components/sections/Auditoria";
 import { Proceso } from "@/components/sections/Proceso";
+import { Equipo } from "@/components/sections/Equipo";
+import { Compromisos } from "@/components/sections/Compromisos";
 import { Cifras } from "@/components/sections/Cifras";
 import { CtaFinal } from "@/components/sections/CtaFinal";
 
@@ -15,6 +17,8 @@ export default function Home() {
       <Servicios />
       <Plantillas />
       <Proceso />
+      <Equipo />
+      <Compromisos className="container-max pb-[var(--space-section)]" />
       <Auditoria />
       <Cifras />
       <CtaFinal />

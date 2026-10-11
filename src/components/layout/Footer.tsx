@@ -64,6 +64,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/estudio/" className="link-underline">
+                Quién hace esto
+              </Link>
+            </li>
+            <li>
               <Link href="/auditoria/" className="link-underline">
                 Auditoría gratuita
               </Link>
