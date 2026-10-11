@@ -46,7 +46,7 @@ export const personas: Persona[] = [
 ];
 
 export const entradaEstudio =
-  "Subcon Works somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien diseña tu web, escribe el código o monta tu vídeo.";
+  "En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien diseña tu web, escribe el código o monta tu vídeo.";
 
 /**
  * Lo que el cliente controla, escrito como capacidad (lo que puede hacer) y no

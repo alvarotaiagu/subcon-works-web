@@ -6,8 +6,9 @@ import { bloques, TOTAL_PREGUNTAS, loQueNoPedimos } from "@/content/auditoria";
 import { enviarSolicitud, type ResultadoEnvio } from "@/lib/auditoriaApi";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { traerDeClaveAntigua } from "@/lib/almacenamiento";
 
-const CLAVE_BORRADOR = "subcon:auditoria:v1";
+const CLAVE_BORRADOR = "undertactics:auditoria:v1";
 /** Paso 0 = los datos de contacto; 1..7 = los siete bloques del cuestionario. */
 const TOTAL_PASOS = bloques.length + 1;
 
@@ -61,6 +62,7 @@ export function FormularioAuditoria() {
   // este navegador — no se manda nada hasta que se pulsa enviar.
   useEffect(() => {
     try {
+      traerDeClaveAntigua("subcon:auditoria:v1", CLAVE_BORRADOR);
       const crudo = localStorage.getItem(CLAVE_BORRADOR);
       if (crudo) {
         const datos = JSON.parse(crudo) as {

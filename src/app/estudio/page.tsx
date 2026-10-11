@@ -9,7 +9,7 @@ import { site } from "@/content/site";
 export const metadata: Metadata = {
   title: `Estudio — ${site.nombre}`,
   description:
-    "Quién hace Subcon Works, cómo trabajamos y qué queda a nombre de cada negocio: el código, el dominio y las claves.",
+    "Quién hace Undertactics, cómo trabajamos y qué queda a nombre de cada negocio: el código, el dominio y las claves.",
   robots: { index: false, follow: false },
 };
 

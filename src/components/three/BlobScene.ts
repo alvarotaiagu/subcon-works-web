@@ -96,7 +96,7 @@ export class BlobScene extends SceneBase {
     if (!this.hitTest(e.clientX, e.clientY)) return;
     e.preventDefault();
     this.drag = { active: true, lastX: e.clientX, lastY: e.clientY };
-    window.dispatchEvent(new CustomEvent("subcon:cursor", { detail: { state: "label", label: "Gira" } }));
+    window.dispatchEvent(new CustomEvent("undertactics:cursor", { detail: { state: "label", label: "Gira" } }));
   }
 
   private onPointerMove(e: PointerEvent) {
@@ -113,10 +113,10 @@ export class BlobScene extends SceneBase {
     }
     if (this.hitTest(e.clientX, e.clientY)) {
       window.dispatchEvent(
-        new CustomEvent("subcon:cursor", { detail: { state: "label", label: "Gira" } })
+        new CustomEvent("undertactics:cursor", { detail: { state: "label", label: "Gira" } })
       );
     } else {
-      window.dispatchEvent(new CustomEvent("subcon:cursor", { detail: { state: null } }));
+      window.dispatchEvent(new CustomEvent("undertactics:cursor", { detail: { state: null } }));
     }
   }
 
