@@ -283,7 +283,7 @@ Cada una tiene su fichero de test (PD-8).
 
 ## Páginas
 
-- [ ] **T10 · `ChatEjemplo`.**
+- [x] **T10 · `ChatEjemplo`.**
   - *Cubre*: spec §3.8.5, §5 (dental y salud).
   - *Depende de*: T06.
   - *Hacer*: `src/components/sectores/ChatEjemplo.tsx`, que recibe la
