@@ -19,7 +19,11 @@ export function TarjetaPersona({ persona, sizes, nivel = "h3", className }: Tarj
         {persona.foto ? (
           <WorkImage
             src={persona.foto}
-            alt={`Retrato de ${persona.nombre}`}
+            alt={
+              persona.fotoProvisional
+                ? `Silueta provisional en lugar del retrato de ${persona.nombre}`
+                : `Retrato de ${persona.nombre}`
+            }
             fill
             sizes={sizes}
             className="object-cover"

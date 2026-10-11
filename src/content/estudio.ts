@@ -12,6 +12,8 @@ export interface Persona {
    * imagen que da 404.
    */
   foto: string | null;
+  /** La foto es una silueta generada hasta que llegue el retrato de verdad. */
+  fotoProvisional?: boolean;
 }
 
 export interface Punto {
@@ -30,14 +32,16 @@ export const personas: Persona[] = [
     rol: "Web, código y automatización",
     texto:
       "Diseña y programa las webs, las tiendas y las herramientas del estudio, y monta las automatizaciones con IA. Si algo del código no te encaja, se lo dices a él y se cambia.",
-    foto: null,
+    foto: "/estudio/alvaro.jpg",
+    fotoProvisional: true,
   },
   {
     nombre: "Yanin",
     rol: "Foto, vídeo y redes",
     texto:
       "Produce y edita las fotos y los vídeos para redes, que es lo que mejor se le da y lo que más le gusta. También trabaja con IA en el día a día del estudio.",
-    foto: null,
+    foto: "/estudio/yanin.jpg",
+    fotoProvisional: true,
   },
 ];
 
