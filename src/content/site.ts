@@ -12,6 +12,7 @@ export const site = {
   nav: [
     { label: "Servicios", href: "/#servicios" },
     { label: "Plantillas", href: "/#plantillas" },
+    { label: "Herramientas", href: "/herramientas/" },
     { label: "Proceso", href: "/#proceso" },
     { label: "Auditoría", href: "/#auditoria" },
   ],
