@@ -234,7 +234,7 @@ export class GearsScene extends SceneBase {
     // el navegador todavía interpreta el arrastre como selección de texto.
     e.preventDefault();
     this.drag = { active: true, index: idx, lastAngle: this.angleAt(idx, e.clientX, e.clientY), omega: 0 };
-    window.dispatchEvent(new CustomEvent("subcon:cursor", { detail: { state: "label", label: "Girando" } }));
+    window.dispatchEvent(new CustomEvent("undertactics:cursor", { detail: { state: "label", label: "Girando" } }));
   }
 
   private onPointerMove(e: PointerEvent) {
@@ -261,7 +261,7 @@ export class GearsScene extends SceneBase {
       const hovering = idx !== -1;
       this.onHoverChange?.(hovering);
       window.dispatchEvent(
-        new CustomEvent("subcon:cursor", {
+        new CustomEvent("undertactics:cursor", {
           detail: hovering ? { state: "label", label: "Arrastra" } : { state: null },
         })
       );
@@ -277,7 +277,7 @@ export class GearsScene extends SceneBase {
     this.drivingOmega = (omega / ratioK) * 12;
     this.drag = null;
     if (this.hoverIndex === -1) {
-      window.dispatchEvent(new CustomEvent("subcon:cursor", { detail: { state: null } }));
+      window.dispatchEvent(new CustomEvent("undertactics:cursor", { detail: { state: null } }));
     }
   }
 

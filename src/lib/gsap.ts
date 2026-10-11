@@ -5,8 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
 
-export const EASE_OUT = "subcon-out";
-export const EASE_INOUT = "subcon-inout";
+export const EASE_OUT = "undertactics-out";
+export const EASE_INOUT = "undertactics-inout";
 
 let registered = false;
 

@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap, registerGsap, EASE_INOUT } from "@/lib/gsap";
 import { gearPath } from "@/lib/gearPath";
 
-export const PRELOADER_SESSION_KEY = "subcon-preloader-seen";
-export const PRELOADER_DONE_EVENT = "subcon:preloader-done";
+export const PRELOADER_SESSION_KEY = "undertactics-preloader-seen";
+export const PRELOADER_DONE_EVENT = "undertactics:preloader-done";
 
 /**
  * Preloader de ~2.5s máximo, solo en la primera visita de la sesión: un
