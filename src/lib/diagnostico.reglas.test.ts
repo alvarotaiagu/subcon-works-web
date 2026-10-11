@@ -6,6 +6,7 @@ import { herramientas } from "../content/herramientas.ts";
 import type { Contexto, Respuestas, Sector, Texto } from "../content/diagnostico.ts";
 import {
   diagnosticar,
+  excluidasPor,
   MAX_MEJORAS,
   MIN_MEJORAS,
   opcionesPara,
@@ -171,15 +172,8 @@ test("recorrido exhaustivo: de 3 a 5 mejoras, sin repetir, aplicables y con porq
           problemas.push(`${resultado.length} mejoras`);
         }
         const ids = resultado.map((m) => m.id);
-        for (const e of exclusiones) {
-          const valor = respuestas[e.si.pregunta];
-          const dispara = Array.isArray(valor)
-            ? valor.some((v) => e.si.en.includes(v))
-            : typeof valor === "string" && e.si.en.includes(valor);
-          if (!dispara) continue;
-          for (const id of e.mejoras) {
-            if (ids.includes(id)) problemas.push(`${id} excluida por ${e.si.pregunta}`);
-          }
+        for (const id of excluidasPor(respuestas)) {
+          if (ids.includes(id)) problemas.push(`${id} excluida por sus respuestas`);
         }
         if (new Set(ids).size !== ids.length) problemas.push(`repetidas: ${ids.join(",")}`);
         for (const m of resultado) {
@@ -314,9 +308,10 @@ test("no-se, no-se y siempre, sin canales que disparen: sale el relleno", () => 
     assert.equal(resultado.length, MIN_MEJORAS, sector);
     assert.equal(resultado[0].id, "cobros");
     // `reserva=online` excluye las mejoras de reservar: el relleno se las salta.
-    const esperadas = r.mejoras
-      .filter((id) => id !== "reservas-online" && id !== "reservas-directas")
-      .slice(0, 2);
+    const excluidas = new Set(
+      exclusiones.filter((e) => e.si.pregunta === "reserva" && e.si.en.includes("online")).flatMap((e) => e.mejoras),
+    );
+    const esperadas = r.mejoras.filter((id) => !excluidas.has(id)).slice(0, 2);
     assert.deepEqual(resultado.slice(1).map((m) => m.id), esperadas, sector);
     for (const m of resultado.slice(1)) assert.equal(m.porque, r.porque);
   }

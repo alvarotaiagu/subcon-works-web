@@ -179,7 +179,9 @@ existe donde tiene sentido y nunca dispara mejoras ni prerrelleno.
 - **«No lo sé» no dispara nada** (`fuera=no-se`, `web=no-se`). Si con eso
   salen menos de 3 mejoras, el hueco lo llena `relleno`.
 - **`dolor=agenda` no se puede combinar con `reserva=sin-cita`**: la opción
-  no sale (3.1). Si llega por URL, se ignora.
+  no sale (3.1). Si llega por URL, `decodificar` la descarta (3.5). Aunque
+  llegara a `diagnosticar`, las exclusiones de abajo ya quitan las mejoras de
+  reserva que esa respuesta dispararía.
 - **Exclusiones por respuesta** (D-013). El diagnóstico nunca propone una
   mejora que contradiga una respuesta. Van como lista de datos
   (`exclusiones`: condición sobre una respuesta + mejoras que quita), no como

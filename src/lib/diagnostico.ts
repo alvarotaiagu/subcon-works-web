@@ -189,7 +189,7 @@ function seCumple({ pregunta, en }: Condicion, respuestas: Respuestas): boolean 
 }
 
 /** Las mejoras que contradicen alguna respuesta (`exclusiones`). */
-function excluidasPor(respuestas: Respuestas): Set<IdMejora> {
+export function excluidasPor(respuestas: Respuestas): Set<IdMejora> {
   const fuera = new Set<IdMejora>();
   for (const e of exclusiones) {
     if (seCumple(e.si, respuestas)) for (const id of e.mejoras) fuera.add(id);
