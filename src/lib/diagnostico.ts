@@ -8,6 +8,7 @@
 import {
   DOLOR_AGENDA,
   ENLACE_PLANTILLAS_SECTOR,
+  exclusiones,
   mejoras,
   nombresSector,
   preguntas,
@@ -17,6 +18,7 @@ import {
 } from "../content/diagnostico.ts";
 import type {
   Clave,
+  Condicion,
   Contexto,
   EnlaceMejora,
   IdMejora,
@@ -177,22 +179,22 @@ export function resolverEnlace(
   return destino;
 }
 
-function seCumple(regla: Regla, respuestas: Respuestas): boolean {
-  const { pregunta, en } = regla.si;
+function seCumple({ pregunta, en }: Condicion, respuestas: Respuestas): boolean {
   if (pregunta === "canales") {
     const marcados = respuestas.canales;
     return Array.isArray(marcados) && marcados.some((c) => en.includes(c));
   }
-  // `dolor=agenda` no se combina con `reserva=sin-cita` (spec §3.4).
-  if (
-    pregunta === "dolor" &&
-    respuestas.dolor === DOLOR_AGENDA &&
-    respuestas.reserva === RESERVA_SIN_CITA
-  ) {
-    return false;
-  }
   const valor = respuestas[pregunta];
   return typeof valor === "string" && en.includes(valor);
+}
+
+/** Las mejoras que contradicen alguna respuesta (`exclusiones`). */
+function excluidasPor(respuestas: Respuestas): Set<IdMejora> {
+  const fuera = new Set<IdMejora>();
+  for (const e of exclusiones) {
+    if (seCumple(e.si, respuestas)) for (const id of e.mejoras) fuera.add(id);
+  }
+  return fuera;
 }
 
 function aplica(mejora: Mejora | undefined, sector: Sector): mejora is Mejora {
@@ -203,12 +205,14 @@ function aplica(mejora: Mejora | undefined, sector: Sector): mejora is Mejora {
  * De las respuestas a las mejoras (spec §3.4). Pura: misma entrada, misma
  * salida.
  *
+ * 0. Descarta las mejoras que contradicen una respuesta (`exclusiones`), tanto
+ *    de las reglas como del relleno.
  * 1. Aplica las reglas que se cumplen y cuya mejora vale para el sector.
  * 2. Quita las repetidas y se queda con el porqué de la regla de más
  *    prioridad (a igual prioridad, la que va antes en `reglas`).
  * 3. Ordena por prioridad y corta en `MAX_MEJORAS`.
  * 4. Si salen menos de `MIN_MEJORAS`, completa con el `relleno` del sector,
- *    en orden, sin repetir y con su porqué genérico.
+ *    en orden, sin repetir, sin las excluidas y con su porqué genérico.
  *
  * Espera respuestas ya validadas (`decodificar` o el componente): un código
  * desconocido simplemente no cumple ninguna regla.
@@ -219,11 +223,12 @@ export function diagnosticar(
   contexto: Contexto,
   { hayPlantillas }: { hayPlantillas: boolean },
 ): MejoraDiagnosticada[] {
+  const excluidas = excluidasPor(respuestas);
   const ganadoras = new Map<IdMejora, { mejora: Mejora; regla: Regla; orden: number }>();
   reglas.forEach((regla, orden) => {
     const mejora = mejoraPorId.get(regla.mejora);
-    if (!aplica(mejora, sector)) return;
-    if (!seCumple(regla, respuestas)) return;
+    if (!aplica(mejora, sector) || excluidas.has(mejora.id)) return;
+    if (!seCumple(regla.si, respuestas)) return;
     const previa = ganadoras.get(mejora.id);
     if (!previa || regla.prioridad > previa.regla.prioridad) {
       ganadoras.set(mejora.id, { mejora, regla, orden });
@@ -250,7 +255,7 @@ export function diagnosticar(
   if (extra) {
     for (const id of extra.mejoras) {
       if (resultado.length >= MIN_MEJORAS) break;
-      if (resultado.some((m) => m.id === id)) continue;
+      if (excluidas.has(id) || resultado.some((m) => m.id === id)) continue;
       const mejora = mejoraPorId.get(id);
       if (aplica(mejora, sector)) resultado.push(vistaDe(mejora, extra.porque));
     }

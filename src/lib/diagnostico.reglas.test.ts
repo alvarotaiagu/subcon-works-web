@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { mejoras, preguntas, reglas, relleno } from "../content/diagnostico.ts";
+import { exclusiones, mejoras, preguntas, reglas, relleno } from "../content/diagnostico.ts";
 import { herramientas } from "../content/herramientas.ts";
 import type { Contexto, Respuestas, Sector, Texto } from "../content/diagnostico.ts";
 import {
@@ -171,6 +171,16 @@ test("recorrido exhaustivo: de 3 a 5 mejoras, sin repetir, aplicables y con porq
           problemas.push(`${resultado.length} mejoras`);
         }
         const ids = resultado.map((m) => m.id);
+        for (const e of exclusiones) {
+          const valor = respuestas[e.si.pregunta];
+          const dispara = Array.isArray(valor)
+            ? valor.some((v) => e.si.en.includes(v))
+            : typeof valor === "string" && e.si.en.includes(valor);
+          if (!dispara) continue;
+          for (const id of e.mejoras) {
+            if (ids.includes(id)) problemas.push(`${id} excluida por ${e.si.pregunta}`);
+          }
+        }
         if (new Set(ids).size !== ids.length) problemas.push(`repetidas: ${ids.join(",")}`);
         for (const m of resultado) {
           if (!mejoraPorId.get(m.id)?.sectores.includes(sector)) {
@@ -258,7 +268,8 @@ test("el catálogo tiene las 11 mejoras de la spec y el relleno es válido", () 
     const r = relleno.find((x) => x.sector === s);
     assert.ok(r, `${s} sin relleno`);
     assert.ok(r.porque.trim());
-    assert.equal(new Set(r.mejoras).size, MIN_MEJORAS, `${s}: relleno corto o repetido`);
+    assert.equal(new Set(r.mejoras).size, r.mejoras.length, `${s}: relleno repetido`);
+    assert.ok(r.mejoras.length > MIN_MEJORAS, `${s}: relleno sin margen para las exclusiones`);
     for (const id of r.mejoras) {
       assert.ok(
         mejoras.find((m) => m.id === id)?.sectores.includes(s),
@@ -302,11 +313,11 @@ test("no-se, no-se y siempre, sin canales que disparen: sale el relleno", () => 
     const resultado = diagnosticar(sector, respuestas, "portada", { hayPlantillas: false });
     assert.equal(resultado.length, MIN_MEJORAS, sector);
     assert.equal(resultado[0].id, "cobros");
-    assert.deepEqual(
-      resultado.slice(1).map((m) => m.id),
-      r.mejoras.slice(0, 2),
-      sector,
-    );
+    // `reserva=online` excluye las mejoras de reservar: el relleno se las salta.
+    const esperadas = r.mejoras
+      .filter((id) => id !== "reservas-online" && id !== "reservas-directas")
+      .slice(0, 2);
+    assert.deepEqual(resultado.slice(1).map((m) => m.id), esperadas, sector);
     for (const m of resultado.slice(1)) assert.equal(m.porque, r.porque);
   }
 });
@@ -324,6 +335,29 @@ test("dolor=agenda con reserva=sin-cita no dispara nada", () => {
     hayPlantillas: false,
   });
   assert.deepEqual(conAgenda, sinDolor);
+});
+
+test("reserva=online o sin-cita: nunca se propone pedir cita sin llamar, aunque lo pida el dolor", () => {
+  for (const sector of SECTORES) {
+    const reservar = ["reservas-online", "reservas-directas"] as const;
+    for (const reserva of ["online", "sin-cita"]) {
+      const dolor = reserva === "sin-cita" ? "papeles" : "agenda";
+      const respuestas: Respuestas = {
+        canales: sector === "rural" ? ["tel", "plataformas"] : ["tel"],
+        reserva,
+        fuera: "no-se",
+        web: "no-se",
+        resenas: "siempre",
+        dolor,
+      };
+      const ids = diagnosticar(sector, respuestas, "portada", { hayPlantillas: false }).map((m) => m.id);
+      for (const id of reservar) assert.ok(!ids.includes(id), `${sector}/${reserva}: ${id}`);
+    }
+  }
+});
+
+test("documentacion no lleva enlace", () => {
+  assert.equal(mejoras.find((m) => m.id === "documentacion")?.enlace, undefined);
 });
 
 test("ningún texto promete recordatorios ni WhatsApp del asistente, ni da cifras", () => {

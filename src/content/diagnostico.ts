@@ -403,7 +403,6 @@ export const mejoras: Mejora[] = [
       despachos:
         "Cada cliente sube su documentación a un formulario con la lista de lo que falta. Llega junta y con su nombre, no repartida entre el correo y el WhatsApp.",
     },
-    enlace: { portada: "/herramientas/#formularios", sector: "/herramientas/#formularios" },
     sectores: TODOS,
   },
   {
@@ -432,6 +431,12 @@ export const mejoras: Mejora[] = [
   },
 ];
 
+/** Condición sobre una respuesta; en `canales` basta con que esté marcado alguno. */
+export interface Condicion {
+  pregunta: ClaveRespuesta;
+  en: string[];
+}
+
 /**
  * Una regla (PD-5): si la respuesta a `pregunta` (o, en `canales`, alguno de
  * los marcados) está en `en`, se propone `mejora` con su `porque`. Una sola
@@ -440,7 +445,7 @@ export const mejoras: Mejora[] = [
  */
 export interface Regla {
   mejora: IdMejora;
-  si: { pregunta: ClaveRespuesta; en: string[] };
+  si: Condicion;
   /** Mayor primero. */
   prioridad: number;
   porque: Texto;
@@ -613,9 +618,31 @@ export const reglas: Regla[] = [
   },
 ];
 
+/**
+ * Exclusiones por respuesta: si se cumple `si`, ninguna de estas `mejoras`
+ * sale en el resultado, ni por regla ni por relleno. Es la forma de que el
+ * diagnóstico no proponga algo que contradice lo que la persona ha respondido
+ * (spec §3.4, D-013).
+ */
+export interface Exclusion {
+  si: Condicion;
+  mejoras: IdMejora[];
+}
+
+export const exclusiones: Exclusion[] = [
+  // Ya piden solos por internet: no hace falta enseñarles a pedir sin llamar.
+  { si: { pregunta: "reserva", en: ["online"] }, mejoras: ["reservas-online", "reservas-directas"] },
+  // Sin cita ni reserva, un calendario de citas no tiene sentido.
+  { si: { pregunta: "reserva", en: [RESERVA_SIN_CITA] }, mejoras: ["reservas-online", "reservas-directas"] },
+];
+
 export interface RellenoSector {
   sector: Sector;
-  /** Si salen menos de 3 mejoras, se completa con estas, en orden y sin repetir. */
+  /**
+   * Si salen menos de 3 mejoras, se completa con estas, en orden, sin repetir
+   * y saltándose las excluidas por las respuestas. Hay más de 3 para que
+   * siempre queden 3 aunque se excluyan las primeras.
+   */
   mejoras: IdMejora[];
   /** El porqué de las mejoras que entran por relleno. */
   porque: string;
@@ -624,22 +651,22 @@ export interface RellenoSector {
 export const relleno: RellenoSector[] = [
   {
     sector: "dental",
-    mejoras: ["reservas-online", "resenas", "asistente"],
+    mejoras: ["reservas-online", "resenas", "asistente", "ficha-google", "formularios"],
     porque: "Es de lo que más compensa en una clínica dental.",
   },
   {
     sector: "rural",
-    mejoras: ["reservas-directas", "resenas", "ficha-google"],
+    mejoras: ["reservas-directas", "resenas", "ficha-google", "asistente", "web-nueva"],
     porque: "Es de lo que más compensa en un alojamiento rural.",
   },
   {
     sector: "despachos",
-    mejoras: ["documentacion", "formularios", "asistente"],
+    mejoras: ["documentacion", "formularios", "asistente", "resenas", "ficha-google"],
     porque: "Es de lo que más compensa en una asesoría o un despacho.",
   },
   {
     sector: "otro",
-    mejoras: ["ficha-google", "resenas", "asistente"],
+    mejoras: ["ficha-google", "resenas", "asistente", "formularios", "web-nueva"],
     porque: "Es de lo que más compensa en casi cualquier negocio.",
   },
 ];
