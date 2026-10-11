@@ -11,7 +11,11 @@ import { preguntas as preguntasDiagnostico } from "@/content/diagnostico";
 import { aRespuestasAuditoria, decodificar, mezclarConBorrador } from "@/lib/diagnostico";
 
 const CLAVE_BORRADOR = "undertactics:auditoria:v1";
-/** Los parámetros que deja el diagnóstico rápido en `/auditoria/?…` (spec §3.5). */
+/**
+ * Los parámetros que escribe `codificar` en `/auditoria/?…` (spec §3.5): `v`
+ * y una clave por pregunta. Sale de las mismas preguntas, así que una pregunta
+ * nueva entra sola.
+ */
 const PARAMETROS_DIAGNOSTICO = ["v", ...preguntasDiagnostico.map((p) => p.clave)];
 /** Paso 0 = los datos de contacto; 1..7 = los siete bloques del cuestionario. */
 const TOTAL_PASOS = bloques.length + 1;
@@ -37,6 +41,32 @@ const CONTACTO_VACIO: Contacto = {
   contacto_telefono: "",
   consentimiento: false,
 };
+
+/**
+ * El borrador viene de localStorage y puede estar a medias o tocado a mano:
+ * solo se aceptan campos del tipo esperado, para que un `null` o un número no
+ * rompan el `.trim()` del render o del envío.
+ */
+function contactoGuardado(c: unknown): Contacto {
+  const salida: Contacto = { ...CONTACTO_VACIO };
+  if (!c || typeof c !== "object") return salida;
+  const leido = c as Record<string, unknown>;
+  for (const k of Object.keys(CONTACTO_VACIO) as (keyof Contacto)[]) {
+    if (typeof leido[k] === typeof CONTACTO_VACIO[k]) {
+      (salida as unknown as Record<string, unknown>)[k] = leido[k];
+    }
+  }
+  return salida;
+}
+
+function respuestasGuardadas(r: unknown): Record<string, string> {
+  const salida: Record<string, string> = {};
+  if (!r || typeof r !== "object" || Array.isArray(r)) return salida;
+  for (const [clave, valor] of Object.entries(r)) {
+    if (typeof valor === "string") salida[clave] = valor;
+  }
+  return salida;
+}
 
 function contactoValido(c: Contacto) {
   const fallos: Partial<Record<keyof Contacto, string>> = {};
@@ -87,16 +117,12 @@ export function FormularioAuditoria() {
       quitarQueryRef.current = PARAMETROS_DIAGNOSTICO.some((p) => params.has(p));
     }
 
-    let datos: {
-      contacto?: Partial<Contacto>;
-      respuestas?: Record<string, string>;
-      paso?: number;
-    } | null = null;
+    let datos: { contacto?: unknown; respuestas?: unknown; paso?: unknown } | null = null;
     try {
       traerDeClaveAntigua("subcon:auditoria:v1", CLAVE_BORRADOR);
       const crudo = localStorage.getItem(CLAVE_BORRADOR);
       const leido: unknown = crudo ? JSON.parse(crudo) : null;
-      if (leido && typeof leido === "object") datos = leido;
+      if (leido && typeof leido === "object" && !Array.isArray(leido)) datos = leido;
     } catch {
       // Ventana privada o almacenamiento bloqueado: se empieza en limpio, y el
       // prerrelleno vale igual para esta visita.
@@ -105,8 +131,8 @@ export function FormularioAuditoria() {
     const diagnostico = decodificar(queryRef.current);
     const mezcla = mezclarConBorrador(
       {
-        respuestas: datos?.respuestas ?? {},
-        contacto: { ...CONTACTO_VACIO, ...datos?.contacto },
+        respuestas: respuestasGuardadas(datos?.respuestas),
+        contacto: contactoGuardado(datos?.contacto),
       },
       aRespuestasAuditoria(diagnostico.sector, diagnostico.respuestas)
     );
@@ -116,7 +142,9 @@ export function FormularioAuditoria() {
     setContacto(mezcla.contacto);
     setRespuestas(mezcla.respuestas);
     if (datos) {
-      if (typeof datos.paso === "number") setPaso(Math.min(datos.paso, TOTAL_PASOS - 1));
+      if (typeof datos.paso === "number" && Number.isInteger(datos.paso)) {
+        setPaso(Math.max(0, Math.min(datos.paso, TOTAL_PASOS - 1)));
+      }
       setTeniaBorrador(true);
     }
     if (mezcla.puestas > 0) {
@@ -231,7 +259,7 @@ export function FormularioAuditoria() {
           }}
         >
           {/* Campo trampa. Invisible para quien mira la página y fuera del orden
-            de tabulación; solo lo rellenan los rellenadores automáticos. */}
+              de tabulación; solo lo rellenan los rellenadores automáticos. */}
           <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
             <label htmlFor="direccion_fiscal">No rellenes este campo</label>
             <input
@@ -263,7 +291,7 @@ export function FormularioAuditoria() {
                 )}
 
                 {/* Medida limitada: un campo de una línea a todo el ancho de la
-                  columna pasa de los 100 caracteres y se lee mal. */}
+                    columna pasa de los 100 caracteres y se lee mal. */}
                 <div className="mt-10 max-w-2xl space-y-8">
                   {bloque.preguntas.map((pregunta) => (
                     <Campo
