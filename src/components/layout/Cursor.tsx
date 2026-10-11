@@ -35,22 +35,27 @@ export function Cursor() {
       document.documentElement.dataset.cursorState = label ? "label" : "hover";
       if (labelRef.current) labelRef.current.textContent = label ?? "";
     };
-    const onEnter = (e: Event) => {
-      const target = (e.target as HTMLElement).closest("a, button, [data-cursor-hover]");
-      if (target) aplicar(target);
+    // Delegado en el documento, no enlazado elemento a elemento: así sirve para
+    // lo que se monta después (otra página al navegar, un acordeón que se abre)
+    // y no se queda clavado en "hover" cuando el enlace pulsado desaparece al
+    // cambiar de ruta. Solo se actúa cuando cambia el elemento interactivo que
+    // queda debajo, para no pisar el estado que ponen las escenas 3D.
+    let actual: Element | null = null;
+    const onOver = (e: PointerEvent) => {
+      const el = e.target instanceof Element ? e.target : null;
+      const target = el?.closest("a, button, [data-cursor-hover]") ?? null;
+      if (target === actual) return;
+      actual = target;
+      aplicar(target);
     };
-    // Al salir de un elemento anidado (un enlace dentro de una zona que oculta
-    // el cursor) se vuelve al estado de lo que queda debajo, no al de reposo.
-    const onLeave = (e: Event) => {
-      const destino = (e as PointerEvent).relatedTarget;
-      aplicar(destino instanceof Element ? destino : null);
+    const onOut = (e: PointerEvent) => {
+      if (e.relatedTarget) return;
+      // El puntero sale de la ventana.
+      actual = null;
+      aplicar(null);
     };
-
-    const els = document.querySelectorAll("a, button, [data-cursor-hover]");
-    els.forEach((el) => {
-      el.addEventListener("pointerenter", onEnter);
-      el.addEventListener("pointerleave", onLeave);
-    });
+    document.addEventListener("pointerover", onOver);
+    document.addEventListener("pointerout", onOut);
 
     // Las escenas 3D del hero (canvas con pointer-events:none) no pueden usar
     // pointerenter/leave por elemento: avisan de su propio hover/drag por evento.
@@ -67,10 +72,8 @@ export function Cursor() {
     window.addEventListener("subcon:cursor", onSceneCursor);
 
     return () => {
-      els.forEach((el) => {
-        el.removeEventListener("pointerenter", onEnter);
-        el.removeEventListener("pointerleave", onLeave);
-      });
+      document.removeEventListener("pointerover", onOver);
+      document.removeEventListener("pointerout", onOut);
       window.removeEventListener("subcon:cursor", onSceneCursor);
     };
   }, [enabled]);

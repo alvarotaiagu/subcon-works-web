@@ -154,7 +154,8 @@ export function Servicios() {
   const apartarFlotante = (apartar: boolean) => {
     const float = floatRef.current;
     if (!float || isTouch) return;
-    gsap.to(float, { opacity: apartar ? 0 : 1, duration: 0.2, overwrite: "auto" });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    gsap.to(float, { opacity: apartar ? 0 : 1, duration: reduced ? 0 : 0.2, overwrite: "auto" });
   };
 
   return (
@@ -211,6 +212,8 @@ export function Servicios() {
               onFocus={() => !isTouch && setActive(i)}
               onClick={() => isTouch && setOpen(open === i ? null : i)}
               aria-expanded={isTouch ? open === i : undefined}
+              // No es redundante con el de la fila: el cursor busca el `button`
+              // más cercano antes que la fila, y sin esto lo pondría en "hover".
               data-cursor-hide={!isTouch ? true : undefined}
             >
               <span className="font-mono-label w-10 shrink-0 text-sm">{servicio.numero}</span>
