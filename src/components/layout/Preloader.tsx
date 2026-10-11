@@ -33,6 +33,8 @@ export function Preloader() {
   useLayoutEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced || sessionStorage.getItem(PRELOADER_SESSION_KEY)) {
+      // Preferencias y sesión del navegador: solo se saben tras montar, como en Cursor.tsx.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSkip(true);
       setVisible(false);
       return;
