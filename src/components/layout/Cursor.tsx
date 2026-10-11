@@ -69,12 +69,12 @@ export function Cursor() {
       document.documentElement.dataset.cursorState = detail.state;
       if (labelRef.current) labelRef.current.textContent = detail.label ?? "";
     };
-    window.addEventListener("subcon:cursor", onSceneCursor);
+    window.addEventListener("undertactics:cursor", onSceneCursor);
 
     return () => {
       document.removeEventListener("pointerover", onOver);
       document.removeEventListener("pointerout", onOut);
-      window.removeEventListener("subcon:cursor", onSceneCursor);
+      window.removeEventListener("undertactics:cursor", onSceneCursor);
     };
   }, [enabled]);
 

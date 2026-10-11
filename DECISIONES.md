@@ -1,4 +1,4 @@
-# Decisiones · Subcon Works
+# Decisiones · Undertactics
 
 Una decisión vigente solo se cambia con otra D nueva que diga a cuál sustituye.
 Si una spec choca con una decisión, se abre un conflicto (C-xx) y se para hasta

@@ -128,7 +128,7 @@ Cada una tiene su fichero de test (PD-8).
     - el recorrido tarda menos de 60 s en local (si tarda más, dilo en la
       PR).
 
-- [ ] **T04 · La URL: `codificar`, `decodificar`, `urlCanonica`.**
+- [x] **T04 · La URL: `codificar`, `decodificar`, `urlCanonica`.**
   - *Cubre*: spec §3.5 (salvo lo de cliente, que va en T09).
   - *Hacer*, en `src/lib/diagnostico.ts`:
     - `codificar(sector, respuestas)`: siempre lleva `v=1` y `s`; `canales`
@@ -150,7 +150,7 @@ Cada una tiene su fichero de test (PD-8).
     `__proto__`, `toString`).
   - *Hecho*: tests en verde; ninguna entrada lanza error.
 
-- [ ] **T05 · Paso a la auditoría: `aRespuestasAuditoria` y `mezclarConBorrador`.**
+- [x] **T05 · Paso a la auditoría: `aRespuestasAuditoria` y `mezclarConBorrador`.**
   - *Cubre*: spec §3.1 (textos prerrellenados), §3.6 (las dos funciones),
     §5 (seguridad del prerrelleno), D-004, D-010.
   - *Hacer*:
@@ -351,7 +351,9 @@ Cada una tiene su fichero de test (PD-8).
   - *Depende de*: T05.
   - *Hacer*:
     - en `FormularioAuditoria.tsx`, **dentro del `useEffect` que lee
-      `subcon:auditoria:v1`**:
+      `undertactics:auditoria:v1`**:
+      - deja donde está la llamada a `traerDeClaveAntigua` (migra el
+        borrador de `subcon:auditoria:v1`): la mezcla va después;
       - lee la query una vez y guárdala en una `ref`;
       - `decodificar` → `aRespuestasAuditoria` → `mezclarConBorrador`, con
         lo recién leído de `localStorage` (o vacío si no hay o si falla);
