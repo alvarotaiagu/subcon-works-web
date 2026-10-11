@@ -51,7 +51,7 @@ function Capturas({ herramienta }: { herramienta: Herramienta }) {
   const movil = herramienta.capturas?.find((c) => c.marco === "movil");
 
   return (
-    <div className="relative md:pb-16">
+    <div className={movil ? "relative md:pb-16" : "relative"}>
       {navegador && (
         <div className={movil ? "md:w-[80%]" : undefined}>
           <BrowserMockup src={navegador.src} alt={navegador.alt} />
@@ -91,7 +91,8 @@ export default function HerramientasPage() {
               La plataforma de tiendas se está estrenando con su{" "}
               <strong className="font-medium text-text-primary">primera tienda</strong>. Las capturas
               de esta página salen de una tienda de ejemplo y de la demo de una de nuestras
-              plantillas: los negocios que aparecen son inventados.
+              plantillas: los negocios, los productos, los pedidos y las cifras que aparecen son
+              inventados.
             </p>
           </div>
         </div>

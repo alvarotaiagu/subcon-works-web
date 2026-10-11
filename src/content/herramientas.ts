@@ -47,12 +47,12 @@ export const herramientas: Herramienta[] = [
     capturas: [
       {
         src: "/herramientas/tienda-escaparate.jpg",
-        alt: "Portada de una tienda de ejemplo hecha con la plataforma, en el ordenador.",
+        alt: "Novedades de una papelería de ejemplo hecha con la plataforma, en el ordenador.",
         marco: "navegador",
       },
       {
         src: "/herramientas/tienda-panel-movil.jpg",
-        alt: "Panel de la tienda de ejemplo en un móvil, como lo ve la dueña.",
+        alt: "Inicio del panel de la tienda de ejemplo en un móvil: ventas de la semana y la lista «Para hacer» con lo que toca reponer.",
         marco: "movil",
       },
     ],
