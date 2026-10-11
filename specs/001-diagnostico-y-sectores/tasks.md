@@ -68,7 +68,7 @@ T02, T03, T04 y T05 añaden a los mismos dos ficheros
 (`src/content/diagnostico.ts` y `src/lib/diagnostico.ts`): **van en serie**.
 Cada una tiene su fichero de test (PD-8).
 
-- [ ] **T02 · Preguntas, códigos y sectores.**
+- [x] **T02 · Preguntas, códigos y sectores.**
   - *Cubre*: spec §3.1, §3.2 (total de preguntas), §3.4 (`dolor=agenda`
     con `sin-cita`), §6.
   - *Hacer*, en `src/content/diagnostico.ts`:
