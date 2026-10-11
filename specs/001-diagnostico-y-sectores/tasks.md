@@ -97,7 +97,7 @@ Cada una tiene su fichero de test (PD-8).
   - *Hecho*: tests en verde; ningún texto lleva el número de preguntas
     escrito.
 
-- [ ] **T03 · Mejoras, reglas, relleno y `diagnosticar`.**
+- [x] **T03 · Mejoras, reglas, relleno y `diagnosticar`.**
   - *Cubre*: spec §3.3 (contenido de cada mejora), §3.4, §5 («Nada falso»),
     PD-5.
   - *Hacer*:

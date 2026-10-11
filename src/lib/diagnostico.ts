@@ -7,15 +7,23 @@
 
 import {
   DOLOR_AGENDA,
+  ENLACE_PLANTILLAS_SECTOR,
+  mejoras,
   nombresSector,
   preguntas,
+  reglas,
+  relleno,
   RESERVA_SIN_CITA,
 } from "../content/diagnostico.ts";
 import type {
   Clave,
   Contexto,
+  EnlaceMejora,
+  IdMejora,
+  Mejora,
   Opcion,
   Pregunta,
+  Regla,
   Respuestas,
   Sector,
   Texto,
@@ -125,4 +133,126 @@ export function respuestaValida(
     );
   }
   return typeof valor === "string" && validos.has(valor);
+}
+
+// ── Resultado (spec §3.3 y §3.4) ───────────────────────────────────────────
+
+/** Mínimo y máximo de mejoras del resultado (D-003). */
+export const MIN_MEJORAS = 3;
+export const MAX_MEJORAS = 5;
+
+/** Una mejora del resultado, con sus textos y su enlace ya resueltos. */
+export interface MejoraDiagnosticada {
+  id: IdMejora;
+  titulo: string;
+  queResuelve: string;
+  porque: string;
+  /** Ruta interna (`/…`) o ancla de la misma página (`#…`). */
+  enlace?: string;
+}
+
+const mejoraPorId = new Map<string, Mejora>(mejoras.map((m) => [m.id, m]));
+const rellenoPorSector = new Map(relleno.map((r) => [r.sector as string, r]));
+
+/** «Lo que haríamos en tu clínica dental». */
+export function tituloResultado(sector: Sector): string {
+  const negocio = sectorPorCodigo.get(sector)?.negocio ?? "negocio";
+  return `Lo que haríamos en tu ${negocio}`;
+}
+
+/**
+ * El destino de un enlace de mejora según el contexto. `"plantillas-sector"`
+ * va al bloque de plantillas de la página si lo tiene y, si no (o en la
+ * portada), a `/plantillas/`.
+ */
+export function resolverEnlace(
+  enlace: EnlaceMejora | undefined,
+  contexto: Contexto,
+  hayPlantillas: boolean,
+): string | undefined {
+  const destino = contexto === "sector" ? enlace?.sector : enlace?.portada;
+  if (destino === ENLACE_PLANTILLAS_SECTOR) {
+    return contexto === "sector" && hayPlantillas ? "#plantillas-sector" : "/plantillas/";
+  }
+  return destino;
+}
+
+function seCumple(regla: Regla, respuestas: Respuestas): boolean {
+  const { pregunta, en } = regla.si;
+  if (pregunta === "canales") {
+    const marcados = respuestas.canales;
+    return Array.isArray(marcados) && marcados.some((c) => en.includes(c));
+  }
+  // `dolor=agenda` no se combina con `reserva=sin-cita` (spec §3.4).
+  if (
+    pregunta === "dolor" &&
+    respuestas.dolor === DOLOR_AGENDA &&
+    respuestas.reserva === RESERVA_SIN_CITA
+  ) {
+    return false;
+  }
+  const valor = respuestas[pregunta];
+  return typeof valor === "string" && en.includes(valor);
+}
+
+function aplica(mejora: Mejora | undefined, sector: Sector): mejora is Mejora {
+  return mejora !== undefined && mejora.sectores.includes(sector);
+}
+
+/**
+ * De las respuestas a las mejoras (spec §3.4). Pura: misma entrada, misma
+ * salida.
+ *
+ * 1. Aplica las reglas que se cumplen y cuya mejora vale para el sector.
+ * 2. Quita las repetidas y se queda con el porqué de la regla de más
+ *    prioridad (a igual prioridad, la que va antes en `reglas`).
+ * 3. Ordena por prioridad y corta en `MAX_MEJORAS`.
+ * 4. Si salen menos de `MIN_MEJORAS`, completa con el `relleno` del sector,
+ *    en orden, sin repetir y con su porqué genérico.
+ *
+ * Espera respuestas ya validadas (`decodificar` o el componente): un código
+ * desconocido simplemente no cumple ninguna regla.
+ */
+export function diagnosticar(
+  sector: Sector,
+  respuestas: Respuestas,
+  contexto: Contexto,
+  { hayPlantillas }: { hayPlantillas: boolean },
+): MejoraDiagnosticada[] {
+  const ganadoras = new Map<IdMejora, { regla: Regla; orden: number }>();
+  reglas.forEach((regla, orden) => {
+    if (!aplica(mejoraPorId.get(regla.mejora), sector)) return;
+    if (!seCumple(regla, respuestas)) return;
+    const previa = ganadoras.get(regla.mejora);
+    if (!previa || regla.prioridad > previa.regla.prioridad) {
+      ganadoras.set(regla.mejora, { regla, orden });
+    }
+  });
+
+  const vistaDe = (mejora: Mejora, porque: string): MejoraDiagnosticada => {
+    const enlace = resolverEnlace(mejora.enlace, contexto, hayPlantillas);
+    return {
+      id: mejora.id,
+      titulo: textoPara(mejora.titulo, sector),
+      queResuelve: textoPara(mejora.queResuelve, sector),
+      porque,
+      ...(enlace ? { enlace } : {}),
+    };
+  };
+
+  const resultado = [...ganadoras.values()]
+    .sort((a, b) => b.regla.prioridad - a.regla.prioridad || a.orden - b.orden)
+    .slice(0, MAX_MEJORAS)
+    .map(({ regla }) => vistaDe(mejoraPorId.get(regla.mejora) as Mejora, textoPara(regla.porque, sector)));
+
+  const extra = rellenoPorSector.get(sector);
+  if (extra) {
+    for (const id of extra.mejoras) {
+      if (resultado.length >= MIN_MEJORAS) break;
+      if (resultado.some((m) => m.id === id)) continue;
+      const mejora = mejoraPorId.get(id);
+      if (aplica(mejora, sector)) resultado.push(vistaDe(mejora, extra.porque));
+    }
+  }
+  return resultado;
 }
