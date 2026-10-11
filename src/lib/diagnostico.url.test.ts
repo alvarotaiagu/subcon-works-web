@@ -306,6 +306,11 @@ test("urlCanonica apunta a la página del sector, o a la portada con s=otro", ()
     urlCanonica("despachos", {}, "http://localhost:3000/", "/base/"),
     "http://localhost:3000/base/sectores/asesorias-y-despachos/?v=1&s=despachos#diagnostico",
   );
+  // Sin barra delante tampoco se pega al dominio.
+  assert.equal(
+    urlCanonica("despachos", {}, "http://localhost:3000", "base"),
+    "http://localhost:3000/base/sectores/asesorias-y-despachos/?v=1&s=despachos#diagnostico",
+  );
   assert.equal(
     urlCanonica("otro", { web: "nada" }, "https://ejemplo.dev", "/subcon-works-web"),
     "https://ejemplo.dev/subcon-works-web/?v=1&s=otro&web=nada#diagnostico",

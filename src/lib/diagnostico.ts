@@ -342,12 +342,8 @@ export interface Decodificado {
  *   cuenta como no respondida.
  */
 export function decodificar(search: string, sectorFijado?: Sector): Decodificado {
-  let params: URLSearchParams;
-  try {
-    params = new URLSearchParams(typeof search === "string" ? search : "");
-  } catch {
-    params = new URLSearchParams();
-  }
+  // Con una cadena, `URLSearchParams` no lanza nunca (ni con `%%%`).
+  const params = new URLSearchParams(typeof search === "string" ? search : "");
 
   const v = params.get("v");
   const versionValida = v === null || v === String(VERSION_DIAGNOSTICO);
@@ -392,7 +388,9 @@ export function urlCanonica(
   origen: string,
   basePath: string,
 ): string {
-  const base = `${origen.replace(/\/+$/, "")}${basePath.replace(/\/+$/, "")}`;
+  // `basePath` puede venir con o sin barras a los lados: siempre «/x» o «».
+  const prefijo = basePath.replace(/^\/+|\/+$/g, "");
+  const base = `${origen.replace(/\/+$/, "")}${prefijo ? `/${prefijo}` : ""}`;
   const slug = SLUG_SECTOR.get(sector);
   const ruta = slug ? `/sectores/${slug}/` : "/";
   return `${base}${ruta}?${codificar(sector, respuestas)}#diagnostico`;
@@ -411,15 +409,17 @@ export interface Prerrelleno {
 const frasePorRespuesta = new Map<string, FrasePrerrelleno[]>();
 for (const f of frasesPrerrelleno) {
   const clave = `${f.pregunta}=${f.codigo}`;
-  frasePorRespuesta.set(clave, [...(frasePorRespuesta.get(clave) ?? []), f]);
+  const lista = frasePorRespuesta.get(clave);
+  if (lista) lista.push(f);
+  else frasePorRespuesta.set(clave, [f]);
 }
 const nombrePorCanal = new Map(nombresCanal.map((c) => [c.codigo, c.nombre]));
 
-/** «a», «a y b», «a, b y c». */
-function enumerar(partes: string[]): string {
-  if (partes.length <= 1) return partes.join("");
-  return `${partes.slice(0, -1).join(", ")} y ${partes[partes.length - 1]}`;
-}
+/**
+ * «a», «a y b», «a, b y c». `Intl.ListFormat` pone «e» delante de «i-» o
+ * «hi-» («teléfono e Instagram o Facebook»), que a mano se olvida.
+ */
+const enumeracion = new Intl.ListFormat("es", { type: "conjunction" });
 
 /**
  * Las respuestas del diagnóstico convertidas en texto para la auditoría
@@ -449,7 +449,7 @@ export function aRespuestasAuditoria(
       const nombre = nombrePorCanal.get(c);
       return nombre ? [textoPara(nombre, sectorValido)] : [];
     });
-    if (nombres.length > 0) salida.P7 = `${INICIO_CANALES}${enumerar(nombres)}${MARCA_DIAGNOSTICO}`;
+    if (nombres.length > 0) salida.P7 = `${INICIO_CANALES}${enumeracion.format(nombres)}${MARCA_DIAGNOSTICO}`;
   }
 
   for (const clave of CLAVES_RESPUESTA) {

@@ -107,6 +107,11 @@ test("P7 sin orden de importancia, en el orden de la pregunta", () => {
     aRespuestasAuditoria("dental", { canales: ["puerta"] }).respuestas.P7,
     "Por estos canales, sin orden: en persona en la clínica (del diagnóstico rápido)",
   );
+  // «e» delante de «Instagram», no «y».
+  assert.equal(
+    aRespuestasAuditoria("dental", { canales: ["tel", "redes"] }).respuestas.P7,
+    "Por estos canales, sin orden: teléfono e Instagram o Facebook (del diagnóstico rápido)",
+  );
 });
 
 test("sin-cita rellena P14 y P12", () => {
