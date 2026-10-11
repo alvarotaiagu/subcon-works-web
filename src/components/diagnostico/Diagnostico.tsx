@@ -77,7 +77,11 @@ export function Diagnostico({
     titulo.focus({ preventScroll: true });
     // Si el título nuevo ha quedado por encima de la vista (opciones largas en
     // móvil), se sube al principio del componente. Con Lenis, por Lenis.
-    if (titulo.getBoundingClientRect().top < 0) irAAncla(contenedorRef.current);
+    // «Por encima» incluye quedar bajo la cabecera fija: se compara con el
+    // `scroll-margin-top` del contenedor, no con 0.
+    const contenedor = contenedorRef.current;
+    const margen = contenedor ? parseFloat(getComputedStyle(contenedor).scrollMarginTop) || 0 : 0;
+    if (titulo.getBoundingClientRect().top < margen) irAAncla(contenedor);
   }, [paso, terminado]);
 
   const avanzar = () => {
@@ -104,8 +108,8 @@ export function Diagnostico({
   };
 
   const marcar = (codigo: string) => {
-    const opciones = opcionesPara("canales", sectorActivo, respuestas);
     setRespuestas((r) => {
+      const opciones = opcionesPara("canales", sectorActivo, r);
       const antes = new Set(r.canales ?? []);
       if (antes.has(codigo)) antes.delete(codigo);
       else antes.add(codigo);

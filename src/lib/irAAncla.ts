@@ -13,11 +13,11 @@ export function irAAncla(el: HTMLElement | null): void {
   if (!el) return;
   const lenis = getLenis();
   if (lenis) {
-    const margen = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
     // Lenis recalcula su tope con un ResizeObserver con retardo: justo tras
     // cargar (o tras cambiar de alto) el tope viejo cortaría el salto a medias.
     lenis.resize();
-    lenis.scrollTo(el, { offset: -margen });
+    // Lenis ya resta el `scroll-margin-top` del destino: no pasar `offset`.
+    lenis.scrollTo(el);
     return;
   }
   el.scrollIntoView({ block: "start" });
