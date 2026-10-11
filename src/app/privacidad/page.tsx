@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/content/site";
+import { chatbotUrl } from "@/lib/chatbot";
 
 export const metadata: Metadata = {
   title: `Privacidad — ${site.nombre}`,
@@ -30,6 +31,61 @@ function Apartado({ titulo, children }: { titulo: string; children: React.ReactN
   );
 }
 
+/**
+ * Solo se pinta con el asistente activo (NEXT_PUBLIC_CHATBOT_URL). Borrador pendiente de
+ * revisión: el distintivo [REVISAR] se quita cuando el texto esté aprobado.
+ */
+function ApartadoAsistente() {
+  return (
+    <Apartado titulo="El asistente virtual del chat">
+      <p>
+        <span className="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">
+          [REVISAR]
+        </span>
+      </p>
+      <p>
+        El botón de la esquina abre un asistente virtual con inteligencia artificial. Contesta
+        dudas sobre lo que hacemos y, si quieres que te escribamos, te pide tu nombre y un email o
+        un teléfono. No es una persona y puede equivocarse: lo que importe te lo confirmamos por
+        correo.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Qué se trata:</strong> lo que escribas
+        en el chat y, solo si nos los das, tu nombre y tu forma de contacto. No hace falta que le
+        cuentes datos de tus clientes, contraseñas ni nada delicado; si llega algo así, no se usa.
+        El servidor del chat mira tu dirección IP únicamente para limitar cuántos mensajes se
+        pueden mandar por minuto, y no la guarda.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Para qué:</strong> para contestarte
+        en esa conversación y, si lo pides, para escribirte. Nada más: no se usa para publicidad,
+        ni para hacerte un perfil, ni se te apunta a ningún boletín. La base legal es la misma que
+        la del formulario: nos lo pides tú (artículo 6.1.b del RGPD).
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Quién lo procesa:</strong> los
+        mensajes se envían a <strong className="font-medium text-text-primary">Anthropic</strong>,
+        que genera las respuestas como encargado del tratamiento, siguiendo nuestras instrucciones
+        y sin usarlos para entrenar sus modelos. Anthropic trabaja desde Estados Unidos, así que
+        esos mensajes salen de la Unión Europea con las garantías de su contrato de encargo de
+        tratamiento.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Cuánto tiempo:</strong> la
+        conversación se guarda en el servidor del chat mientras está abierta y se borra al
+        reiniciarlo. Si dejas tu contacto, se guarda como las solicitudes del formulario: un año si
+        no acabamos trabajando juntos, y puedes pedir que se borre antes.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">En tu navegador:</strong> al abrir el
+        chat se guarda un identificador de sesión al azar, para que la conversación siga ahí si
+        recargas la página. No lleva ningún dato tuyo, no sirve para seguirte y solo se crea si
+        abres el chat. Se borra borrando los datos de este sitio en tu navegador.
+      </p>
+    </Apartado>
+  );
+}
+
 export default function PrivacidadPage() {
   return (
     <div className="pt-32 md:pt-40">
@@ -42,8 +98,9 @@ export default function PrivacidadPage() {
           Qué hacemos con tus datos
         </h1>
         <p className="mt-8 text-lg text-text-muted">
-          En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay
-          analítica, ni hay publicidad, ni hay cookies de terceros.
+          {chatbotUrl
+            ? "En esta web se recogen datos en dos sitios: el formulario de la auditoría y, si lo abres, el chat del asistente virtual. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros."
+            : "En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros."}
         </p>
 
         <div className="mt-14">
@@ -135,13 +192,29 @@ export default function PrivacidadPage() {
             </p>
           </Apartado>
 
-          <Apartado titulo="Cookies">
-            <p>
-              Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu
-              navegador es el borrador del formulario y el hecho de que ya has visto el aviso, y
-              ninguna de las dos cosas sale de tu ordenador.
-            </p>
-          </Apartado>
+          {/* Con el asistente activo, su apartado va delante de Cookies (ver src/lib/chatbot.ts). */}
+          {chatbotUrl ? (
+            <>
+              <ApartadoAsistente />
+              <Apartado titulo="Cookies">
+                <p>
+                  Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en
+                  tu navegador es el borrador del formulario, el hecho de que ya has visto el
+                  aviso y, si abres el chat, su identificador de sesión. Los dos primeros no salen
+                  de tu ordenador; el identificador viaja con cada mensaje del chat para que el
+                  servidor sepa a qué conversación pertenece, y para nada más.
+                </p>
+              </Apartado>
+            </>
+          ) : (
+            <Apartado titulo="Cookies">
+              <p>
+                Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu
+                navegador es el borrador del formulario y el hecho de que ya has visto el aviso, y
+                ninguna de las dos cosas sale de tu ordenador.
+              </p>
+            </Apartado>
+          )}
         </div>
       </div>
     </div>

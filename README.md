@@ -77,6 +77,23 @@ kit con el formato que este espera, y el informe se genera allí.
 El circuito completo, la clave que hace falta y qué pasa si cambias las
 preguntas están en [`kit/LEEME.md`](kit/LEEME.md).
 
+## Asistente virtual (solo en local, de momento)
+
+El chat de la esquina es el widget del proyecto `recepcionista-ia`
+(`Desktop/Proyectos/recepcionista-ia`). Se carga solo si existe
+`NEXT_PUBLIC_CHATBOT_URL`:
+
+```bash
+# una vez: cp .env.local.example .env.local
+# en recepcionista-ia (PowerShell): $env:PORT=3001; npm start
+npm run dev
+```
+
+Sin la variable, ni el widget, ni `next/script`, ni los textos del chat (aviso de
+cookies y apartado de `/privacidad/`) llegan al build: el `out/` de GitHub Pages
+sale igual que antes. Cómo se consigue está en `src/lib/chatbot.ts`. Lo que falta
+para publicarlo está en el README de `recepcionista-ia`.
+
 ## Pendiente antes de recibir una solicitud de verdad
 
 - Completar el nombre fiscal, el NIF y el domicilio en `src/app/privacidad/page.tsx`

@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const CLAVE = "subcon:aviso-cookies:v1";
+// Con el asistente activo (NEXT_PUBLIC_CHATBOT_URL) se guarda algo más, el identificador
+// del chat: otra clave para que quien aceptó el aviso viejo vea el nuevo. La variable se
+// lee tal cual para que, sin ella, el compilador deje el JS exactamente como estaba.
+const CLAVE = process.env.NEXT_PUBLIC_CHATBOT_URL ? "subcon:aviso-cookies:v2" : "subcon:aviso-cookies:v1";
 
 /**
  * Aviso de almacenamiento local.
@@ -54,8 +57,9 @@ export function AvisoCookies() {
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
         <p className="text-sm text-text-muted">
-          Esta web no usa cookies de seguimiento ni analítica. Solo guarda en tu navegador el
-          borrador del formulario y que ya has visto este aviso.{" "}
+          {process.env.NEXT_PUBLIC_CHATBOT_URL
+            ? "Esta web no usa cookies de seguimiento ni analítica. Solo guarda en tu navegador el borrador del formulario, que ya has visto este aviso y, si abres el chat, un identificador de la conversación."
+            : "Esta web no usa cookies de seguimiento ni analítica. Solo guarda en tu navegador el borrador del formulario y que ya has visto este aviso."}{" "}
           <Link href="/privacidad/" className="link-underline text-text-primary">
             Más detalle
           </Link>

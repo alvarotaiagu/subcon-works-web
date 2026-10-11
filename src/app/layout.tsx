@@ -11,6 +11,15 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollLine } from "@/components/layout/ScrollLine";
 import { AvisoCookies } from "@/components/layout/AvisoCookies";
+import { chatbotUrl } from "@/lib/chatbot";
+import { lazy } from "react";
+
+// Asistente virtual, solo con NEXT_PUBLIC_CHATBOT_URL (ver src/lib/chatbot.ts). Import perezoso
+// y condición sobre process.env tal cual: sin la variable el compilador quita la rama y ni el
+// widget ni next/script llegan al build de GitHub Pages. Con un import normal sí llegarían.
+const Asistente = process.env.NEXT_PUBLIC_CHATBOT_URL
+  ? lazy(() => import("@/components/layout/Asistente"))
+  : null;
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -85,7 +94,15 @@ export default function RootLayout({
         <AvisoCookies />
         <Nav />
         <main id="contenido">{children}</main>
-        <Footer />
+        {/* Con el asistente se cuelga del pie: un `null` en su lugar cambiaría el HTML exportado. */}
+        {Asistente && chatbotUrl ? (
+          <>
+            <Footer />
+            <Asistente url={chatbotUrl} />
+          </>
+        ) : (
+          <Footer />
+        )}
       </body>
     </html>
   );

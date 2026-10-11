@@ -22,6 +22,9 @@ const nextConfig: NextConfig = {
   assetPrefix: isGithubActions ? `/${repoName}/` : "",
   env: {
     NEXT_PUBLIC_BASE_PATH: isGithubActions ? `/${repoName}` : "",
+    // Asistente virtual (ver src/lib/chatbot.ts). Se define siempre, vacía si no existe,
+    // para que el compilador la sustituya y quite las ramas del asistente del build de Pages.
+    NEXT_PUBLIC_CHATBOT_URL: process.env.NEXT_PUBLIC_CHATBOT_URL ?? "",
   },
 };
 
