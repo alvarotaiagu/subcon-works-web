@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { traerDeClaveAntigua } from "@/lib/almacenamiento";
 
-const CLAVE = "subcon:aviso-cookies:v1";
+const CLAVE = "undertactics:aviso-cookies:v1";
 
 /**
  * Aviso de almacenamiento local.
@@ -26,6 +27,7 @@ export function AvisoCookies() {
     try {
       // El prerender no puede saber si ya se aceptó: se decide aquí, en
       // cliente, y por eso el aviso nace oculto y aparece con su animación.
+      traerDeClaveAntigua("subcon:aviso-cookies:v1", CLAVE);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (!localStorage.getItem(CLAVE)) setVisible(true);
     } catch {

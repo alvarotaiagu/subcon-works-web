@@ -1,6 +1,6 @@
 # subcon-works-web
 
-Web del estudio **Subcon Works**: diseño y desarrollo web, automatización y IA
+Web del estudio **Undertactics** (antes Subcon Works): diseño y desarrollo web, automatización y IA
 para negocios pequeños de Galicia.
 
 Next.js 16 con `output: "export"`, publicada como *project site* de GitHub Pages
