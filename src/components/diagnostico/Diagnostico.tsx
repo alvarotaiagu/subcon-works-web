@@ -1,12 +1,46 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { esSector, opcionesPara, preguntasPara, respuestaValida } from "@/lib/diagnostico";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  codificar,
+  decodificar,
+  esSector,
+  opcionesPara,
+  preguntasPara,
+  respuestaValida,
+} from "@/lib/diagnostico";
+import type { Decodificado } from "@/lib/diagnostico";
+import { preguntas as todasLasPreguntas } from "@/content/diagnostico";
 import type { ClaveRespuesta, Contexto, Respuestas, Sector } from "@/content/diagnostico";
+import { esperarCortina } from "@/components/layout/Preloader";
 import { irAAncla } from "@/lib/irAAncla";
+import { registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { withBasePath } from "@/lib/utils";
 import { PasoPregunta } from "./PasoPregunta";
 import { Resultado } from "./Resultado";
+
+/** Los parámetros que son del diagnóstico: `v` y uno por pregunta. */
+const CLAVES_URL = new Set<string>(["v", ...todasLasPreguntas.map((p) => p.clave)]);
+
+/**
+ * Pone la query del diagnóstico en la barra de direcciones, o la quita con
+ * `null`, sin recargar (`replaceState`, spec §3.5). Deja el hash y cualquier
+ * otro parámetro que no sea del diagnóstico.
+ */
+function escribirQuery(diagnostico: string | null) {
+  const { pathname, search, hash } = window.location;
+  const otros = new URLSearchParams(search);
+  for (const clave of [...otros.keys()]) if (CLAVES_URL.has(clave)) otros.delete(clave);
+  // `codificar` deja las comas de `canales` tal cual: no pasa por URLSearchParams.
+  const query = [otros.toString(), diagnostico ?? ""].filter(Boolean).join("&");
+  const nueva = `${pathname}${query ? `?${query}` : ""}${hash}`;
+  if (nueva !== `${pathname}${search}${hash}`) window.history.replaceState(null, "", nueva);
+}
+
+/** Espera dos fotogramas: el primero pinta lo último que ha cambiado React. */
+function dosFotogramas(): Promise<void> {
+  return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+}
 
 /**
  * Deja solo lo que vale para ese sector y lo ya respondido: al cambiar de
@@ -38,8 +72,9 @@ function limpiar(sector: Sector | undefined, respuestas: Respuestas): Respuestas
  * terminar, el resultado en el mismo sitio.
  *
  * En la portada pregunta el sector; en una página de sector lo fija la
- * página. Lo prerrenderizado es siempre la primera pregunta. Sin JS solo
- * queda el `<noscript>` con el enlace a la auditoría (§3.9).
+ * página. Lo prerrenderizado es siempre la primera pregunta; un diagnóstico
+ * que llega por URL (§3.5) se abre al montar. Sin JS solo queda el
+ * `<noscript>` con el enlace a la auditoría (§3.9).
  *
  * Nada de `data-reveal` aquí dentro: el contenido cambia (pregunta ↔
  * resultado) y `useReveal` lo dejaría oculto.
@@ -64,11 +99,100 @@ export function Diagnostico({
   // El foco solo se mueve cuando la persona cambia de pregunta, nunca al
   // cargar la página: robaría el foco y haría saltar el scroll.
   const movidoRef = useRef(false);
+  // La query se lee una sola vez (PD-4): el doble montaje de StrictMode no la
+  // vuelve a aplicar.
+  const leidoRef = useRef<Decodificado | null>(null);
+  // Se abrió un diagnóstico completo por URL: hay que bajar a él.
+  const [saltar, setSaltar] = useState(false);
+  const refrescoRef = useRef<number | undefined>(undefined);
 
   const sectorActivo = contexto === "sector" ? sector : elegido;
   const preguntas = useMemo(() => preguntasPara(sectorActivo, contexto), [sectorActivo, contexto]);
   const total = preguntas.length;
   const pregunta = preguntas[Math.min(paso, total - 1)];
+
+  // Abrir un diagnóstico ya hecho (spec §3.5). Es export estático: la query
+  // solo existe en el navegador, así que lo prerrenderizado es siempre la
+  // primera pregunta y aquí se pasa a lo que diga la URL. Se lee
+  // `location.search` en un efecto (sin `useSearchParams`, que pediría un
+  // `Suspense`), como el borrador de la auditoría.
+  useEffect(() => {
+    if (leidoRef.current) return;
+    const leido = decodificar(window.location.search, contexto === "sector" ? sector : undefined);
+    leidoRef.current = leido;
+    const sectorDeLaUrl = contexto === "portada" && leido.sector !== undefined;
+    if (!sectorDeLaUrl && Object.keys(leido.respuestas).length === 0) return;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (contexto === "portada") setElegido(leido.sector);
+    setRespuestas(leido.respuestas);
+    if (leido.completa) {
+      setTerminado(true);
+      setSaltar(true);
+    } else {
+      // A medias: la primera que falta, con las anteriores marcadas.
+      const falta = preguntasPara(leido.sector, contexto).findIndex(
+        (p) => p.clave === leido.primeraSinResponder
+      );
+      setPaso(Math.max(0, falta));
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, [contexto, sector]);
+
+  // ScrollTrigger mide las secciones de abajo al cargar; si el diagnóstico
+  // cambia de alto (pregunta ↔ resultado) sus posiciones quedan viejas (PD-10).
+  const refrescar = useCallback(() => {
+    window.clearTimeout(refrescoRef.current);
+    registerGsap();
+    ScrollTrigger.refresh();
+  }, []);
+
+  useEffect(() => {
+    const el = contenedorRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    // La primera medida es la de partida, no un cambio: no refresca al cargar.
+    let alto: number | null = null;
+    const observador = new ResizeObserver(([entrada]) => {
+      const nuevo = Math.round(entrada.contentRect.height);
+      const antes = alto;
+      alto = nuevo;
+      if (antes === null || antes === nuevo) return;
+      window.clearTimeout(refrescoRef.current);
+      refrescoRef.current = window.setTimeout(refrescar, 150);
+    });
+    observador.observe(el);
+    return () => {
+      observador.disconnect();
+      window.clearTimeout(refrescoRef.current);
+    };
+  }, [refrescar]);
+
+  // El salto a `#diagnostico` de un diagnóstico abierto por URL: después de
+  // que la cortina se haya retirado (con ella el body está en
+  // `overflow:hidden` y el salto se perdería), con el resultado ya pintado y
+  // con ScrollTrigger al día, que los pins de arriba cambian las medidas.
+  useEffect(() => {
+    if (!saltar) return;
+    let vivo = true;
+    void (async () => {
+      await esperarCortina();
+      await dosFotogramas();
+      if (!vivo) return;
+      refrescar();
+      const contenedor = contenedorRef.current;
+      irAAncla(contenedor?.closest<HTMLElement>("#diagnostico") ?? contenedor);
+    })();
+    return () => {
+      vivo = false;
+    };
+  }, [saltar, refrescar]);
+
+  // La query va a la barra de direcciones solo al llegar al resultado, para
+  // que «copiar enlace» y el Atrás del navegador vayan bien. Mientras se
+  // responde, no se toca.
+  useEffect(() => {
+    if (!terminado || !sectorActivo) return;
+    escribirQuery(codificar(sectorActivo, respuestas));
+  }, [terminado, sectorActivo, respuestas]);
 
   useEffect(() => {
     if (!movidoRef.current) return;
@@ -93,6 +217,15 @@ export function Diagnostico({
   const atras = () => {
     movidoRef.current = true;
     setPaso((p) => Math.max(0, p - 1));
+  };
+
+  // «Cambiar respuestas»: a la primera pregunta con todo marcado, y la URL
+  // sin la query del diagnóstico.
+  const cambiar = () => {
+    movidoRef.current = true;
+    escribirQuery(null);
+    setTerminado(false);
+    setPaso(0);
   };
 
   const elegir = (codigo: string) => {
@@ -134,6 +267,7 @@ export function Diagnostico({
           contexto={contexto}
           hayPlantillas={hayPlantillas}
           tituloRef={tituloRef}
+          onCambiar={cambiar}
         />
       ) : (
         <PasoPregunta
