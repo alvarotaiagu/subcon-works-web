@@ -346,7 +346,7 @@ Cada una tiene su fichero de test (PD-8).
 
 ## Auditoría
 
-- [ ] **T13 · Prerrelleno en el formulario y línea de privacidad.**
+- [x] **T13 · Prerrelleno en el formulario y línea de privacidad.**
   - *Cubre*: spec §3.6 (componente), §5 (privacidad), D-004, PD-4, PD-11.
   - *Depende de*: T05.
   - *Hacer*:

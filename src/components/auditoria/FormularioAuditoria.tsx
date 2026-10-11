@@ -7,8 +7,16 @@ import { enviarSolicitud, type ResultadoEnvio } from "@/lib/auditoriaApi";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { traerDeClaveAntigua } from "@/lib/almacenamiento";
+import { preguntas as preguntasDiagnostico } from "@/content/diagnostico";
+import { aRespuestasAuditoria, decodificar, mezclarConBorrador } from "@/lib/diagnostico";
 
 const CLAVE_BORRADOR = "undertactics:auditoria:v1";
+/**
+ * Los parámetros que escribe `codificar` en `/auditoria/?…` (spec §3.5): `v`
+ * y una clave por pregunta. Sale de las mismas preguntas, así que una pregunta
+ * nueva entra sola.
+ */
+const PARAMETROS_DIAGNOSTICO = ["v", ...preguntasDiagnostico.map((p) => p.clave)];
 /** Paso 0 = los datos de contacto; 1..7 = los siete bloques del cuestionario. */
 const TOTAL_PASOS = bloques.length + 1;
 
@@ -34,6 +42,32 @@ const CONTACTO_VACIO: Contacto = {
   consentimiento: false,
 };
 
+/**
+ * El borrador viene de localStorage y puede estar a medias o tocado a mano:
+ * solo se aceptan campos del tipo esperado, para que un `null` o un número no
+ * rompan el `.trim()` del render o del envío.
+ */
+function contactoGuardado(c: unknown): Contacto {
+  const salida: Contacto = { ...CONTACTO_VACIO };
+  if (!c || typeof c !== "object") return salida;
+  const leido = c as Record<string, unknown>;
+  for (const k of Object.keys(CONTACTO_VACIO) as (keyof Contacto)[]) {
+    if (typeof leido[k] === typeof CONTACTO_VACIO[k]) {
+      (salida as unknown as Record<string, unknown>)[k] = leido[k];
+    }
+  }
+  return salida;
+}
+
+function respuestasGuardadas(r: unknown): Record<string, string> {
+  const salida: Record<string, string> = {};
+  if (!r || typeof r !== "object" || Array.isArray(r)) return salida;
+  for (const [clave, valor] of Object.entries(r)) {
+    if (typeof valor === "string") salida[clave] = valor;
+  }
+  return salida;
+}
+
 function contactoValido(c: Contacto) {
   const fallos: Partial<Record<keyof Contacto, string>> = {};
   if (c.negocio.trim().length < 2) fallos.negocio = "Dinos cómo se llama el negocio.";
@@ -54,33 +88,67 @@ export function FormularioAuditoria() {
   const [resultado, setResultado] = useState<ResultadoEnvio | null>(null);
   const [borradorCargado, setBorradorCargado] = useState(false);
   const [teniaBorrador, setTeniaBorrador] = useState(false);
+  // Aviso de lo que ha puesto el diagnóstico rápido (PD-11). Solo vive aquí:
+  // al recargar ya no sale, porque la query se ha quitado de la URL.
+  const [prerrelleno, setPrerrelleno] = useState<{ puestas: number; saltadas: number } | null>(
+    null
+  );
+  // La query se lee una sola vez: el segundo montaje de StrictMode (o un
+  // efecto que se repita) usa la misma, y desde que se quita de la URL vale ""
+  // para no volver a poner lo que la persona haya borrado.
+  const queryRef = useRef<string | null>(null);
+  const quitarQueryRef = useRef(false);
   const trampaRef = useRef<HTMLInputElement>(null);
   const cabeceraRef = useRef<HTMLDivElement>(null);
 
   // Recuperar el borrador. Es un formulario de diez minutos: si se cierra la
   // pestaña a mitad, lo que se ha escrito tiene que seguir ahí. Vive solo en
   // este navegador — no se manda nada hasta que se pulsa enviar.
+  //
+  // Si se llega desde el diagnóstico rápido (`/auditoria/?v=1&s=…`), sus
+  // respuestas se mezclan aquí con lo recién leído de localStorage, no con el
+  // estado, que aún está vacío. La mezcla solo rellena lo vacío: lo que ya se
+  // había escrito no se toca (spec §3.6). Con el mismo borrador y la misma
+  // query da siempre lo mismo, así que repetir el efecto no cambia nada.
   useEffect(() => {
+    if (queryRef.current === null) {
+      queryRef.current = window.location.search;
+      const params = new URLSearchParams(queryRef.current);
+      quitarQueryRef.current = PARAMETROS_DIAGNOSTICO.some((p) => params.has(p));
+    }
+
+    let datos: { contacto?: unknown; respuestas?: unknown; paso?: unknown } | null = null;
     try {
       traerDeClaveAntigua("subcon:auditoria:v1", CLAVE_BORRADOR);
       const crudo = localStorage.getItem(CLAVE_BORRADOR);
-      if (crudo) {
-        const datos = JSON.parse(crudo) as {
-          contacto?: Partial<Contacto>;
-          respuestas?: Record<string, string>;
-          paso?: number;
-        };
-        // localStorage no existe en el prerender: el estado inicial es
-        // necesariamente el vacío y el borrador solo puede llegar aquí.
-        /* eslint-disable react-hooks/set-state-in-effect */
-        if (datos.contacto) setContacto({ ...CONTACTO_VACIO, ...datos.contacto });
-        if (datos.respuestas) setRespuestas(datos.respuestas);
-        if (typeof datos.paso === "number") setPaso(Math.min(datos.paso, TOTAL_PASOS - 1));
-        setTeniaBorrador(true);
-        /* eslint-enable react-hooks/set-state-in-effect */
-      }
+      const leido: unknown = crudo ? JSON.parse(crudo) : null;
+      if (leido && typeof leido === "object" && !Array.isArray(leido)) datos = leido;
     } catch {
-      // Ventana privada o almacenamiento bloqueado: se empieza en limpio.
+      // Ventana privada o almacenamiento bloqueado: se empieza en limpio, y el
+      // prerrelleno vale igual para esta visita.
+    }
+
+    const diagnostico = decodificar(queryRef.current);
+    const mezcla = mezclarConBorrador(
+      {
+        respuestas: respuestasGuardadas(datos?.respuestas),
+        contacto: contactoGuardado(datos?.contacto),
+      },
+      aRespuestasAuditoria(diagnostico.sector, diagnostico.respuestas)
+    );
+
+    // localStorage y la query no existen en el prerender: el estado inicial es
+    // necesariamente el vacío y el borrador solo puede llegar aquí.
+    setContacto(mezcla.contacto);
+    setRespuestas(mezcla.respuestas);
+    if (datos) {
+      if (typeof datos.paso === "number" && Number.isInteger(datos.paso)) {
+        setPaso(Math.max(0, Math.min(datos.paso, TOTAL_PASOS - 1)));
+      }
+      setTeniaBorrador(true);
+    }
+    if (mezcla.puestas > 0) {
+      setPrerrelleno({ puestas: mezcla.puestas, saltadas: mezcla.saltadas });
     }
     setBorradorCargado(true);
   }, []);
@@ -91,6 +159,16 @@ export function FormularioAuditoria() {
       localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ contacto, respuestas, paso }));
     } catch {
       // Sin almacenamiento el formulario funciona igual, solo que sin red de seguridad.
+    }
+    // Con lo prerrellenado ya en el borrador, la query del diagnóstico sobra:
+    // si se quedara, recargar volvería a poner lo que se haya borrado a
+    // propósito. Se quitan solo sus parámetros; los demás y el hash se quedan.
+    if (quitarQueryRef.current) {
+      quitarQueryRef.current = false;
+      queryRef.current = "";
+      const url = new URL(window.location.href);
+      for (const p of PARAMETROS_DIAGNOSTICO) url.searchParams.delete(p);
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }, [contacto, respuestas, paso, borradorCargado, resultado]);
 
@@ -167,78 +245,95 @@ export function FormularioAuditoria() {
         )}
       </aside>
 
-      <form
-        className="mt-10 lg:mt-0"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (paso < TOTAL_PASOS - 1) irA(paso + 1);
-          else void enviar();
-        }}
-      >
-        {/* Campo trampa. Invisible para quien mira la página y fuera del orden
-            de tabulación; solo lo rellenan los rellenadores automáticos. */}
-        <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
-          <label htmlFor="direccion_fiscal">No rellenes este campo</label>
-          <input
-            ref={trampaRef}
-            id="direccion_fiscal"
-            name="direccion_fiscal"
-            type="text"
-            tabIndex={-1}
-            autoComplete="off"
+      <div className="mt-10 lg:mt-0">
+        {/* Encima del formulario y en cualquier paso (PD-11). La región está
+            siempre en el DOM para que el lector de pantalla lea el aviso
+            cuando aparece. */}
+        <div role="status">{prerrelleno && <AvisoPrerrelleno {...prerrelleno} />}</div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (paso < TOTAL_PASOS - 1) irA(paso + 1);
+            else void enviar();
+          }}
+        >
+          {/* Campo trampa. Invisible para quien mira la página y fuera del orden
+              de tabulación; solo lo rellenan los rellenadores automáticos. */}
+          <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
+            <label htmlFor="direccion_fiscal">No rellenes este campo</label>
+            <input
+              ref={trampaRef}
+              id="direccion_fiscal"
+              name="direccion_fiscal"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
+          {paso === 0 ? (
+            <PasoContacto contacto={contacto} setContacto={setContacto} fallos={fallos} />
+          ) : (
+            bloque && (
+              <fieldset>
+                <legend className="sr-only">
+                  Bloque {bloque.numero}: {bloque.titulo}
+                </legend>
+                <p className="font-mono-label mb-3 text-[10px]">
+                  Bloque {bloque.numero} de {bloques.length}
+                </p>
+                <h2 className="text-3xl font-medium text-text-primary md:text-5xl">
+                  {bloque.titulo}
+                </h2>
+                {bloque.entradilla && (
+                  <p className="mt-4 max-w-xl text-text-muted">{bloque.entradilla}</p>
+                )}
+
+                {/* Medida limitada: un campo de una línea a todo el ancho de la
+                    columna pasa de los 100 caracteres y se lee mal. */}
+                <div className="mt-10 max-w-2xl space-y-8">
+                  {bloque.preguntas.map((pregunta) => (
+                    <Campo
+                      key={pregunta.id}
+                      id={pregunta.id}
+                      etiqueta={pregunta.etiqueta}
+                      ayuda={pregunta.ayuda}
+                      numero={pregunta.id}
+                      valor={respuestas[pregunta.id] ?? ""}
+                      onChange={(v) => setRespuestas((r) => ({ ...r, [pregunta.id]: v }))}
+                      multilinea={pregunta.tipo === "larga"}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+            )
+          )}
+
+          {resultado && !resultado.ok && <Error resultado={resultado} />}
+
+          <Navegacion
+            paso={paso}
+            enviando={enviando}
+            onAtras={() => irA(paso - 1)}
+            onSiguiente={() => irA(paso + 1)}
+            onEnviar={() => void enviar()}
+            respondidas={respondidas}
           />
-        </div>
-
-        {paso === 0 ? (
-          <PasoContacto contacto={contacto} setContacto={setContacto} fallos={fallos} />
-        ) : (
-          bloque && (
-            <fieldset>
-              <legend className="sr-only">
-                Bloque {bloque.numero}: {bloque.titulo}
-              </legend>
-              <p className="font-mono-label mb-3 text-[10px]">
-                Bloque {bloque.numero} de {bloques.length}
-              </p>
-              <h2 className="text-3xl font-medium text-text-primary md:text-5xl">
-                {bloque.titulo}
-              </h2>
-              {bloque.entradilla && (
-                <p className="mt-4 max-w-xl text-text-muted">{bloque.entradilla}</p>
-              )}
-
-              {/* Medida limitada: un campo de una línea a todo el ancho de la
-                  columna pasa de los 100 caracteres y se lee mal. */}
-              <div className="mt-10 max-w-2xl space-y-8">
-                {bloque.preguntas.map((pregunta) => (
-                  <Campo
-                    key={pregunta.id}
-                    id={pregunta.id}
-                    etiqueta={pregunta.etiqueta}
-                    ayuda={pregunta.ayuda}
-                    numero={pregunta.id}
-                    valor={respuestas[pregunta.id] ?? ""}
-                    onChange={(v) => setRespuestas((r) => ({ ...r, [pregunta.id]: v }))}
-                    multilinea={pregunta.tipo === "larga"}
-                  />
-                ))}
-              </div>
-            </fieldset>
-          )
-        )}
-
-        {resultado && !resultado.ok && <Error resultado={resultado} />}
-
-        <Navegacion
-          paso={paso}
-          enviando={enviando}
-          onAtras={() => irA(paso - 1)}
-          onSiguiente={() => irA(paso + 1)}
-          onEnviar={() => void enviar()}
-          respondidas={respondidas}
-        />
-      </form>
+        </form>
+      </div>
     </div>
+  );
+}
+
+function AvisoPrerrelleno({ puestas, saltadas }: { puestas: number; saltadas: number }) {
+  const una = puestas === 1;
+  return (
+    <p className="font-mono-label mb-10 max-w-2xl text-[10px] leading-relaxed text-accent">
+      Hemos puesto {puestas} {una ? "respuesta" : "respuestas"} de tu diagnóstico rápido.{" "}
+      {una ? "Revísala y cámbiala si no cuadra." : "Revísalas y cámbialas si no cuadran."}
+      {saltadas > 0 && " Las que ya habías escrito no las hemos tocado."}
+    </p>
   );
 }
 
