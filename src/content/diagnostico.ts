@@ -238,6 +238,154 @@ export const nombresSector: NombreSector[] = [
   { codigo: "otro", negocio: "negocio", ficha: null },
 ];
 
+/**
+ * Slug de la página de cada sector (D-009). **No se cambian nunca**: van en
+ * los enlaces ya mandados. `otro` no tiene página: su diagnóstico vive en la
+ * portada. Es un `Map` para que un código que llegue de fuera no encuentre
+ * nada del prototipo. `sectores.ts` (T06) lo importa de aquí.
+ */
+export const SLUG_SECTOR: ReadonlyMap<Sector, string> = new Map<Sector, string>([
+  ["dental", "clinicas-dentales"],
+  ["rural", "alojamientos-rurales"],
+  ["despachos", "asesorias-y-despachos"],
+]);
+
+// ── Textos para la auditoría (spec §3.1 y §3.6, D-004) ─────────────────────
+
+/**
+ * Marca con la que acaba cada respuesta prerrellenada. El kit transcribe las P
+ * tal cual, y así el informe sabe que esa respuesta sale del diagnóstico (que
+ * puede haber hecho Álvaro por el prospecto), no de lo que escribió el negocio.
+ */
+export const MARCA_DIAGNOSTICO = " (del diagnóstico rápido)";
+
+/** Las P de la auditoría (`auditoria.ts`) que puede prerrellenar el diagnóstico. */
+export type PAuditoria = "P2" | "P7" | "P10" | "P12" | "P14" | "P23" | "P35";
+
+/**
+ * Una frase de prerrelleno: si la respuesta a `pregunta` es `codigo`, la P
+ * `p` se rellena con `texto` (sin la marca; la pone `aRespuestasAuditoria`).
+ * En el tono de quien responde. Las «No lo sé» no tienen frase: nunca
+ * prerrellenan nada. `canales` (P7) no va aquí: se escribe con
+ * `nombresCanal`, porque es una lista.
+ *
+ * Textos en borrador hasta que Álvaro los revise (P-03).
+ */
+export interface FrasePrerrelleno {
+  pregunta: Exclude<Clave, "canales">;
+  codigo: string;
+  p: PAuditoria;
+  texto: Texto;
+}
+
+export const frasesPrerrelleno: FrasePrerrelleno[] = [
+  // P2 · A qué os dedicáis, en una frase. `s=otro` no rellena.
+  { pregunta: "s", codigo: "dental", p: "P2", texto: { base: "Somos una clínica dental" } },
+  { pregunta: "s", codigo: "rural", p: "P2", texto: { base: "Tenemos un alojamiento rural" } },
+  {
+    pregunta: "s",
+    codigo: "despachos",
+    p: "P2",
+    texto: { base: "Somos una asesoría o un despacho de abogados" },
+  },
+
+  // P14 · ¿Puede el cliente reservar él solo por internet? (y P12 con sin-cita)
+  { pregunta: "reserva", codigo: "llamando", p: "P14", texto: { base: "No, solo llamando o por mensaje" } },
+  {
+    pregunta: "reserva",
+    codigo: "online",
+    p: "P14",
+    texto: { base: "Sí, reservan solos por internet", rural: "Sí, reservan solos en nuestra web" },
+  },
+  {
+    pregunta: "reserva",
+    codigo: "plataformas",
+    p: "P14",
+    texto: { base: "Solo a través de plataformas como Booking o Airbnb" },
+  },
+  {
+    pregunta: "reserva",
+    codigo: "sin-cita",
+    p: "P14",
+    texto: { base: "No trabajamos con cita", rural: "No trabajamos con reserva" },
+  },
+  // P12 · ¿Dónde apuntáis las citas? La auditoría pide escribir justo esto.
+  { pregunta: "reserva", codigo: "sin-cita", p: "P12", texto: { base: "No trabajamos con cita" } },
+
+  // P10 · ¿Qué pasa con lo que llega fuera de horario? `no-se` no rellena.
+  { pregunta: "fuera", codigo: "sin-contestar", p: "P10", texto: { base: "Se quedan sin contestar" } },
+  { pregunta: "fuera", codigo: "dia-siguiente", p: "P10", texto: { base: "Los contestamos al día siguiente" } },
+  { pregunta: "fuera", codigo: "siempre", p: "P10", texto: { base: "Siempre hay alguien que contesta" } },
+
+  // P23 · ¿Pedís reseñas?
+  { pregunta: "resenas", codigo: "siempre", p: "P23", texto: { base: "Sí, las pedimos siempre" } },
+  { pregunta: "resenas", codigo: "a-veces", p: "P23", texto: { base: "Sí, pero solo a veces" } },
+  { pregunta: "resenas", codigo: "nunca", p: "P23", texto: { base: "No, no las pedimos" } },
+
+  // P35 · Si pudieras arreglar una sola cosa del día a día, ¿cuál sería?
+  {
+    pregunta: "dolor",
+    codigo: "preguntas",
+    p: "P35",
+    texto: { base: "Dejar de contestar siempre las mismas preguntas" },
+  },
+  {
+    pregunta: "dolor",
+    codigo: "agenda",
+    p: "P35",
+    texto: {
+      base: "Cuadrar las citas y los recordatorios",
+      dental: "Cuadrar la agenda y los recordatorios de cita",
+      rural: "Cuadrar el calendario de reservas",
+      despachos: "Cuadrar las citas con los clientes",
+    },
+  },
+  {
+    pregunta: "dolor",
+    codigo: "papeles",
+    p: "P35",
+    texto: {
+      base: "Pedir y ordenar la documentación",
+      dental: "Pedir y ordenar los datos de cada paciente nuevo",
+      rural: "Pedir los datos de cada huésped para el registro",
+      despachos: "Pedir y ordenar la documentación de los clientes",
+    },
+  },
+  { pregunta: "dolor", codigo: "cobros", p: "P35", texto: { base: "Hacer las facturas y perseguir los cobros" } },
+  {
+    pregunta: "dolor",
+    codigo: "clientes",
+    p: "P35",
+    texto: {
+      base: "Que nos encuentren clientes nuevos",
+      dental: "Que nos encuentren pacientes nuevos",
+      rural: "Que nos encuentren huéspedes nuevos",
+    },
+  },
+];
+
+/** Cómo se nombra cada canal en P7: «Por estos canales, sin orden: …». */
+export const nombresCanal: { codigo: string; nombre: Texto }[] = [
+  { codigo: "tel", nombre: { base: "teléfono" } },
+  { codigo: "wa", nombre: { base: "WhatsApp" } },
+  { codigo: "web", nombre: { base: "el formulario de la web" } },
+  { codigo: "email", nombre: { base: "correo electrónico" } },
+  { codigo: "redes", nombre: { base: "Instagram o Facebook" } },
+  {
+    codigo: "puerta",
+    nombre: {
+      base: "en persona en el local",
+      dental: "en persona en la clínica",
+      rural: "en persona en la casa",
+      despachos: "en persona en el despacho",
+    },
+  },
+  { codigo: "plataformas", nombre: { base: "plataformas como Booking o Airbnb" } },
+];
+
+/** Arranque de la frase de P7. No ordena de más a menos: no se preguntó. */
+export const INICIO_CANALES = "Por estos canales, sin orden: ";
+
 // ── Mejoras y reglas (spec §3.3 y §3.4, PD-5) ──────────────────────────────
 
 export type IdMejora =
@@ -403,7 +551,6 @@ export const mejoras: Mejora[] = [
       despachos:
         "Cada cliente sube su documentación a un formulario con la lista de lo que falta. Llega junta y con su nombre, no repartida entre el correo y el WhatsApp.",
     },
-    enlace: { portada: "/herramientas/#formularios", sector: "/herramientas/#formularios" },
     sectores: TODOS,
   },
   {
@@ -432,6 +579,12 @@ export const mejoras: Mejora[] = [
   },
 ];
 
+/** Condición sobre una respuesta; en `canales` basta con que esté marcado alguno. */
+export interface Condicion {
+  pregunta: ClaveRespuesta;
+  en: string[];
+}
+
 /**
  * Una regla (PD-5): si la respuesta a `pregunta` (o, en `canales`, alguno de
  * los marcados) está en `en`, se propone `mejora` con su `porque`. Una sola
@@ -440,7 +593,7 @@ export const mejoras: Mejora[] = [
  */
 export interface Regla {
   mejora: IdMejora;
-  si: { pregunta: ClaveRespuesta; en: string[] };
+  si: Condicion;
   /** Mayor primero. */
   prioridad: number;
   porque: Texto;
@@ -613,9 +766,31 @@ export const reglas: Regla[] = [
   },
 ];
 
+/**
+ * Exclusiones por respuesta: si se cumple `si`, ninguna de estas `mejoras`
+ * sale en el resultado, ni por regla ni por relleno. Es la forma de que el
+ * diagnóstico no proponga algo que contradice lo que la persona ha respondido
+ * (spec §3.4, D-013).
+ */
+export interface Exclusion {
+  si: Condicion;
+  mejoras: IdMejora[];
+}
+
+export const exclusiones: Exclusion[] = [
+  // Ya piden solos por internet: no hace falta enseñarles a pedir sin llamar.
+  { si: { pregunta: "reserva", en: ["online"] }, mejoras: ["reservas-online", "reservas-directas"] },
+  // Sin cita ni reserva, un calendario de citas no tiene sentido.
+  { si: { pregunta: "reserva", en: [RESERVA_SIN_CITA] }, mejoras: ["reservas-online", "reservas-directas"] },
+];
+
 export interface RellenoSector {
   sector: Sector;
-  /** Si salen menos de 3 mejoras, se completa con estas, en orden y sin repetir. */
+  /**
+   * Si salen menos de 3 mejoras, se completa con estas, en orden, sin repetir
+   * y saltándose las excluidas por las respuestas. Hay más de 3 para que
+   * siempre queden 3 aunque se excluyan las primeras.
+   */
   mejoras: IdMejora[];
   /** El porqué de las mejoras que entran por relleno. */
   porque: string;
@@ -624,22 +799,22 @@ export interface RellenoSector {
 export const relleno: RellenoSector[] = [
   {
     sector: "dental",
-    mejoras: ["reservas-online", "resenas", "asistente"],
+    mejoras: ["reservas-online", "resenas", "asistente", "ficha-google", "formularios"],
     porque: "Es de lo que más compensa en una clínica dental.",
   },
   {
     sector: "rural",
-    mejoras: ["reservas-directas", "resenas", "ficha-google"],
+    mejoras: ["reservas-directas", "resenas", "ficha-google", "asistente", "web-nueva"],
     porque: "Es de lo que más compensa en un alojamiento rural.",
   },
   {
     sector: "despachos",
-    mejoras: ["documentacion", "formularios", "asistente"],
+    mejoras: ["documentacion", "formularios", "asistente", "resenas", "ficha-google"],
     porque: "Es de lo que más compensa en una asesoría o un despacho.",
   },
   {
     sector: "otro",
-    mejoras: ["ficha-google", "resenas", "asistente"],
+    mejoras: ["ficha-google", "resenas", "asistente", "formularios", "web-nueva"],
     porque: "Es de lo que más compensa en casi cualquier negocio.",
   },
 ];

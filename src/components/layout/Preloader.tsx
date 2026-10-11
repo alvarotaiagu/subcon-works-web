@@ -4,14 +4,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap, registerGsap, EASE_INOUT } from "@/lib/gsap";
 import { gearPath } from "@/lib/gearPath";
 
-export const PRELOADER_SESSION_KEY = "subcon-preloader-seen";
-export const PRELOADER_DONE_EVENT = "subcon:preloader-done";
+export const PRELOADER_SESSION_KEY = "undertactics-preloader-seen";
+export const PRELOADER_DONE_EVENT = "undertactics:preloader-done";
 /**
  * La cortina ya no está: se ha quitado el `overflow:hidden` del body y se
  * puede hacer scroll. Llega ~1 s después de PRELOADER_DONE_EVENT (que salta
  * al contar 100, antes del encaje y del obturador).
  */
-export const PRELOADER_GONE_EVENT = "subcon:preloader-gone";
+export const PRELOADER_GONE_EVENT = "undertactics:preloader-gone";
 
 /**
  * ¿Está la cortina en pantalla ahora mismo? Lo pone a `true` el

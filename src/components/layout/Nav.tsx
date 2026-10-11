@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/components/ui/Logo";
 import { useMagnetic } from "@/hooks/useMagnetic";
 
 export function Nav() {
@@ -43,8 +44,8 @@ export function Nav() {
       )}
     >
       <div className="container-max flex h-16 items-center justify-between md:h-20">
-        <Link href="/" className="font-mono-label text-xs text-text-primary md:text-sm">
-          {site.nombre}
+        <Link href="/" className="text-lg md:text-xl" aria-label={`${site.nombre}, inicio`}>
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Navegación principal">
@@ -90,8 +91,8 @@ export function Nav() {
           aria-label="Menú de navegación"
           className="fixed inset-0 z-[85] flex flex-col bg-bg-base"
         >
-          <div className="container-max flex h-16 items-center justify-between">
-            <span className="font-mono-label text-xs text-text-primary">{site.nombre}</span>
+          <div className="container-max flex h-16 w-full items-center justify-between">
+            <Logo className="text-lg" />
             <button
               type="button"
               onClick={() => setOpen(false)}
@@ -103,7 +104,7 @@ export function Nav() {
           </div>
 
           <nav
-            className="container-max flex flex-1 flex-col justify-center gap-6"
+            className="container-max flex w-full flex-1 flex-col justify-center gap-6"
             aria-label="Navegación móvil"
           >
             {site.nav.map((item, i) => (
