@@ -250,7 +250,7 @@ Cada una tiene su fichero de test (PD-8).
     - el teclado llega a todo;
     - el `<noscript>` está en el HTML de `out/`.
 
-- [ ] **T09 · `Diagnostico`: resultado, acciones y URL.**
+- [x] **T09 · `Diagnostico`: resultado, acciones y URL.**
   - *Cubre*: spec §3.3, §3.4 (uso), §3.5 (cliente), PD-4, PD-10.
   - *Depende de*: T03, T04, T07, T08.
   - *Hacer*: `Resultado.tsx` y el resto de `Diagnostico.tsx`.
