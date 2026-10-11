@@ -219,13 +219,14 @@ export function diagnosticar(
   contexto: Contexto,
   { hayPlantillas }: { hayPlantillas: boolean },
 ): MejoraDiagnosticada[] {
-  const ganadoras = new Map<IdMejora, { regla: Regla; orden: number }>();
+  const ganadoras = new Map<IdMejora, { mejora: Mejora; regla: Regla; orden: number }>();
   reglas.forEach((regla, orden) => {
-    if (!aplica(mejoraPorId.get(regla.mejora), sector)) return;
+    const mejora = mejoraPorId.get(regla.mejora);
+    if (!aplica(mejora, sector)) return;
     if (!seCumple(regla, respuestas)) return;
-    const previa = ganadoras.get(regla.mejora);
+    const previa = ganadoras.get(mejora.id);
     if (!previa || regla.prioridad > previa.regla.prioridad) {
-      ganadoras.set(regla.mejora, { regla, orden });
+      ganadoras.set(mejora.id, { mejora, regla, orden });
     }
   });
 
@@ -243,7 +244,7 @@ export function diagnosticar(
   const resultado = [...ganadoras.values()]
     .sort((a, b) => b.regla.prioridad - a.regla.prioridad || a.orden - b.orden)
     .slice(0, MAX_MEJORAS)
-    .map(({ regla }) => vistaDe(mejoraPorId.get(regla.mejora) as Mejora, textoPara(regla.porque, sector)));
+    .map(({ mejora, regla }) => vistaDe(mejora, textoPara(regla.porque, sector)));
 
   const extra = rellenoPorSector.get(sector);
   if (extra) {
