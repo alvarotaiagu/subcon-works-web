@@ -29,10 +29,24 @@ const CLAVES_URL = new Set<string>(["v", ...todasLasPreguntas.map((p) => p.clave
  */
 function escribirQuery(diagnostico: string | null) {
   const { pathname, search, hash } = window.location;
-  const otros = new URLSearchParams(search);
-  for (const clave of [...otros.keys()]) if (CLAVES_URL.has(clave)) otros.delete(clave);
-  // `codificar` deja las comas de `canales` tal cual: no pasa por URLSearchParams.
-  const query = [otros.toString(), diagnostico ?? ""].filter(Boolean).join("&");
+  // Los otros parámetros se copian tal cual, sin pasar por URLSearchParams,
+  // que los recodificaría (`a%20b` → `a+b`, `?x` → `?x=`). `codificar` deja
+  // también las comas de `canales` tal cual.
+  const otros = search
+    .slice(1)
+    .split("&")
+    .filter((parte) => {
+      if (!parte) return false;
+      const clave = parte.split("=", 1)[0];
+      let decodificada = clave;
+      try {
+        decodificada = decodeURIComponent(clave.replace(/\+/g, " "));
+      } catch {
+        // `%` suelto: se compara la clave en bruto.
+      }
+      return !CLAVES_URL.has(decodificada);
+    });
+  const query = [...otros, diagnostico ?? ""].filter(Boolean).join("&");
   const nueva = `${pathname}${query ? `?${query}` : ""}${hash}`;
   if (nueva !== `${pathname}${search}${hash}`) window.history.replaceState(null, "", nueva);
 }

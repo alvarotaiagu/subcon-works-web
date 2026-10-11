@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type Ref } from "react";
+import { useEffect, useMemo, useRef, useState, type Ref } from "react";
 import Link from "next/link";
 import { codificar, diagnosticar, tituloResultado, urlCanonica } from "@/lib/diagnostico";
 import type { MejoraDiagnosticada } from "@/lib/diagnostico";
@@ -10,6 +10,11 @@ import { withBasePath } from "@/lib/utils";
 
 /** Lo que pasa al pulsar «Copiar el enlace»: nada aún, copiado o a mano. */
 type Copia = "nada" | "copiado" | "a-mano";
+
+function seleccionar(campo: HTMLInputElement | null) {
+  campo?.focus();
+  campo?.select();
+}
 
 /**
  * El resultado del diagnóstico rápido (spec §3.3): de 3 a 5 mejoras con su
@@ -49,18 +54,26 @@ export function Resultado({
     // `s=dental` se comparte apuntando a la página dental (§3.5).
     const canonica = urlCanonica(sector, respuestas, window.location.origin, withBasePath(""));
     setUrl(canonica);
+    // Se vacía el aviso antes de copiar: si no, un segundo «Enlace copiado»
+    // no cambia el texto y el lector de pantalla no lo vuelve a anunciar.
+    setCopia("nada");
     try {
       await navigator.clipboard.writeText(canonica);
       setCopia("copiado");
     } catch {
       // Sin permiso o sin contexto seguro: la URL a la vista, ya seleccionada.
+      // La primera vez el campo aún no existe y lo selecciona el efecto de
+      // abajo al montarse; en un segundo intento ya está y se selecciona aquí.
       setCopia("a-mano");
-      requestAnimationFrame(() => {
-        campoRef.current?.focus();
-        campoRef.current?.select();
-      });
+      seleccionar(campoRef.current);
     }
   };
+
+  // Tras el commit, no en un `requestAnimationFrame`: si el portapapeles
+  // rechaza después del `await`, React puede no haber pintado el campo aún.
+  useEffect(() => {
+    if (copia === "a-mano") seleccionar(campoRef.current);
+  }, [copia]);
 
   return (
     <div>
