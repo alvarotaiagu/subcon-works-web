@@ -112,11 +112,18 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-20 pt-32 md:pt-40">
+    // En vertical el padding superior es la franja donde van los engranajes (ver
+    // GearsScene.freeBand): en pantallas bajas el texto empujaría hasta la nav
+    // y los engranajes no tendrían sitio sin pasar por detrás de las letras.
+    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-20 pt-32 portrait:pt-56 md:landscape:pt-40">
       <Reticula />
       <UmbralFondo />
       <HeroGears />
-      <div ref={contentRef} className="container-max relative z-10 will-change-transform">
+      <div
+        ref={contentRef}
+        data-hero-contenido
+        className="container-max relative z-10 will-change-transform"
+      >
         <p ref={eyebrowRef} className="font-mono-label mb-6">
           Estudio de diseño, desarrollo y automatización con IA
         </p>

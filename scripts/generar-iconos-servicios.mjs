@@ -1,9 +1,9 @@
-// Genera los nueve iconos de /public/servicios, uno por servicio de
+// Genera los diez iconos de /public/servicios, uno por servicio de
 // src/content/servicios.ts. Son marcas de línea en el acento de la marca,
 // pensadas para el panel de 224 px que sigue al cursor en la sección Servicios:
 // dibujo técnico, sin relleno y sin texto, legibles a ese tamaño.
 //
-// Se generan desde aquí y no a mano para que los nueve compartan caja, grosor y
+// Se generan desde aquí y no a mano para que los diez compartan caja, grosor y
 // márgenes. Si cambias uno, vuelve a lanzar `node scripts/generar-iconos-servicios.mjs`.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -37,7 +37,17 @@ const iconos = {
   <path d="M140 126h20M140 138h12" />
   `,
 
-  // 02 · Plantillas por sector — tres bases apiladas, la de delante ya adaptada.
+  // 02 · Tienda online — el escaparate con su toldo y, delante, la bolsa del pedido ya cobrado.
+  tienda: `
+  <path d="M24 64l14-30h124l14 30" opacity="0.45" />
+  <path d="M24 64a19 14 0 0 0 38 0a19 14 0 0 0 38 0a19 14 0 0 0 38 0a19 14 0 0 0 38 0" opacity="0.45" />
+  <path d="M34 80v86M166 80v86M34 166h132" opacity="0.45" />
+  <path d="M68 110h64l6 56H62z" />
+  <path d="M86 110v-8a14 14 0 0 1 28 0v8" />
+  <path d="M88 140l9 9 16-18" />
+  `,
+
+  // 03 · Plantillas por sector — tres bases apiladas, la de delante ya adaptada.
   plantillas: `
   <rect x="58" y="24" width="112" height="86" rx="5" opacity="0.3" />
   <rect x="44" y="44" width="112" height="86" rx="5" opacity="0.6" />
@@ -48,7 +58,7 @@ const iconos = {
   <path d="M115 115l5 5 9-11" />
   `,
 
-  // 03 · Rescate y migración — lo viejo sale de su caja y entra en la nueva.
+  // 04 · Rescate y migración — lo viejo sale de su caja y entra en la nueva.
   rescate: `
   <path d="M20 46h56v108H20" opacity="0.45" />
   <path d="M180 46h-56v108h56" />
@@ -59,7 +69,7 @@ const iconos = {
   <path d="M92 130c-8 0-14-6-14-14" opacity="0.5" />
   `,
 
-  // 04 · Aparecer en Google — la chincheta con su alcance en el mapa.
+  // 05 · Aparecer en Google — la chincheta con su alcance en el mapa.
   google: `
   <path d="M100 30a34 34 0 0 1 34 34c0 26-34 62-34 62S66 90 66 64a34 34 0 0 1 34-34z" />
   <circle cx="100" cy="64" r="12" />
@@ -67,7 +77,7 @@ const iconos = {
   <path d="M44 156a70 26 0 0 0 112 0" opacity="0.28" />
   `,
 
-  // 05 · Automatización — lo que entra por un sitio sale hecho por el otro.
+  // 06 · Automatización — lo que entra por un sitio sale hecho por el otro.
   automatizacion: `
   <circle cx="36" cy="100" r="11" />
   <circle cx="100" cy="52" r="11" />
@@ -77,7 +87,7 @@ const iconos = {
   <path d="M100 63v74" opacity="0.3" />
   `,
 
-  // 06 · Agentes con IA — la conversación con la red por debajo.
+  // 07 · Agentes con IA — la conversación con la red por debajo.
   agentes: `
   <path d="M28 44h144v84H28z" />
   <path d="M62 128l-6 28 34-28" />
@@ -89,14 +99,14 @@ const iconos = {
   <path d="M78 79l18 20M122 79l-16 20M107 104h36M93 104H59" opacity="0.55" />
   `,
 
-  // 07 · Marketing y contenido — el texto que se escribe solo, con su destello.
+  // 08 · Marketing y contenido — el texto que se escribe solo, con su destello.
   contenido: `
   <path d="M34 42h96M34 68h120M34 94h84M34 120h108M34 146h64" />
   <path d="M150 30l6 18 18 6-18 6-6 18-6-18-18-6 18-6z" fill="${ACCENT}" stroke="none" opacity="0.9" />
   <path d="M142 132l4 11 11 4-11 4-4 11-4-11-11-4 11-4z" fill="${ACCENT}" stroke="none" opacity="0.55" />
   `,
 
-  // 08 · Vídeo, reels y redes — el encuadre vertical del móvil con el play.
+  // 09 · Vídeo, reels y redes — el encuadre vertical del móvil con el play.
   video: `
   <rect x="58" y="18" width="84" height="150" rx="12" />
   <path d="M86 18h28" />
@@ -106,7 +116,7 @@ const iconos = {
   <circle cx="100" cy="182" r="4" fill="${ACCENT}" stroke="none" />
   `,
 
-  // 09 · Mantenimiento — la llave sobre el engranaje: sigue funcionando.
+  // 10 · Mantenimiento — la llave sobre el engranaje: sigue funcionando.
   mantenimiento: `
   <circle cx="104" cy="104" r="34" />
   <circle cx="104" cy="104" r="13" />

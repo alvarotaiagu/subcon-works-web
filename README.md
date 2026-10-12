@@ -1,6 +1,6 @@
 # subcon-works-web
 
-Web del estudio **Subcon Works**: diseño y desarrollo web, automatización y IA
+Web del estudio **Undertactics** (antes Subcon Works): diseño y desarrollo web, automatización y IA
 para negocios pequeños de Galicia.
 
 Next.js 16 con `output: "export"`, publicada como *project site* de GitHub Pages
@@ -23,14 +23,14 @@ El `basePath` solo se activa en el build de CI (`GITHUB_ACTIONS=true`), para que
 |---|---|
 | Hero | Engranajes WebGL y la cortina de entrada |
 | Marquesina | Dos bandas cruzadas: los sectores con plantilla y lo que el sistema hace solo |
-| Servicios | Los nueve servicios de `src/content/servicios.ts`, con su icono de línea |
+| Servicios | Los diez servicios de `src/content/servicios.ts`, con su icono de línea |
 | Plantillas | Las 10 destacadas en carrusel horizontal anclado, y las 30 en `/plantillas/` |
 | Proceso | Los seis pasos, anclados con scrub |
 | Auditoría | La oferta de la auditoría gratuita, que lleva a `/auditoria/` |
 | Cifras | Contadores con anillo, todos comprobables |
 | Cierre | Blob WebGL y llamada final |
 
-Páginas: `/` · `/plantillas/` · `/auditoria/` · `/privacidad/`.
+Páginas: `/` · `/plantillas/` · `/herramientas/` · `/auditoria/` · `/privacidad/`.
 
 ## Dos cosas que no se tocan
 
@@ -50,7 +50,8 @@ trabajos, no antes.
 | Archivo | Qué manda |
 |---|---|
 | `site.ts` | Nombre, contacto, navegación |
-| `servicios.ts` | Los nueve servicios y lo que incluye cada uno |
+| `servicios.ts` | Los diez servicios y lo que incluye cada uno |
+| `herramientas.ts` | El software propio de `/herramientas/`, con sus capturas |
 | `plantillas.ts` | El catálogo de 30, con su demo y su captura |
 | `proceso.ts` | Los seis pasos |
 | `cifras.ts` | Los cuatro contadores |

@@ -25,10 +25,17 @@ const SPECS = [
   { teeth: 18, label: "02 — DESARROLLO" },
   { teeth: 12, label: "03 — AUTOMATIZACIÓN IA" },
 ];
+/** Por debajo de esta relación ancho/alto el hero se compone en vertical. */
+const PORTRAIT_ASPECT = 0.8;
 
 export class GearsScene extends SceneBase {
   private gears: GearDef[] = [];
   private trainGroup!: THREE.Group;
+  private positions: THREE.Vector3[] = [];
+  private outerRs: number[] = [];
+  /** Tren girado 90º para el hero en vertical (ver onLayout). */
+  private tumbado = false;
+  private disposed = false;
   private worldPosScratch = new THREE.Vector3();
   /** Relación de velocidad angular de cada engranaje frente al primero (signo incluido). */
   private ratios: number[] = [];
@@ -103,39 +110,18 @@ export class GearsScene extends SceneBase {
         )
     );
 
-    // El tren se encaja al frustum de la cámara (nunca se recorta, sea cual
-    // sea el tamaño de pantalla) y se desplaza hacia la derecha del hero.
-    const outerRs = pitchRs.map((r) => r + MODULE);
-    let minX = Infinity;
-    let maxX = -Infinity;
-    let minY = Infinity;
-    let maxY = -Infinity;
-    positions.forEach((p, i) => {
-      minX = Math.min(minX, p.x - outerRs[i]);
-      maxX = Math.max(maxX, p.x + outerRs[i]);
-      minY = Math.min(minY, p.y - outerRs[i]);
-      maxY = Math.max(maxY, p.y + outerRs[i]);
-    });
-    const boundsW = maxX - minX;
-    const boundsH = maxY - minY;
-    const boundsCenter = new THREE.Vector2((minX + maxX) / 2, (minY + maxY) / 2);
-
-    const trainDepth = 0; // las tres ruedas son coplanares
-    const dist = this.camera.position.z - trainDepth;
-    const vFov = THREE.MathUtils.degToRad(this.camera.fov);
-    const frustumH = 2 * Math.tan(vFov / 2) * dist;
-    const frustumW = frustumH * this.camera.aspect;
-    const fitScale = Math.min((frustumH * 0.72) / boundsH, (frustumW * 0.48) / boundsW);
+    this.positions = positions;
+    this.outerRs = pitchRs.map((r) => r + MODULE);
 
     const trainGroup = new THREE.Group();
-    trainGroup.scale.setScalar(fitScale);
-    trainGroup.position.set(
-      frustumW * 0.16 - boundsCenter.x * fitScale,
-      -boundsCenter.y * fitScale,
-      0
-    );
     this.scene.add(trainGroup);
     this.trainGroup = trainGroup;
+    this.onLayout();
+    // La franja libre depende del alto del titular, que cambia al cargar la
+    // letra definitiva y eso no dispara ningún resize.
+    document.fonts?.ready.then(() => {
+      if (!this.disposed) this.onLayout();
+    });
 
     this.ratios = [1, -(SPECS[0].teeth / SPECS[1].teeth), 0];
     this.ratios[2] = this.ratios[1] * -(SPECS[1].teeth / SPECS[2].teeth);
@@ -211,6 +197,82 @@ export class GearsScene extends SceneBase {
     }
   }
 
+  /**
+   * Encaja el tren al frustum de la cámara (nunca se recorta por arriba ni por
+   * abajo). En horizontal va a la derecha del hero, como siempre. En vertical
+   * el titular ocupa todo el ancho y no hay "derecha" libre: el tren se gira
+   * 90º (girar el grupo entero no afecta al engrane) para quedar tumbado y se
+   * mete en la franja vacía entre la barra de navegación y el texto, pegado a
+   * la derecha y asomando un poco por el borde. Así no pasa por detrás de
+   * ninguna letra.
+   */
+  protected onLayout() {
+    if (!this.trainGroup) return;
+
+    const portrait = this.camera.aspect < PORTRAIT_ASPECT;
+    this.tumbado = portrait;
+    const theta = portrait ? -Math.PI / 2 : 0;
+    const cos = Math.cos(theta);
+    const sin = Math.sin(theta);
+
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    this.positions.forEach((p, i) => {
+      const x = p.x * cos - p.y * sin;
+      const y = p.x * sin + p.y * cos;
+      const r = this.outerRs[i];
+      minX = Math.min(minX, x - r);
+      maxX = Math.max(maxX, x + r);
+      minY = Math.min(minY, y - r);
+      maxY = Math.max(maxY, y + r);
+    });
+    const boundsW = maxX - minX;
+    const boundsH = maxY - minY;
+    const boundsCenterY = (minY + maxY) / 2;
+
+    const trainDepth = 0; // las tres ruedas son coplanares
+    const dist = this.camera.position.z - trainDepth;
+    const vFov = THREE.MathUtils.degToRad(this.camera.fov);
+    const frustumH = 2 * Math.tan(vFov / 2) * dist;
+    const frustumW = frustumH * this.camera.aspect;
+
+    let fitScale: number;
+    let x: number;
+    let y: number;
+    if (portrait) {
+      const band = this.freeBand();
+      const bandH = (band.bottom - band.top) * frustumH;
+      fitScale = Math.min((bandH * 0.9) / boundsH, (frustumW * 0.95) / boundsW);
+      // El borde derecho del tren sale un 12 % de su ancho fuera de pantalla.
+      x = frustumW / 2 + boundsW * fitScale * 0.12 - maxX * fitScale;
+      y = frustumH / 2 - ((band.top + band.bottom) / 2) * frustumH - boundsCenterY * fitScale;
+    } else {
+      fitScale = Math.min((frustumH * 0.72) / boundsH, (frustumW * 0.48) / boundsW);
+      x = frustumW * 0.16 - ((minX + maxX) / 2) * fitScale;
+      y = -boundsCenterY * fitScale;
+    }
+
+    this.trainGroup.rotation.z = theta;
+    this.trainGroup.scale.setScalar(fitScale);
+    this.trainGroup.position.set(x, y, 0);
+  }
+
+  /**
+   * Franja vertical libre de texto, en fracción del alto del canvas: desde
+   * debajo de la barra fija hasta donde empieza el contenido del hero.
+   */
+  private freeBand() {
+    const host = this.canvas.parentElement;
+    const h = host?.clientHeight || window.innerHeight;
+    const header = document.querySelector("header");
+    const content = host?.querySelector<HTMLElement>("[data-hero-contenido]");
+    const top = (header?.offsetHeight ?? 64) + 8;
+    const bottom = content ? content.offsetTop - 16 : h * 0.3;
+    return { top: top / h, bottom: Math.max(bottom, top + 120) / h };
+  }
+
   private raycastGear(clientX: number, clientY: number) {
     const ndc = this.pointerNDC(clientX, clientY);
     this.raycaster.setFromCamera(ndc, this.camera);
@@ -234,7 +296,7 @@ export class GearsScene extends SceneBase {
     // el navegador todavía interpreta el arrastre como selección de texto.
     e.preventDefault();
     this.drag = { active: true, index: idx, lastAngle: this.angleAt(idx, e.clientX, e.clientY), omega: 0 };
-    window.dispatchEvent(new CustomEvent("subcon:cursor", { detail: { state: "label", label: "Girando" } }));
+    window.dispatchEvent(new CustomEvent("undertactics:cursor", { detail: { state: "label", label: "Girando" } }));
   }
 
   private onPointerMove(e: PointerEvent) {
@@ -261,7 +323,7 @@ export class GearsScene extends SceneBase {
       const hovering = idx !== -1;
       this.onHoverChange?.(hovering);
       window.dispatchEvent(
-        new CustomEvent("subcon:cursor", {
+        new CustomEvent("undertactics:cursor", {
           detail: hovering ? { state: "label", label: "Arrastra" } : { state: null },
         })
       );
@@ -277,7 +339,7 @@ export class GearsScene extends SceneBase {
     this.drivingOmega = (omega / ratioK) * 12;
     this.drag = null;
     if (this.hoverIndex === -1) {
-      window.dispatchEvent(new CustomEvent("subcon:cursor", { detail: { state: null } }));
+      window.dispatchEvent(new CustomEvent("undertactics:cursor", { detail: { state: null } }));
     }
   }
 
@@ -310,12 +372,16 @@ export class GearsScene extends SceneBase {
         const worldAnchor = this.trainGroup.localToWorld(localAnchor);
         const p = this.worldToScreen(worldAnchor);
         label.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
-        label.style.opacity = p.visible ? "1" : "0";
+        // Con el tren tumbado (vertical) las ruedas van apretadas en la franja
+        // de arriba y la grande asoma por el borde: no hay sitio para tres
+        // etiquetas sin que se pisen o se salgan. Son decorativas: se ocultan.
+        label.style.opacity = p.visible && !this.tumbado ? "1" : "0";
       }
     });
   }
 
   dispose() {
+    this.disposed = true;
     window.removeEventListener("pointerdown", this.onDownBound);
     window.removeEventListener("pointermove", this.onMoveBound);
     window.removeEventListener("pointerup", this.onUpBound);

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { site } from "@/content/site";
 import { plantillas } from "@/content/plantillas";
+import { Logo } from "@/components/ui/Logo";
 
 function useLocalClock() {
   const [time, setTime] = useState<string | null>(null);
@@ -35,7 +36,7 @@ export function Footer() {
     <footer className="border-t border-line bg-bg-sunken">
       <div className="container-max grid gap-10 py-16 md:grid-cols-4 md:py-20">
         <div className="md:col-span-2">
-          <p className="font-mono-label mb-4 text-xs">{site.nombre}</p>
+          <Logo className="mb-5 text-2xl" />
           <p className="max-w-sm text-text-muted">{site.descripcion}</p>
           <Link
             href="/auditoria/"
@@ -61,6 +62,11 @@ export function Footer() {
             <li>
               <Link href="/plantillas/" className="link-underline">
                 Las {plantillas.length} plantillas
+              </Link>
+            </li>
+            <li>
+              <Link href="/estudio/" className="link-underline">
+                Quién hace esto
               </Link>
             </li>
             <li>

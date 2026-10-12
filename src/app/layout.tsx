@@ -65,10 +65,16 @@ export const metadata: Metadata = {
     description: site.descripcion,
     type: "website",
     locale: "es_ES",
+    // Relativa a metadataBase, así lleva el prefijo de Pages. Se genera con el
+    // logo desde marca/ (ver marca/LEEME.md). Al regenerarla, subir `v`: las
+    // redes guardan la tarjeta por URL y no verían la nueva.
+    images: [{ url: "og.png?v=1", width: 1200, height: 630, alt: `${site.nombre}: ${site.tagline}` }],
   },
-  // Sin `icons` a propósito: Next lo genera solo a partir de src/app/favicon.ico
-  // y ahí sí le pone el basePath. Declarándolo a mano como "/favicon.ico" se
-  // publicaba sin prefijo y daba 404 en GitHub Pages.
+  twitter: { card: "summary_large_image" },
+  // Sin `icons` a propósito: Next los genera solo a partir de src/app/favicon.ico
+  // y apple-icon.png, y ahí sí les pone el basePath (con un icon.svg al lado deja
+  // de enlazar el .ico bajo basePath: por eso no hay). Declarándolos a
+  // mano como "/favicon.ico" se publicaban sin prefijo y daban 404 en Pages.
 };
 
 export default function RootLayout({

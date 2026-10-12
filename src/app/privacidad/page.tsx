@@ -132,6 +132,10 @@ export default function PrivacidadPage() {
               datos de vuestros clientes, contraseñas ni accesos a vuestros programas. Si llega algo
               así igualmente, se borra sin usarlo y te avisamos.
             </p>
+            <p>
+              El diagnóstico rápido no envía ni guarda tus respuestas; solo pasan a la auditoría si
+              pulsas el botón, y ahí aplica lo de arriba.
+            </p>
           </Apartado>
 
           <Apartado titulo="Para qué">

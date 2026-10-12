@@ -1,5 +1,5 @@
 export const site = {
-  nombre: "Subcon Works",
+  nombre: "Undertactics",
   tagline: "Lo que hace funcionar tu negocio, por debajo.",
   descripcion:
     "Diseño, desarrollo web y automatización con IA para negocios que no tienen tiempo que perder en herramientas que no funcionan.",
@@ -12,6 +12,7 @@ export const site = {
   nav: [
     { label: "Servicios", href: "/#servicios" },
     { label: "Plantillas", href: "/#plantillas" },
+    { label: "Herramientas", href: "/herramientas/" },
     { label: "Proceso", href: "/#proceso" },
     { label: "Auditoría", href: "/#auditoria" },
   ],

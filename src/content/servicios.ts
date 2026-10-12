@@ -7,6 +7,8 @@ export interface Servicio {
   incluye: string[];
   /** Icono de línea para el panel que sigue al cursor (ver Servicios.tsx). */
   icono: string;
+  /** Enlace opcional bajo las etiquetas, a la herramienta que sostiene el servicio. */
+  enlace?: { href: string; label: string };
 }
 
 export const servicios: Servicio[] = [
@@ -27,6 +29,23 @@ export const servicios: Servicio[] = [
   },
   {
     numero: "02",
+    nombre: "Tienda online",
+    descripcion:
+      "Te la entregamos con el catálogo subido y cobrando desde el primer día. Después la llevas tú desde el móvil, y te dice qué reponer y qué se mira sin venderse.",
+    incluye: [
+      "Catálogo cargado",
+      "Tarjeta y Bizum",
+      "Recogida y reparto local",
+      "Pedidos por WhatsApp",
+      "Panel en el móvil",
+      "Instagram y Google Shopping",
+      "Páginas legales",
+    ],
+    icono: "/servicios/tienda.svg",
+    enlace: { href: "/herramientas/#tiendas", label: "Ver cómo funciona" },
+  },
+  {
+    numero: "03",
     nombre: "Plantillas por sector",
     descripcion:
       "Treinta bases ya construidas y publicadas. Si una encaja con lo tuyo, se adapta con tus datos y tus fotos: en línea en dos semanas y por bastante menos que empezar de cero.",
@@ -40,7 +59,7 @@ export const servicios: Servicio[] = [
     icono: "/servicios/plantillas.svg",
   },
   {
-    numero: "03",
+    numero: "04",
     nombre: "Rescate de webs y migraciones",
     descripcion:
       "Tienes algo hecho en WordPress, Wix o Webnode que va lento, ya no lo toca nadie o nadie te da las claves. Se saca todo de ahí sin perder lo que ya te posiciona en Google.",
@@ -54,7 +73,7 @@ export const servicios: Servicio[] = [
     icono: "/servicios/rescate.svg",
   },
   {
-    numero: "04",
+    numero: "05",
     nombre: "Aparecer en Google",
     descripcion:
       "La mitad de los negocios de aquí se buscan por el móvil a dos calles de distancia. Eso se trabaja con la ficha de Google, las reseñas y una web que cargue rápido de verdad.",
@@ -67,9 +86,10 @@ export const servicios: Servicio[] = [
       "Medición sin cookies",
     ],
     icono: "/servicios/google.svg",
+    enlace: { href: "/herramientas/#ficha-google", label: "Ver cómo funciona" },
   },
   {
-    numero: "05",
+    numero: "06",
     nombre: "Automatización de procesos",
     descripcion:
       "Presupuestos, citas, recordatorios, facturas, informes. Lo que hoy copias de un sitio a otro a mano, funcionando solo mientras tú atiendes.",
@@ -83,7 +103,7 @@ export const servicios: Servicio[] = [
     icono: "/servicios/automatizacion.svg",
   },
   {
-    numero: "06",
+    numero: "07",
     nombre: "Agentes y chatbots con IA",
     descripcion:
       "Atención en la web, en WhatsApp y al teléfono. Contestan lo de siempre, cogen la cita y te pasan solo lo que de verdad necesita que estés tú.",
@@ -97,7 +117,7 @@ export const servicios: Servicio[] = [
     icono: "/servicios/agentes.svg",
   },
   {
-    numero: "07",
+    numero: "08",
     nombre: "Marketing y contenido con IA",
     descripcion:
       "Lo que se puede dejar funcionando solo: el correo a tus clientes, las fichas de producto, los textos de la web y la respuesta a cada reseña que entra.",
@@ -111,7 +131,7 @@ export const servicios: Servicio[] = [
     icono: "/servicios/contenido.svg",
   },
   {
-    numero: "08",
+    numero: "09",
     nombre: "Vídeo, reels y redes",
     descripcion:
       "Esto no lo hace una máquina. Vamos, grabamos en tu local y montamos: reels, vídeo corto y fotos de lo que vendes. Y si quieres, llevamos la cuenta entera y te la quitamos de encima.",
@@ -126,7 +146,7 @@ export const servicios: Servicio[] = [
     icono: "/servicios/video.svg",
   },
   {
-    numero: "09",
+    numero: "10",
     nombre: "Mantenimiento y soporte",
     descripcion:
       "Cambiar la carta, subir precios, abrir los domingos de verano. Se hace y ya está: sin abrir una incidencia, sin esperar tres semanas y sin que se caiga nada por el camino.",
@@ -135,8 +155,9 @@ export const servicios: Servicio[] = [
       "Copias de seguridad",
       "Actualizaciones",
       "Vigilancia de caídas",
-      "Sin permanencia",
+      "Te lo llevas cuando quieras",
     ],
     icono: "/servicios/mantenimiento.svg",
+    enlace: { href: "/herramientas/#vigilancia", label: "Ver cómo funciona" },
   },
 ];

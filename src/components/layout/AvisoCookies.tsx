@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { traerDeClaveAntigua } from "@/lib/almacenamiento";
 
 // Con el asistente activo (NEXT_PUBLIC_CHATBOT_URL) se guarda algo más, el identificador
 // del chat: otra clave para que quien aceptó el aviso viejo vea el nuevo. La variable se
 // lee tal cual para que, sin ella, el compilador deje el JS exactamente como estaba.
-const CLAVE = process.env.NEXT_PUBLIC_CHATBOT_URL ? "subcon:aviso-cookies:v2" : "subcon:aviso-cookies:v1";
+const CLAVE_V1 = "undertactics:aviso-cookies:v1";
+const CLAVE = process.env.NEXT_PUBLIC_CHATBOT_URL ? "undertactics:aviso-cookies:v2" : CLAVE_V1;
 
 /**
  * Aviso de almacenamiento local.
@@ -29,6 +31,9 @@ export function AvisoCookies() {
     try {
       // El prerender no puede saber si ya se aceptó: se decide aquí, en
       // cliente, y por eso el aviso nace oculto y aparece con su animación.
+      // La clave de antes del cambio de nombre pasa a la v1, nunca a la v2:
+      // quien aceptó el aviso sin chat tiene que ver el que lo menciona.
+      traerDeClaveAntigua("subcon:aviso-cookies:v1", CLAVE_V1);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (!localStorage.getItem(CLAVE)) setVisible(true);
     } catch {
@@ -53,22 +58,23 @@ export function AvisoCookies() {
       role="dialog"
       aria-live="polite"
       aria-label="Aviso sobre el almacenamiento en tu navegador"
-      className="aviso-cookies fixed inset-x-4 bottom-4 z-[90] mx-auto max-w-2xl rounded-2xl border border-line bg-bg-raised/95 p-5 shadow-2xl backdrop-blur-md md:inset-x-auto md:left-6 md:bottom-6"
+      className="aviso-cookies fixed inset-x-3 bottom-3 z-[90] mx-auto max-w-xl rounded-2xl border border-line bg-bg-raised/95 py-2.5 pl-4 pr-2.5 shadow-2xl backdrop-blur-md md:inset-x-auto md:left-6 md:bottom-6 md:py-3 md:pl-5 md:pr-3"
     >
-      <div className="flex flex-col gap-4 md:flex-row md:items-center">
-        <p className="text-sm text-text-muted">
+      {/* Una o dos líneas con el botón al lado, también en móvil: el aviso
+          tiene que estar, pero no puede comerse un cuarto de pantalla. */}
+      <div className="flex items-center gap-3 md:gap-4">
+        <p className="text-xs leading-snug text-text-muted md:text-sm">
           {process.env.NEXT_PUBLIC_CHATBOT_URL
-            ? "Esta web no usa cookies de seguimiento ni analítica. Solo guarda en tu navegador el borrador del formulario, que ya has visto este aviso y, si abres el chat, un identificador de la conversación."
-            : "Esta web no usa cookies de seguimiento ni analítica. Solo guarda en tu navegador el borrador del formulario y que ya has visto este aviso."}{" "}
+            ? "Sin cookies de seguimiento: solo tu borrador, este aviso y, si abres el chat, el identificador de la conversación."
+            : "Sin cookies de seguimiento: solo tu borrador y este aviso."}{" "}
           <Link href="/privacidad/" className="link-underline text-text-primary">
-            Más detalle
+            Detalle
           </Link>
-          .
         </p>
         <button
           type="button"
           onClick={aceptar}
-          className="shrink-0 rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim"
+          className="shrink-0 rounded-full bg-accent px-4 py-2 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim md:px-5"
         >
           Entendido
         </button>
