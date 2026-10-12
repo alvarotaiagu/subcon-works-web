@@ -756,7 +756,7 @@ const comprobaciones = [
   {
     id: "§7 · Sin JS",
     tarea: "T12",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [360, 390, 1440]) {
         const page = await h.abrir("", { ancho, js: false, cortina: true });
@@ -1083,7 +1083,7 @@ const comprobaciones = [
   {
     id: "§7 · Proceso · broca y pasos; tabla con movimiento reducido",
     tarea: "T12",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho });

@@ -498,7 +498,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - a 360 px el banquillo no corta texto;
     - lint y build en verde.
 
-- [ ] **T12 · Proceso («−2») con el testigo.**
+- [x] **T12 · Proceso («−2») con el testigo.**
   - *Cubre*: spec §3.9 (entero), §3.5 («2 semanas»), §6 (pin y carga
     tardía; sin JS: tabla), §3.17 (proceso como tabla).
   - *Depende de*: T06.
