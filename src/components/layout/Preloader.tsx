@@ -6,6 +6,37 @@ import { gearPath } from "@/lib/gearPath";
 
 export const PRELOADER_SESSION_KEY = "undertactics-preloader-seen";
 export const PRELOADER_DONE_EVENT = "undertactics:preloader-done";
+/**
+ * La cortina ya no está: se ha quitado el `overflow:hidden` del body y se
+ * puede hacer scroll. Llega ~1 s después de PRELOADER_DONE_EVENT (que salta
+ * al contar 100, antes del encaje y del obturador).
+ */
+export const PRELOADER_GONE_EVENT = "undertactics:preloader-gone";
+
+/**
+ * ¿Está la cortina en pantalla ahora mismo? Lo pone a `true` el
+ * useLayoutEffect cuando la cortina sale, y a `false` el final de la
+ * timeline o su limpieza. No sirve mirar sessionStorage desde fuera: el
+ * Preloader lo marca en su useLayoutEffect, antes que cualquier useEffect.
+ */
+let cortinaEnCurso = false;
+
+function retirarCortina() {
+  if (!cortinaEnCurso) return;
+  cortinaEnCurso = false;
+  window.dispatchEvent(new Event(PRELOADER_GONE_EVENT));
+}
+
+/**
+ * Se resuelve cuando la cortina de entrada se ha retirado, o en el acto si no
+ * está en curso (ya vista en esta sesión, reduced-motion o ya terminada).
+ */
+export function esperarCortina(): Promise<void> {
+  if (!cortinaEnCurso) return Promise.resolve();
+  return new Promise((resolve) => {
+    window.addEventListener(PRELOADER_GONE_EVENT, () => resolve(), { once: true });
+  });
+}
 
 /**
  * Preloader de ~2.5s máximo, solo en la primera visita de la sesión: un
@@ -41,6 +72,7 @@ export function Preloader() {
     }
     sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
     document.body.style.overflow = "hidden";
+    cortinaEnCurso = true;
   }, []);
 
   useEffect(() => {
@@ -75,6 +107,7 @@ export function Preloader() {
         // es hijo de nadie. El desmontado tiene que pasar por React.
         setVisible(false);
         document.body.style.overflow = "";
+        retirarCortina();
       },
     });
 
@@ -104,6 +137,8 @@ export function Preloader() {
       tl.kill();
       idleSpin.kill();
       document.body.style.overflow = "";
+      // Timeline matada a medias (desmontaje): la cortina ya no tapa nada.
+      retirarCortina();
     };
   }, [skip]);
 
