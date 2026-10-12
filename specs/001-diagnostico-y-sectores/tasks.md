@@ -379,7 +379,7 @@ Cada una tiene su fichero de test (PD-8).
 
 ## Pruebas
 
-- [ ] **T14 · Comprobación en navegador.**
+- [x] **T14 · Comprobación en navegador.**
   - *Cubre*: spec §7 («Comprobación en navegador»), §6, PD-9.
   - *Depende de*: T09, T11, T12, T13 mergeadas en `feat/diagnostico-sectores`.
   - *Hacer*: un script de Playwright **fuera del repo** (scratchpad) con la
