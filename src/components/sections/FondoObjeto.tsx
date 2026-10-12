@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { Boton } from "@/components/ui/Boton";
 import { Simbolo } from "@/components/ui/Logo";
@@ -26,23 +26,34 @@ const LINEA = 0.66;
 export function FondoObjeto({ hilo = false }: { hilo?: boolean }) {
   const raiz = useRef<HTMLDivElement>(null);
   const [encendido, setEncendido] = useState(true);
-
-  // El símbolo se dibuja con el largo real de sus trazos (así no depende de la geometría
-  // del logo): el CSS lo lee de `--largo`.
-  useEffect(() => {
-    raiz.current?.querySelectorAll<SVGGeometryElement>("path[stroke]").forEach((p) => {
-      p.style.setProperty("--largo", `${p.getTotalLength().toFixed(2)}px`);
-    });
-  }, []);
+  // Sin transiciones mientras se pasa del HTML del servidor (encendido) al reposo: que
+  // no se vea cómo se apaga lo ya dibujado.
+  const [quieto, setQuieto] = useState(false);
 
   useLayoutEffect(() => {
-    const boton = raiz.current?.querySelector("a");
-    if (!boton || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const caja = raiz.current;
+    const boton = caja?.querySelector("a");
+    if (!caja || !boton) return;
+
+    // El símbolo se dibuja con el largo real de sus trazos (así no depende de la geometría
+    // del logo): el CSS lo lee de `--largo`.
+    caja.querySelectorAll<SVGGeometryElement>("path[stroke]").forEach((p) => {
+      p.style.setProperty("--largo", `${p.getTotalLength().toFixed(2)}px`);
+    });
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const alto = document.documentElement.clientHeight;
     // Ya cruzado (o dejado atrás): se queda encendido.
     if (boton.getBoundingClientRect().top < alto * LINEA) return;
 
+    setQuieto(true);
     setEncendido(false);
+    // Dos fotogramas después, el reposo ya está pintado: vuelven las transiciones.
+    let r1 = 0;
+    let r2 = 0;
+    r1 = requestAnimationFrame(() => {
+      r2 = requestAnimationFrame(() => setQuieto(false));
+    });
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;
@@ -52,11 +63,15 @@ export function FondoObjeto({ hilo = false }: { hilo?: boolean }) {
       { rootMargin: `0px 0px -${Math.round((1 - LINEA) * 100)}% 0px` },
     );
     io.observe(boton);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(r1);
+      cancelAnimationFrame(r2);
+    };
   }, []);
 
   return (
-    <div ref={raiz} className={cn("fondo-objeto", !encendido && "es-por-encender")}>
+    <div ref={raiz} className={cn("fondo-objeto", !encendido && "es-por-encender", quieto && "es-quieto")}>
       <div className="flex flex-wrap items-center gap-x-8 gap-y-8">
         <span data-fondo-simbolo className="fondo-simbolo-caja">
           <Simbolo className="fondo-simbolo" />

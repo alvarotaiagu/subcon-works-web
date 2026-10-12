@@ -223,6 +223,11 @@ body:has([data-hero]) {
   .es-por-encender .fondo-simbolo path:not([stroke]) {
     clip-path: inset(100% 0 0 0);
   }
+  /* Al pasar del HTML del servidor (encendido) al reposo, sin transiciones. */
+  .fondo-objeto.es-quieto *,
+  .fondo-objeto.es-quieto *::after {
+    transition: none !important;
+  }
   @media (prefers-reduced-motion: reduce) {
     .fondo-simbolo path {
       transition: none !important;

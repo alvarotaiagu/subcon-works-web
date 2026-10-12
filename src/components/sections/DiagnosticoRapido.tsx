@@ -42,7 +42,6 @@ export function DiagnosticoRapido() {
                 <Link
                   href={`/sectores/${pagina.slug}/`}
                   className="link-underline text-hueso"
-                 
                 >
                   {pagina.nombre}
                 </Link>

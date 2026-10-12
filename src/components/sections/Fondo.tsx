@@ -4,8 +4,12 @@ import { cifras } from "@/content/cifras";
 import { loQueRecibes, loQueNoPedimos, TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { FondoObjeto } from "./FondoObjeto";
 
-// «36» y «0 €» (spec 002 §3.5): las dos últimas cifras de `cifras.ts`.
-const [, , preguntas, coste] = cifras;
+// «36» y «0 €» (spec 002 §3.5): las dos cifras de la auditoría de `cifras.ts`, buscadas
+// por lo que son (no por su posición, que otra tarea puede cambiar).
+const preguntas = cifras.find((c) => c.etiqueta.startsWith("Preguntas de la auditoría"));
+const coste = cifras.find((c) => c.sufijo.trim() === "€");
+if (!preguntas || !coste) throw new Error("Fondo: faltan las cifras de la auditoría en cifras.ts");
+const cifrasFondo = [preguntas, coste];
 
 /**
  * «Fondo · Auditoría» (spec 002 §3.11, plan PD-12): el final del corte y del objeto. La
@@ -79,7 +83,7 @@ export function Fondo({ hilo = false }: { hilo?: boolean }) {
         {/* El final: las dos cifras y el objeto (donde acaba el conducto). Debajo, el pie. */}
         <div className="mt-20 grid gap-12 border-t border-conducto pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-24">
           <ul className="fondo-cifras">
-            {[preguntas, coste].map((c) => (
+            {cifrasFondo.map((c) => (
               <li key={c.etiqueta}>
                 <p className="fondo-cifra-valor">
                   <span className="whitespace-nowrap">
