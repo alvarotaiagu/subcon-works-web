@@ -615,7 +615,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - las siete páginas a 390 y 1440 px, capturas en la PR;
     - lint y build en verde.
 
-- [ ] **T16 · Formularios y estados (auditoría, diagnóstico, chat).**
+- [x] **T16 · Formularios y estados (auditoría, diagnóstico, chat).**
   - *Cubre*: spec §3.4 (botones de `FormularioAuditoria` y «Seguir» de
     `PasoPregunta`; opción marcada; burbujas de `ChatEjemplo`), §3.12
     (`/auditoria/`: bordes en `--apagado-abajo` y foco), §3.11 («−4»: el

@@ -17,13 +17,13 @@ export function EnlaceMejora({ href, className }: { href: string; className?: st
   );
   if (href.startsWith("#")) {
     return (
-      <a href={href} className={clases} data-cursor-hover>
+      <a href={href} className={clases}>
         {texto}
       </a>
     );
   }
   return (
-    <Link href={href} className={clases} data-cursor-hover>
+    <Link href={href} className={clases}>
       {texto}
     </Link>
   );
