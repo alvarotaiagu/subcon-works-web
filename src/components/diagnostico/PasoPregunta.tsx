@@ -3,6 +3,7 @@
 import { useId, type Ref } from "react";
 import { cn } from "@/lib/utils";
 import { Glifo } from "@/components/ui/Glifo";
+import { Boton } from "@/components/ui/Boton";
 import type { OpcionVista, PreguntaVista } from "@/lib/diagnostico";
 
 /**
@@ -85,25 +86,14 @@ export function PasoPregunta({
       {(onAtras || varias) && (
         <div className="mt-8 flex flex-wrap items-center gap-4">
           {onAtras && (
-            <button
-              type="button"
-              onClick={onAtras}
-              className="rounded-full border border-apagado-abajo px-6 py-3 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
-              data-cursor-hover
-            >
+            <Boton variante="secundario" onClick={onAtras}>
               <Glifo nombre="izquierda" /> Atrás
-            </button>
+            </Boton>
           )}
           {varias && (
-            <button
-              type="button"
-              onClick={onSeguir}
-              disabled={!puedeSeguir}
-              className="rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-hueso"
-              data-cursor-hover
-            >
+            <Boton onClick={onSeguir} disabled={!puedeSeguir}>
               Seguir <Glifo nombre="derecha" />
-            </button>
+            </Boton>
           )}
         </div>
       )}
@@ -158,7 +148,6 @@ function BotonOpcion({
           ? "border-hueso bg-hueso text-hondo shadow-[0_2px_0_var(--superficie)]"
           : "border-apagado-abajo text-apagado-abajo hover:border-hueso hover:text-hueso"
       )}
-      data-cursor-hover
     >
       {/* Casilla en las de varias, punto en las de una: se ve de un vistazo
           si se puede marcar más de una. */}

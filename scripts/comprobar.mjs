@@ -439,6 +439,12 @@ async function fondoSeEnciende(h, ruta, opciones = {}) {
   const page = await h.abrir(ruta, opciones);
   const boton = SEL.fondoBoton;
   assert.ok(await page.$(boton), `${ruta || "/"}: no está el botón del Fondo (${boton})`);
+  // El HTML del servidor viene encendido (sin JS se lee así): el reposo lo pone la
+  // hidratación. FondoObjeto mide el largo de los trazos en su efecto de layout, ya hidratado.
+  await page.waitForFunction(
+    (simbolo) => document.querySelector(`${simbolo} path[stroke]`)?.style.getPropertyValue("--largo"),
+    SEL.fondoSimbolo,
+  );
   const encendido = () =>
     page.evaluate(
       ({ boton, simbolo, lima }) => {
@@ -756,7 +762,7 @@ const comprobaciones = [
   {
     id: "§7 · Sin JS",
     tarea: "T12",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [360, 390, 1440]) {
         const page = await h.abrir("", { ancho, js: false, cortina: true });
@@ -785,7 +791,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · encender cada pozo y «Ejemplo»",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho, hasTouch: ancho < 768 });
@@ -817,7 +823,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · a 360 px, nada solapado, recortado ni < 12 px",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [360, 390]) {
         const page = await h.abrir("", { ancho });
@@ -866,7 +872,7 @@ const comprobaciones = [
   {
     id: "§7 · LCP · área del titular > descripción a 390 px",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const page = await h.abrir("", { ancho: 390, alto: 844 });
       const r = await page.evaluate(() => {
@@ -895,7 +901,7 @@ const comprobaciones = [
   {
     id: "§7 · Cabecera · logo claro y oscuro",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho });
@@ -1083,7 +1089,7 @@ const comprobaciones = [
   {
     id: "§7 · Proceso · broca y pasos; tabla con movimiento reducido",
     tarea: "T12",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho });
@@ -1122,7 +1128,7 @@ const comprobaciones = [
   {
     id: "§7 · Fondo · se enciende en la portada y en /sectores/alojamientos-rurales/",
     tarea: "T13",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         await fondoSeEnciende(h, "", { ancho });
@@ -1271,7 +1277,7 @@ const comprobaciones = [
   {
     id: "§7 · 001 sigue cumpliendo",
     tarea: "T16",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       // 001 §7, con los deltas de la 002 §8.
       for (const ancho of [390, 1440]) {
