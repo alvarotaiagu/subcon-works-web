@@ -925,7 +925,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · inactividad (5 s, una vuelta, 15 s, Pausar)",
     tarea: "T08",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       // Quieto: a los 5 s cambia de pozo, y así hasta cuatro cambios; después se para.
       const page = await h.abrir("", { ancho: 1440 });
@@ -967,7 +967,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · aria-live solo tras un gesto",
     tarea: "T08",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const page = await h.abrir("", { ancho: 1440 });
       await page.mouse.move(5, 5);
@@ -995,7 +995,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · tirador táctil y scroll fuera de él",
     tarea: "T08",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const page = await h.abrir("", { ancho: 390, alto: 844, hasTouch: true, isMobile: true });
       const cdp = await page.context().newCDPSession(page);
@@ -1034,7 +1034,7 @@ const comprobaciones = [
   {
     id: "§7 · Foco",
     tarea: "T08",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const revisar = async (page, forzado) => {
         const fallos = [];
@@ -1052,7 +1052,12 @@ const comprobaciones = [
               if (cs.outlineStyle === "none" || ancho < 2) res.fallos.push(`outline ${cs.outlineStyle} ${cs.outlineWidth}`);
               if (window.matchMedia("(forced-colors: active)").matches) return res;
               const r = el.getBoundingClientRect();
-              const fondo = __c.fondoEn(Math.max(0, Math.min(innerWidth - 1, r.left + r.width / 2)), Math.max(0, Math.min(innerHeight - 1, r.top + r.height / 2)), el);
+              // El fondo es el de detrás del recuadro, no el relleno del propio botón: se mira
+              // en el borde de arriba del recuadro (fuera del elemento con `outline-offset`
+              // positivo; dentro, con el negativo de los contenedores que recortan).
+              const off = parseFloat(cs.outlineOffset) || 0;
+              const yRecuadro = off >= 0 ? r.top - off - 1 : r.top - off + 1;
+              const fondo = __c.fondoEn(Math.max(0, Math.min(innerWidth - 1, r.left + r.width / 2)), Math.max(0, Math.min(innerHeight - 1, yRecuadro)), el);
               const claro = fondo ? __c.luminancia(fondo) > 0.5 : false;
               const sombras = (cs.boxShadow.match(/rgba?\([^)]*\)/g) || []).map(__c.rgba);
               const es = (c, k) => c && Math.abs(c[0] - C[k][0]) < 4 && Math.abs(c[1] - C[k][1]) < 4 && Math.abs(c[2] - C[k][2]) < 4;
