@@ -17,13 +17,18 @@ import { irAAncla } from "@/lib/irAAncla";
  * Lenis. Va el último en `page.tsx`, así sus efectos corren después de los de las
  * secciones (los pins ya están puestos).
  *
- * Un diagnóstico abierto por URL (`?v=…#diagnostico`) lo lleva `Diagnostico` (001 §3.5).
+ * Con `#diagnostico` salta también: un diagnóstico completo por URL vuelve a bajar desde
+ * `Diagnostico` (001 §3.5) cuando pinta el resultado, al mismo sitio.
  */
 export function AnclaPortada() {
   useEffect(() => {
-    const id = decodeURIComponent(window.location.hash.slice(1));
+    let id: string;
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      return; // `#%E0…`: no es un ancla del corte.
+    }
     if (!id || id === "inicio" || !cortePortada.some((e) => e.id === id)) return;
-    if (id === "diagnostico" && window.location.search) return;
 
     let vivo = true;
     void (async () => {

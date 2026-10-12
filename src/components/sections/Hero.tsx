@@ -6,7 +6,11 @@ import { PRELOADER_DONE_EVENT, PRELOADER_SESSION_KEY } from "@/components/layout
 import { Boton } from "@/components/ui/Boton";
 import { site } from "@/content/site";
 import { Cota } from "@/components/ui/Cota";
+import { cortePortada } from "@/content/portada";
 import { HeroGears } from "@/components/three/HeroGears";
+
+/** La entrada «inicio» del corte: su cota y su nitidez salen de ahí, como las demás. */
+const SUPERFICIE = cortePortada[0];
 
 export function Hero() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -120,7 +124,7 @@ export function Hero() {
     // partido, `data-hero`, la cota bajo la línea) lo hace T07.
     <section
       id="inicio"
-      style={{ "--shrp": 0 } as React.CSSProperties}
+      style={{ "--shrp": SUPERFICIE.shrp } as React.CSSProperties}
       className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-20 pt-32 portrait:pt-56 md:landscape:pt-40"
     >
       <Reticula />
@@ -131,7 +135,7 @@ export function Hero() {
         data-hero-contenido
         className="container-max relative z-10 will-change-transform"
       >
-        <Cota className="mb-6">Superficie</Cota>
+        <Cota className="mb-6">{SUPERFICIE.cota}</Cota>
         <p ref={eyebrowRef} className="font-mono-label mb-6">
           Estudio de diseño, desarrollo y automatización con IA
         </p>
