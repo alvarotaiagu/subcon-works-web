@@ -325,7 +325,7 @@ Cada una tiene su fichero de test (PD-8).
     - en `clinicas-dentales` no existe `#plantillas-sector`;
     - en las tres, el diagnóstico no pregunta el sector.
 
-- [ ] **T12 · Sección de la portada.**
+- [x] **T12 · Sección de la portada.**
   - *Cubre*: spec §3.7, D-005.
   - *Depende de*: T06, T09.
   - *Hacer*:
