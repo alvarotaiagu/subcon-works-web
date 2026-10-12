@@ -159,7 +159,7 @@ body:has([data-hero]) {
     line-height: 1.35;
     color: var(--pozo-parada);
     transition: color var(--dur-base) var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 70ms);
+    transition-delay: calc(var(--i, 0) * var(--pozo-escalon, 0ms));
   }
   .pozo-parada::before {
     content: "";
@@ -173,7 +173,7 @@ body:has([data-hero]) {
     background: var(--hondo);
     border: 2px solid var(--pozo-color);
     transition: border-color var(--dur-base) var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 70ms);
+    transition-delay: calc(var(--i, 0) * var(--pozo-escalon, 0ms));
   }
 
   .pozo .pozo-enlace {
@@ -194,12 +194,14 @@ body:has([data-hero]) {
     --pozo-color: var(--superficie);
     --pozo-parada: var(--hueso);
     --pozo-numero: var(--superficie);
+    --pozo-escalon: 70ms; /* se enciende en cascada; se apaga de golpe */
   }
   @media (hover: hover) {
     .pozo:hover {
       --pozo-color: var(--superficie);
       --pozo-parada: var(--hueso);
       --pozo-numero: var(--superficie);
+      --pozo-escalon: 70ms; /* se enciende en cascada; se apaga de golpe */
     }
   }
 

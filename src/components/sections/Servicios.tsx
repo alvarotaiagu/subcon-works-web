@@ -17,7 +17,7 @@ import { Titular } from "@/components/ui/Titular";
  *
  * Se enciende (lima, en línea; el texto de la parada pasa a `--hueso`):
  *  - en escritorio (≥ 768 px con hover): al pasar el ratón o al enfocar (el `<li>` es
- *    focusable, y los enlaces de dentro también lo encienden con `:focus-within`). Eso lo
+ *    focusable, y los enlaces de dentro también lo encienden con `:has(:focus-visible)`). Eso lo
  *    hace el CSS (`portada.css`, bloque «T10 · Servicios»);
  *  - en móvil o táctil: al entrar en pantalla, una vez cada uno (clase `es-activo`, puesta
  *    desde aquí). Sin JS no se enciende, pero se lee entero.
@@ -46,7 +46,8 @@ export function Servicios() {
       io = new IntersectionObserver(
         (entradas) => {
           for (const e of entradas) {
-            if (!e.isIntersecting) continue;
+            // Lo que ya quedó por encima de la pantalla (ancla, recarga a mitad) se enciende ya.
+            if (!e.isIntersecting && e.boundingClientRect.top >= 0) continue;
             e.target.classList.add("es-activo");
             io?.unobserve(e.target);
           }
