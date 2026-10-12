@@ -37,13 +37,12 @@ interface BandaProps {
   sentido: 1 | -1;
   duracion: number;
   separador: string;
-  className?: string;
   /** Va delante de la lista y en acento: al repetirse en bucle, encuadra lo
    *  que viene detrás sin necesidad de un titular fijo. */
   estribillo?: string;
 }
 
-function Banda({ items, sentido, duracion, separador, className, estribillo }: BandaProps) {
+function Banda({ items, sentido, duracion, separador, estribillo }: BandaProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -113,9 +112,7 @@ function Banda({ items, sentido, duracion, separador, className, estribillo }: B
                 className={
                   esEstribillo
                     ? "font-mono-label text-sm text-superficie"
-                    : `font-mono-label text-sm normal-case tracking-normal ${
-                        className ?? "text-apagado-abajo"
-                      }`
+                    : "font-mono-label text-sm normal-case tracking-normal text-apagado-abajo"
                 }
               >
                 {item}
@@ -147,7 +144,6 @@ export function Marquee() {
           sentido={1}
           duracion={34}
           separador="·"
-          className="text-apagado-abajo"
         />
       </div>
     </div>

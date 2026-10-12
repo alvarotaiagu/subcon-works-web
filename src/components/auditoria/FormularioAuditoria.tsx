@@ -380,8 +380,8 @@ function Progreso({
                 i === paso
                   ? "mt-[0.6rem] h-[2px] w-3 bg-superficie"
                   : i < paso
-                    ? "mt-[0.45rem] h-1.5 w-1.5 rounded-full bg-hueso"
-                    : "mt-[0.45rem] h-1.5 w-1.5 rounded-full bg-conducto"
+                    ? "mx-[3px] mt-[0.45rem] h-1.5 w-1.5 rounded-full bg-hueso"
+                    : "mx-[3px] mt-[0.45rem] h-1.5 w-1.5 rounded-full bg-conducto"
               )}
             />
             <button
