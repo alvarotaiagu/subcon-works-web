@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { LOGO_GRUPO, LOGO_VIEWBOX, TRAZADO_TACTICS, TRAZADO_UNDER } from "./logo-trazados";
+import { LOGO_ASPECTO, LOGO_GRUPO, LOGO_VIEWBOX, TRAZADO_TACTICS, TRAZADO_UNDER } from "./logo-trazados";
 
 /**
  * Tono del logo (spec 002 §3.3):
@@ -95,7 +95,7 @@ export function Logo({
       aria-hidden="true"
       focusable="false"
       className={className}
-      style={{ display: "block", height: "1.3em", width: "auto", aspectRatio: "727.3 / 130", ...TONOS[tono], ...style }}
+      style={{ display: "block", height: "1.3em", width: "auto", aspectRatio: LOGO_ASPECTO, ...TONOS[tono], ...style }}
     >
       <g transform={LOGO_GRUPO}>
         <PiezasSimbolo />
