@@ -25,7 +25,8 @@ const ATASCO = 0.1;
 /** La lectura de un flujo en una línea, para el lector de pantalla: «Ejemplo: …, …». */
 const textoLectura = (f: Flujo) => `Ejemplo: ${f.lectura.join(f.flechas ? ", " : " ")}`;
 
-type Origen = "gesto" | "auto";
+/** `gesto`: toque, clic o foco (se anuncia). `raton`: pasar el ratón (cuenta como gesto, no se anuncia). */
+type Origen = "gesto" | "raton" | "auto";
 
 /**
  * El hero (spec 002 §3.6, plan PD-9 y PD-10). Fondo partido por la superficie: arriba, en
@@ -39,7 +40,7 @@ type Origen = "gesto" | "auto";
  *   parte en palabras ni se oculta al cargar.
  * - Encender un pozo: pasar el ratón, tocar o enfocar un objeto. El pozo pasa a lima y un
  *   pulso baja por él encendiendo las paradas. Solo uno a la vez. La lectura cambia.
- * - Anuncios: la región `aria-live` solo se rellena tras un gesto; los cambios automáticos
+ * - Anuncios: la región `aria-live` solo se rellena tras un toque, clic o foco; los cambios automáticos
  *   (el pozo 1 al cargar y, en T08, la inactividad) van a `[data-lectura-auto]`, sin
  *   `aria-live`. La lectura que se ve es un dibujo de esas dos (`aria-hidden`).
  *
@@ -89,10 +90,10 @@ export function Hero() {
   const encender = useCallback(
     (i: number, origen: Origen) => {
       const f = flujos[i];
-      if (origen === "gesto") {
-        ultimoGestoRef.current = performance.now();
-        setViva(textoLectura(f));
-      }
+      if (origen !== "auto") ultimoGestoRef.current = performance.now();
+      // Solo toque, clic o foco se anuncian (§3.6): pasar el ratón por la fila no llena la
+      // cola del lector con cuatro lecturas seguidas.
+      if (origen === "gesto") setViva(textoLectura(f));
       // El mismo pozo: si ya está encendido (o encendiéndose), no vuelve a empezar.
       if (i === activoRef.current) return;
 
@@ -142,6 +143,8 @@ export function Hero() {
       ultimoRef.current = performance.now();
       rafRef.current = requestAnimationFrame(fotograma);
     };
+    // Si el efecto se rehace (StrictMode, recarga en caliente) con un pulso a medias, sigue.
+    if (pulsoRef.current) arrancarRef.current();
     return () => {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;
@@ -199,14 +202,14 @@ export function Hero() {
         </p>
 
         <div className="hero-instrumento">
-          <ul className="hero-objetos" aria-label="Lo que ve tu cliente" data-capa="arriba" data-fondo="claro">
+          <ul className="hero-objetos" aria-label="Lo que ve tu cliente" data-capa="arriba" data-fondo="claro" data-foco-dentro="">
             {flujos.map((f, i) => (
               <li key={f.rotulo}>
                 <button
                   type="button"
                   className={cn("hero-obj", activo === i && "es-activo")}
                   onPointerEnter={(e) => {
-                    if (e.pointerType === "mouse") encender(i, "gesto");
+                    if (e.pointerType === "mouse") encender(i, "raton");
                   }}
                   onClick={() => encender(i, "gesto")}
                   onFocus={() => encender(i, "gesto")}
@@ -261,7 +264,7 @@ export function Hero() {
                     <circle className="hero-pozo-pulso" cx="8" cy="0" r="5" />
                   </g>
                 </svg>
-                <ol className="hero-paradas">
+                <ol className="hero-paradas" aria-label={`Debajo de ${f.rotuloCorto}`}>
                   {f.paradas.map((p, k) => (
                     <li
                       key={p.texto}
@@ -304,7 +307,12 @@ export function Hero() {
               </p>
             ))}
           </div>
-          <p className="hero-oculto" data-lectura-auto="">
+          {/* Tras un gesto, la región viva ya dice lo mismo: esta se calla para no leerlo dos veces. */}
+          <p
+            className="hero-oculto"
+            data-lectura-auto=""
+            aria-hidden={viva === textoLectura(flujos[lectura]) ? true : undefined}
+          >
             <span>{textoLectura(flujos[lectura])}</span>
           </p>
           <p className="hero-oculto" aria-live="polite" aria-atomic="true">

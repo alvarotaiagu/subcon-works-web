@@ -16,14 +16,20 @@
    Nada se mueve aquí: lo que mueve la superficie después (cortina, tirador, scroll) lo
    hace con `transform` sobre las `data-capa` (T08, T09). */
 
+/* Nivel en móvil: medido a 360 px para que quepan arriba la cabecera, la línea de arriba
+   del titular (dos renglones) y los objetos (PD-10). Lo leen el hero y el rebote de abajo.
+   Con `max(…, rem)`: si la persona sube el tamaño de letra del navegador, el titular y los
+   rótulos crecen y la superficie baja con ellos (WCAG 1.4.4); a 16 px es 352 px. */
+:root {
+  --hero-nivel-movil: max(352px, 22rem);
+}
+
 @layer components {
   .hero {
-    /* Móvil: medido a 360 px para que quepan arriba la cabecera, la línea de arriba del
-       titular (dos renglones) y los objetos (PD-10). */
-    --nivel: 352px;
+    --nivel: var(--hero-nivel-movil);
     /* Alto de la fila de los objetos: rótulo, tarjeta más alta (el reel) y el aire del
        rombo. Las tarjetas se apoyan en la superficie. */
-    --obj-alto: 150px;
+    --obj-alto: max(150px, 9.375rem);
     /* Alto de los pozos cuando van apilados (en columnas, llegan hasta abajo). */
     --pozo-alto: 118px;
 
@@ -40,8 +46,8 @@
 
   @media (min-width: 768px) {
     .hero {
-      --nivel: calc(clamp(700px, 100svh, 900px) / 2);
-      --obj-alto: 190px;
+      --nivel: max(calc(clamp(700px, 100svh, 900px) / 2), 21.875rem);
+      --obj-alto: max(190px, 11.875rem);
       --pozo-alto: 236px;
       min-height: clamp(700px, 100svh, 900px);
     }
@@ -627,6 +633,6 @@
    capa. */
 @media (max-width: 767px) {
   html body:has([data-hero]) {
-    --rebote-nivel: 352px;
+    --rebote-nivel: var(--hero-nivel-movil);
   }
 }

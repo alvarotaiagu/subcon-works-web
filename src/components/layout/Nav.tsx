@@ -21,7 +21,15 @@ function useTonoCabecera(cabecera: React.RefObject<HTMLElement | null>): TonoLog
   // En la portada se pinta ya en claro (también sin JS): el hero empieza en cal y, si
   // empezara en oscuro, la cabecera saldría como una franja hondo hasta que el
   // observador contestara. El observador la corrige si la página se abre más abajo.
-  const [tono, setTono] = useState<TonoLogo>(pathname === "/" ? "claro" : "oscuro");
+  const tonoInicial: TonoLogo = pathname === "/" ? "claro" : "oscuro";
+  const [tono, setTono] = useState<TonoLogo>(tonoInicial);
+  // Lo mismo al navegar sin recargar (la cabecera no se desmonta): el tono de la ruta nueva
+  // se pone en el render, no un fotograma después en el efecto.
+  const [ruta, setRuta] = useState(pathname);
+  if (ruta !== pathname) {
+    setRuta(pathname);
+    setTono(tonoInicial);
+  }
 
   useEffect(() => {
     const header = cabecera.current;
