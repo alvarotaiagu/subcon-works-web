@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { proceso } from "@/content/proceso";
+import { Seccion } from "@/components/ui/Seccion";
 
 export function Proceso() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const pulseRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -49,10 +50,15 @@ export function Proceso() {
   }, []);
 
   return (
-    <section id="proceso" ref={sectionRef} className="container-max py-[var(--space-section)] md:py-0">
-      <div className="grid gap-16 md:h-screen md:grid-cols-2 md:items-center">
+    // Anclada desde 768 px: la cabecera (la cota) va dentro del alto de pantalla, así lo
+    // anclado no pasa de 100svh.
+    <Seccion
+      id="proceso"
+      ref={sectionRef}
+      className="py-[var(--space-section)] md:flex md:min-h-[100svh] md:flex-col md:pb-12 md:pt-28"
+    >
+      <div className="container-max grid w-full gap-16 md:flex-1 md:grid-cols-2 md:items-center">
         <div>
-          <p className="font-mono-label mb-10">Proceso</p>
           {pinned ? (
             // Fijado: solo el paso activo ocupa espacio (superpuestos, no apilados),
             // así el bloque nunca puede desbordar la altura fijada de la pantalla.
@@ -129,6 +135,6 @@ export function Proceso() {
           </div>
         </div>
       </div>
-    </section>
+    </Seccion>
   );
 }

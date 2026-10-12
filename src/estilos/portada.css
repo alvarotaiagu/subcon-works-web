@@ -1,1 +1,76 @@
-/* Zona «portada» (spec 002, PD-3): la rellena su tarea. */
+/* Zona «portada» (spec 002 §3.5, PD-3, PD-7): el corte. Las piezas de cada sección van
+   en su componente; aquí, lo común a las siete. */
+
+/* El rebote de iOS por arriba enseña cal (§3.1, PD-8): el <body> de la portada lleva un
+   degradado cal→hondo a la altura de la superficie. Sin clase, para que valga también al
+   llegar sin recargar. `--rebote-nivel` es la altura de la superficie en escritorio
+   (50 % de clamp(700px, 100svh, 900px)); el hero la cambia en móvil si su nivel es otro. */
+body:has([data-hero]) {
+  --rebote-nivel: clamp(350px, 50svh, 450px);
+  background: linear-gradient(
+    to bottom,
+    var(--cal) 0,
+    var(--cal) var(--rebote-nivel),
+    var(--hondo) var(--rebote-nivel)
+  );
+}
+
+/* La altura de la línea que descubre una sección (useDescubrir): se escribe en cada
+   fotograma, así que no se hereda (solo la lee el ::after), para no restilar todo lo de
+   dentro. */
+@property --descubrir-y {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@layer components {
+  .seccion {
+    position: relative;
+  }
+
+  /* Cota y etiqueta propia (§3.5): la cota primero; la etiqueta, debajo en móvil y en la
+     misma línea en escritorio, detrás de « · ». */
+  .seccion-cabecera {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .seccion-separador {
+    display: none;
+    color: var(--apagado-abajo);
+  }
+  .seccion-etiqueta {
+    font-size: 0.74rem;
+  }
+  @media (min-width: 768px) {
+    .seccion-cabecera {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .seccion-separador {
+      display: inline;
+    }
+  }
+
+  /* Entrada (useDescubrir): oculta hasta que baja la máscara; la línea que la descubre
+     va en el borde de la máscara. El estado oculto lo pone JS, nunca el servidor. */
+  .seccion.es-por-descubrir {
+    clip-path: inset(0 0 100% 0);
+  }
+  .seccion.es-descubriendo::after {
+    --descubrir-y: inherit; /* la única que la lee: se hereda solo aquí */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--superficie);
+    transform: translateY(calc(var(--descubrir-y, 0px) - 1px));
+    pointer-events: none;
+  }
+}

@@ -5,7 +5,12 @@ import { gsap, registerGsap, SplitText, EASE_OUT } from "@/lib/gsap";
 import { PRELOADER_DONE_EVENT, PRELOADER_SESSION_KEY } from "@/components/layout/Preloader";
 import { Boton } from "@/components/ui/Boton";
 import { site } from "@/content/site";
+import { Cota } from "@/components/ui/Cota";
+import { cortePortada } from "@/content/portada";
 import { HeroGears } from "@/components/three/HeroGears";
+
+/** La entrada «inicio» del corte: su cota y su nitidez salen de ahí, como las demás. */
+const SUPERFICIE = cortePortada[0];
 
 export function Hero() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -20,7 +25,7 @@ export function Hero() {
     const rest = restRef.current;
     if (!content || !eyebrow || !h1 || !rest) return;
 
-    const revealTargets = rest.querySelectorAll<HTMLElement>("[data-reveal]");
+    const revealTargets = rest.querySelectorAll<HTMLElement>("[data-entrada]");
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
@@ -115,7 +120,13 @@ export function Hero() {
     // En vertical el padding superior es la franja donde van los engranajes (ver
     // GearsScene.freeBand): en pantallas bajas el texto empujaría hasta la nav
     // y los engranajes no tendrían sitio sin pasar por detrás de las letras.
-    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-20 pt-32 portrait:pt-56 md:landscape:pt-40">
+    // `id` y cota del corte (§3.5): «Superficie», nitidez 0. El hero de verdad (fondo
+    // partido, `data-hero`, la cota bajo la línea) lo hace T07.
+    <section
+      id="inicio"
+      style={{ "--shrp": SUPERFICIE.shrp } as React.CSSProperties}
+      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-20 pt-32 portrait:pt-56 md:landscape:pt-40"
+    >
       <Reticula />
       <UmbralFondo />
       <HeroGears />
@@ -124,6 +135,7 @@ export function Hero() {
         data-hero-contenido
         className="container-max relative z-10 will-change-transform"
       >
+        <Cota className="mb-6">{SUPERFICIE.cota}</Cota>
         <p ref={eyebrowRef} className="font-mono-label mb-6">
           Estudio de diseño, desarrollo y automatización con IA
         </p>
@@ -134,10 +146,10 @@ export function Hero() {
           {site.tagline}
         </h1>
         <div ref={restRef} className="mt-8 max-w-md">
-          <p className="text-lg text-apagado-abajo" data-reveal>
+          <p className="text-lg text-apagado-abajo" data-entrada>
             {site.descripcion}
           </p>
-          <div className="mt-10 flex flex-wrap gap-4" data-reveal>
+          <div className="mt-10 flex flex-wrap gap-4" data-entrada>
             <Boton href="/auditoria/">Auditoría gratis</Boton>
             <Boton href="#plantillas" variante="secundario">
               Ver plantillas

@@ -2,30 +2,29 @@ import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
 import { Diagnostico } from "@/components/diagnostico/Diagnostico";
 import { sectores } from "@/content/sectores";
+import { Seccion } from "@/components/ui/Seccion";
+import { Titular } from "@/components/ui/Titular";
 
 /**
- * Sección «Diagnóstico» de la portada (spec §3.7): el diagnóstico rápido con
+ * «−4 · Diagnóstico» de la portada (spec 001 §3.7, 002 §3.5): el diagnóstico rápido con
  * la pregunta del sector y, debajo, la fila «Por sector». El menú no cambia
  * (D-005).
- *
- * Sin `data-reveal`: el diagnóstico cambia de contenido (pregunta ↔
- * resultado) y `useReveal` lo dejaría oculto.
  */
 export function DiagnosticoRapido() {
   return (
-    <section
+    <Seccion
       id="diagnostico"
+      etiqueta="Diagnóstico rápido · un minuto"
       aria-labelledby="diagnostico-titulo"
-      className="scroll-mt-28 border-t border-conducto"
+      className="scroll-mt-28 py-[var(--space-section)]"
     >
-      <div className="container-max py-[var(--space-section)]">
-        <p className="font-mono-label mb-4">Diagnóstico rápido · un minuto</p>
-        <h2
+      <div className="container-max">
+        <Titular
+          nivel={2}
           id="diagnostico-titulo"
-          className="max-w-3xl text-4xl font-medium text-hueso md:text-6xl"
-        >
-          Qué le haríamos a tu negocio, antes de hablar con nadie.
-        </h2>
+          arriba="Qué le haríamos a tu negocio, antes de hablar con nadie."
+          className="max-w-3xl"
+        />
         <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
           Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más sentido
           tienen para vosotros. No se envía ni se guarda nada.
@@ -57,6 +56,6 @@ export function DiagnosticoRapido() {
           </ul>
         </nav>
       </div>
-    </section>
+    </Seccion>
   );
 }

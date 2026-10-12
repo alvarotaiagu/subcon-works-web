@@ -543,7 +543,7 @@ const comprobaciones = [
   {
     id: "§7 · Portada · siete secciones con cota, sin Marquee/Cifras/CtaFinal",
     tarea: "T06",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho });
