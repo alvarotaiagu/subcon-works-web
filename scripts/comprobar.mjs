@@ -629,7 +629,7 @@ const comprobaciones = [
   {
     id: "§7 · Cortina · cuándo sale y cuándo no",
     tarea: "T09",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       // 1. Primera carga de la portada en la sesión: sale.
       const p1 = await h.abrir("", { cortina: true, espera: "domcontentloaded" });
@@ -659,7 +659,7 @@ const comprobaciones = [
   {
     id: "§7 · Cortina · ni un fotograma cuando no sale",
     tarea: "T09",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const casos = [
         { nombre: "segunda carga", ruta: "", o: { cortina: false } },
@@ -700,7 +700,7 @@ const comprobaciones = [
   {
     id: "§7 · Cortina · misma y que la superficie (±1 px)",
     tarea: "T09",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [360, 390, 1440]) {
         const page = await h.abrir(null, { ancho, cortina: true });
@@ -737,7 +737,7 @@ const comprobaciones = [
   {
     id: "§7 · Cortina · se retira con los chunks abortados",
     tarea: "T09",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", {

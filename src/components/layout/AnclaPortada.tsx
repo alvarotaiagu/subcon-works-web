@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { esperarCortina } from "@/components/layout/Preloader";
+import { esperarCortina } from "@/components/layout/Cortina";
 import { cortePortada } from "@/content/portada";
 import { registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { irAAncla } from "@/lib/irAAncla";

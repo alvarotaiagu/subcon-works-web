@@ -22,7 +22,7 @@ export const PUERTO_POR_DEFECTO = 4302;
 export const RAIZ_POR_DEFECTO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "out");
 /** Lo que tiene que decir el `<title>` de la web servida (comprobar.mjs y medir.mjs lo miran). */
 export const TITULO_ESPERADO = "Undertactics";
-/** Claves de la web que comprobar.mjs y medir.mjs ponen antes de cargar (AvisoCookies.tsx, Preloader.tsx). */
+/** Claves de la web que comprobar.mjs y medir.mjs ponen antes de cargar (AvisoCookies.tsx, lib/scriptCabeza.ts). */
 export const CLAVE_COOKIES = "undertactics:aviso-cookies:v1";
 export const CLAVE_CORTINA = "undertactics-preloader-seen";
 
