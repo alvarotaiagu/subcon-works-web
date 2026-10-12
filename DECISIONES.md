@@ -32,6 +32,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-022 | Para tener los cinco recursos del PLIEGO §2 tras quitar piezas del kit: los H2 (y los H1 de las interiores) entran palabra a palabra desde la superficie de su sección (el H1 del hero no, por el LCP). El hero de pozos en SVG cuenta como «hero propio del concepto» aunque no sea canvas ni WebGL: excepción por el presupuesto de rendimiento. | 002 | 2026-10-12 |
 | D-023 | `playwright` entra como `devDependency` del repo, solo para medir el rendimiento y comprobar en navegador (`scripts/medir.mjs`, `scripts/comprobar.mjs`). No entra ninguna dependencia de ejecución nueva. | 002 | 2026-10-12 |
 | D-024 | Spec 002 (rediseño «Por debajo») aprobada por Álvaro tal como está, con D-014 a D-023 y los pendientes P-04 a P-07. | 002 | 2026-10-12 |
+| D-025 | Plan de la 002 aprobado por Álvaro con PD-1 a PD-15 (`specs/002-rediseno-por-debajo/plan.md`). | 002 | 2026-10-12 |
 
 ## Pendientes
 
