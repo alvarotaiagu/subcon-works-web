@@ -7,12 +7,12 @@ import { Boton } from "@/components/ui/Boton";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { plantillas, plantillasDestacadas } from "@/content/plantillas";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
-import { useReveal } from "@/hooks/useReveal";
+import { Seccion } from "@/components/ui/Seccion";
+import { Titular } from "@/components/ui/Titular";
 
 export function Plantillas() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const revealRef = useReveal<HTMLDivElement>();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -52,7 +52,7 @@ export function Plantillas() {
   }, []);
 
   return (
-    <section
+    <Seccion
       id="plantillas"
       ref={sectionRef}
       className="overflow-hidden py-[var(--space-section)] md:flex md:min-h-screen md:flex-col md:justify-center md:py-16"
@@ -62,14 +62,13 @@ export function Plantillas() {
           tarjetas es más alto que eso, las tarjetas quedan por debajo del punto donde
           se congeló y se ven "muy abajo". Centrarlo en min-h-screen evita que el
           padding superior empuje las tarjetas fuera del alto pineado. */}
-      <div ref={revealRef} className="container-max mb-10 md:mb-8">
-        <p className="font-mono-label mb-4" data-reveal>
-          Plantillas
-        </p>
-        <div className="flex flex-wrap items-end justify-between gap-6" data-reveal>
-          <h2 className="max-w-2xl text-4xl font-medium text-hueso md:text-6xl">
-            {plantillas.length} bases propias, ya construidas y en línea.
-          </h2>
+      <div className="container-max mb-10 md:mb-8">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <Titular
+            nivel={2}
+            arriba={`${plantillas.length} bases propias, ya construidas y en línea.`}
+            className="max-w-2xl"
+          />
           <Link
             href="/plantillas/"
             className="link-underline font-mono-label shrink-0 text-xs text-hueso"
@@ -77,7 +76,7 @@ export function Plantillas() {
             Ver las {plantillas.length} <Glifo nombre="derecha" />
           </Link>
         </div>
-        <p className="mt-6 max-w-xl text-apagado-abajo" data-reveal>
+        <p className="mt-6 max-w-xl text-apagado-abajo">
           Cada una parte de una idea distinta, no de la misma retícula con otro color. Si una encaja
           con lo tuyo, se adapta con tus datos y está en línea en dos semanas.{" "}
           <strong className="font-medium text-hueso">
@@ -114,6 +113,6 @@ export function Plantillas() {
           </div>
         </div>
       </div>
-    </section>
+    </Seccion>
   );
 }

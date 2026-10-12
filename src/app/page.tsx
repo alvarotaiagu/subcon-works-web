@@ -1,29 +1,37 @@
+import type { Viewport } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { Marquee } from "@/components/sections/Marquee";
 import { Servicios } from "@/components/sections/Servicios";
 import { Plantillas } from "@/components/sections/Plantillas";
-import { DiagnosticoRapido } from "@/components/sections/DiagnosticoRapido";
-import { Auditoria } from "@/components/sections/Auditoria";
 import { Proceso } from "@/components/sections/Proceso";
-import { Equipo } from "@/components/sections/Equipo";
-import { Compromisos } from "@/components/sections/Compromisos";
-import { Cifras } from "@/components/sections/Cifras";
-import { CtaFinal } from "@/components/sections/CtaFinal";
+import { QuienDebajo } from "@/components/sections/QuienDebajo";
+import { DiagnosticoRapido } from "@/components/sections/DiagnosticoRapido";
+import { Fondo } from "@/components/sections/Fondo";
+import { AnclaPortada } from "@/components/layout/AnclaPortada";
 
+// La portada empieza arriba, en claro (spec 002 §3.1): su barra y su esquema son los de
+// la cal. Las interiores se quedan con los del layout (oscuro).
+export const viewport: Viewport = {
+  themeColor: "#F1EEE6",
+  colorScheme: "light dark",
+};
+
+/**
+ * El corte de la portada (spec 002 §3.5, plan PD-7): siete secciones, en orden, de la
+ * superficie al fondo. Sus `id`, cotas, nitidez y fondos salen de `cortePortada`
+ * (`src/content/portada.ts`). Este fichero se escribe una vez: cada tarea cambia solo
+ * el componente de su sección.
+ */
 export default function Home() {
   return (
     <>
       <Hero />
-      <Marquee />
       <Servicios />
       <Plantillas />
       <Proceso />
-      <Equipo />
-      <Compromisos className="container-max pb-[var(--space-section)]" />
+      <QuienDebajo />
       <DiagnosticoRapido />
-      <Auditoria />
-      <Cifras />
-      <CtaFinal />
+      <Fondo hilo />
+      <AnclaPortada />
     </>
   );
 }

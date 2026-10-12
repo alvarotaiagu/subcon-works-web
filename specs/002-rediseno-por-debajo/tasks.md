@@ -305,7 +305,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       `src/` (el fichero del hook lo borra T18);
     - lint y build en verde.
 
-- [ ] **T06 · El corte de la portada.**
+- [x] **T06 · El corte de la portada.**
   - *Cubre*: spec §3.5 (entero), §3.2 («Palabras que emergen» y «Nitidez por
     cota»), §3.1 (`colorScheme` y `themeColor` de la portada; fondo cal en
     el rebote), PD-6, PD-7.

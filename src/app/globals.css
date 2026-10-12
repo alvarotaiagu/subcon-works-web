@@ -196,6 +196,51 @@ h3 {
     border-color: var(--superficie);
   }
 
+  /* Titular (§3.2, PD-6): H2 de la portada y H1 de las interiores. La nitidez sale de
+     `--shrp`, que pone la sección, y no se anima. Cada palabra va en su máscara; la
+     máscara baja .14em por debajo de la línea para que la entrada no corte las
+     descendentes (con el margen negativo, la caja de línea no cambia). */
+  .titular {
+    font-family: var(--letra-geologica);
+    font-weight: 300;
+    font-size: var(--titular-tam);
+    line-height: var(--titular-interlineado);
+    letter-spacing: -0.035em;
+    color: var(--hueso);
+    font-variation-settings: "SHRP" var(--shrp, 0);
+  }
+  .titular-em {
+    display: block;
+    margin-top: 0.12em;
+    font-family: var(--letra-kode);
+    font-size: var(--titular-em-tam);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -0.05em;
+    color: var(--superficie);
+  }
+  .titular-mascara {
+    display: inline-block;
+    white-space: nowrap;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  .titular-palabra {
+    display: inline-block;
+  }
+  /* El estado oculto lo pone <Titular> desde JS (solo con `js-si` y movimiento). */
+  .titular:is(.es-por-emerger, .es-emergiendo) .titular-mascara {
+    clip-path: inset(-0.6em -0.3em 0 -0.3em);
+  }
+  .titular.es-por-emerger .titular-palabra {
+    transform: translateY(calc(100% + 0.14em));
+  }
+  .titular.es-emergiendo .titular-palabra {
+    transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: calc(var(--i, 0) * 0.04s);
+  }
+
   /* Botones (§3.4), los pinta <Boton> o clasesBoton(). `--boton-color` es el color
      de su zona (relleno del primario, borde y texto del secundario) y
      `--boton-contra` el del texto sobre ese relleno. Ninguno se rellena de lima. */

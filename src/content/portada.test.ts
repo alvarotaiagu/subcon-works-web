@@ -33,7 +33,7 @@ test("§3.5 · Las cotas de la portada", async () => {
   );
 });
 
-test("§3.5 · Recuento", { skip: "T06" }, () => {
+test("§3.5 · Recuento", () => {
   const c = cifras.find((x) => x.etiqueta === "Plantillas propias publicadas y en línea");
   assert.ok(c, "cifras.ts no tiene la cifra de plantillas");
   assert.equal(c.valor, plantillas.length);
