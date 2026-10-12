@@ -530,7 +530,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - el pin funciona a 390 y a 1440 px sin saltos al soltarse;
     - lint y build en verde.
 
-- [ ] **T13 · Quién está debajo («−3»), Diagnóstico («−4») y Fondo.**
+- [x] **T13 · Quién está debajo («−3»), Diagnóstico («−4») y Fondo.**
   - *Cubre*: spec §3.11 (entero), §3.5 (las cifras «36» y «0 €»), §3.12
     (`/sectores/<slug>/` acaba en el Fondo), PD-12.
   - *Depende de*: T06.

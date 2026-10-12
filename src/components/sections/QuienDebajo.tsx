@@ -4,7 +4,7 @@ import { Compromisos } from "./Compromisos";
 
 /**
  * «−3 · Quién está debajo» (spec 002 §3.11): las personas y los compromisos en un solo
- * estrato. Nace en T06 como cáscara de lo que había (PD-7); su aspecto lo hace T13.
+ * estrato. Las personas van con la tarjeta de siempre; los compromisos, como paradas de un pozo (T13).
  * El `id` es `equipo`: lo enlaza «/#equipo» desde /estudio/.
  */
 export function QuienDebajo() {

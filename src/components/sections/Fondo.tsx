@@ -1,18 +1,101 @@
 import { Seccion } from "@/components/ui/Seccion";
-import { Auditoria } from "./Auditoria";
+import { Titular } from "@/components/ui/Titular";
+import { cifras } from "@/content/cifras";
+import { loQueRecibes, loQueNoPedimos, TOTAL_PREGUNTAS } from "@/content/auditoria";
+import { FondoObjeto } from "./FondoObjeto";
+
+// «36» y «0 €» (spec 002 §3.5): las dos últimas cifras de `cifras.ts`.
+const [, , preguntas, coste] = cifras;
 
 /**
- * «Fondo · Auditoría» (spec 002 §3.11, plan PD-12): el final del corte. Nace en T06 como
- * cáscara de lo que había en `Auditoria` (PD-7); su aspecto, las cifras, el enlace por
- * correo y el objeto que se completa los hace T13. Debajo va el pie, en roca.
+ * «Fondo · Auditoría» (spec 002 §3.11, plan PD-12): el final del corte y del objeto. La
+ * oferta, lo que lleva el informe, lo que no se pide, las dos cifras de la auditoría y el
+ * objeto que se completa (`FondoObjeto`). Debajo va el pie, en roca.
  *
  * `hilo`: en la portada, el botón es donde acaba el conducto (`data-hilo-fin`). En
- * `/sectores/<slug>/` va sin él.
+ * `/sectores/<slug>/` va sin él. El formulario de 36 preguntas sigue en `/auditoria/`.
  */
 export function Fondo({ hilo = false }: { hilo?: boolean }) {
   return (
-    <Seccion id="auditoria" className="border-t border-conducto py-[var(--space-section)]">
-      <Auditoria hilo={hilo} />
+    <Seccion id="auditoria" aria-labelledby="fondo-titulo" className="py-[var(--space-section)]">
+      <div className="container-max">
+        <div className="grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-24">
+          {/* Columna izquierda: la oferta. Se queda fija mientras pasa la lista de la
+              derecha, que es más alta. */}
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <Titular
+              nivel={2}
+              id="fondo-titulo"
+              arriba="Antes de venderte nada, te decimos qué te está costando dinero."
+            />
+            <p className="mt-8 max-w-md text-lg text-apagado-abajo">
+              Contestas {TOTAL_PREGUNTAS} preguntas sobre cómo trabajáis —diez minutos, con tus
+              palabras— y te devolvemos un informe con las horas que se van cada semana, lo que
+              cuestan al año y qué se arregla primero.
+            </p>
+            <p className="mt-4 max-w-md text-apagado-abajo">
+              Sin coste, sin compromiso y sin que tengas que darnos acceso a nada. Si con el
+              informe te apañas por tu cuenta, nos parece bien: al menos ya sabes por dónde ibas
+              sangrando.
+            </p>
+          </div>
+
+          {/* Columna derecha: qué lleva dentro el informe, y qué no se pide nunca. */}
+          <div>
+            <ol className="space-y-px">
+              {loQueRecibes.map((item, i) => (
+                <li key={item.titulo} className="border-t border-conducto py-8 last:border-b">
+                  <div className="flex gap-6">
+                    <span className="font-mono-label w-8 shrink-0 pt-1 text-sm">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <p className="text-xl font-medium text-hueso md:text-2xl">{item.titulo}</p>
+                      <p className="mt-2 max-w-md text-apagado-abajo">{item.texto}</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-12 rounded-2xl border border-conducto bg-estrato p-7">
+              <p className="font-mono-label mb-4 text-[10px]">Lo que no te vamos a pedir</p>
+              <ul className="space-y-2.5">
+                {loQueNoPedimos.map((linea) => (
+                  <li key={linea} className="flex gap-3 text-sm text-apagado-abajo">
+                    <span aria-hidden="true" className="mt-2 h-px w-4 shrink-0 bg-superficie" />
+                    <span>{linea}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm text-apagado-abajo">
+                La auditoría se hace sobre cómo trabajáis, no entrando en vuestros sistemas. Si
+                algo de eso llega igualmente, se devuelve sin abrirlo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* El final: las dos cifras y el objeto (donde acaba el conducto). Debajo, el pie. */}
+        <div className="mt-20 grid gap-12 border-t border-conducto pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-24">
+          <ul className="fondo-cifras">
+            {[preguntas, coste].map((c) => (
+              <li key={c.etiqueta}>
+                <p className="fondo-cifra-valor">
+                  <span className="whitespace-nowrap">
+                    {c.valor}
+                    {c.sufijo}
+                  </span>
+                </p>
+                <p className="fondo-cifra-etiqueta">{c.etiqueta}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="self-center">
+            <FondoObjeto hilo={hilo} />
+          </div>
+        </div>
+      </div>
     </Seccion>
   );
 }

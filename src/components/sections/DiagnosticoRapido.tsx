@@ -42,14 +42,14 @@ export function DiagnosticoRapido() {
                 <Link
                   href={`/sectores/${pagina.slug}/`}
                   className="link-underline text-hueso"
-                  data-cursor-hover
+                 
                 >
                   {pagina.nombre}
                 </Link>
               </li>
             ))}
             <li>
-              <Link href="/sectores/" className="link-underline text-apagado-abajo" data-cursor-hover>
+              <Link href="/sectores/" className="link-underline text-apagado-abajo">
                 Todos los sectores <Glifo nombre="derecha" />
               </Link>
             </li>

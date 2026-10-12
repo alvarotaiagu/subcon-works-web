@@ -74,3 +74,158 @@ body:has([data-hero]) {
     pointer-events: none;
   }
 }
+
+/* T13 · Fondo */
+/* «−3 · Quién está debajo» (los compromisos como paradas de un pozo) y «Fondo · Auditoría»
+   (las cifras y el objeto que se completa). Spec 002 §3.11. */
+@layer components {
+  /* Pozo: la línea baja de parada en parada (cada parada pinta su tramo hasta la
+     siguiente, así la última no deja una línea colgando). `--m` es la altura del rombo
+     respecto al borde de arriba de la parada. Rombo con borde lima y centro hondo: la
+     lima solo como línea (§3.1). */
+  .pozo {
+    --m: 2.15rem;
+    margin-top: 3rem;
+    padding-left: 2.25rem;
+  }
+  .pozo-parada {
+    position: relative;
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding: 1.4rem 0 1.6rem;
+  }
+  .pozo-parada::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: -2.25rem;
+    top: calc(var(--m) - 5px);
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--superficie);
+    border-radius: 2px;
+    background: var(--hondo);
+    transform: rotate(45deg);
+  }
+  .pozo-parada:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: calc(-2.25rem + 4px);
+    top: var(--m);
+    bottom: calc(-1 * var(--m));
+    width: 2px;
+    background: var(--conducto);
+  }
+  .pozo-numero {
+    font-family: var(--letra-kode);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--superficie);
+  }
+  .pozo-titulo {
+    font-family: var(--letra-kode);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--hueso);
+  }
+  .pozo-texto {
+    font-family: var(--letra-kode);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--apagado-abajo);
+    max-width: 48ch;
+  }
+  @media (min-width: 768px) {
+    .pozo-parada {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-areas:
+        "numero texto"
+        "titulo texto";
+      align-items: start;
+    }
+    .pozo-numero {
+      grid-area: numero;
+    }
+    .pozo-titulo {
+      grid-area: titulo;
+    }
+    .pozo-texto {
+      grid-area: texto;
+      padding-top: 1.35rem;
+    }
+  }
+
+  /* Fondo: las dos cifras (36 · 0 €), en Kode Mono, sin contador. */
+  .fondo-cifras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+  }
+  .fondo-cifras > li {
+    max-width: 15rem;
+  }
+  .fondo-cifra-valor {
+    font-family: var(--letra-kode);
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--hueso);
+  }
+  .fondo-cifra-etiqueta {
+    margin-top: 0.6rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--apagado-abajo);
+  }
+
+  /* El objeto: el iceberg junto al botón. Se dibuja entero cuando `FondoObjeto` lo
+     enciende (quita `es-por-encender`): los dos trazos con su largo real (`--largo`, lo
+     mide JS; sin él, sin guiones), el pico que sube y el relleno que llega. Sin
+     `es-por-encender` (sin JS, movimiento reducido, ya cruzado), está dibujado. */
+  .fondo-simbolo-caja {
+    display: block;
+    flex-shrink: 0;
+  }
+  .fondo-simbolo {
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    overflow: visible;
+  }
+  .fondo-simbolo path[stroke] {
+    stroke-dasharray: var(--largo) calc(var(--largo) + 2px);
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s var(--ease-out);
+  }
+  .fondo-simbolo path[stroke]:not([fill-opacity]) {
+    transition-delay: 0.45s;
+  }
+  .fondo-simbolo path[fill-opacity] {
+    fill-opacity: 0.16;
+    transition:
+      stroke-dashoffset 1s var(--ease-out),
+      fill-opacity 0.8s var(--ease-out) 0.5s;
+  }
+  .fondo-simbolo path:not([stroke]) {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 0.7s var(--ease-out) 0.2s;
+  }
+  .es-por-encender .fondo-simbolo path[stroke] {
+    stroke-dashoffset: var(--largo, 0px);
+  }
+  .es-por-encender .fondo-simbolo path[fill-opacity] {
+    fill-opacity: 0;
+  }
+  .es-por-encender .fondo-simbolo path:not([stroke]) {
+    clip-path: inset(100% 0 0 0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fondo-simbolo path {
+      transition: none !important;
+    }
+  }
+}

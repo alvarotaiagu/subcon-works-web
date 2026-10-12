@@ -439,6 +439,13 @@ async function fondoSeEnciende(h, ruta, opciones = {}) {
   const page = await h.abrir(ruta, opciones);
   const boton = SEL.fondoBoton;
   assert.ok(await page.$(boton), `${ruta || "/"}: no está el botón del Fondo (${boton})`);
+  // El HTML del servidor viene encendido (sin JS se lee así): el reposo lo pone la
+  // hidratación. FondoObjeto mide el largo de los trazos en su efecto, ya hidratado.
+  await page.waitForFunction(
+    (simbolo) => document.querySelector(`${simbolo} path[stroke]`)?.style.getPropertyValue("--largo"),
+    SEL.fondoSimbolo,
+  );
+  await page.waitForTimeout(1000); // el paso encendido → reposo de la hidratación es una transición
   const encendido = () =>
     page.evaluate(
       ({ boton, simbolo, lima }) => {
@@ -1122,7 +1129,7 @@ const comprobaciones = [
   {
     id: "§7 · Fondo · se enciende en la portada y en /sectores/alojamientos-rurales/",
     tarea: "T13",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         await fondoSeEnciende(h, "", { ancho });
