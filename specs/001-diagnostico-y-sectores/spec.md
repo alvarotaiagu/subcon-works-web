@@ -1,6 +1,6 @@
 # 001 · Diagnóstico rápido y páginas por sector
 
-Estado: aprobada (D-011, 2026-10-11) · Depende de: — · Decisiones: D-001 a D-011 · Conflictos: — · Pendientes: P-01, P-02, P-03
+Estado: hecha (comprobada 2026-10-12; aprobada D-011, 2026-10-11) · Depende de: — · Decisiones: D-001 a D-011 · Conflictos: — · Pendientes: P-01, P-02, P-03
 Plan: [plan.md](plan.md) (aprobado, D-012) · Tareas: [tasks.md](tasks.md)
 Cambiada por: D-012 (2026-10-11, §3.5)
 
