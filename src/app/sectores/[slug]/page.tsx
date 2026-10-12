@@ -6,7 +6,7 @@ import { ChatEjemplo } from "@/components/sectores/ChatEjemplo";
 import { MejorasSector } from "@/components/sectores/MejorasSector";
 import { PlantillasSector, plantillasValidas } from "@/components/sectores/PlantillasSector";
 import { ProblemasSector } from "@/components/sectores/ProblemasSector";
-import { CtaFinal } from "@/components/sections/CtaFinal";
+import { Fondo } from "@/components/sections/Fondo";
 import { sectores, sectorPorSlug } from "@/content/sectores";
 
 // Export estático: solo existen los tres slugs de D-009. Cualquier otro es la
@@ -92,8 +92,8 @@ export default async function SectorPage({ params }: Props) {
       {/* 6 · Plantillas: no sale si no hay ninguna válida (D-007) */}
       <PlantillasSector plantillas={plantillas} className={`${bloque} scroll-mt-28`} />
 
-      {/* 7 · Cierre */}
-      <CtaFinal />
+      {/* 7 · Cierre: el Fondo de la portada, sin el conducto (spec 002 §3.12) */}
+      <Fondo />
     </div>
   );
 }

@@ -75,6 +75,353 @@ body:has([data-hero]) {
   }
 }
 
+/* T13 · Fondo */
+/* «−3 · Quién está debajo» (los compromisos como paradas de un pozo) y «Fondo · Auditoría»
+   (las cifras y el objeto que se completa). Spec 002 §3.11. */
+@layer components {
+  /* Pozo: la línea baja de parada en parada (cada parada pinta su tramo hasta la
+     siguiente, así la última no deja una línea colgando). `--m` es la altura del rombo
+     respecto al borde de arriba de la parada. Rombo con borde lima y centro hondo: la
+     lima solo como línea (§3.1). */
+  .pozo {
+    --m: 2.15rem;
+    margin-top: 3rem;
+    padding-left: 2.25rem;
+  }
+  .pozo-parada {
+    position: relative;
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding: 1.4rem 0 1.6rem;
+  }
+  .pozo-parada::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: -2.25rem;
+    top: calc(var(--m) - 5px);
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--superficie);
+    border-radius: 2px;
+    background: var(--hondo);
+    transform: rotate(45deg);
+  }
+  .pozo-parada:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: calc(-2.25rem + 4px);
+    top: var(--m);
+    bottom: calc(-1 * var(--m));
+    width: 2px;
+    background: var(--conducto);
+  }
+  .pozo-numero {
+    font-family: var(--letra-kode);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--superficie);
+  }
+  .pozo-titulo {
+    font-family: var(--letra-kode);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--hueso);
+  }
+  .pozo-texto {
+    font-family: var(--letra-kode);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--apagado-abajo);
+    max-width: 48ch;
+  }
+  @media (min-width: 768px) {
+    .pozo-parada {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-areas:
+        "numero texto"
+        "titulo texto";
+      align-items: start;
+    }
+    .pozo-numero {
+      grid-area: numero;
+    }
+    .pozo-titulo {
+      grid-area: titulo;
+    }
+    .pozo-texto {
+      grid-area: texto;
+      padding-top: 1.35rem;
+    }
+  }
+
+  /* Fondo: las dos cifras (36 · 0 €), en Kode Mono, sin contador. */
+  .fondo-cifras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+  }
+  .fondo-cifras > li {
+    max-width: 15rem;
+  }
+  .fondo-cifra-valor {
+    font-family: var(--letra-kode);
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--hueso);
+  }
+  .fondo-cifra-etiqueta {
+    margin-top: 0.6rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--apagado-abajo);
+  }
+
+  /* El objeto: el iceberg junto al botón. Se dibuja entero cuando `FondoObjeto` lo
+     enciende (quita `es-por-encender`): los dos trazos con su largo real (`--largo`, lo
+     mide JS; sin él, sin guiones), el pico que sube y el relleno que llega. Sin
+     `es-por-encender` (sin JS, movimiento reducido, ya cruzado), está dibujado. */
+  .fondo-simbolo-caja {
+    display: block;
+    flex-shrink: 0;
+  }
+  .fondo-simbolo {
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    overflow: visible;
+  }
+  .fondo-simbolo path[stroke] {
+    stroke-dasharray: var(--largo) calc(var(--largo) + 2px);
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s var(--ease-out);
+  }
+  .fondo-simbolo path[stroke]:not([fill-opacity]) {
+    transition-delay: 0.45s;
+  }
+  .fondo-simbolo path[fill-opacity] {
+    fill-opacity: 0.16;
+    transition:
+      stroke-dashoffset 1s var(--ease-out),
+      fill-opacity 0.8s var(--ease-out) 0.5s;
+  }
+  .fondo-simbolo path:not([stroke]) {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 0.7s var(--ease-out) 0.2s;
+  }
+  .es-por-encender .fondo-simbolo path[stroke] {
+    stroke-dashoffset: var(--largo, 0px);
+  }
+  .es-por-encender .fondo-simbolo path[fill-opacity] {
+    fill-opacity: 0;
+  }
+  .es-por-encender .fondo-simbolo path:not([stroke]) {
+    clip-path: inset(100% 0 0 0);
+  }
+  /* Al pasar del HTML del servidor (encendido) al reposo, sin transiciones. */
+  .fondo-objeto.es-quieto *,
+  .fondo-objeto.es-quieto *::after {
+    transition: none !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fondo-simbolo path {
+      transition: none !important;
+    }
+  }
+}
+
+/* T11 · Plantilla
+   La tarjeta de corte (spec 002 §3.8) y el banquillo. Fuera de capa a propósito: la tarjeta
+   es un <a> con sus piezas en <span>, y esto tiene que ganar a la base de Tailwind y a las
+   reglas globales de h3. La usan la portada (con dorsal) y /plantillas/ (sin él). */
+
+/* Los titulares: una rejilla que se reparte sola. A 360 px, una columna. */
+.lista-titulares {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: 2.5rem 1rem;
+}
+.lista-titulares > li {
+  min-width: 0;
+}
+
+.tarjeta-corte {
+  display: grid;
+  grid-template-rows: auto 3px 1fr;
+  height: 100%;
+  min-width: 0;
+  color: var(--hueso);
+  text-decoration: none;
+}
+
+/* Arriba: la portada. Lo que se mueve (movimiento) sube desde abajo de la foto al pasar el
+   ratón o al enfocar; va con transform, así que no mueve nada de la página. */
+.tarjeta-corte-sup {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  background: var(--roca);
+}
+.tarjeta-corte-sup img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.6s var(--ease-out);
+}
+.tarjeta-corte-mov {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  border-top: 2px solid var(--superficie);
+  background: var(--hondo);
+  color: var(--hueso);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  transform: translateY(100%);
+  transition: transform 0.45s var(--ease-out);
+}
+.tarjeta-corte:focus-visible .tarjeta-corte-mov {
+  transform: none;
+}
+.tarjeta-corte:focus-visible img {
+  transform: scale(1.04);
+}
+@media (hover: hover) {
+  .tarjeta-corte:hover .tarjeta-corte-mov {
+    transform: none;
+  }
+  .tarjeta-corte:hover img {
+    transform: scale(1.04);
+  }
+}
+
+/* La línea de superficie y, debajo, en --hondo: lo que hay por debajo de la portada. */
+.tarjeta-corte-linea {
+  display: block;
+  background: var(--superficie);
+}
+.tarjeta-corte-inf {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  padding: 0.9rem 3.25rem 1rem 1.6rem;
+}
+.tarjeta-corte-inf::before {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  top: 0;
+  bottom: 0.9rem;
+  width: 2px;
+  background: var(--conducto);
+  transition: background-color var(--dur-fast);
+}
+.tarjeta-corte:is(:hover, :focus-visible) .tarjeta-corte-inf::before {
+  background: var(--superficie);
+}
+.tarjeta-corte-negocio {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.tarjeta-corte-sector {
+  color: var(--apagado-abajo);
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+.tarjeta-corte-concepto {
+  margin-top: 0.35rem;
+  color: var(--superficie);
+  font-family: var(--letra-kode);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+/* El dorsal: Kode Mono lima sobre --hondo, en la esquina de abajo. */
+.tarjeta-corte-dorsal {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.75rem;
+  color: var(--superficie);
+  font-family: var(--letra-kode);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* El banquillo: en Kode Mono pequeño, en columnas de 20 rem como mínimo, así a 360 px
+   es una sola y ningún texto se corta (se parte por donde puede). */
+.banquillo-titulo {
+  margin: 4rem 0 1rem;
+  color: var(--apagado-abajo);
+  font-family: var(--letra-kode);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.banquillo {
+  columns: 20rem 3;
+  column-gap: 2.5rem;
+}
+.banquillo > li {
+  break-inside: avoid;
+}
+.banquillo-fila {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--conducto);
+  color: var(--hueso);
+  font-family: var(--letra-kode);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.banquillo-dorsal {
+  grid-row: span 2;
+  color: var(--superficie);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.banquillo-negocio {
+  font-weight: 500;
+}
+.banquillo-detalle {
+  color: var(--apagado-abajo);
+}
+.banquillo-fila:is(:hover, :focus-visible) .banquillo-negocio {
+  text-decoration: underline;
+  text-decoration-color: var(--superficie);
+  text-underline-offset: 0.2em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta-corte-sup img,
+  .tarjeta-corte-mov,
+  .tarjeta-corte-inf::before {
+    transition: none;
+  }
+}
+
+
 /* T10 · Servicios (spec 002 §3.7): diez pozos. El dibujo en reposo va en --conducto
    (decorativo, nunca se lee); el texto, siempre en --hueso o --apagado-abajo, sin
    opacidad. Encendido = lima solo en línea (la línea, el pozo, el recuadro de cada

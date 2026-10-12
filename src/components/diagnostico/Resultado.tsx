@@ -100,19 +100,13 @@ export function Resultado({
         <Boton href={`/auditoria/?${query}`}>
           Llevar estas respuestas a la auditoría
         </Boton>
-        <button
-          type="button"
-          onClick={copiar}
-          className="rounded-full border border-apagado-abajo px-6 py-3 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
-          data-cursor-hover
-        >
+        <Boton variante="secundario" onClick={copiar}>
           Copiar el enlace a este diagnóstico
-        </button>
+        </Boton>
         <button
           type="button"
           onClick={onCambiar}
-          className="rounded-full px-2 py-3 text-sm font-medium text-apagado-abajo transition-colors hover:text-superficie"
-          data-cursor-hover
+          className="rounded-full px-2 py-3text-sm font-medium text-apagado-abajo transition-colors hover:text-hueso"
         >
           Cambiar respuestas
         </button>

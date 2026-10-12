@@ -29,9 +29,9 @@ export function CatalogoPlantillas() {
                 onClick={() => setSector(opcion)}
                 aria-pressed={activo}
                 className={cn(
-                  "font-mono-label rounded-full border px-3.5 py-1.5 text-[10px] transition-colors",
+                  "filtro-sector font-mono-label rounded-full border px-3.5 py-1.5 text-[10px] transition-colors",
                   activo
-                    ? "border-hueso bg-hueso text-hondo shadow-[0_2px_0_var(--superficie)]"
+                    ? "es-activo"
                     : "border-apagado-abajo text-apagado-abajo hover:border-hueso hover:text-hueso"
                 )}
               >
@@ -49,15 +49,13 @@ export function CatalogoPlantillas() {
           : `${visibles.length} de ${plantillas.length}`}
       </p>
 
-      <div className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
+      <ul className="lista-titulares lista-catalogo mt-8">
         {visibles.map((plantilla, i) => (
-          <TarjetaPlantilla
-            key={plantilla.slug}
-            plantilla={plantilla}
-            priority={i < 3}
-          />
+          <li key={plantilla.slug}>
+            <TarjetaPlantilla plantilla={plantilla} variante="corte" priority={i < 3} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

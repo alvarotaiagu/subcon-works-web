@@ -1,21 +1,74 @@
 import { BrowserMockup } from "@/components/ui/BrowserMockup";
 import { Etiqueta } from "@/components/ui/Etiqueta";
+import { WorkImage } from "@/components/ui/WorkImage";
 import type { Plantilla } from "@/content/plantillas";
+import { partirConcepto } from "@/lib/dorsales";
 import { cn } from "@/lib/utils";
 
 /**
  * Una plantilla del catálogo. La tarjeta entera es el enlace a su demo viva:
  * son sitios publicados, así que lo útil es abrirlos, no leer una ficha.
+ *
+ * Dos variantes:
+ * - `navegador` (por defecto): la captura en un marco de navegador, con su ficha.
+ * - `corte` (spec 002 §3.8): la tarjeta del corte. Arriba, la portada; luego la línea de
+ *   superficie; debajo, en `--hondo`, el negocio, «sector · ciudad», el nombre del
+ *   concepto en Kode Mono lima y, al pasar el ratón o al enfocar, lo que se mueve. El
+ *   `dorsal` es opcional: la portada lo pone, `/plantillas/` no. Sin `data-cursor-*`.
  */
 export function TarjetaPlantilla({
   plantilla,
   className,
   priority = false,
+  variante = "navegador",
+  dorsal,
 }: {
   plantilla: Plantilla;
   className?: string;
   priority?: boolean;
+  variante?: "navegador" | "corte";
+  /** Solo en la variante `corte`: el número del §3.8 (lo calcula `conDorsal`). */
+  dorsal?: number;
 }) {
+  if (variante === "corte") {
+    const { nombre } = partirConcepto(plantilla.concepto);
+    return (
+      <a
+        href={plantilla.demo}
+        target="_blank"
+        rel="noopener"
+        data-foco-dentro
+        className={cn("tarjeta-corte", className)}
+      >
+        <span className="tarjeta-corte-sup">
+          <WorkImage
+            src={`/plantillas/${plantilla.slug}.jpg`}
+            alt={`Portada de la plantilla ${plantilla.negocio}, del sector ${plantilla.sector}`}
+            width={1440}
+            height={960}
+            sizes="(min-width: 1280px) 260px, (min-width: 640px) 45vw, 90vw"
+            loading={priority ? undefined : "lazy"}
+            priority={priority}
+          />
+          <span className="tarjeta-corte-mov">{plantilla.movimiento}</span>
+        </span>
+        <span className="tarjeta-corte-linea" aria-hidden="true" />
+        <span className="tarjeta-corte-inf">
+          <span className="tarjeta-corte-negocio">{plantilla.negocio}</span>
+          <span className="tarjeta-corte-sector">
+            {plantilla.sector} · {plantilla.ciudad}
+          </span>
+          {nombre && <span className="tarjeta-corte-concepto">«{nombre}»</span>}
+          {dorsal !== undefined && (
+            <span data-dorsal className="tarjeta-corte-dorsal" aria-hidden="true">
+              {dorsal}
+            </span>
+          )}
+        </span>
+      </a>
+    );
+  }
+
   return (
     <a
       href={plantilla.demo}

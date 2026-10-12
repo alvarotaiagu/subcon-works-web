@@ -344,7 +344,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Portada
 
-- [ ] **T07 · Hero: composición, pozos y encendido.**
+- [x] **T07 · Hero: composición, pozos y encendido.**
   - *Cubre*: spec §3.6 (composición, titular, LCP, descripción, botones,
     objetos y pozos, rótulo «Ejemplo», encender un pozo, anuncios, «al
     cargar», móvil), §3.13 (`site.tagline`, `site.descripcion`,
@@ -464,7 +464,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - el teclado enciende cada pozo;
     - lint y build en verde.
 
-- [ ] **T11 · La plantilla («−1») y la tarjeta de corte.**
+- [x] **T11 · La plantilla («−1») y la tarjeta de corte.**
   - *Cubre*: spec §3.8 (entero), §3.12 (`/plantillas/`: tarjeta sin dorsal,
     filtros, `priority` en las tres primeras), §3.4 (filtro activo), §6
     (catálogo con más de 30 o menos de 10 destacadas), §5 (`rel="noopener"`).
@@ -498,7 +498,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - a 360 px el banquillo no corta texto;
     - lint y build en verde.
 
-- [ ] **T12 · Proceso («−2») con el testigo.**
+- [x] **T12 · Proceso («−2») con el testigo.**
   - *Cubre*: spec §3.9 (entero), §3.5 («2 semanas»), §6 (pin y carga
     tardía; sin JS: tabla), §3.17 (proceso como tabla).
   - *Depende de*: T06.
@@ -530,7 +530,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - el pin funciona a 390 y a 1440 px sin saltos al soltarse;
     - lint y build en verde.
 
-- [ ] **T13 · Quién está debajo («−3»), Diagnóstico («−4») y Fondo.**
+- [x] **T13 · Quién está debajo («−3»), Diagnóstico («−4») y Fondo.**
   - *Cubre*: spec §3.11 (entero), §3.5 (las cifras «36» y «0 €»), §3.12
     (`/sectores/<slug>/` acaba en el Fondo), PD-12.
   - *Depende de*: T06.
@@ -615,7 +615,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - las siete páginas a 390 y 1440 px, capturas en la PR;
     - lint y build en verde.
 
-- [ ] **T16 · Formularios y estados (auditoría, diagnóstico, chat).**
+- [x] **T16 · Formularios y estados (auditoría, diagnóstico, chat).**
   - *Cubre*: spec §3.4 (botones de `FormularioAuditoria` y «Seguir» de
     `PasoPregunta`; opción marcada; burbujas de `ChatEjemplo`), §3.12
     (`/auditoria/`: bordes en `--apagado-abajo` y foco), §3.11 («−4»: el

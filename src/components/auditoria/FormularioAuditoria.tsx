@@ -7,6 +7,7 @@ import { enviarSolicitud, type ResultadoEnvio } from "@/lib/auditoriaApi";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { Glifo } from "@/components/ui/Glifo";
+import { Boton } from "@/components/ui/Boton";
 import { traerDeClaveAntigua } from "@/lib/almacenamiento";
 import { preguntas as preguntasDiagnostico } from "@/content/diagnostico";
 import { aRespuestasAuditoria, decodificar, mezclarConBorrador } from "@/lib/diagnostico";
@@ -377,12 +378,10 @@ function Progreso({
             <span
               aria-hidden="true"
               className={cn(
-                "shrink-0 transition-colors",
-                i === paso
-                  ? "mt-[0.6rem] h-[2px] w-3 bg-superficie"
-                  : i < paso
-                    ? "mx-[3px] mt-[0.45rem] h-1.5 w-1.5 rounded-full bg-hueso"
-                    : "mx-[3px] mt-[0.45rem] h-1.5 w-1.5 rounded-full bg-conducto"
+                // El punto de paso es una línea de 2 px (§3.4): lima el actual,
+                // hueso los vistos y conducto (decorativo) los que faltan.
+                "mt-[0.6rem] h-[2px] w-3 shrink-0 transition-colors",
+                i === paso ? "h-[2px] bg-superficie" : i < paso ? "bg-hueso" : "bg-conducto"
               )}
             />
             <button
@@ -643,41 +642,26 @@ function Navegacion({
   return (
     <div className="mt-14 flex max-w-3xl flex-wrap items-center gap-4 border-t border-conducto pt-8">
       {paso > 0 && (
-        <button
-          type="button"
-          onClick={onAtras}
-          className="rounded-full border border-apagado-abajo px-6 py-3 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
-        >
+        <Boton variante="secundario" onClick={onAtras}>
           <Glifo nombre="izquierda" /> Atrás
-        </button>
+        </Boton>
       )}
 
       {!ultimo && (
-        <button
+        <Boton
           type="submit"
-          className="rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo"
           onClick={(e) => {
             e.preventDefault();
             onSiguiente();
           }}
         >
           {paso === 0 ? "Empezar el cuestionario" : "Siguiente bloque"} <Glifo nombre="derecha" />
-        </button>
+        </Boton>
       )}
 
-      <button
-        type="button"
-        onClick={onEnviar}
-        disabled={enviando}
-        className={cn(
-          "rounded-full px-7 py-3.5 text-sm font-medium transition-colors disabled:opacity-50",
-          ultimo
-            ? "bg-hueso text-hondo hover:bg-apagado-abajo"
-            : "border border-apagado-abajo text-hueso hover:border-superficie hover:text-superficie"
-        )}
-      >
+      <Boton variante={ultimo ? "primario" : "secundario"} onClick={onEnviar} disabled={enviando}>
         {enviando ? "Enviando…" : ultimo ? "Enviar la solicitud" : "Enviar tal como está"}
-      </button>
+      </Boton>
 
       {paso > 0 && !ultimo && (
         <p className="font-mono-label w-full text-[10px] md:w-auto">
@@ -729,18 +713,10 @@ function Enviado({ nombre, respondidas }: { nombre: string; respondidas: number 
         El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte.
       </p>
       <div className="mt-10 flex flex-wrap gap-4">
-        <Link
-          href="/plantillas/"
-          className="rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo"
-        >
-          Mientras, mira las plantillas
-        </Link>
-        <Link
-          href="/"
-          className="rounded-full border border-apagado-abajo px-7 py-3.5 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
-        >
+        <Boton href="/plantillas/">Mientras, mira las plantillas</Boton>
+        <Boton href="/" variante="secundario">
           Volver al inicio
-        </Link>
+        </Boton>
       </div>
     </div>
   );
