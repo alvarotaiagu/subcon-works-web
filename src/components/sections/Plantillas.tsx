@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
+import { Boton } from "@/components/ui/Boton";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { plantillas, plantillasDestacadas } from "@/content/plantillas";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
@@ -107,12 +108,9 @@ export function Plantillas() {
               Abogacía, óptica, panadería, autoescuela, mudanzas, cerámica, seguridad… Todas
               publicadas y todas se pueden abrir y trastear ahora mismo.
             </p>
-            <Link
-              href="/plantillas/"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors duration-300 hover:bg-apagado-abajo"
-            >
+            <Boton href="/plantillas/" className="mt-8">
               Ver el catálogo entero
-            </Link>
+            </Boton>
           </div>
         </div>
       </div>

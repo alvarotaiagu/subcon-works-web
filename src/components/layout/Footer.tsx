@@ -5,6 +5,7 @@ import Link from "next/link";
 import { site } from "@/content/site";
 import { plantillas } from "@/content/plantillas";
 import { Logo } from "@/components/ui/Logo";
+import { Boton } from "@/components/ui/Boton";
 
 function useLocalClock() {
   const [time, setTime] = useState<string | null>(null);
@@ -38,12 +39,9 @@ export function Footer() {
         <div className="md:col-span-2">
           <Logo className="mb-5 text-2xl" />
           <p className="max-w-sm text-apagado-abajo">{site.descripcion}</p>
-          <Link
-            href="/auditoria/"
-            className="mt-7 inline-flex rounded-full bg-hueso px-6 py-3 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo"
-          >
+          <Boton href="/auditoria/" className="mt-7 px-6 py-3">
             Auditoría gratis
-          </Link>
+          </Boton>
         </div>
 
         <div>

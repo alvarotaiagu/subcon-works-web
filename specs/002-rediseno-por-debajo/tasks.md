@@ -258,7 +258,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Piezas comunes y el corte
 
-- [ ] **T05 · Cabecera, botones, foco, pie, aviso y transición.**
+- [x] **T05 · Cabecera, botones, foco, pie, aviso y transición.**
   - *Cubre*: spec §3.4 (entero), PD-9 (cabecera), §3.5 (cotas del menú).
   - *Depende de*: T03, T04.
   - *Hacer*:

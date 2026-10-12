@@ -11,6 +11,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollLine } from "@/components/layout/ScrollLine";
 import { AvisoCookies } from "@/components/layout/AvisoCookies";
+import { clasesBoton } from "@/components/ui/Boton";
 
 // ─── Letras (spec 002 §3.2) ────────────────────────────────────────────────────
 // Autoalojadas en public/fuentes/ y sin next/font (precarga toda la lista). Las url()
@@ -134,7 +135,7 @@ export default function RootLayout({
       <body>
         <a
           href="#contenido"
-          className="fixed left-4 top-4 z-[100] -translate-y-24 rounded bg-hueso px-4 py-2 text-sm font-medium text-hondo transition-transform focus-visible:translate-y-0"
+          className={`${clasesBoton()} fixed left-4 top-4 z-[100] -translate-y-24 px-5 py-2 transition-transform focus-visible:translate-y-0`}
         >
           Saltar al contenido
         </a>
