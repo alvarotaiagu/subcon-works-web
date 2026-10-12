@@ -61,14 +61,14 @@ export function CifraGauge({ valor, sufijo = "", duracion = 1400 }: CifraGaugePr
   return (
     <div ref={wrapRef} className="relative inline-flex h-28 w-28 shrink-0 items-center justify-center md:h-32 md:w-32">
       <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90" aria-hidden="true">
-        <circle cx="50" cy="50" r="44" fill="none" stroke="var(--line)" strokeWidth="1.5" />
+        <circle cx="50" cy="50" r="44" fill="none" stroke="var(--conducto)" strokeWidth="1.5" />
         <circle
           ref={ringRef}
           cx="50"
           cy="50"
           r="44"
           fill="none"
-          stroke="var(--accent)"
+          stroke="var(--superficie)"
           strokeWidth="1.5"
           strokeLinecap="round"
           pathLength={1}
@@ -76,7 +76,7 @@ export function CifraGauge({ valor, sufijo = "", duracion = 1400 }: CifraGaugePr
           strokeDashoffset={1}
         />
       </svg>
-      <p className="px-2 text-center text-2xl font-medium leading-none text-text-primary md:text-3xl">
+      <p className="px-2 text-center text-2xl font-medium leading-none text-hueso md:text-3xl">
         {display}
         {sufijo}
       </p>

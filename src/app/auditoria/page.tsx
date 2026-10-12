@@ -19,10 +19,10 @@ export default function AuditoriaPage() {
           ← Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Auditoría gratuita</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-text-primary md:text-7xl">
+        <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
           Cómo trabajáis por dentro
         </h1>
-        <p className="mt-8 max-w-xl text-lg text-text-muted">
+        <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
           {TOTAL_PREGUNTAS} preguntas sobre el día a día del negocio. Se contesta en unos diez
           minutos, con tus palabras, y no hace falta que sepas nada de tecnología.
         </p>
@@ -43,9 +43,9 @@ export default function AuditoriaPage() {
                 "Lo que escribas se guarda en este navegador. Cierra la pestaña y vuelve cuando quieras.",
             },
           ].map((nota) => (
-            <li key={nota.titulo} className="border-t border-line pt-4">
-              <p className="text-sm font-medium text-text-primary">{nota.titulo}</p>
-              <p className="mt-1.5 text-sm text-text-muted">{nota.texto}</p>
+            <li key={nota.titulo} className="border-t border-conducto pt-4">
+              <p className="text-sm font-medium text-hueso">{nota.titulo}</p>
+              <p className="mt-1.5 text-sm text-apagado-abajo">{nota.texto}</p>
             </li>
           ))}
         </ul>

@@ -77,14 +77,14 @@ export function ScrollLine() {
         className="absolute inset-0 w-px"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(to bottom, var(--text-faint) 0, var(--text-faint) 3px, transparent 3px, transparent 11px)",
+            "repeating-linear-gradient(to bottom, var(--apagado-abajo) 0, var(--apagado-abajo) 3px, transparent 3px, transparent 11px)",
           opacity: 0.35,
         }}
       />
-      <div ref={fillRef} className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-accent" />
+      <div ref={fillRef} className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-superficie" />
       <p
         ref={readoutRef}
-        className="font-mono-label absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap text-[10px] tabular-nums text-text-faint"
+        className="font-mono-label absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap text-[10px] tabular-nums text-apagado-abajo"
       >
         0%
       </p>

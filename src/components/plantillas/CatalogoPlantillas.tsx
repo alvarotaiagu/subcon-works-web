@@ -17,7 +17,7 @@ export function CatalogoPlantillas() {
 
   return (
     <div>
-      <div className="border-y border-line py-5">
+      <div className="border-y border-conducto py-5">
         <fieldset className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <legend className="sr-only">Filtrar plantillas por sector</legend>
           {[TODOS, ...sectoresPlantillas].map((opcion) => {
@@ -31,8 +31,8 @@ export function CatalogoPlantillas() {
                 className={cn(
                   "font-mono-label rounded-full border px-3.5 py-1.5 text-[10px] transition-colors",
                   activo
-                    ? "border-accent bg-accent text-bg-base"
-                    : "border-line text-text-muted hover:border-text-faint hover:text-text-primary"
+                    ? "border-hueso bg-hueso text-hondo shadow-[0_2px_0_var(--superficie)]"
+                    : "border-apagado-abajo text-apagado-abajo hover:border-hueso hover:text-hueso"
                 )}
               >
                 {opcion}

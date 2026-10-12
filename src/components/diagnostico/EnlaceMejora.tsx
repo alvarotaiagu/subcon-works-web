@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * `#plantillas-sector`) son un `<a>` normal, como el «#plantillas» del Hero.
  */
 export function EnlaceMejora({ href, className }: { href: string; className?: string }) {
-  const clases = cn("link-underline text-sm text-text-primary", className);
+  const clases = cn("link-underline text-sm text-hueso", className);
   const texto = "Más sobre esto →";
   if (href.startsWith("#")) {
     return (

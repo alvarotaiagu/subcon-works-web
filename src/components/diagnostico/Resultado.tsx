@@ -81,7 +81,7 @@ export function Resultado({
       <h3
         ref={tituloRef}
         tabIndex={-1}
-        className="mt-4 max-w-3xl text-2xl font-medium text-text-primary outline-none md:text-4xl"
+        className="mt-4 max-w-3xl text-2xl font-medium text-hueso outline-none md:text-4xl"
       >
         {tituloResultado(sector)}
       </h3>
@@ -92,7 +92,7 @@ export function Resultado({
         ))}
       </ol>
 
-      <p className="mt-8 max-w-3xl text-text-muted">
+      <p className="mt-8 max-w-3xl text-apagado-abajo">
         Esto lo podemos montar nosotros o cualquier agencia que sepa hacerlo.
       </p>
 
@@ -103,7 +103,7 @@ export function Resultado({
         <button
           type="button"
           onClick={copiar}
-          className="rounded-full border border-line px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
+          className="rounded-full border border-apagado-abajo px-6 py-3 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
           data-cursor-hover
         >
           Copiar el enlace a este diagnóstico
@@ -111,7 +111,7 @@ export function Resultado({
         <button
           type="button"
           onClick={onCambiar}
-          className="rounded-full px-2 py-3 text-sm font-medium text-text-muted transition-colors hover:text-accent"
+          className="rounded-full px-2 py-3 text-sm font-medium text-apagado-abajo transition-colors hover:text-superficie"
           data-cursor-hover
         >
           Cambiar respuestas
@@ -119,13 +119,13 @@ export function Resultado({
       </div>
 
       {/* Siempre en el DOM para que el lector de pantalla anuncie el cambio. */}
-      <p role="status" className="font-mono-label mt-4 min-h-[1em] text-[10px] text-accent">
+      <p role="status" className="font-mono-label mt-4 min-h-[1em] text-[10px] text-superficie">
         {copia === "copiado" ? "Enlace copiado" : ""}
       </p>
 
       {copia === "a-mano" && (
         <div className="mt-2 max-w-3xl">
-          <label htmlFor="diagnostico-url" className="text-sm text-text-muted">
+          <label htmlFor="diagnostico-url" className="text-sm text-apagado-abajo">
             No hemos podido copiarlo. Cópialo desde aquí:
           </label>
           <input
@@ -135,7 +135,7 @@ export function Resultado({
             readOnly
             value={url}
             onFocus={(e) => e.currentTarget.select()}
-            className="mt-2 w-full rounded-xl border border-line bg-bg-raised px-4 py-3 font-mono text-sm text-text-primary"
+            className="mt-2 w-full rounded-xl border border-apagado-abajo bg-estrato px-4 py-3 font-mono text-sm text-hueso"
           />
         </div>
       )}
@@ -145,15 +145,15 @@ export function Resultado({
 
 function MejoraFila({ mejora, numero }: { mejora: MejoraDiagnosticada; numero: number }) {
   return (
-    <li className="border-t border-line py-7 last:border-b">
+    <li className="border-t border-conducto py-7 last:border-b">
       <div className="flex gap-6">
         <span className="font-mono-label w-8 shrink-0 pt-1 text-sm">
           {String(numero).padStart(2, "0")}
         </span>
         <div className="min-w-0">
-          <p className="text-xl font-medium text-text-primary md:text-2xl">{mejora.titulo}</p>
-          <p className="mt-2 text-text-muted">{mejora.queResuelve}</p>
-          <p className="mt-3 text-sm italic text-text-muted">{mejora.porque}</p>
+          <p className="text-xl font-medium text-hueso md:text-2xl">{mejora.titulo}</p>
+          <p className="mt-2 text-apagado-abajo">{mejora.queResuelve}</p>
+          <p className="mt-3 text-sm italic text-apagado-abajo">{mejora.porque}</p>
           {mejora.enlace && <EnlaceMejora href={mejora.enlace} className="mt-4 inline-block" />}
         </div>
       </div>

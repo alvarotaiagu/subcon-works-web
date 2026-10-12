@@ -34,7 +34,7 @@ export function HeroGears() {
             ref={(el) => {
               labelRefs.current[i] = el;
             }}
-            className="font-mono-label absolute left-0 top-0 whitespace-nowrap rounded-full border border-line bg-bg-base/75 px-2.5 py-1 text-text-muted opacity-0 backdrop-blur-sm transition-opacity duration-500"
+            className="font-mono-label absolute left-0 top-0 whitespace-nowrap rounded-full border border-conducto bg-hondo/75 px-2.5 py-1 text-apagado-abajo opacity-0 backdrop-blur-sm transition-opacity duration-500"
           >
             {text}
           </div>

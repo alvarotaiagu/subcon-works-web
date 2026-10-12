@@ -15,14 +15,14 @@ export function Equipo() {
           <p className="font-mono-label mb-4" data-reveal>
             Quién hace esto
           </p>
-          <h2 className="text-4xl font-medium text-text-primary md:text-6xl" data-reveal>
+          <h2 className="text-4xl font-medium text-hueso md:text-6xl" data-reveal>
             Somos dos, y hablas con quien lo hace.
           </h2>
-          <p className="mt-8 max-w-md text-lg text-text-muted" data-reveal>
+          <p className="mt-8 max-w-md text-lg text-apagado-abajo" data-reveal>
             {entradaEstudio}
           </p>
           <div className="mt-10" data-reveal>
-            <Link href="/estudio/" className="link-underline font-mono-label text-xs text-accent">
+            <Link href="/estudio/" className="link-underline font-mono-label text-xs text-superficie">
               Cómo trabajamos →
             </Link>
           </div>

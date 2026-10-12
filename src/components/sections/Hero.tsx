@@ -129,12 +129,12 @@ export function Hero() {
         </p>
         <h1
           ref={h1Ref}
-          className="text-balance text-[clamp(2.75rem,9vw,9rem)] font-medium text-text-primary"
+          className="text-balance text-[clamp(2.75rem,9vw,9rem)] font-medium text-hueso"
         >
           {site.tagline}
         </h1>
         <div ref={restRef} className="mt-8 max-w-md">
-          <p className="text-lg text-text-muted" data-reveal>
+          <p className="text-lg text-apagado-abajo" data-reveal>
             {site.descripcion}
           </p>
           <div className="mt-10 flex flex-wrap gap-4" data-reveal>
@@ -160,7 +160,7 @@ function Reticula() {
       {Array.from({ length: 13 }).map((_, i) => (
         <span
           key={i}
-          className="reticula-line block h-full w-px bg-line/20"
+          className="reticula-line block h-full w-px bg-conducto/20"
           style={{ animationDelay: `${i * 0.025}s` }}
         />
       ))}
@@ -239,8 +239,8 @@ function ScrollIndicator() {
       aria-hidden="true"
     >
       <span className="font-mono-label text-[10px]">Scroll</span>
-      <span className="relative h-16 w-px overflow-hidden bg-line">
-        <span className="scroll-dot absolute left-0 top-0 h-3 w-px bg-accent" />
+      <span className="relative h-16 w-px overflow-hidden bg-conducto">
+        <span className="scroll-dot absolute left-0 top-0 h-3 w-px bg-superficie" />
       </span>
     </div>
   );

@@ -159,7 +159,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - `npm run medir` da cifras de la web de hoy;
     - lint y build en verde.
 
-- [ ] **T02 · Tokens de color y cambio de todas las clases.**
+- [x] **T02 · Tokens de color y cambio de todas las clases.**
   - *Cubre*: spec §3.1 (entero), §3.4 («Ningún elemento se rellena de lima»,
     como cambio de clases), PD-3, PD-5.
   - *Depende de*: T01.

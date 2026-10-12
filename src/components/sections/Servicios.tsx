@@ -42,7 +42,7 @@ function EnlaceServicio({
   return (
     <Link
       href={enlace.href}
-      className="link-underline font-mono-label mt-6 inline-flex items-center gap-2 text-xs text-accent"
+      className="link-underline font-mono-label mt-6 inline-flex items-center gap-2 text-xs text-superficie"
       {...props}
     >
       {enlace.label}
@@ -164,10 +164,10 @@ export function Servicios() {
         <p className="font-mono-label mb-4" data-reveal>
           Servicios
         </p>
-        <h2 className="max-w-3xl text-4xl font-medium text-text-primary md:text-6xl" data-reveal>
+        <h2 className="max-w-3xl text-4xl font-medium text-hueso md:text-6xl" data-reveal>
           Diez cosas, y las diez se pueden contratar sueltas.
         </h2>
-        <p className="mt-6 max-w-xl text-text-muted" data-reveal>
+        <p className="mt-6 max-w-xl text-apagado-abajo" data-reveal>
           Casi ningún negocio necesita las diez a la vez. Por eso la primera conversación es una
           auditoría y no un presupuesto: primero se mira qué falta, y después se dice qué cuesta.
         </p>
@@ -200,7 +200,7 @@ export function Servicios() {
           // solo el enlace de dentro lo recupera.
           <div
             key={servicio.numero}
-            className="border-b border-line first:border-t"
+            className="border-b border-conducto first:border-t"
             data-cursor-hover={!isTouch ? true : undefined}
             data-cursor-hide={!isTouch ? true : undefined}
           >
@@ -217,7 +217,7 @@ export function Servicios() {
               data-cursor-hide={!isTouch ? true : undefined}
             >
               <span className="font-mono-label w-10 shrink-0 text-sm">{servicio.numero}</span>
-              <span className="flex-1 text-2xl font-medium text-text-primary md:text-4xl">
+              <span className="flex-1 text-2xl font-medium text-hueso md:text-4xl">
                 {servicio.nombre}
               </span>
               <span className="font-mono-label text-2xl" aria-hidden="true">
@@ -236,7 +236,7 @@ export function Servicios() {
               >
                 <div className="overflow-hidden">
                   <div className="pb-7 pl-16">
-                    <p className="max-w-xl text-text-muted">{servicio.descripcion}</p>
+                    <p className="max-w-xl text-apagado-abajo">{servicio.descripcion}</p>
                     <ul className="mt-4 flex flex-wrap gap-2">
                       {servicio.incluye.map((item) => (
                         <li key={item}>
@@ -261,7 +261,7 @@ export function Servicios() {
 
             {isTouch && open === i && (
               <div className="pb-8">
-                <p className="text-text-muted">{servicio.descripcion}</p>
+                <p className="text-apagado-abajo">{servicio.descripcion}</p>
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {servicio.incluye.map((item) => (
                     <li key={item}>

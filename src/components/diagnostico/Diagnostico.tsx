@@ -300,10 +300,10 @@ export function Diagnostico({
       )}
 
       <noscript>
-        <p className="mt-8 max-w-xl text-text-muted">
+        <p className="mt-8 max-w-xl text-apagado-abajo">
           El diagnóstico rápido necesita JavaScript para ir pregunta a pregunta. Si lo tienes
           desactivado, puedes pedirnos directamente la{" "}
-          <a href={withBasePath("/auditoria/")} className="link-underline text-text-primary">
+          <a href={withBasePath("/auditoria/")} className="link-underline text-hueso">
             auditoría gratuita
           </a>
           .

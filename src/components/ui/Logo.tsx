@@ -11,14 +11,14 @@ import { site } from "@/content/site";
 export function Simbolo({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" className={className}>
-      <path d="M14 21.5 23 7.5l11 14z" className="fill-text-primary" />
-      <path d="M4 21.5h40" fill="none" strokeWidth="2.5" strokeLinecap="round" className="stroke-accent" />
+      <path d="M14 21.5 23 7.5l11 14z" className="fill-hueso" />
+      <path d="M4 21.5h40" fill="none" strokeWidth="2.5" strokeLinecap="round" className="stroke-superficie" />
       <path
         d="M10 25.5h28l5.5 8.5-9 10.5H17L5.5 33z"
         fillOpacity="0.16"
         strokeWidth="2.5"
         strokeLinejoin="round"
-        className="fill-text-muted stroke-text-muted"
+        className="fill-bloque stroke-bloque"
       />
     </svg>
   );
@@ -36,8 +36,8 @@ export function Logo({ className }: { className?: string }) {
       aria-label={site.nombre}
     >
       <Simbolo className="h-[1.3em] w-[1.3em] shrink-0" />
-      <span className="tracking-[-0.035em] text-text-primary" aria-hidden="true">
-        <span className="font-normal text-text-muted">under</span>
+      <span className="tracking-[-0.035em] text-hueso" aria-hidden="true">
+        <span className="font-normal text-bloque">under</span>
         <span className="font-bold">tactics</span>
       </span>
     </span>

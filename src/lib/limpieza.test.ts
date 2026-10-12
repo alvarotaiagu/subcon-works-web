@@ -47,7 +47,7 @@ const lista = (xs: string[]) => "\n  " + xs.slice(0, 40).join("\n  ") + (xs.leng
 const PREFIJOS = "(?:bg|text|border(?:-[trblxyse])?|ring|fill|stroke|outline|divide|from|to|via|decoration|shadow|placeholder|caret)";
 const VIEJOS = "(?:bg-base|bg-raised|bg-sunken|text-primary|text-muted|text-faint|accent(?:-dim)?|line)";
 
-test("§3.1 · Tokens viejos", { skip: "T02" }, () => {
+test("§3.1 · Tokens viejos", () => {
   // Como clase (`bg-bg-base`, `hover:text-accent`, `border-line/60`)…
   const clases = buscar(new RegExp(`(?<![\\w-])${PREFIJOS}-${VIEJOS}(?![\\w-])`));
   // …o como variable (`var(--accent)`, `--color-line`, `--text-muted`). `accent-color` no cuenta.
@@ -68,7 +68,7 @@ function cadenaEn(texto: string, i: number): string {
   return texto.slice(ini, fin);
 }
 
-test("§3.4 · Sin lima de relleno", { skip: "T02" }, () => {
+test("§3.4 · Sin lima de relleno", () => {
   const LINEA = /(?:^|[\s:])(?:h-px|h-\[2px\]|h-\[3px\]|w-px|w-\[2px\])(?=\s|$)/;
   const fallos: string[] = [];
   for (const f of ficheros(SRC)) {

@@ -40,7 +40,7 @@ export function Nav() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-[80] transition-[background-color,border-color,backdrop-filter] duration-300",
-        scrolled ? "border-b border-line bg-bg-base/70 backdrop-blur-md" : "border-b border-transparent"
+        scrolled ? "border-b border-conducto bg-hondo/70 backdrop-blur-md" : "border-b border-transparent"
       )}
     >
       <div className="container-max flex h-16 items-center justify-between md:h-20">
@@ -53,7 +53,7 @@ export function Nav() {
             <Link
               key={item.href}
               href={item.href}
-              className="nav-link font-mono-label text-xs text-text-muted hover:text-text-primary"
+              className="nav-link font-mono-label text-xs text-apagado-abajo hover:text-hueso"
             >
               {item.label}
             </Link>
@@ -61,7 +61,7 @@ export function Nav() {
           <Link
             ref={ctaRef}
             href={site.ctaHref}
-            className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim"
+            className="rounded-full bg-hueso px-5 py-2 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo"
           >
             {site.cta}
           </Link>
@@ -70,15 +70,15 @@ export function Nav() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="font-mono-label flex items-center gap-2 text-xs text-text-primary md:hidden"
+          className="font-mono-label flex items-center gap-2 text-xs text-hueso md:hidden"
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls="menu-movil"
         >
           Menú
-          <span className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 rounded-full border border-line">
-            <span className="h-px w-4 bg-text-primary" />
-            <span className="h-px w-4 bg-text-primary" />
+          <span className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 rounded-full border border-apagado-abajo">
+            <span className="h-px w-4 bg-hueso" />
+            <span className="h-px w-4 bg-hueso" />
           </span>
         </button>
       </div>
@@ -89,14 +89,14 @@ export function Nav() {
           role="dialog"
           aria-modal="true"
           aria-label="Menú de navegación"
-          className="fixed inset-0 z-[85] flex flex-col bg-bg-base"
+          className="fixed inset-0 z-[85] flex flex-col bg-hondo"
         >
           <div className="container-max flex h-16 w-full items-center justify-between">
             <Logo className="text-lg" />
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="font-mono-label text-xs text-text-primary"
+              className="font-mono-label text-xs text-hueso"
               autoFocus
             >
               Cerrar
@@ -113,7 +113,7 @@ export function Nav() {
                 ref={i === 0 ? firstLinkRef : undefined}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="menu-movil-item text-4xl text-text-primary"
+                className="menu-movil-item text-4xl text-hueso"
                 style={{ transitionDelay: `${i * 0.06}s` }}
               >
                 {item.label}
@@ -122,7 +122,7 @@ export function Nav() {
             <Link
               href={site.ctaHref}
               onClick={() => setOpen(false)}
-              className="menu-movil-item mt-6 inline-flex w-fit rounded-full bg-accent px-6 py-3 text-base font-medium text-bg-base"
+              className="menu-movil-item mt-6 inline-flex w-fit rounded-full bg-hueso px-6 py-3 text-base font-medium text-hondo hover:bg-apagado-abajo"
               style={{ transitionDelay: `${site.nav.length * 0.06}s` }}
             >
               {site.cta}

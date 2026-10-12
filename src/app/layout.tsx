@@ -30,8 +30,9 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// Interiores: oscuro (§3.1). La portada pone el suyo en su page.tsx (T06).
 export const viewport: Viewport = {
-  themeColor: "#08090a",
+  themeColor: "#0E1B1E",
   colorScheme: "dark",
 };
 
@@ -78,7 +79,7 @@ export default function RootLayout({
       <body>
         <a
           href="#contenido"
-          className="fixed left-4 top-4 z-[100] -translate-y-24 rounded bg-accent px-4 py-2 text-sm font-medium text-bg-base transition-transform focus-visible:translate-y-0"
+          className="fixed left-4 top-4 z-[100] -translate-y-24 rounded bg-hueso px-4 py-2 text-sm font-medium text-hondo transition-transform focus-visible:translate-y-0"
         >
           Saltar al contenido
         </a>
