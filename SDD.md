@@ -19,4 +19,4 @@ Decisiones, pendientes y conflictos: [DECISIONES.md](DECISIONES.md).
 
 | Nº | Título | Estado | Depende de | Plan | Tareas |
 |---|---|---|---|---|---|
-| 001 | [Diagnóstico rápido y páginas por sector](specs/001-diagnostico-y-sectores/spec.md) | aprobada | — | [plan](specs/001-diagnostico-y-sectores/plan.md) (aprobado, D-012) | [tareas](specs/001-diagnostico-y-sectores/tasks.md) (T01-T15) |
+| 001 | [Diagnóstico rápido y páginas por sector](specs/001-diagnostico-y-sectores/spec.md) | hecha | — | [plan](specs/001-diagnostico-y-sectores/plan.md) (aprobado, D-012) | [tareas](specs/001-diagnostico-y-sectores/tasks.md) (T01-T15) |
