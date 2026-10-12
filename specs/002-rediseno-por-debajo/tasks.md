@@ -464,7 +464,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - el teclado enciende cada pozo;
     - lint y build en verde.
 
-- [ ] **T11 · La plantilla («−1») y la tarjeta de corte.**
+- [x] **T11 · La plantilla («−1») y la tarjeta de corte.**
   - *Cubre*: spec §3.8 (entero), §3.12 (`/plantillas/`: tarjeta sin dorsal,
     filtros, `priority` en las tres primeras), §3.4 (filtro activo), §6
     (catálogo con más de 30 o menos de 10 destacadas), §5 (`rel="noopener"`).

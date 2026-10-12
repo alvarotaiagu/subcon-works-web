@@ -1,1 +1,33 @@
 /* Zona «interiores» (spec 002, PD-3): la rellena su tarea. */
+
+/* T11 · Plantilla
+   /plantillas/: el filtro activo (spec 002 §3.4): fondo --hueso, texto --hondo y una línea
+   lima de 2 px debajo. La lima es la línea, nunca el relleno. El estado, con prefijo es-. */
+.filtro-sector {
+  position: relative;
+}
+
+/* El catálogo, con tarjetas más anchas que las de la portada (3 columnas como mucho). */
+.lista-titulares.lista-catalogo {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 3.5rem 2rem;
+}
+.filtro-sector.es-activo {
+  border-color: var(--hueso);
+  background: var(--hueso);
+  color: var(--hondo);
+}
+.filtro-sector.es-activo::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: -5px;
+  height: 2px;
+  background: var(--superficie);
+}
+@media (forced-colors: active) {
+  .filtro-sector.es-activo {
+    border: 2px solid Highlight;
+  }
+}
