@@ -26,8 +26,9 @@ export function Glifo({ nombre, className }: { nombre: NombreGlifo; className?: 
       aria-hidden="true"
       focusable="false"
       className={className}
-      // Centrado en la altura de la x, como una flecha de la letra.
-      style={{ display: "inline-block", verticalAlign: "-0.125em", flexShrink: 0 }}
+      // Centro a .32em de la línea base: entre la mitad de la x de Geologica (.245em) y la
+      // de las mayúsculas (.35em), porque va junto a los dos («Seguir», «VOLVER»).
+      style={{ display: "inline-block", verticalAlign: "-0.18em", flexShrink: 0 }}
     >
       {nombre === "estrella" ? (
         <path d={ESTRELLA} fill="currentColor" />
