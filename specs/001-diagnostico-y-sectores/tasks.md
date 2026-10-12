@@ -299,7 +299,7 @@ Cada una tiene su fichero de test (PD-8).
   - *Hecho*: se ve bien a 360 y a 1440 px; con reduced-motion no hay
     movimiento.
 
-- [ ] **T11 · `/sectores/` y `/sectores/[slug]/`.**
+- [x] **T11 · `/sectores/` y `/sectores/[slug]/`.**
   - *Cubre*: spec §3.5 (ruta), §3.8, §3.9, D-005, D-007, PD-6, PD-7.
   - *Depende de*: T06, T09, T10.
   - *Hacer*:
