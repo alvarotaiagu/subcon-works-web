@@ -1,1 +1,12 @@
 /* Zona «interiores» (spec 002, PD-3): la rellena su tarea. */
+
+/* T16 · Formularios */
+/* Botón desactivado («Seguir» sin nada marcado, «Enviando…»): se pinta con
+   `--apagado-abajo`, sin opacidad en el texto (§3.1 regla 4), y su línea de abajo
+   vuelve a `--conducto`, apagada. Sin hover: lo excluye `.boton-*:not(:disabled)`. */
+.boton:disabled {
+  --boton-color: var(--apagado-abajo);
+}
+.boton-primario:disabled::after {
+  background: var(--conducto);
+}

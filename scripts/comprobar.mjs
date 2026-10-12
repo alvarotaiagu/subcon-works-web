@@ -1271,7 +1271,7 @@ const comprobaciones = [
   {
     id: "§7 · 001 sigue cumpliendo",
     tarea: "T16",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       // 001 §7, con los deltas de la 002 §8.
       for (const ancho of [390, 1440]) {
