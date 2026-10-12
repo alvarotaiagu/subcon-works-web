@@ -231,7 +231,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       (mira `getComputedStyle` en tres páginas);
     - lint y build en verde.
 
-- [ ] **T04 · Logo y símbolo.**
+- [x] **T04 · Logo y símbolo.**
   - *Cubre*: spec §3.3 (salvo OG, que va en T03).
   - *Depende de*: T02. *En paralelo con*: T03.
   - *Hacer*:
