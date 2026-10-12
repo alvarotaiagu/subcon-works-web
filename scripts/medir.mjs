@@ -22,15 +22,13 @@ import path from "node:path";
 import { chromium, devices } from "playwright";
 import {
   argumento,
+  CLAVE_COOKIES,
+  CLAVE_CORTINA,
   comprobarTitulo,
   crearServidor,
   PUERTO_POR_DEFECTO,
   RAIZ_POR_DEFECTO,
 } from "./servir.mjs";
-
-/** Las mismas claves que la web (AvisoCookies.tsx y Preloader/Cortina). */
-const CLAVE_COOKIES = "undertactics:aviso-cookies:v1";
-const CLAVE_CORTINA = "undertactics-preloader-seen";
 
 const RUTAS = [
   { nombre: "Portada · con cortina", ruta: "", cortina: true, scrollHero: true },
@@ -43,6 +41,10 @@ const argv = process.argv.slice(2);
 const puerto = Number(argumento(argv, "puerto", PUERTO_POR_DEFECTO));
 const base = argumento(argv, "base", "");
 const veces = Number(argumento(argv, "veces", 3));
+if (!Number.isInteger(veces) || veces < 1) {
+  console.error(`--veces tiene que ser un entero de 1 en adelante (llegó «${argumento(argv, "veces", 3)}»)`);
+  process.exit(1);
+}
 const raiz = argumento(argv, "raiz", RAIZ_POR_DEFECTO);
 
 /** Ficheros de letra en out/ (recorre todo). */
@@ -67,7 +69,7 @@ async function medirUna(nav, url, { cortina, scrollHero }) {
         localStorage.setItem(claveCookies, new Date().toISOString());
         if (!cortina) sessionStorage.setItem(claveCortina, "1");
       } catch {}
-      const m = (window.__medir = { lcp: [], cls: 0, desplazamientos: 0, largas: [], eventos: [], letrasListas: null });
+      const m = (window.__medir = { lcp: [], cls: 0, largas: [], letrasListas: null });
       const describir = (el) => {
         if (!el) return null;
         const tag = el.tagName.toLowerCase();
@@ -84,12 +86,8 @@ async function medirUna(nav, url, { cortina, scrollHero }) {
         m.lcp.push({ t: Math.round(e.startTime), el: describir(e.element) || (e.url || "").split("/").pop() }),
       );
       // §3.15: con `hadRecentInput` incluido (el arrastre del tirador también cuenta).
-      observar("layout-shift", (e) => {
-        m.cls += e.value;
-        m.desplazamientos++;
-      });
+      observar("layout-shift", (e) => (m.cls += e.value));
       observar("longtask", (e) => m.largas.push({ inicio: e.startTime, duracion: e.duration }));
-      observar("event", (e) => m.eventos.push({ nombre: e.name, duracion: e.duration }), { durationThreshold: 16 });
       try {
         document.fonts.ready.then(() => (m.letrasListas = performance.now()));
       } catch {}

@@ -29,6 +29,8 @@ import assert from "node:assert/strict";
 import { chromium } from "playwright";
 import {
   argumento,
+  CLAVE_COOKIES,
+  CLAVE_CORTINA,
   comprobarTitulo,
   crearServidor,
   PUERTO_POR_DEFECTO,
@@ -65,8 +67,6 @@ const OCHO = ["", ...INTERIORES.map((i) => i.ruta)];
 /** La query completa de la 001 (la de `diagnostico.auditoria.test.ts`). */
 const QUERY_001 = "v=1&s=dental&canales=tel,wa&reserva=llamando&fuera=sin-contestar&web=solo-ficha&resenas=nunca&dolor=agenda";
 
-const CLAVE_COOKIES = "undertactics:aviso-cookies:v1";
-const CLAVE_CORTINA = "undertactics-preloader-seen";
 const CLAVE_BORRADOR = "undertactics:auditoria:v1"; // FormularioAuditoria.tsx
 const GONE_EVENT = "undertactics:preloader-gone";
 
@@ -153,7 +153,22 @@ function enganche({ claveCookies, claveCortina, cortina }) {
     mirar();
     g.clasesDCL = document.documentElement.className;
   }, { once: true });
-  const colores = ["16, 38, 42", "8, 17, 19"];
+  const colores = [[16, 38, 42], [8, 17, 19]];
+  // Los colores se comparan normalizados con un lienzo: getComputedStyle puede devolver
+  // rgb(), oklch() o color(srgb …) según cómo los escriba el CSS.
+  const lienzo = document.createElement("canvas");
+  lienzo.width = lienzo.height = 1;
+  const cx = lienzo.getContext("2d", { willReadFrequently: true });
+  const esCortina = (pinta) =>
+    (pinta.match(/(?:rgba?|hsla?|oklch|oklab|lch|lab|color)\((?:[^()]|\([^()]*\))*\)/g) || []).some((c) => {
+      cx.clearRect(0, 0, 1, 1);
+      cx.fillStyle = "rgba(0,0,0,0)";
+      cx.fillStyle = c;
+      cx.fillRect(0, 0, 1, 1);
+      const d = cx.getImageData(0, 0, 1, 1).data;
+      return d[3] > 0 && colores.some((k) => k.every((v, i) => Math.abs(v - d[i]) <= 3));
+    });
+  window.__esCortina = esCortina;
   const fin = performance.now() + 2000;
   const fotograma = () => {
     mirar();
@@ -165,8 +180,7 @@ function enganche({ claveCookies, claveCortina, cortina }) {
         if (cs.visibility === "hidden" || Number(cs.opacity) === 0) continue;
         const r = el.getBoundingClientRect();
         if (r.width < w * 0.9 || r.height < h * 0.9) continue;
-        const pinta = cs.backgroundColor + " " + cs.backgroundImage;
-        if (colores.some((c) => pinta.includes(c))) g.fotogramaConCortina = true;
+        if (esCortina(cs.backgroundColor + " " + cs.backgroundImage)) g.fotogramaConCortina = true;
       }
     }
     if (performance.now() < fin) requestAnimationFrame(fotograma);
@@ -572,7 +586,7 @@ const comprobaciones = [
       const google = pedidas.filter((p) => /fonts\.(googleapis|gstatic)\.com/.test(p.url));
       assert.equal(google.length, 0, `peticiones a Google Fonts: ${google.map((g) => g.url).join(", ")}`);
       for (const f of ["geologica-oblique.woff2", "kode-mono-normal.woff2"]) {
-        const p = pedidas.find((x) => x.url.endsWith(`${h.base}/fuentes/${f}`));
+        const p = pedidas.find((x) => new URL(x.url).pathname.endsWith(`${h.base}/fuentes/${f}`));
         assert.ok(p, `no se pide ${h.base}/fuentes/${f}`);
         assert.equal(p.estado, 200, `${f}: estado ${p.estado}`);
         assert.ok(p.tipo.startsWith("font/woff2"), `${f}: content-type ${p.tipo}`);
@@ -664,15 +678,13 @@ const comprobaciones = [
               const cs = getComputedStyle(el);
               const r = el.getBoundingClientRect();
               if (r.width < innerWidth * 0.9 || r.height < innerHeight * 0.9 || Number(cs.opacity) === 0) continue;
-              if (/16, 38, 42|8, 17, 19/.test(cs.backgroundColor + cs.backgroundImage)) window.__conCortina = true;
+              if (window.__esCortina(cs.backgroundColor + " " + cs.backgroundImage)) window.__conCortina = true;
             }
             if (performance.now() < fin) requestAnimationFrame(mirar);
           };
           requestAnimationFrame(mirar);
         });
-        if (ancho < 768) {
-          // En móvil el logo está en la cabecera igual; el menú no hace falta.
-        }
+        // En móvil el logo está en la cabecera igual; el menú no hace falta.
         await p.click('header a[aria-label="Undertactics, inicio"]');
         await p.waitForTimeout(2600);
         assert.ok(!(await p.evaluate(() => window.__conCortina)), `${ancho} px, logo desde /plantillas/: algún fotograma pintó la cortina`);
@@ -1137,6 +1149,7 @@ const comprobaciones = [
                 alcanzada: c.classList.contains("es-alcanzada"),
               }));
               const proceso = document.getElementById("proceso");
+              if (!proceso) return { error: "no hay #proceso" };
               const pr = proceso.getBoundingClientRect();
               const enPin = pr.top <= 1 && pr.bottom >= innerHeight - 1;
               // El trazo no pisa texto ni controles, salvo las cotas y el botón del Fondo.
@@ -1164,9 +1177,11 @@ const comprobaciones = [
             },
             { trazo: SEL.hiloTrazo, cabeza: 0.66 },
           );
+          assert.ok(!r.error, `${ancho} px: ${r.error}`);
           assert.ok(r.hayTrazo, `${ancho} px: no hay trazo del hilo (${SEL.hiloTrazo})`);
           fallos.push(...r.pisa.map((n) => `${ancho} px: el trazo pisa ${n}`));
           const iProceso = r.cotas.findIndex((c) => c.texto.includes("−2"));
+          assert.ok(iProceso >= 0, `${ancho} px: ninguna cota [data-hilo] lleva «−2»`);
           for (const [i, c] of r.cotas.entries()) {
             if (Math.abs(c.top - r.cabezaY) < 12) continue; // justo en la cabeza: cualquiera vale
             const debe = r.enPin ? i <= iProceso : c.top < r.cabezaY;

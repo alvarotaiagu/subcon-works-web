@@ -22,6 +22,9 @@ export const PUERTO_POR_DEFECTO = 4302;
 export const RAIZ_POR_DEFECTO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "out");
 /** Lo que tiene que decir el `<title>` de la web servida (comprobar.mjs y medir.mjs lo miran). */
 export const TITULO_ESPERADO = "Undertactics";
+/** Claves de la web que comprobar.mjs y medir.mjs ponen antes de cargar (AvisoCookies.tsx, Preloader.tsx). */
+export const CLAVE_COOKIES = "undertactics:aviso-cookies:v1";
+export const CLAVE_CORTINA = "undertactics-preloader-seen";
 
 export const tipos = {
   ".html": "text/html; charset=utf-8",
@@ -95,14 +98,15 @@ export function crearServidor({ raiz = RAIZ_POR_DEFECTO, puerto = PUERTO_POR_DEF
   const servidor = http.createServer((req, res) => {
     const r = resolver(raizAbs, b, req.url || "/");
     if (r && r.redirigir) {
-      const query = (req.url || "").includes("?") ? "?" + req.url.split("?")[1] : "";
+      const i = (req.url || "").indexOf("?");
+      const query = i === -1 ? "" : req.url.slice(i);
       res.writeHead(301, { location: r.redirigir + query });
       res.end();
       return;
     }
     if (!r) {
       res.writeHead(404, { "content-type": tipos[".html"], "cache-control": "no-store" });
-      res.end(fs.existsSync(pagina404) ? fs.readFileSync(pagina404) : "404");
+      res.end(req.method === "HEAD" ? undefined : fs.existsSync(pagina404) ? fs.readFileSync(pagina404) : "404");
       return;
     }
     const datos = fs.readFileSync(r.fichero);
