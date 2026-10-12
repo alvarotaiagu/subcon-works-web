@@ -1,1 +1,632 @@
-/* Zona «hero» (spec 002, PD-3): la rellena su tarea. */
+/* Zona «hero» (spec 002 §3.6, PD-3, PD-9, PD-10): fondo partido por la superficie, el
+   titular en dos líneas, los cuatro objetos y sus pozos.
+
+   La rejilla manda en la composición, y `--nivel` en la altura de la superficie:
+   - móvil (< 768 px): nivel fijo en px; el hero crece si el contenido no cabe
+     (alto `max(100svh, contenido)`, §3.6);
+   - desde 768 px: alto clamp(700px, 100svh, 900px) y nivel a la mitad. Hasta 1023 px
+     todo va apilado (los cuatro objetos no caben al lado del titular); desde 1024 px,
+     titular a la izquierda e instrumento a la derecha.
+
+   El H1 es un solo bloque que cruza la superficie: ocupa varias filas de la rejilla
+   con `subgrid`, y cada línea cae en la suya (arriba, la última fila sobre la
+   superficie; abajo, la primera bajo ella). Lo mismo el instrumento: objetos encima,
+   pozos debajo.
+
+   Nada se mueve aquí: lo que mueve la superficie después (cortina, tirador, scroll) lo
+   hace con `transform` sobre las `data-capa` (T08, T09). */
+
+@layer components {
+  .hero {
+    /* Móvil: medido a 360 px para que quepan arriba la cabecera, la línea de arriba del
+       titular (dos renglones) y los objetos (PD-10). */
+    --nivel: 352px;
+    /* Alto de la fila de los objetos: rótulo, tarjeta más alta (el reel) y el aire del
+       rombo. Las tarjetas se apoyan en la superficie. */
+    --obj-alto: 150px;
+    /* Alto de los pozos cuando van apilados (en columnas, llegan hasta abajo). */
+    --pozo-alto: 118px;
+
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    background: var(--hondo);
+    /* Solo en horizontal: las paradas del último pozo pueden asomar al margen y nada
+       debe ensanchar la página. `clip`, no `hidden`: no crea un contenedor de scroll. */
+    overflow-x: clip;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      --nivel: calc(clamp(700px, 100svh, 900px) / 2);
+      --obj-alto: 190px;
+      --pozo-alto: 236px;
+      min-height: clamp(700px, 100svh, 900px);
+    }
+  }
+
+  /* El fondo de arriba. Sube por encima del borde para que, al bajar la superficie con
+     el tirador (T08), no asome hondo por arriba. */
+  .hero-cal {
+    position: absolute;
+    z-index: 0;
+    inset-inline: 0;
+    top: -96px;
+    height: calc(var(--nivel) + 96px);
+    background: var(--cal);
+  }
+
+  /* La superficie: la línea lima de 3 px a la altura del nivel. */
+  .hero-superficie {
+    position: absolute;
+    z-index: 3;
+    inset-inline: 0;
+    top: var(--nivel);
+    height: 3px;
+    margin-top: -1.5px;
+    background: var(--superficie);
+    pointer-events: none;
+  }
+
+  /* ─── Rejilla ─────────────────────────────────────────────────────────────── */
+
+  .hero-rejilla {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    /* 1: titular de arriba · 2: objetos · 3: pozos · 4: cota · 5: titular de abajo ·
+       6: descripción y botones. Las dos primeras suman el nivel. */
+    grid-template-rows:
+      calc(var(--nivel) - var(--obj-alto))
+      var(--obj-alto)
+      auto auto auto 1fr;
+  }
+
+  .hero-titular {
+    grid-column: 1;
+    grid-row: 1 / 6;
+    display: grid;
+    grid-template-rows: subgrid;
+    margin: 0;
+    /* El bloque cruza los objetos y los pozos: no les quita el puntero. */
+    pointer-events: none;
+  }
+  .hero-titular > span {
+    pointer-events: auto;
+  }
+
+  .hero-l1 {
+    grid-row: 1;
+    align-self: end;
+    padding-bottom: 1.25rem;
+    font-family: var(--letra-geologica);
+    font-weight: 300;
+    font-size: var(--hero-arriba-tam);
+    line-height: var(--hero-arriba-interlineado);
+    letter-spacing: var(--hero-arriba-tracking);
+    color: var(--tinta);
+    font-variation-settings: "SHRP" var(--shrp, 0);
+  }
+  /* En móvil, en dos renglones («Lo de arriba / vende.», como el boceto): así la línea es
+     el texto mayor del hero (LCP, §3.6). */
+  @media (max-width: 767px) {
+    .hero-l1 {
+      max-width: 6.6em;
+    }
+  }
+
+  .hero-l2 {
+    grid-row: 5;
+    align-self: start;
+    padding-bottom: 2rem;
+    font-family: var(--letra-kode);
+    font-weight: 500;
+    font-size: var(--hero-abajo-tam);
+    line-height: var(--hero-abajo-interlineado);
+    letter-spacing: var(--hero-abajo-tracking);
+    color: var(--hueso);
+  }
+  .hero-l2 em {
+    font-style: normal;
+    color: var(--superficie);
+  }
+
+  .hero-cota {
+    grid-column: 1;
+    grid-row: 4;
+    margin: 0;
+    padding-bottom: 1rem;
+  }
+  /* Ningún texto del hero baja de 12 px (§3.6): la cota común va a .74rem. */
+  .hero-cota .cota {
+    font-size: 0.75rem;
+  }
+
+  .hero-instrumento {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-bajo {
+    grid-column: 1;
+    grid-row: 6;
+    align-self: start;
+    display: grid;
+    gap: 1.25rem;
+    padding-bottom: 3rem;
+  }
+
+  /* Desde 1024 px: titular a la izquierda, instrumento a la derecha.
+     1: sobre la superficie · 2: cota · 3: titular de abajo · 4: lectura, descripción y
+     botones (abajo del todo). */
+  @media (min-width: 1024px) {
+    .hero-rejilla {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+      column-gap: clamp(2rem, 4vw, 4.5rem);
+      grid-template-rows: var(--nivel) auto auto 1fr;
+    }
+    .hero-titular {
+      grid-row: 1 / 4;
+    }
+    .hero-l1 {
+      padding-bottom: 0.3em;
+    }
+    .hero-l2 {
+      grid-row: 3;
+      padding-bottom: 1.5rem;
+    }
+    .hero-cota {
+      grid-row: 2;
+      padding-top: 1rem;
+      padding-bottom: 0.75rem;
+    }
+    .hero-instrumento {
+      grid-column: 2;
+      grid-row: 1 / 5;
+    }
+    .hero-bajo {
+      grid-row: 4;
+      align-self: end;
+      max-width: 34rem;
+      padding-bottom: 2.5rem;
+    }
+  }
+
+  /* ─── Objetos (arriba, sobre la superficie) ───────────────────────────────── */
+
+  .hero-objetos {
+    grid-row: 1;
+    align-self: end;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: end;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hero-objetos > li {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .hero-obj {
+    display: grid;
+    justify-items: start;
+    gap: 6px;
+    width: 100%;
+    padding: 0 0 16px;
+    border: 0;
+    background: none;
+    text-align: left;
+    color: var(--tinta);
+    font: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .hero-obj-rotulo {
+    font-family: var(--letra-kode);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--apagado-arriba);
+  }
+
+  .hero-tarjeta {
+    display: block;
+    width: 100%;
+    background: var(--tarjeta);
+    border: 1px solid rgb(21 24 26 / 0.13);
+    border-radius: 10px;
+    box-shadow: 0 12px 26px -16px rgb(21 24 26 / 0.45);
+    color: var(--tinta);
+    transition:
+      transform 0.35s var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .hero-obj:hover .hero-tarjeta,
+  .hero-obj.es-activo .hero-tarjeta {
+    transform: translateY(-4px);
+    border-color: var(--tinta);
+  }
+
+  .hero-burbuja {
+    padding: 7px;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    border-bottom-left-radius: 3px;
+  }
+
+  .hero-tienda {
+    display: grid;
+    gap: 5px;
+    padding: 6px;
+  }
+  .hero-relleno {
+    display: none;
+    height: 7px;
+    border-radius: 3px;
+    background: #e3dfd4;
+  }
+  .hero-relleno-corto {
+    width: 62%;
+  }
+  .hero-pagar {
+    display: block;
+    padding: 5px 4px;
+    border-radius: 999px;
+    background: var(--tinta);
+    color: var(--cal);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .hero-ficha {
+    display: grid;
+    gap: 3px;
+    padding: 7px;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  .hero-estrellas {
+    display: flex;
+    gap: 1px;
+    font-size: 0.6rem;
+    /* Dibujo, no texto: el oro de la estrella de Google sobre la tarjeta. */
+    color: #b98a00;
+  }
+
+  .hero-reel {
+    position: relative;
+    width: 58px;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+  }
+  .hero-objetos > li:last-child .hero-obj {
+    justify-items: center;
+  }
+  .hero-reel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-reel-play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 40%;
+    height: 40%;
+    fill: #fff;
+    filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.5));
+  }
+
+  /* PD-10: en móvil la burbuja y el rótulo se acortan y las tarjetas pierden el relleno. */
+  .hero-solo-ancho {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero-objetos {
+      gap: 12px;
+    }
+    .hero-solo-ancho {
+      display: inline;
+    }
+    .hero-solo-movil {
+      display: none;
+    }
+    .hero-obj-rotulo {
+      letter-spacing: 0.04em;
+    }
+    .hero-burbuja {
+      padding: 11px 13px;
+      font-size: 0.86rem;
+    }
+    .hero-tienda {
+      gap: 6px;
+      padding: 10px;
+    }
+    .hero-relleno {
+      display: block;
+    }
+    .hero-pagar {
+      margin-top: 12px;
+      padding: 6px;
+      font-size: 0.78rem;
+    }
+    .hero-ficha {
+      padding: 11px 12px;
+      font-size: 0.86rem;
+    }
+    .hero-estrellas {
+      font-size: 0.8rem;
+    }
+    .hero-reel {
+      width: 88px;
+    }
+  }
+
+  /* ─── Pozos (debajo) ──────────────────────────────────────────────────────── */
+
+  .hero-pozos {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    height: var(--pozo-alto);
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-pozo {
+    position: relative;
+    min-width: 0;
+  }
+
+  /* El dibujo del pozo, centrado bajo su objeto. Va en coordenadas relativas (las paradas
+     a 30, 60 y 90 %): el navegador lo recoloca al cambiar de tamaño, sin rehacerlo. */
+  .hero-pozo-dibujo {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 8px);
+    width: 16px;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .hero-pozo-dibujo line {
+    stroke: var(--conducto);
+    stroke-width: 2;
+    transition: stroke var(--dur-fast) var(--ease-out);
+  }
+  .hero-pozo-boca {
+    fill: var(--conducto);
+    transition: fill var(--dur-fast) var(--ease-out);
+  }
+  .hero-pozo-parada {
+    fill: var(--hondo);
+    stroke: var(--conducto);
+    stroke-width: 2;
+    transition:
+      fill 0.25s var(--ease-out),
+      stroke 0.25s var(--ease-out);
+  }
+  .hero-pozo.es-activo line {
+    stroke: var(--superficie);
+  }
+  .hero-pozo.es-activo .hero-pozo-boca,
+  .hero-pozo.es-activo .hero-pozo-parada {
+    stroke: var(--superficie);
+    fill: var(--superficie);
+  }
+  .hero-pozo.es-activo .hero-pozo-parada:not(.es-encendida) {
+    fill: var(--hondo);
+  }
+  .hero-pozo-pulso {
+    fill: var(--superficie);
+  }
+
+  /* Las paradas: número del servicio y texto, a la derecha de su pozo. En reposo, en
+     --apagado-abajo (sin opacidad, §3.1); encendidas, número lima y texto hueso. En
+     móvil no caben: queda el dibujo y la lectura de debajo cuenta el ejemplo (PD-10). */
+  .hero-paradas {
+    display: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hero-paradas > li {
+    position: absolute;
+    /* El número (primer renglón, 1rem de alto) centrado en su parada. */
+    top: calc(var(--y) - 0.5rem);
+    /* De su pozo al siguiente: medio objeto, el hueco y medio objeto, menos el aire. */
+    left: calc(50% + 14px);
+    width: calc(100% - 14px);
+    font-family: var(--letra-kode);
+    font-size: 0.75rem;
+    line-height: 1.25;
+    color: var(--apagado-abajo);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .hero-parada-num {
+    display: block;
+    height: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 1rem;
+  }
+  .hero-parada-txt {
+    display: block;
+  }
+  .hero-paradas > li.es-encendida {
+    color: var(--hueso);
+  }
+  .hero-paradas > li.es-encendida .hero-parada-num {
+    color: var(--superficie);
+  }
+
+  @media (min-width: 768px) {
+    .hero-pozos {
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    .hero-paradas {
+      display: block;
+    }
+    /* Las del último pozo no tienen vecino a la derecha: tiran del margen. */
+    .hero-pozo:last-child .hero-paradas > li {
+      width: calc(50% + var(--gutter) - 30px);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-pozos {
+      grid-row: 2 / 5;
+      height: auto;
+      margin-bottom: 3.5rem;
+    }
+  }
+
+  /* ─── Lectura, descripción y botones ──────────────────────────────────────── */
+
+  .hero-lectura {
+    display: grid;
+  }
+  .hero-lectura-una {
+    grid-area: 1 / 1;
+    margin: 0;
+    visibility: hidden;
+    font-family: var(--letra-kode);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--hueso);
+  }
+  .hero-tramo {
+    display: inline-block;
+  }
+  .hero-lectura-una.es-visible {
+    visibility: visible;
+  }
+  .hero-ejemplo {
+    display: inline-block;
+    margin-right: 0.35rem;
+    padding: 0 0.4rem;
+    border-radius: 3px;
+    background: var(--apagado-abajo);
+    color: var(--hondo);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hero-lectura-flecha {
+    color: var(--apagado-abajo);
+  }
+
+  /* En móvil, a 14 px y estrecha: a 390 px su área tiene que quedar por debajo de la de la
+     línea mayor del titular, que es el LCP (§3.6, §7). */
+  .hero-descripcion {
+    margin: 0;
+    max-width: 30ch;
+    color: var(--apagado-abajo);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .hero-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-descripcion {
+      max-width: 42ch;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+  }
+
+  /* Solo para el lector de pantalla. El texto va en un <span> dentro: el recorte es del
+     contenedor. Posicionado dentro del hero, para no ensanchar la página. */
+  .hero-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ─── Tirador (§3.6): se pinta aquí; se mueve en T08 ──────────────────────── */
+
+  .hero-tirador {
+    position: absolute;
+    z-index: 4;
+    top: var(--nivel);
+    right: 4px;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-top: -17px;
+    padding: 0;
+    border: 1.5px solid var(--tinta);
+    border-radius: 50%;
+    background: var(--tarjeta);
+    color: var(--tinta);
+    font-size: 1rem;
+    cursor: ns-resize;
+  }
+
+  @media (min-width: 768px) {
+    .hero-tirador {
+      right: max(8px, calc(var(--gutter) / 2 - 20px));
+      width: 40px;
+      height: 40px;
+      margin-top: -20px;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+/* Fuera de capa, para ganar a foco.css (también fuera de capa) y a las utilidades. */
+
+/* El tirador está a caballo entre la cal y el hondo: doble anillo, --tinta por dentro y
+   --hueso por fuera, para que se lea sobre los dos fondos (§3.4). */
+.hero-tirador:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 0;
+  box-shadow: 0 0 0 5px var(--hueso);
+}
+@media (forced-colors: active) {
+  .hero-tirador:focus-visible {
+    outline-color: Highlight;
+    box-shadow: none;
+  }
+}
+
+/* El rebote de iOS (portada.css) cambia de color a la altura de la superficie: en móvil
+   el nivel es el de aquí. Más específico que el de portada.css, que también va fuera de
+   capa. */
+@media (max-width: 767px) {
+  html body:has([data-hero]) {
+    --rebote-nivel: 352px;
+  }
+}

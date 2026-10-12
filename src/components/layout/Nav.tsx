@@ -18,7 +18,10 @@ import { Cota } from "@/components/ui/Cota";
  */
 function useTonoCabecera(cabecera: React.RefObject<HTMLElement | null>): TonoLogo {
   const pathname = usePathname();
-  const [tono, setTono] = useState<TonoLogo>("oscuro");
+  // En la portada se pinta ya en claro (también sin JS): el hero empieza en cal y, si
+  // empezara en oscuro, la cabecera saldría como una franja hondo hasta que el
+  // observador contestara. El observador la corrige si la página se abre más abajo.
+  const [tono, setTono] = useState<TonoLogo>(pathname === "/" ? "claro" : "oscuro");
 
   useEffect(() => {
     const header = cabecera.current;

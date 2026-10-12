@@ -785,7 +785,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · encender cada pozo y «Ejemplo»",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho, hasTouch: ancho < 768 });
@@ -817,7 +817,7 @@ const comprobaciones = [
   {
     id: "§7 · Hero · a 360 px, nada solapado, recortado ni < 12 px",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [360, 390]) {
         const page = await h.abrir("", { ancho });
@@ -866,7 +866,7 @@ const comprobaciones = [
   {
     id: "§7 · LCP · área del titular > descripción a 390 px",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const page = await h.abrir("", { ancho: 390, alto: 844 });
       const r = await page.evaluate(() => {
@@ -895,7 +895,7 @@ const comprobaciones = [
   {
     id: "§7 · Cabecera · logo claro y oscuro",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho });

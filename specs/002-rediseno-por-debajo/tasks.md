@@ -344,7 +344,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Portada
 
-- [ ] **T07 · Hero: composición, pozos y encendido.**
+- [x] **T07 · Hero: composición, pozos y encendido.**
   - *Cubre*: spec §3.6 (composición, titular, LCP, descripción, botones,
     objetos y pozos, rótulo «Ejemplo», encender un pozo, anuncios, «al
     cargar», móvil), §3.13 (`site.tagline`, `site.descripcion`,
