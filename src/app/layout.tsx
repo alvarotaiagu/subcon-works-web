@@ -5,13 +5,14 @@ import { site } from "@/content/site";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Cursor } from "@/components/layout/Cursor";
 import { Grain } from "@/components/layout/Grain";
-import { Preloader } from "@/components/layout/Preloader";
+import { Cortina } from "@/components/layout/Cortina";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollLine } from "@/components/layout/ScrollLine";
 import { AvisoCookies } from "@/components/layout/AvisoCookies";
 import { clasesBoton } from "@/components/ui/Boton";
+import { scriptCabeza } from "@/lib/scriptCabeza";
 
 // ─── Letras (spec 002 §3.2) ────────────────────────────────────────────────────
 // Autoalojadas en public/fuentes/ y sin next/font (precarga toda la lista). Las url()
@@ -128,8 +129,13 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="es">
+    // suppressHydrationWarning: el script del <head> pone clases en <html> antes de que
+    // React hidrate (spec 002 §3.14, PD-8).
+    <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Lo primero del <head>, antes de pintar: js-si, cortina-si y su seguro,
+            densidad-sobria (PD-8). */}
+        <script dangerouslySetInnerHTML={{ __html: scriptCabeza(BASE) }} />
         <style dangerouslySetInnerHTML={{ __html: CSS_LETRAS }} />
       </head>
       <body>
@@ -139,7 +145,7 @@ export default function RootLayout({
         >
           Saltar al contenido
         </a>
-        <Preloader />
+        <Cortina />
         <PageTransition />
         <SmoothScroll />
         <Cursor />

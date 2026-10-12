@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { esperarCortina } from "@/components/layout/Preloader";
+import { esperarCortina } from "@/components/layout/Cortina";
 import { Boton } from "@/components/ui/Boton";
 import { Cota } from "@/components/ui/Cota";
 import { Glifo } from "@/components/ui/Glifo";

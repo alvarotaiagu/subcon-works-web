@@ -12,7 +12,7 @@ import {
 import type { Decodificado } from "@/lib/diagnostico";
 import { preguntas as todasLasPreguntas } from "@/content/diagnostico";
 import type { ClaveRespuesta, Contexto, Respuestas, Sector } from "@/content/diagnostico";
-import { esperarCortina } from "@/components/layout/Preloader";
+import { esperarCortina } from "@/components/layout/Cortina";
 import { irAAncla } from "@/lib/irAAncla";
 import { registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { withBasePath } from "@/lib/utils";

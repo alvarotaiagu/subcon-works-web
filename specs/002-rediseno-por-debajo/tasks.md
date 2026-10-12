@@ -415,7 +415,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       commitea);
     - lint y build en verde.
 
-- [ ] **T09 · Cortina y script del `<head>`.**
+- [x] **T09 · Cortina y script del `<head>`.**
   - *Cubre*: spec §3.14 (entero), §3.16 («Sin parpadeo»: la clase
     `densidad-sobria`), §6 (sin GSAP, sin JS), PD-8, PD-13.
   - *Depende de*: T07. *En paralelo con*: T08.
