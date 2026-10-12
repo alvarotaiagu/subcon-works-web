@@ -44,6 +44,8 @@ const ESCRITORIO = "(min-width: 768px)";
 const FPS_MINIMO = 40;
 const LENTO_MAXIMO = 2;
 const VENTANA_FPS = 0.5;
+/** Un fotograma de más de 0,25 s es un parón, no un ritmo: no entra en la medida. */
+const PARON = 0.25;
 
 const expoOut = (t: number) => (t >= 1 ? 1 : 1 - 2 ** (-10 * t));
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
@@ -147,7 +149,7 @@ export function Hero() {
   const [lectura, setLectura] = useState(0);
   const [viva, setViva] = useState("");
   const [pausado, setPausado] = useState(false);
-  /** Hay secuencia automática que pausar: con JS, con movimiento y sin la calidad bajada. */
+  /** Hay secuencia automática que pausar: con JS y con movimiento. */
   const [conSecuencia, setConSecuencia] = useState(false);
 
   const heroRef = useRef<HTMLElement>(null);
@@ -245,6 +247,12 @@ export function Hero() {
     }
     r.vuelta = { m0, t: 0 };
     arrancarRef.current();
+    // Con el hero fuera de pantalla o la pestaña oculta el bucle no arranca: la vuelta se
+    // haría al volver a entrar y, mientras tanto, `r.vuelta` congelaría el scroll. En el acto.
+    if (!r.raf) {
+      r.vuelta = null;
+      aplicar(r.dyScroll);
+    }
   }, [aplicar]);
 
   // El bucle único (PD-11). Corre solo con el hero en pantalla, la pestaña visible y algo que
@@ -255,7 +263,7 @@ export function Hero() {
 
     const degradar = () => {
       r.degradado = true;
-      setConSecuencia(false);
+      // «Pausar ejemplos» se queda donde está: esconderlo con el foco dentro lo perdería.
       heroRef.current?.setAttribute("data-calidad", "baja");
       if (r.pulso) {
         moverPulso(r.pulso.pozo, null);
@@ -279,10 +287,17 @@ export function Hero() {
       r.ultimo = ahora;
       const dt = real > ATASCO ? 1 / 30 : real;
 
-      // Fotogramas reales (con atascos): < 40 fps durante 2 s seguidos baja la calidad.
+      // Fotogramas reales: < 40 fps durante 2 s seguidos baja la calidad. Un parón suelto
+      // (una tarea larga al hidratar, el depurador) no es un ritmo de fotogramas: corta la
+      // ventana en curso sin sumar ni borrar lo lento.
       const f = r.fps;
-      f.t += real;
-      f.n++;
+      if (real > PARON) {
+        f.t = 0;
+        f.n = 0;
+      } else {
+        f.t += real;
+        f.n++;
+      }
       if (f.t >= VENTANA_FPS) {
         f.lento = f.n / f.t < FPS_MINIMO ? f.lento + f.t : 0;
         f.t = 0;
@@ -430,17 +445,21 @@ export function Hero() {
     const reducido = window.matchMedia("(prefers-reduced-motion: reduce)");
     const alCambiarMovimiento = () => {
       r.quieto = reducido.matches;
-      setConSecuencia(!r.quieto && !r.degradado);
+      setConSecuencia(!r.quieto);
       if (r.quieto && r.pulso) {
         moverPulso(r.pulso.pozo, null);
         r.pulso = null;
         ponerEncendidas(ALTURAS_PARADA.length);
       }
+      // Sin movimiento, el tirador vuelve sin animación (§3.17): la vuelta en curso se corta.
+      if (r.quieto) r.vuelta = null;
       // Sin movimiento la superficie se queda en su sitio; con él, vuelve a seguir el scroll.
       reubicarRef.current();
+      // Con movimiento otra vez, la inactividad pendiente vuelve a contar.
+      arrancarRef.current();
     };
     r.quieto = reducido.matches;
-    setConSecuencia(!r.quieto && !r.degradado);
+    setConSecuencia(!r.quieto);
     reducido.addEventListener("change", alCambiarMovimiento);
     let vivo = true;
     esperarCortina().then(() => {
@@ -470,6 +489,8 @@ export function Hero() {
   const alBajarPuntero = (e: React.PointerEvent<HTMLButtonElement>) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     const r = relojRef.current;
+    // Un segundo dedo no le quita el arrastre al primero.
+    if (r.arrastre) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     r.vuelta = null;
     // El arrastre parte de donde esté la superficie y manda hasta soltar: el scroll se congela.
@@ -509,7 +530,8 @@ export function Hero() {
 
   const alSalirTirador = () => {
     const r = relojRef.current;
-    if (!r.arrastre && Math.abs(r.dy - r.dyScroll) >= 0.01) volver();
+    // Si ya está volviendo (soltado el ratón, el botón sigue enfocado), no se reinicia.
+    if (!r.arrastre && !r.vuelta && Math.abs(r.dy - r.dyScroll) >= 0.01) volver();
   };
 
   return (
@@ -629,7 +651,7 @@ export function Hero() {
             <div className="hero-ejemplos">
               {/* «Ejemplo» (D-019) y, a su lado, el control de la secuencia automática (WCAG
                   2.2.2). El botón se ve solo cuando hay secuencia que pausar: con JS, con
-                  movimiento y sin la calidad bajada. Su sitio está reservado desde el HTML. */}
+                  movimiento. Su sitio está reservado desde el HTML. */}
               <div className="hero-ejemplos-cabeza">
                 <span className="hero-ejemplo" aria-hidden="true">
                   Ejemplo
@@ -697,6 +719,7 @@ export function Hero() {
         data-sigue-superficie=""
         className="hero-tirador"
         aria-label="Bajar la superficie para ver más instalación"
+        aria-keyshortcuts="ArrowUp ArrowDown"
         onPointerDown={alBajarPuntero}
         onPointerMove={alMoverPuntero}
         onPointerUp={alSoltar}

@@ -593,8 +593,9 @@
     color: var(--hueso);
     border-color: var(--hueso);
   }
-  /* Sin JS, con movimiento reducido o con la calidad bajada no hay secuencia que pausar: el
-     botón no se ve ni se enfoca, pero guarda su sitio (nada se mueve al aparecer). */
+  /* Sin JS o con movimiento reducido no hay secuencia que pausar: el botón no se ve ni se
+     enfoca, pero guarda su sitio (nada se mueve al aparecer). Con la calidad bajada se
+     queda (podría tener el foco). */
   .hero-pausar.es-inerte {
     visibility: hidden;
   }
