@@ -21,7 +21,7 @@ export function TarjetaPlantilla({
       href={plantilla.demo}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn("plantilla-card group block", className)}
+      className={cn("plantilla-card group block min-w-0", className)}
       data-cursor-hover
       data-cursor-label="Abrir"
     >

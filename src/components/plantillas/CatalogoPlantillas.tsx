@@ -49,7 +49,7 @@ export function CatalogoPlantillas() {
           : `${visibles.length} de ${plantillas.length}`}
       </p>
 
-      <div className="mt-8 grid gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
         {visibles.map((plantilla, i) => (
           <TarjetaPlantilla
             key={plantilla.slug}
