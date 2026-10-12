@@ -388,7 +388,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       en la PR;
     - lint y build en verde.
 
-- [ ] **T08 · Hero vivo: inactividad, tirador, scroll y bajada de calidad.**
+- [x] **T08 · Hero vivo: inactividad, tirador, scroll y bajada de calidad.**
   - *Cubre*: spec §3.6 (inactividad, «Pausar ejemplos», tirador, scroll),
     §3.15 (bucle parado fuera de pantalla, bajada de calidad), §3.17 (hero),
     §6 (toque durante la inactividad, arrastre durante el scroll), PD-11.

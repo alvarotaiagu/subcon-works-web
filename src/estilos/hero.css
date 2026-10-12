@@ -13,8 +13,10 @@
    superficie; abajo, la primera bajo ella). Lo mismo el instrumento: objetos encima,
    pozos debajo.
 
-   Nada se mueve aquí: lo que mueve la superficie después (cortina, tirador, scroll) lo
-   hace con `transform` sobre las `data-capa` (T08, T09). */
+   Nada se mueve con el layout: lo que mueve la superficie después lo hace con `transform`.
+   La cortina (T09) anima las `data-capa`; el tirador y el scroll (T08, Hero.tsx) trasladan
+   la línea, el titular, la cota, el instrumento, el tirador y el fondo claro, envueltos
+   donde hace falta para no tocar nunca el `transform` de una `data-capa`. */
 
 /* Nivel en móvil: medido a 360 px para que quepan arriba la cabecera, la línea de arriba
    del titular (dos renglones) y los objetos (PD-10). Lo leen el hero y el rebote de abajo.
@@ -54,13 +56,18 @@
   }
 
   /* El fondo de arriba. Sube por encima del borde para que, al bajar la superficie con
-     el tirador (T08), no asome hondo por arriba. */
-  .hero-cal {
+     el tirador, no asome hondo por arriba. La caja de fuera es la que traslada el tirador;
+     la de dentro (`data-capa`) es la de la cortina. */
+  .hero-cal-mov {
     position: absolute;
     z-index: 0;
     inset-inline: 0;
     top: -96px;
     height: calc(var(--nivel) + 96px);
+  }
+  .hero-cal {
+    position: absolute;
+    inset: 0;
     background: var(--cal);
   }
 
@@ -148,6 +155,10 @@
     margin: 0;
     padding-bottom: 1rem;
   }
+  /* La caja que se traslada con la superficie (la `<p>` es `data-capa`, de la cortina). */
+  .hero-cota-mov {
+    display: inline-block;
+  }
   /* Ningún texto del hero baja de 12 px (§3.6): la cota común va a .74rem. */
   .hero-cota .cota {
     font-size: 0.75rem;
@@ -167,9 +178,12 @@
     grid-column: 1;
     grid-row: 6;
     align-self: start;
+    padding-bottom: 3rem;
+  }
+  /* La caja que baja con la superficie (la de fuera es `data-capa`, de la cortina). */
+  .hero-bajo-mov {
     display: grid;
     gap: 1.25rem;
-    padding-bottom: 3rem;
   }
 
   /* Desde 1024 px: titular a la izquierda, instrumento a la derecha.
@@ -527,9 +541,19 @@
   .hero-lectura-una.es-visible {
     visibility: visible;
   }
+  /* «Ejemplo» y, a su lado, «Pausar ejemplos» (WCAG 2.2.2), encima de la lectura. */
+  .hero-ejemplos {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .hero-ejemplos-cabeza {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+  }
   .hero-ejemplo {
     display: inline-block;
-    margin-right: 0.35rem;
     padding: 0 0.4rem;
     border-radius: 3px;
     background: var(--apagado-abajo);
@@ -541,6 +565,38 @@
   }
   .hero-lectura-flecha {
     color: var(--apagado-abajo);
+  }
+
+  /* Un control, no una etiqueta: borde que se lee (--apagado-abajo, no --conducto) y 24 px
+     de alto como mínimo (WCAG 2.5.8). Pulsado, en --hueso; nunca relleno lima. */
+  .hero-pausar {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 0.5rem;
+    border: 1px solid var(--apagado-abajo);
+    border-radius: 3px;
+    background: none;
+    color: var(--apagado-abajo);
+    font-family: var(--letra-kode);
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .hero-pausar:hover,
+  .hero-pausar[aria-pressed="true"] {
+    color: var(--hueso);
+    border-color: var(--hueso);
+  }
+  /* Sin JS, con movimiento reducido o con la calidad bajada no hay secuencia que pausar: el
+     botón no se ve ni se enfoca, pero guarda su sitio (nada se mueve al aparecer). */
+  .hero-pausar.es-inerte {
+    visibility: hidden;
   }
 
   /* En móvil, a 14 px y estrecha: a 390 px su área tiene que quedar por debajo de la de la
@@ -580,7 +636,7 @@
     white-space: nowrap;
   }
 
-  /* ─── Tirador (§3.6): se pinta aquí; se mueve en T08 ──────────────────────── */
+  /* ─── Tirador (§3.6) ──────────────────────────────────────────────────────── */
 
   .hero-tirador {
     position: absolute;
@@ -599,6 +655,11 @@
     color: var(--tinta);
     font-size: 1rem;
     cursor: ns-resize;
+    /* Solo él: el resto del hero deja hacer scroll vertical normal con el dedo. */
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
   }
 
   @media (min-width: 768px) {
@@ -613,6 +674,14 @@
 }
 
 /* Fuera de capa, para ganar a foco.css (también fuera de capa) y a las utilidades. */
+
+/* Lo que se traslada con la superficie lo mueve el bucle del hero, fotograma a fotograma:
+   ninguna transición encima (con movimiento reducido, globals.css da 0,2 s a todo, y el
+   tirador tiene que volver sin animación, §3.17). */
+[data-sigue-superficie],
+[data-sigue-bajada] {
+  transition-property: none;
+}
 
 /* El tirador está a caballo entre la cal y el hondo: doble anillo, --tinta por dentro y
    --hueso por fuera, para que se lea sobre los dos fondos (§3.4). */
