@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Glifo } from "@/components/ui/Glifo";
 import { Boton } from "@/components/ui/Boton";
+import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
+import { Titular } from "@/components/ui/Titular";
 import { BrowserMockup } from "@/components/ui/BrowserMockup";
 import { MovilMockup } from "@/components/ui/MovilMockup";
 import { WorkImage } from "@/components/ui/WorkImage";
@@ -72,15 +73,14 @@ function Capturas({ herramienta }: { herramienta: Herramienta }) {
 
 export default function HerramientasPage() {
   return (
-    <div className="pt-32 md:pt-40">
-      <header className="container-max mb-20">
-        <Link href="/#servicios" className="link-underline font-mono-label text-xs">
-          <Glifo nombre="izquierda" /> Volver
-        </Link>
-        <p className="font-mono-label mb-4 mt-8">Herramientas</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
-          Lo construimos nosotros.
-        </h1>
+    <div style={nitidezInterior("herramientas")}>
+      <CabeceraInterior
+        pagina="herramientas"
+        arriba="Lo construimos"
+        em="nosotros."
+        volver={{ href: "/#servicios" }}
+        className="mb-20"
+      >
         <div className="mt-8 grid gap-8 md:grid-cols-2">
           <p className="text-lg text-apagado-abajo">
             No son programas comprados ni el panel de otra empresa con nuestro logo encima: es
@@ -113,7 +113,7 @@ export default function HerramientasPage() {
             ))}
           </ul>
         </nav>
-      </header>
+      </CabeceraInterior>
 
       <div className="container-max pb-[var(--space-section)]">
         {/* La principal: plataforma de tiendas, con su bloque de ventajas. */}
@@ -121,9 +121,7 @@ export default function HerramientasPage() {
           <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
             <div>
               <p className="font-mono-label mb-4 text-superficie">La principal</p>
-              <h2 className="text-3xl font-medium text-hueso md:text-5xl">
-                {principal.nombre}
-              </h2>
+              <Titular nivel={2} arriba={principal.nombre} />
               <p className="mt-5 text-lg text-apagado-abajo">{principal.resuelve}</p>
               <Hace herramienta={principal} />
               <Sostiene herramienta={principal} />
@@ -133,7 +131,7 @@ export default function HerramientasPage() {
 
           {principal.ventajas && (
             <div className="mt-24">
-              <h3 className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl">
+              <h3 className="titular max-w-2xl">
                 {principal.ventajas.titulo}
               </h3>
               <ol className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
@@ -155,7 +153,7 @@ export default function HerramientasPage() {
           <section key={h.id} id={h.id} className="mt-32 scroll-mt-28 border-t border-conducto pt-14">
             <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
               <div>
-                <h2 className="text-3xl font-medium text-hueso md:text-5xl">{h.nombre}</h2>
+                <Titular nivel={2} arriba={h.nombre} />
                 <p className="mt-5 text-lg text-apagado-abajo">{h.resuelve}</p>
                 <Hace herramienta={h} />
                 <Sostiene herramienta={h} />
@@ -188,9 +186,7 @@ export default function HerramientasPage() {
         </div>
 
         <div className="mt-24 border-t border-conducto pt-14">
-          <h2 className="max-w-xl text-3xl font-medium text-hueso md:text-5xl">
-            ¿Cuál le hace falta a tu negocio?
-          </h2>
+          <Titular nivel={2} arriba="¿Cuál le hace falta a tu negocio?" className="max-w-xl" />
           <p className="mt-5 max-w-xl text-apagado-abajo">
             Casi nunca son todas. La auditoría gratuita parte del informe de mejoras de tu web y te
             dice qué falta antes de hablar de precio.

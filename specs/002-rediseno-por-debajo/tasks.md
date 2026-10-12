@@ -587,7 +587,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Interiores
 
-- [ ] **T15 · Páginas interiores y 404.**
+- [x] **T15 · Páginas interiores y 404.**
   - *Cubre*: spec §3.12 (entero salvo `/plantillas/` tarjetas, T11, y
     `/auditoria/` campos, T16), §3.2 (H1 de interiores), §5 (frase de
     `/privacidad/`), deltas de la 001 §3.8 («Aspecto»).

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Glifo } from "@/components/ui/Glifo";
+import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { FormularioAuditoria } from "@/components/auditoria/FormularioAuditoria";
 import { TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { site } from "@/content/site";
@@ -14,15 +13,14 @@ export const metadata: Metadata = {
 
 export default function AuditoriaPage() {
   return (
-    <div className="pt-32 md:pt-40">
-      <header className="container-max mb-16 md:mb-24">
-        <Link href="/#auditoria" className="link-underline font-mono-label text-xs">
-          <Glifo nombre="izquierda" /> Volver
-        </Link>
-        <p className="font-mono-label mb-4 mt-8">Auditoría gratuita</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
-          Cómo trabajáis por dentro
-        </h1>
+    <div style={nitidezInterior("auditoria")}>
+      <CabeceraInterior
+        pagina="auditoria"
+        arriba="Cómo trabajáis"
+        em="por dentro"
+        volver={{ href: "/#auditoria" }}
+        className="mb-16 md:mb-24"
+      >
         <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
           {TOTAL_PREGUNTAS} preguntas sobre el día a día del negocio. Se contesta en unos diez
           minutos, con tus palabras, y no hace falta que sepas nada de tecnología.
@@ -50,7 +48,7 @@ export default function AuditoriaPage() {
             </li>
           ))}
         </ul>
-      </header>
+      </CabeceraInterior>
 
       <div className="container-max pb-[var(--space-section)]">
         <FormularioAuditoria />
