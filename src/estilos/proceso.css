@@ -329,6 +329,7 @@
     }
     .proceso-tabla td[data-col]::before {
       content: attr(data-col);
+      content: attr(data-col) / ""; /* el lector ya tiene la cabecera de la columna */
       display: block;
       margin-bottom: 0.25rem;
       font-family: var(--letra-kode);

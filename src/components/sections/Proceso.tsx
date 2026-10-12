@@ -19,11 +19,25 @@ const PASO_PLAZO = 3;
 
 /** «2 semanas», de `cifras.ts` (su sufijo « sem.» se escribe entero en esta vista, §3.5). */
 const plazo = cifras.find((c) => c.sufijo.trim() === "sem.");
-const plazoTexto = plazo ? `${plazo.valor} ${plazo.valor === 1 ? "semana" : "semanas"}` : null;
+
+/** «2 semanas» y su etiqueta: bajo el paso 04 del testigo y en su fila de la tabla. */
+function Plazo({ como: Etiqueta }: { como: "p" | "span" }) {
+  if (!plazo) return null;
+  return (
+    <Etiqueta className="proceso-plazo">
+      <span className="proceso-plazo-valor">
+        {plazo.valor} {plazo.valor === 1 ? "semana" : "semanas"}
+      </span>
+      <span className="proceso-plazo-etiqueta">{plazo.etiqueta}</span>
+    </Etiqueta>
+  );
+}
 
 /** GSAP ha fallado al crear el pin: el proceso se queda como tabla (§6). */
 let gsapRoto = false;
 const avisos = new Set<() => void>();
+let consultaReducido: MediaQueryList | null = null;
+const reducido = () => (consultaReducido ??= window.matchMedia("(prefers-reduced-motion: reduce)"));
 
 /**
  * ¿Se monta el testigo? Con JS, movimiento permitido, fuera de la densidad sobria (§3.16)
@@ -33,19 +47,18 @@ const avisos = new Set<() => void>();
 const testigoStore = {
   leer: () =>
     !gsapRoto &&
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+    !reducido().matches &&
     !document.documentElement.classList.contains("densidad-sobria"),
   // En el servidor (y sin JS), la tabla.
   leerServidor: () => false,
   suscribir(aviso: () => void) {
     avisos.add(aviso);
-    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)");
-    reducido.addEventListener("change", aviso);
+    reducido().addEventListener("change", aviso);
     const clases = new MutationObserver(aviso);
     clases.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => {
       avisos.delete(aviso);
-      reducido.removeEventListener("change", aviso);
+      reducido().removeEventListener("change", aviso);
       clases.disconnect();
     };
   },
@@ -148,6 +161,8 @@ export function Proceso() {
       observador.disconnect();
       cancelAnimationFrame(pedido);
       pin.kill();
+      // Sin el pin-spacer la página encoge 4,4 pantallas: que los demás triggers lo sepan.
+      ScrollTrigger.refresh();
       broca.style.removeProperty("transform");
       setActivo(0);
     };
@@ -184,12 +199,7 @@ export function Proceso() {
                 <h3 className="proceso-paso-titulo">{paso.titulo}</h3>
                 <p className="proceso-paso-texto">{paso.descripcion}</p>
                 <p className="proceso-paso-dato">{paso.dato}</p>
-                {i === PASO_PLAZO && plazo && (
-                  <p className="proceso-plazo">
-                    <span className="proceso-plazo-valor">{plazoTexto}</span>
-                    <span className="proceso-plazo-etiqueta">{plazo.etiqueta}</span>
-                  </p>
-                )}
+                {i === PASO_PLAZO && <Plazo como="p" />}
               </li>
             ))}
           </ol>
@@ -198,38 +208,34 @@ export function Proceso() {
 
       {/* La tabla: siempre en el HTML; se esconde cuando el testigo está montado. */}
       <div className="container-max proceso-tabla-caja">
-        <table className="proceso-tabla">
+        {/* Roles explícitos: en móvil las filas pasan a grid y WebKit quitaría la semántica. */}
+        <table className="proceso-tabla" role="table">
           <caption className="sr-only">El proceso, paso a paso: lo que ves tú y lo que hacemos por debajo</caption>
-          <thead>
-            <tr>
-              <th scope="col">Paso</th>
-              <th scope="col">Lo que ves tú</th>
-              <th scope="col">Lo que hacemos por debajo</th>
-              <th scope="col">Dato</th>
+          <thead role="rowgroup">
+            <tr role="row">
+              <th scope="col" role="columnheader">Paso</th>
+              <th scope="col" role="columnheader">Lo que ves tú</th>
+              <th scope="col" role="columnheader">Lo que hacemos por debajo</th>
+              <th scope="col" role="columnheader">Dato</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody role="rowgroup">
             {proceso.map((paso, i) => (
-              <tr key={paso.numero}>
-                <th scope="row">
+              <tr key={paso.numero} role="row">
+                <th scope="row" role="rowheader">
                   <span>
                     {paso.numero} · {paso.titulo}
                   </span>
                 </th>
-                <td data-col="Lo que ves tú">
+                <td role="cell" data-col="Lo que ves tú">
                   <span>{paso.vesTu}</span>
                 </td>
-                <td data-col="Lo que hacemos por debajo">
+                <td role="cell" data-col="Lo que hacemos por debajo">
                   <span>{paso.debajo}</span>
                 </td>
-                <td className="proceso-tabla-dato">
+                <td role="cell" className="proceso-tabla-dato">
                   <span>{paso.dato}</span>
-                  {i === PASO_PLAZO && plazo && (
-                    <span className="proceso-plazo">
-                      <span className="proceso-plazo-valor">{plazoTexto}</span>
-                      <span className="proceso-plazo-etiqueta">{plazo.etiqueta}</span>
-                    </span>
-                  )}
+                  {i === PASO_PLAZO && <Plazo como="span" />}
                 </td>
               </tr>
             ))}
