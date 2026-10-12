@@ -22,7 +22,7 @@ const plano = (s: string) =>
     .replace(/[̀-ͯ]/g, "")
     .toLowerCase();
 
-test("§3.6 · Cada parada del hero es un servicio real", { skip: "T07" }, async () => {
+test("§3.6 · Cada parada del hero es un servicio real", async () => {
   const { flujos } = await cargar<{ flujos: Flujo[] }>("./hero.ts");
 
   // La tabla del §3.6: cuatro objetos, tres paradas cada uno.
