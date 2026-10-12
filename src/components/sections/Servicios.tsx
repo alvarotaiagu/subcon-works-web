@@ -55,7 +55,7 @@ export function Servicios() {
         // Se enciende al cruzar el 70 % de la pantalla, no al asomar por abajo.
         { rootMargin: "0px 0px -30% 0px" },
       );
-      ol.querySelectorAll(".pozo").forEach((el) => io?.observe(el));
+      ol.querySelectorAll(".servicio-pozo").forEach((el) => io?.observe(el));
     };
 
     montar();
@@ -79,19 +79,19 @@ export function Servicios() {
           Diez servicios. Cada uno tiene una parte que ve tu cliente y otra que trabaja por debajo.
         </p>
 
-        <ol ref={lista} className="pozos">
+        <ol ref={lista} className="servicio-pozos">
           {servicios.map((servicio) => (
             // Focusable a propósito: el teclado enciende el pozo (§3.7). El foco visible
             // lo pinta `foco.css`; el pozo encendido, `portada.css`.
-            <li key={servicio.numero} className="pozo" tabIndex={0}>
-              <div className="pozo-cabecera">
-                <span className="pozo-numero font-mono-label">{servicio.numero}</span>
-                <h3 className="pozo-nombre">{servicio.nombre}</h3>
-                <p className="pozo-descripcion">{servicio.descripcion}</p>
+            <li key={servicio.numero} className="servicio-pozo" tabIndex={0}>
+              <div className="servicio-pozo-cabecera">
+                <span className="servicio-pozo-numero font-mono-label">{servicio.numero}</span>
+                <h3 className="servicio-pozo-nombre">{servicio.nombre}</h3>
+                <p className="servicio-pozo-descripcion">{servicio.descripcion}</p>
               </div>
-              <ul className="pozo-paradas" aria-label={`Lo que incluye ${servicio.nombre}`}>
+              <ul className="servicio-pozo-paradas" aria-label={`Lo que incluye ${servicio.nombre}`}>
                 {servicio.incluye.map((item, i) => (
-                  <li key={item} className="pozo-parada" style={{ "--i": i } as CSSProperties}>
+                  <li key={item} className="servicio-pozo-parada" style={{ "--i": i } as CSSProperties}>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -99,7 +99,7 @@ export function Servicios() {
               {servicio.enlace && (
                 <Link
                   href={servicio.enlace.href}
-                  className="link-underline font-mono-label pozo-enlace"
+                  className="link-underline font-mono-label servicio-pozo-enlace"
                 >
                   {servicio.enlace.label}
                   <Glifo nombre="derecha" />

@@ -427,7 +427,7 @@ body:has([data-hero]) {
    opacidad. Encendido = lima solo en línea (la línea, el pozo, el recuadro de cada
    parada) y en el número, que es texto sobre oscuro. */
 @layer components {
-  .pozos {
+  .servicio-pozos {
     list-style: none;
     margin: clamp(3rem, 6vw, 5rem) 0 0;
     padding: 0;
@@ -437,39 +437,39 @@ body:has([data-hero]) {
     align-items: start;
   }
   @media (min-width: 768px) {
-    .pozos {
+    .servicio-pozos {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: clamp(2.5rem, 6vw, 6rem);
       row-gap: 4.5rem;
     }
   }
 
-  .pozo {
-    --pozo-color: var(--conducto);
-    --pozo-parada: var(--apagado-abajo);
-    --pozo-numero: var(--apagado-abajo);
+  .servicio-pozo {
+    --servicio-pozo-color: var(--conducto);
+    --servicio-pozo-parada: var(--apagado-abajo);
+    --servicio-pozo-numero: var(--apagado-abajo);
     position: relative;
   }
 
   /* Arriba de su línea: número, nombre y descripción. La línea es el borde de abajo. */
-  .pozo-cabecera {
+  .servicio-pozo-cabecera {
     display: grid;
     grid-template-columns: 2.75rem minmax(0, 1fr);
     column-gap: 0.25rem;
     padding-bottom: 1.5rem;
-    border-bottom: 2px solid var(--pozo-color);
+    border-bottom: 2px solid var(--servicio-pozo-color);
     transition: border-color var(--dur-base) var(--ease-out);
   }
   /* Texto suelto dentro de un grid, siempre en un span / bloque propio. */
-  .pozo .pozo-numero {
+  .servicio-pozo .servicio-pozo-numero {
     grid-row: 1;
     grid-column: 1;
     align-self: center;
     font-size: 0.8rem;
-    color: var(--pozo-numero);
+    color: var(--servicio-pozo-numero);
     transition: color var(--dur-base) var(--ease-out);
   }
-  .pozo-nombre {
+  .servicio-pozo-nombre {
     grid-row: 1;
     grid-column: 2;
     margin: 0;
@@ -478,7 +478,7 @@ body:has([data-hero]) {
     line-height: 1.15;
     color: var(--hueso);
   }
-  .pozo-descripcion {
+  .servicio-pozo-descripcion {
     grid-row: 2;
     grid-column: 2;
     margin: 0.75rem 0 0;
@@ -491,24 +491,24 @@ body:has([data-hero]) {
   /* Debajo, el pozo: una vertical que baja de la línea, con una parada por cada
      «incluye». El tronco es el borde izquierdo de la lista; cada parada, un recuadro
      (dibujo, no relleno) sobre él. */
-  .pozo-paradas {
+  .servicio-pozo-paradas {
     list-style: none;
     margin: 0 0 0 1.375rem;
     padding: 0 0 0 1.75rem;
-    border-left: 2px solid var(--pozo-color);
+    border-left: 2px solid var(--servicio-pozo-color);
     transition: border-color var(--dur-base) var(--ease-out);
   }
-  .pozo-parada {
+  .servicio-pozo-parada {
     position: relative;
     padding: 0.55rem 0;
     font-family: var(--letra-kode);
     font-size: 0.8125rem;
     line-height: 1.35;
-    color: var(--pozo-parada);
+    color: var(--servicio-pozo-parada);
     transition: color var(--dur-base) var(--ease-out);
-    transition-delay: calc(var(--i, 0) * var(--pozo-escalon, 0ms));
+    transition-delay: calc(var(--i, 0) * var(--servicio-pozo-escalon, 0ms));
   }
-  .pozo-parada::before {
+  .servicio-pozo-parada::before {
     content: "";
     position: absolute;
     left: calc(-2.0625rem - 1px);
@@ -518,12 +518,12 @@ body:has([data-hero]) {
     margin-top: -0.3125rem;
     box-sizing: border-box;
     background: var(--hondo);
-    border: 2px solid var(--pozo-color);
+    border: 2px solid var(--servicio-pozo-color);
     transition: border-color var(--dur-base) var(--ease-out);
-    transition-delay: calc(var(--i, 0) * var(--pozo-escalon, 0ms));
+    transition-delay: calc(var(--i, 0) * var(--servicio-pozo-escalon, 0ms));
   }
 
-  .pozo .pozo-enlace {
+  .servicio-pozo .servicio-pozo-enlace {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -535,29 +535,29 @@ body:has([data-hero]) {
   /* Encendido: ratón o teclado en escritorio (el foco solo si es de teclado: pinchar con
      el ratón no deja el pozo fijado), y `es-activo` en móvil, que pone el componente al
      entrar en pantalla. */
-  .pozo:focus-visible,
-  .pozo:has(:focus-visible),
-  .pozo.es-activo {
-    --pozo-color: var(--superficie);
-    --pozo-parada: var(--hueso);
-    --pozo-numero: var(--superficie);
-    --pozo-escalon: 70ms; /* se enciende en cascada; se apaga de golpe */
+  .servicio-pozo:focus-visible,
+  .servicio-pozo:has(:focus-visible),
+  .servicio-pozo.es-activo {
+    --servicio-pozo-color: var(--superficie);
+    --servicio-pozo-parada: var(--hueso);
+    --servicio-pozo-numero: var(--superficie);
+    --servicio-pozo-escalon: 70ms; /* se enciende en cascada; se apaga de golpe */
   }
   @media (hover: hover) {
-    .pozo:hover {
-      --pozo-color: var(--superficie);
-      --pozo-parada: var(--hueso);
-      --pozo-numero: var(--superficie);
-      --pozo-escalon: 70ms; /* se enciende en cascada; se apaga de golpe */
+    .servicio-pozo:hover {
+      --servicio-pozo-color: var(--superficie);
+      --servicio-pozo-parada: var(--hueso);
+      --servicio-pozo-numero: var(--superficie);
+      --servicio-pozo-escalon: 70ms; /* se enciende en cascada; se apaga de golpe */
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .pozo-cabecera,
-    .pozo-numero,
-    .pozo-paradas,
-    .pozo-parada,
-    .pozo-parada::before {
+    .servicio-pozo-cabecera,
+    .servicio-pozo-numero,
+    .servicio-pozo-paradas,
+    .servicio-pozo-parada,
+    .servicio-pozo-parada::before {
       transition: none;
     }
   }
