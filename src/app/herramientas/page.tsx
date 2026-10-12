@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
+import { Boton } from "@/components/ui/Boton";
 import { BrowserMockup } from "@/components/ui/BrowserMockup";
 import { MovilMockup } from "@/components/ui/MovilMockup";
 import { WorkImage } from "@/components/ui/WorkImage";
@@ -195,18 +196,10 @@ export default function HerramientasPage() {
             dice qué falta antes de hablar de precio.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
-            <Link
-              href="/auditoria/"
-              className="rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo"
-            >
-              Pedir la auditoría gratuita
-            </Link>
-            <a
-              href={`mailto:${site.email}`}
-              className="rounded-full border border-apagado-abajo px-7 py-3.5 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
-            >
+            <Boton href="/auditoria/">Pedir la auditoría gratuita</Boton>
+            <Boton href={`mailto:${site.email}`} variante="secundario">
               Escribir un correo
-            </a>
+            </Boton>
           </div>
         </div>
       </div>

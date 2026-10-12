@@ -151,13 +151,6 @@ body {
   color: var(--hondo);
 }
 
-/* Provisional hasta el foco de estilos/foco.css (T05). */
-:focus-visible {
-  outline: 2px solid var(--superficie);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
 h1,
 h2,
 h3 {
@@ -178,6 +171,101 @@ h3 {
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--apagado-abajo);
+  }
+
+  /* Cota (§3.5): Kode Mono mayúscula, siempre sobre oscuro. En reposo apagada (sin
+     opacidad); alcanzada por el conducto, lima. El borde es dibujo, no se lee. */
+  .cota {
+    display: inline-block;
+    font-family: var(--letra-kode);
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--apagado-abajo);
+    border: 1px solid var(--conducto);
+    border-radius: 3px;
+    padding: 0.2em 0.6em;
+    transition:
+      color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  .cota.es-alcanzada {
+    color: var(--superficie);
+    border-color: var(--superficie);
+  }
+
+  /* Botones (§3.4), los pinta <Boton> o clasesBoton(). `--boton-color` es el color
+     de su zona (relleno del primario, borde y texto del secundario) y
+     `--boton-contra` el del texto sobre ese relleno. Ninguno se rellena de lima. */
+  .boton {
+    --boton-color: var(--hueso);
+    --boton-contra: var(--hondo);
+    --boton-linea: var(--superficie);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border: 1.5px solid var(--boton-color);
+    border-radius: 9999px;
+    padding: 0.8125rem 1.6875rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .boton:disabled {
+    cursor: not-allowed;
+  }
+  .boton-claro {
+    --boton-color: var(--tinta);
+    --boton-contra: var(--cal);
+    --boton-linea: var(--tinta);
+  }
+  .boton-primario {
+    background-color: var(--boton-color);
+    color: var(--boton-contra);
+  }
+  /* La línea de 2 px debajo del primario: la superficie bajo el botón. */
+  .boton-primario::after {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: -8px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--boton-linea);
+    pointer-events: none;
+    transition: background-color var(--dur-base) var(--ease-out);
+  }
+  /* El botón del Fondo (§3.11): la línea descansa apagada hasta que se enciende. */
+  .boton-linea-apagada::after {
+    background: var(--conducto);
+  }
+  .boton-linea-apagada.es-encendida::after {
+    background: var(--superficie);
+  }
+  .boton-secundario {
+    background-color: transparent;
+    color: var(--boton-color);
+  }
+  @media (hover: hover) {
+    .boton-primario:not(:disabled):hover {
+      background-color: transparent;
+      color: var(--boton-color);
+    }
+    .boton-secundario:not(:disabled):hover {
+      background-color: var(--boton-color);
+      color: var(--boton-contra);
+    }
   }
 }
 
@@ -283,10 +371,9 @@ h3 {
 .campo:hover {
   border-bottom-color: var(--hueso);
 }
-/* El tinte lima de fondo sale (§3.4): queda solo la línea. El foco nuevo lo
-   pone estilos/foco.css (T05). */
+/* El tinte lima de fondo sale (§3.4): queda solo la línea. El foco (recuadro y
+   línea de abajo) es el de todos, en estilos/foco.css. */
 .campo:focus {
-  outline: none;
   border-bottom-color: var(--superficie);
 }
 .campo[aria-invalid="true"] {
@@ -370,14 +457,6 @@ h3 {
 }
 .hero-eyebrow {
   animation: eyebrow-in 0.9s var(--ease-out) both;
-}
-
-/* PageTransition: posición inicial fuera de pantalla.
-   No usar la utilidad translate-y-full de Tailwind aquí: en Tailwind v4 anima
-   la propiedad `translate` independiente, que se compone con el `transform`
-   que mueve GSAP y el resultado neto se queda a medio camino (pantalla tapada). */
-.page-transition-hidden {
-  transform: translateY(100%);
 }
 
 /* Hero: capa de fondo "el umbral" */

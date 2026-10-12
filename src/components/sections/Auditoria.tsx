@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Boton } from "@/components/ui/Boton";
 import { loQueRecibes, loQueNoPedimos, TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { useReveal } from "@/hooks/useReveal";
 
@@ -34,13 +34,9 @@ export function Auditoria() {
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-6" data-reveal>
-              <Link
-                href="/auditoria/"
-                className="inline-flex items-center justify-center rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors duration-300 hover:bg-apagado-abajo"
-                data-cursor-hover
-              >
+              <Boton href="/auditoria/" data-cursor-hover>
                 Pedir la auditoría
-              </Link>
+              </Boton>
               <span className="font-mono-label text-[10px]">
                 10 min · 0 € · sin compromiso
               </span>

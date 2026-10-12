@@ -16,7 +16,7 @@ interface EntradaCorte {
   shrp: number;
 }
 
-test("§3.5 · Las cotas de la portada", { skip: "T05" }, async () => {
+test("§3.5 · Las cotas de la portada", async () => {
   const { cortePortada } = await cargar<{ cortePortada: EntradaCorte[] }>("./portada.ts");
   // Tabla del §3.5, en orden. Las cotas negativas llevan el signo menos (U+2212).
   assert.deepEqual(
