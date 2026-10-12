@@ -14,12 +14,12 @@ export function PuntosNumerados({ puntos, className, textoClassName }: PuntosNum
   return (
     <ol className={cn("mt-12 grid gap-x-10 gap-y-12", className)}>
       {puntos.map((p, i) => (
-        <li key={p.titulo} className="border-t border-line pt-6">
-          <span className="font-mono-label text-xs text-accent" aria-hidden="true">
+        <li key={p.titulo} className="border-t border-conducto pt-6">
+          <span className="font-mono-label text-xs text-superficie" aria-hidden="true">
             {String(i + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-3 text-xl font-medium text-text-primary">{p.titulo}</h3>
-          <p className={cn("mt-3 text-text-muted", textoClassName)}>{p.texto}</p>
+          <h3 className="mt-3 text-xl font-medium text-hueso">{p.titulo}</h3>
+          <p className={cn("mt-3 text-apagado-abajo", textoClassName)}>{p.texto}</p>
         </li>
       ))}
     </ol>

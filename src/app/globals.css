@@ -1,20 +1,43 @@
 @import "tailwindcss";
 
+/* CSS por zonas (spec 002, PD-3). Cada tarea escribe solo en el suyo; esta
+   lista no la toca nadie más. Van arriba porque un @import tiene que preceder
+   a cualquier otra regla. */
+@import "../estilos/foco.css";
+@import "../estilos/cabecera.css";
+@import "../estilos/cortina.css";
+@import "../estilos/hero.css";
+@import "../estilos/portada.css";
+@import "../estilos/hilo.css";
+@import "../estilos/proceso.css";
+@import "../estilos/interiores.css";
+@import "../estilos/sobria.css";
+
 :root {
-  /* Color — dark premium, un solo acento */
-  --bg-base: #08090a;
-  --bg-raised: #0e1012;
-  --bg-sunken: #050506;
-  --line: #1c1f23;
-  --text-primary: #f2f3f4;
-  --text-muted: #8a9099;
-  /* #6b7178 se quedaba en 4,04:1 sobre el fondo y 3,87:1 sobre bg-raised, por
-     debajo del 4,5:1 de la AA — y lo usa `.font-mono-label`, que está en toda
-     la web. Subido lo justo para pasar sobre los tres fondos (4,73 / 4,52 /
-     4,83) sin dejar de leerse como el gris tenue del sistema. */
-  --text-faint: #767c83;
-  --accent: #c9f24d;
-  --accent-dim: #8fa832;
+  /* Color (spec 002 §3.1). Arriba, en claro, lo que ve el cliente; debajo, en
+     oscuro, la instalación. La lima es la superficie: solo línea o texto sobre
+     oscuro, nunca de fondo ni como texto sobre cal o tarjeta. */
+  --cal: #f1eee6;
+  --tinta: #15181a;
+  --apagado-arriba: #5c625f;
+  --tarjeta: #fbfaf6;
+  --superficie: #c9f24d;
+  --hondo: #0e1b1e;
+  --estrato: #14272b;
+  --roca: #0a1416;
+  --hueso: #e4ece8;
+  --apagado-abajo: #8fa19e;
+  /* 2,1:1 sobre hondo: solo decorativo, nunca texto ni borde que se lea. */
+  --conducto: #3a5156;
+  --bloque: #8a9099;
+
+  /* Estratos del testigo del proceso (PD-5), de arriba abajo. */
+  --estrato-1: #2a4844;
+  --estrato-2: #233f3b;
+  --estrato-3: #1e3633;
+  --estrato-4: #192e2c;
+  --estrato-5: #152725;
+  --estrato-6: #111f1f;
 
   /* Espaciado */
   --space-section: clamp(6rem, 16vw, 12rem);
@@ -37,15 +60,24 @@
 }
 
 @theme inline {
-  --color-bg-base: var(--bg-base);
-  --color-bg-raised: var(--bg-raised);
-  --color-bg-sunken: var(--bg-sunken);
-  --color-line: var(--line);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
-  --color-text-faint: var(--text-faint);
-  --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
+  --color-cal: var(--cal);
+  --color-tinta: var(--tinta);
+  --color-apagado-arriba: var(--apagado-arriba);
+  --color-tarjeta: var(--tarjeta);
+  --color-superficie: var(--superficie);
+  --color-hondo: var(--hondo);
+  --color-estrato: var(--estrato);
+  --color-roca: var(--roca);
+  --color-hueso: var(--hueso);
+  --color-apagado-abajo: var(--apagado-abajo);
+  --color-conducto: var(--conducto);
+  --color-bloque: var(--bloque);
+  --color-estrato-1: var(--estrato-1);
+  --color-estrato-2: var(--estrato-2);
+  --color-estrato-3: var(--estrato-3);
+  --color-estrato-4: var(--estrato-4);
+  --color-estrato-5: var(--estrato-5);
+  --color-estrato-6: var(--estrato-6);
 
   --font-display: var(--font-instrument-sans);
   --font-body: var(--font-inter);
@@ -55,34 +87,34 @@
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@media (prefers-color-scheme: light) {
-  /* La marca es intencionalmente dark-only: no se ofrece variante clara. */
-}
-
 * {
   box-sizing: border-box;
 }
 
+/* El fondo de <html> es hondo en toda la web (§3.1); el rebote cal de la
+   portada lo pone su <body> (T06). */
 html {
-  background: var(--bg-base);
+  background: var(--hondo);
   color-scheme: dark;
 }
 
 body {
-  background: var(--bg-base);
-  color: var(--text-primary);
+  background: var(--hondo);
+  color: var(--hueso);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* Sin lima de fondo, tampoco en la selección (§3.4). */
 ::selection {
-  background: var(--accent);
-  color: var(--bg-base);
+  background: var(--hueso);
+  color: var(--hondo);
 }
 
+/* Provisional hasta el foco de estilos/foco.css (T05). */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--superficie);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -106,7 +138,7 @@ h3 {
     font-family: var(--font-mono), ui-monospace, monospace;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--text-faint);
+    color: var(--apagado-abajo);
   }
 }
 
@@ -194,10 +226,11 @@ h3 {
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--line);
+  /* Borde de campo: tiene que leerse, así que apagado-abajo y no conducto. */
+  border-bottom: 1px solid var(--apagado-abajo);
   border-radius: 0;
   padding: 0.6rem 0.1rem;
-  color: var(--text-primary);
+  color: var(--hueso);
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.5;
@@ -206,24 +239,25 @@ h3 {
     background-color var(--dur-fast) var(--ease-out);
 }
 .campo::placeholder {
-  color: var(--text-faint);
+  color: var(--apagado-abajo);
 }
 .campo:hover {
-  border-bottom-color: var(--text-faint);
+  border-bottom-color: var(--hueso);
 }
+/* El tinte lima de fondo sale (§3.4): queda solo la línea. El foco nuevo lo
+   pone estilos/foco.css (T05). */
 .campo:focus {
   outline: none;
-  border-bottom-color: var(--accent);
-  background: color-mix(in oklch, var(--accent) 4%, transparent);
+  border-bottom-color: var(--superficie);
 }
 .campo[aria-invalid="true"] {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--superficie);
 }
 /* El autorrelleno de Chrome pinta un fondo blanco que se come el texto claro. */
 .campo:-webkit-autofill,
 .campo:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--text-primary);
-  -webkit-box-shadow: 0 0 0 1000px var(--bg-raised) inset;
+  -webkit-text-fill-color: var(--hueso);
+  -webkit-box-shadow: 0 0 0 1000px var(--estrato) inset;
 }
 
 /* Aviso de almacenamiento: entra una vez, desde abajo, sin robar el foco. */
@@ -313,7 +347,7 @@ h3 {
   --umbral-y: 40%;
   background: radial-gradient(
     720px circle at var(--umbral-x) var(--umbral-y),
-    color-mix(in oklch, var(--accent) 6%, transparent),
+    color-mix(in oklch, var(--hueso) 4%, transparent),
     transparent 70%
   );
 }
@@ -365,7 +399,7 @@ html[data-cursor-state="hidden"] .cursor-dot {
 html[data-cursor-state="hover"] .cursor-ring {
   width: 3rem;
   height: 3rem;
-  border-color: var(--accent);
+  border-color: var(--superficie);
 }
 html[data-cursor-state="hover"] .cursor-dot {
   opacity: 0;
@@ -373,11 +407,11 @@ html[data-cursor-state="hover"] .cursor-dot {
 html[data-cursor-state="label"] .cursor-ring {
   width: 4.5rem;
   height: 4.5rem;
-  background-color: var(--accent);
-  border-color: var(--accent);
+  background-color: var(--hueso);
+  border-color: var(--hueso);
 }
 html[data-cursor-state="label"] .cursor-ring span {
-  color: var(--bg-base);
+  color: var(--hondo);
 }
 html[data-cursor-state="label"] .cursor-dot {
   opacity: 0;

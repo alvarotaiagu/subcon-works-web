@@ -60,17 +60,17 @@ export default async function SectorPage({ params }: Props) {
       <section
         id="diagnostico"
         aria-labelledby="diagnostico-titulo"
-        className="scroll-mt-28 border-y border-line bg-bg-sunken"
+        className="scroll-mt-28 border-y border-conducto bg-roca"
       >
         <div className="container-max py-[var(--space-section)]">
           <p className="font-mono-label mb-4">Diagnóstico rápido · un minuto</p>
           <h2
             id="diagnostico-titulo"
-            className="max-w-2xl text-3xl font-medium text-text-primary md:text-5xl"
+            className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
           >
             Lo primero que haríamos en tu caso.
           </h2>
-          <p className="mt-6 max-w-xl text-text-muted">
+          <p className="mt-6 max-w-xl text-apagado-abajo">
             Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más
             sentido tienen para vosotros. No se envía ni se guarda nada.
           </p>

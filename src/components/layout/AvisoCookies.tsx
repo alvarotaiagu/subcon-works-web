@@ -52,21 +52,21 @@ export function AvisoCookies() {
       role="dialog"
       aria-live="polite"
       aria-label="Aviso sobre el almacenamiento en tu navegador"
-      className="aviso-cookies fixed inset-x-3 bottom-3 z-[90] mx-auto max-w-xl rounded-2xl border border-line bg-bg-raised/95 py-2.5 pl-4 pr-2.5 shadow-2xl backdrop-blur-md md:inset-x-auto md:left-6 md:bottom-6 md:py-3 md:pl-5 md:pr-3"
+      className="aviso-cookies fixed inset-x-3 bottom-3 z-[90] mx-auto max-w-xl rounded-2xl border border-conducto bg-estrato/95 py-2.5 pl-4 pr-2.5 shadow-2xl backdrop-blur-md md:inset-x-auto md:left-6 md:bottom-6 md:py-3 md:pl-5 md:pr-3"
     >
       {/* Una o dos líneas con el botón al lado, también en móvil: el aviso
           tiene que estar, pero no puede comerse un cuarto de pantalla. */}
       <div className="flex items-center gap-3 md:gap-4">
-        <p className="text-xs leading-snug text-text-muted md:text-sm">
+        <p className="text-xs leading-snug text-apagado-abajo md:text-sm">
           Sin cookies de seguimiento: solo tu borrador y este aviso.{" "}
-          <Link href="/privacidad/" className="link-underline text-text-primary">
+          <Link href="/privacidad/" className="link-underline text-hueso">
             Detalle
           </Link>
         </p>
         <button
           type="button"
           onClick={aceptar}
-          className="shrink-0 rounded-full bg-accent px-4 py-2 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim md:px-5"
+          className="shrink-0 rounded-full bg-hueso px-4 py-2 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo md:px-5"
         >
           Entendido
         </button>

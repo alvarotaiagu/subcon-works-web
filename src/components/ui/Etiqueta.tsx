@@ -4,7 +4,7 @@ export function Etiqueta({ children, className }: { children: React.ReactNode; c
   return (
     <span
       className={cn(
-        "font-mono-label inline-flex items-center rounded-full border border-line px-3 py-1 text-[10px]",
+        "font-mono-label inline-flex items-center rounded-full border border-conducto px-3 py-1 text-[10px]",
         className
       )}
     >

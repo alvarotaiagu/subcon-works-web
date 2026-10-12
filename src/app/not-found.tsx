@@ -20,10 +20,10 @@ export default function NotFound() {
       <div className="container-max grid items-center gap-12 pb-[var(--space-section)] md:grid-cols-[1fr_auto] md:gap-20">
         <div>
           <p className="font-mono-label mb-4">Error 404</p>
-          <h1 className="text-balance text-5xl font-medium text-text-primary md:text-7xl">
+          <h1 className="text-balance text-5xl font-medium text-hueso md:text-7xl">
             Esta pieza no encaja.
           </h1>
-          <p className="mt-8 max-w-md text-lg text-text-muted">
+          <p className="mt-8 max-w-md text-lg text-apagado-abajo">
             La página que buscas no existe o ha cambiado de sitio. Vuelve al principio o mira las
             plantillas.
           </p>
@@ -36,12 +36,12 @@ export default function NotFound() {
         </div>
         <svg
           viewBox="-11 -11 22 22"
-          className="rueda-rota mx-auto w-56 text-accent md:w-80"
+          className="rueda-rota mx-auto w-56 text-superficie md:w-80"
           aria-hidden="true"
         >
           <path
             d={RUEDA}
-            fill="var(--bg-raised)"
+            fill="var(--estrato)"
             fillRule="evenodd"
             stroke="currentColor"
             strokeWidth={1.5}

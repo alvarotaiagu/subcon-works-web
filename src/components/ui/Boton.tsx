@@ -23,8 +23,8 @@ export function Boton({
   const clases = cn(
     "inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-medium transition-colors duration-300",
     variante === "primario"
-      ? "bg-accent text-bg-base hover:bg-accent-dim"
-      : "border border-line text-text-primary hover:border-accent hover:text-accent",
+      ? "bg-hueso text-hondo hover:bg-apagado-abajo"
+      : "border border-apagado-abajo text-hueso hover:border-superficie hover:text-superficie",
     className
   );
 

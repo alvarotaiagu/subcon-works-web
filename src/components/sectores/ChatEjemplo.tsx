@@ -63,13 +63,13 @@ export function ChatEjemplo({
   return (
     <div className={className}>
       <Etiqueta>Ejemplo · negocio inventado</Etiqueta>
-      <h2 className="mt-6 max-w-2xl text-3xl font-medium text-text-primary md:text-5xl">
+      <h2 className="mt-6 max-w-2xl text-3xl font-medium text-hueso md:text-5xl">
         Así contestaría el asistente de {ejemploDe}
       </h2>
 
-      <figure className="mt-10 max-w-2xl overflow-hidden rounded-2xl border border-line bg-bg-raised">
-        <figcaption className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
-          <span className="min-w-0 truncate text-sm font-medium text-text-primary">{negocio}</span>
+      <figure className="mt-10 max-w-2xl overflow-hidden rounded-2xl border border-conducto bg-estrato">
+        <figcaption className="flex items-center justify-between gap-3 border-b border-conducto px-5 py-4">
+          <span className="min-w-0 truncate text-sm font-medium text-hueso">{negocio}</span>
           <span className="font-mono-label shrink-0 text-[10px]">Asistente virtual</span>
         </figcaption>
 
@@ -82,8 +82,8 @@ export function ChatEjemplo({
                 className={cn(
                   "max-w-[85%] break-words rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%]",
                   delAsistente
-                    ? "self-start rounded-bl-md border border-line bg-bg-sunken text-text-primary"
-                    : "self-end rounded-br-md bg-accent text-bg-base",
+                    ? "self-start rounded-bl-md border border-apagado-abajo bg-hondo text-hueso"
+                    : "self-end rounded-br-md border-l-2 border-superficie bg-estrato text-hueso",
                   "group-data-[chat=espera]:translate-y-2 group-data-[chat=espera]:opacity-0",
                   "group-data-[chat=ver]:transition-[opacity,transform] group-data-[chat=ver]:duration-500 group-data-[chat=ver]:ease-out group-data-[chat=ver]:[transition-delay:var(--retraso)]"
                 )}

@@ -61,7 +61,7 @@ export function PageTransition() {
   return (
     <div
       ref={overlayRef}
-      className="page-transition-hidden pointer-events-none fixed inset-0 z-[95] bg-bg-base"
+      className="page-transition-hidden pointer-events-none fixed inset-0 z-[95] bg-hondo"
       aria-hidden="true"
     />
   );

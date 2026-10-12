@@ -21,12 +21,12 @@ export default function EstudioPage() {
           ← Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Estudio</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-text-primary md:text-7xl">
+        <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
           Quién hace esto.
         </h1>
         <div className="mt-8 grid gap-8 md:grid-cols-2">
-          <p className="text-lg text-text-muted">{entradaEstudio}</p>
-          <p className="text-lg text-text-muted">
+          <p className="text-lg text-apagado-abajo">{entradaEstudio}</p>
+          <p className="text-lg text-apagado-abajo">
             Somos un estudio pequeño a propósito: cada encargo lo llevan las mismas dos personas de
             principio a fin.
           </p>
@@ -34,7 +34,7 @@ export default function EstudioPage() {
       </header>
 
       <div className="container-max pb-[var(--space-section)]">
-        <div className="border-t border-line pt-14">
+        <div className="border-t border-conducto pt-14">
           <div className="grid max-w-4xl gap-16 md:grid-cols-2 md:gap-10">
             {personas.map((persona) => (
               <TarjetaPersona
@@ -47,10 +47,10 @@ export default function EstudioPage() {
           </div>
         </div>
 
-        <section aria-labelledby="como-trabajamos" className="mt-32 border-t border-line pt-14">
+        <section aria-labelledby="como-trabajamos" className="mt-32 border-t border-conducto pt-14">
           <h2
             id="como-trabajamos"
-            className="max-w-2xl text-3xl font-medium text-text-primary md:text-5xl"
+            className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
           >
             Cómo trabajamos.
           </h2>
@@ -63,24 +63,24 @@ export default function EstudioPage() {
 
         <Compromisos className="mt-32" />
 
-        <div className="mt-24 border-t border-line pt-14">
-          <h2 className="max-w-xl text-3xl font-medium text-text-primary md:text-5xl">
+        <div className="mt-24 border-t border-conducto pt-14">
+          <h2 className="max-w-xl text-3xl font-medium text-hueso md:text-5xl">
             ¿Hablamos de tu negocio?
           </h2>
-          <p className="mt-5 max-w-xl text-text-muted">
+          <p className="mt-5 max-w-xl text-apagado-abajo">
             Empieza por la auditoría gratuita: diez minutos de formulario y te decimos qué falta antes
             de hablar de precio.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="/auditoria/"
-              className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim"
+              className="rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors hover:bg-apagado-abajo"
             >
               Pedir la auditoría gratuita
             </Link>
             <a
               href={`mailto:${site.email}`}
-              className="rounded-full border border-line px-7 py-3.5 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
+              className="rounded-full border border-apagado-abajo px-7 py-3.5 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
             >
               Escribir un correo
             </a>

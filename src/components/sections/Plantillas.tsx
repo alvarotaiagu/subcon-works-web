@@ -65,20 +65,20 @@ export function Plantillas() {
           Plantillas
         </p>
         <div className="flex flex-wrap items-end justify-between gap-6" data-reveal>
-          <h2 className="max-w-2xl text-4xl font-medium text-text-primary md:text-6xl">
+          <h2 className="max-w-2xl text-4xl font-medium text-hueso md:text-6xl">
             {plantillas.length} bases propias, ya construidas y en línea.
           </h2>
           <Link
             href="/plantillas/"
-            className="link-underline font-mono-label shrink-0 text-xs text-text-primary"
+            className="link-underline font-mono-label shrink-0 text-xs text-hueso"
           >
             Ver las {plantillas.length} →
           </Link>
         </div>
-        <p className="mt-6 max-w-xl text-text-muted" data-reveal>
+        <p className="mt-6 max-w-xl text-apagado-abajo" data-reveal>
           Cada una parte de una idea distinta, no de la misma retícula con otro color. Si una encaja
           con lo tuyo, se adapta con tus datos y está en línea en dos semanas.{" "}
-          <strong className="font-medium text-text-primary">
+          <strong className="font-medium text-hueso">
             Los negocios que ves son inventados
           </strong>{" "}
           — son escaparates de lo que se construye, no clientes.
@@ -99,16 +99,16 @@ export function Plantillas() {
 
         <div className="flex w-[85vw] shrink-0 snap-center items-center md:w-[360px]">
           <div>
-            <p className="text-3xl font-medium text-text-primary">
+            <p className="text-3xl font-medium text-hueso">
               Y {plantillas.length - plantillasDestacadas.length} más.
             </p>
-            <p className="mt-4 text-text-muted">
+            <p className="mt-4 text-apagado-abajo">
               Abogacía, óptica, panadería, autoescuela, mudanzas, cerámica, seguridad… Todas
               publicadas y todas se pueden abrir y trastear ahora mismo.
             </p>
             <Link
               href="/plantillas/"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg-base transition-colors duration-300 hover:bg-accent-dim"
+              className="mt-8 inline-flex items-center justify-center rounded-full bg-hueso px-7 py-3.5 text-sm font-medium text-hondo transition-colors duration-300 hover:bg-apagado-abajo"
             >
               Ver el catálogo entero
             </Link>

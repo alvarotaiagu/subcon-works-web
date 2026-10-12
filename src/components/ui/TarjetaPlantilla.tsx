@@ -34,11 +34,11 @@ export function TarjetaPlantilla({
 
       <div className="mt-5">
         <div className="flex items-baseline justify-between gap-3">
-          <p className="text-2xl font-medium text-text-primary">{plantilla.negocio}</p>
+          <p className="text-2xl font-medium text-hueso">{plantilla.negocio}</p>
           <span className="font-mono-label shrink-0 text-[10px]">{plantilla.ciudad}</span>
         </div>
         <p className="font-mono-label mt-1 text-[10px]">{plantilla.sector}</p>
-        <p className="mt-3 text-sm text-text-muted">{plantilla.concepto}</p>
+        <p className="mt-3 text-sm text-apagado-abajo">{plantilla.concepto}</p>
         <ul className="mt-4 flex flex-wrap gap-2">
           {plantilla.etiquetas.map((etiqueta) => (
             <li key={etiqueta}>

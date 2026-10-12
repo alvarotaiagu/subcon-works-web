@@ -14,10 +14,10 @@ export function CabeceraSector({ pagina }: { pagina: PaginaSector }) {
         ← Sectores
       </Link>
       <p className="font-mono-label mb-4 mt-8">{pagina.etiqueta}</p>
-      <h1 className="max-w-4xl text-balance text-4xl font-medium text-text-primary md:text-7xl">
+      <h1 className="max-w-4xl text-balance text-4xl font-medium text-hueso md:text-7xl">
         {pagina.titular}
       </h1>
-      <p className="mt-8 max-w-xl text-lg text-text-muted">{pagina.entradilla}</p>
+      <p className="mt-8 max-w-xl text-lg text-apagado-abajo">{pagina.entradilla}</p>
       <div className="mt-10 flex flex-wrap gap-4">
         <Boton href="#diagnostico">Haz el diagnóstico</Boton>
         <Boton href="/auditoria/" variante="secundario">

@@ -9,15 +9,15 @@ import { compromisos, notaCompromisos } from "@/content/estudio";
 export function Compromisos({ className }: { className?: string }) {
   return (
     <section aria-labelledby="compromisos-titulo" className={className}>
-      <div className="border-t border-line pt-14">
+      <div className="border-t border-conducto pt-14">
         <h2
           id="compromisos-titulo"
-          className="max-w-2xl text-3xl font-medium text-text-primary md:text-5xl"
+          className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
         >
           Lo que construimos, lo manejas tú.
         </h2>
         <PuntosNumerados puntos={compromisos} className="md:grid-cols-3" />
-        <p className="mt-10 max-w-2xl text-sm text-text-faint">{notaCompromisos}</p>
+        <p className="mt-10 max-w-2xl text-sm text-apagado-abajo">{notaCompromisos}</p>
       </div>
     </section>
   );

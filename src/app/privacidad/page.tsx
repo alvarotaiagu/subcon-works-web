@@ -16,16 +16,16 @@ export const metadata: Metadata = {
  * completarlos antes de que el formulario reciba una sola solicitud real.
  */
 const PENDIENTE = (
-  <span className="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">
+  <span className="rounded bg-estrato px-1.5 py-0.5 font-mono text-[0.85em] text-superficie">
     [PENDIENTE]
   </span>
 );
 
 function Apartado({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <section className="border-t border-line py-10">
-      <h2 className="mb-4 text-xl font-medium text-text-primary md:text-2xl">{titulo}</h2>
-      <div className="space-y-4 text-text-muted">{children}</div>
+    <section className="border-t border-conducto py-10">
+      <h2 className="mb-4 text-xl font-medium text-hueso md:text-2xl">{titulo}</h2>
+      <div className="space-y-4 text-apagado-abajo">{children}</div>
     </section>
   );
 }
@@ -38,10 +38,10 @@ export default function PrivacidadPage() {
           ← Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Privacidad</p>
-        <h1 className="text-4xl font-medium text-text-primary md:text-6xl">
+        <h1 className="text-4xl font-medium text-hueso md:text-6xl">
           Qué hacemos con tus datos
         </h1>
-        <p className="mt-8 text-lg text-text-muted">
+        <p className="mt-8 text-lg text-apagado-abajo">
           En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay
           analítica, ni hay publicidad, ni hay cookies de terceros.
         </p>
@@ -51,7 +51,7 @@ export default function PrivacidadPage() {
             <p>
               {site.nombre}, {PENDIENTE} (nombre fiscal y NIF), con domicilio en {PENDIENTE} (
               {site.ubicacion}). Para cualquier cosa relacionada con esto:{" "}
-              <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+              <a href={`mailto:${site.email}`} className="link-underline text-hueso">
                 {site.email}
               </a>
               .
@@ -71,7 +71,7 @@ export default function PrivacidadPage() {
               ordenador y se borra al enviar el formulario.
             </p>
             <p>
-              El cuestionario <strong className="font-medium text-text-primary">no pide</strong>{" "}
+              El cuestionario <strong className="font-medium text-hueso">no pide</strong>{" "}
               datos de vuestros clientes, contraseñas ni accesos a vuestros programas. Si llega algo
               así igualmente, se borra sin usarlo y te avisamos.
             </p>
@@ -95,13 +95,13 @@ export default function PrivacidadPage() {
 
           <Apartado titulo="Dónde se guardan y quién los ve">
             <p>
-              En una base de datos de <strong className="font-medium text-text-primary">Supabase</strong>{" "}
+              En una base de datos de <strong className="font-medium text-hueso">Supabase</strong>{" "}
               alojada en servidores de la Unión Europea (región de París). Solo se puede acceder a
               ella con las claves del estudio: la web no puede leer lo que han mandado otros.
             </p>
             <p>
               El informe se redacta con herramientas de IA de{" "}
-              <strong className="font-medium text-text-primary">Anthropic</strong>, que procesa las
+              <strong className="font-medium text-hueso">Anthropic</strong>, que procesa las
               respuestas para generarlo y no las usa para entrenar sus modelos. Aparte de esos dos
               proveedores, no se cede nada a nadie.
             </p>
@@ -119,7 +119,7 @@ export default function PrivacidadPage() {
             <p>
               Puedes pedir ver lo que tenemos, corregirlo, borrarlo, limitar su uso, oponerte a él o
               llevártelo a otro sitio. Se hace escribiendo a{" "}
-              <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+              <a href={`mailto:${site.email}`} className="link-underline text-hueso">
                 {site.email}
               </a>{" "}
               — sin formularios ni trámites, y se contesta en menos de un mes.
@@ -131,7 +131,7 @@ export default function PrivacidadPage() {
                 href="https://www.aepd.es"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline text-text-primary"
+                className="link-underline text-hueso"
               >
                 aepd.es
               </a>

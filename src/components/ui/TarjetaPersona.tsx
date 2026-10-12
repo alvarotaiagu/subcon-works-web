@@ -15,7 +15,7 @@ export function TarjetaPersona({ persona, sizes, nivel = "h3", className }: Tarj
 
   return (
     <article className={className}>
-      <div className="relative aspect-[4/5] max-w-[18rem] overflow-hidden rounded-2xl border border-line bg-bg-raised sm:max-w-none">
+      <div className="relative aspect-[4/5] max-w-[18rem] overflow-hidden rounded-2xl border border-conducto bg-estrato sm:max-w-none">
         {persona.foto ? (
           <WorkImage
             src={persona.foto}
@@ -32,17 +32,17 @@ export function TarjetaPersona({ persona, sizes, nivel = "h3", className }: Tarj
           // Hueco a propósito mientras no llega el retrato: la inicial, no el
           // «Imagen no disponible» de WorkImage, que se lee como un fallo.
           <div className="flex h-full items-center justify-center" aria-hidden="true">
-            <span className="font-mono-label text-[clamp(4rem,12vw,8rem)] leading-none text-line">
+            <span className="font-mono-label text-[clamp(4rem,12vw,8rem)] leading-none text-apagado-abajo/30">
               {persona.nombre.charAt(0)}
             </span>
           </div>
         )}
       </div>
-      <Titulo className="mt-6 text-2xl font-medium text-text-primary md:text-3xl">
+      <Titulo className="mt-6 text-2xl font-medium text-hueso md:text-3xl">
         {persona.nombre}
       </Titulo>
-      <p className="font-mono-label mt-2 text-[10px] text-accent">{persona.rol}</p>
-      <p className="mt-4 max-w-md text-text-muted">{persona.texto}</p>
+      <p className="font-mono-label mt-2 text-[10px] text-superficie">{persona.rol}</p>
+      <p className="mt-4 max-w-md text-apagado-abajo">{persona.texto}</p>
     </article>
   );
 }

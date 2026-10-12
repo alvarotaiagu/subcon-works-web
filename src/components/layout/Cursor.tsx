@@ -84,11 +84,11 @@ export function Cursor() {
     <div className="pointer-events-none fixed inset-0 z-[88] hidden md:block" aria-hidden="true">
       <div
         ref={dotRef}
-        className="cursor-dot fixed left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent will-change-transform"
+        className="cursor-dot fixed left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-hueso will-change-transform"
       />
       <div
         ref={ringRef}
-        className="cursor-ring fixed left-0 top-0 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-accent/60 will-change-transform"
+        className="cursor-ring fixed left-0 top-0 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-superficie/60 will-change-transform"
       >
         <span ref={labelRef} className="font-mono-label text-[9px]" />
       </div>

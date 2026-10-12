@@ -147,7 +147,7 @@ export function Preloader() {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-bg-base"
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-hondo"
       aria-hidden="true"
     >
       <svg viewBox="0 0 220 220" className="h-[38vh] w-[38vh] max-h-64 max-w-64">
@@ -156,17 +156,17 @@ export function Preloader() {
             ref={gearRef}
             d={gearPath({ cx: 110, cy: 110, teeth: 14, outerR: 82, rootR: 68 })}
             fill="none"
-            stroke="var(--accent)"
+            stroke="var(--superficie)"
             strokeWidth={2}
             strokeLinejoin="round"
           />
-          <circle cx={110} cy={110} r={30} fill="none" stroke="var(--accent)" strokeWidth={1.5} opacity={0.5} />
+          <circle cx={110} cy={110} r={30} fill="none" stroke="var(--superficie)" strokeWidth={1.5} opacity={0.5} />
         </g>
-        <circle cx={110} cy={110} r={3} fill="var(--accent)" />
+        <circle cx={110} cy={110} r={3} fill="var(--hueso)" />
       </svg>
       <div
         ref={countRef}
-        className="font-mono-label absolute bottom-6 right-6 text-[18vw] leading-none text-text-primary md:bottom-10 md:right-10 md:text-[8vw]"
+        className="font-mono-label absolute bottom-6 right-6 text-[18vw] leading-none text-hueso md:bottom-10 md:right-10 md:text-[8vw]"
       >
         000
       </div>

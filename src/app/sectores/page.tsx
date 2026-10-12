@@ -19,10 +19,10 @@ export default function SectoresPage() {
           ← Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Por sector</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-text-primary md:text-7xl">
+        <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
           Lo que se puede automatizar en tu sector.
         </h1>
-        <p className="mt-8 max-w-xl text-lg text-text-muted">
+        <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
           Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con
           el sector ya elegido y enseña cómo contestaría su asistente.
         </p>

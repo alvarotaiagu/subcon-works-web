@@ -37,13 +37,12 @@ interface BandaProps {
   sentido: 1 | -1;
   duracion: number;
   separador: string;
-  className?: string;
   /** Va delante de la lista y en acento: al repetirse en bucle, encuadra lo
    *  que viene detrás sin necesidad de un titular fijo. */
   estribillo?: string;
 }
 
-function Banda({ items, sentido, duracion, separador, className, estribillo }: BandaProps) {
+function Banda({ items, sentido, duracion, separador, estribillo }: BandaProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -112,15 +111,13 @@ function Banda({ items, sentido, duracion, separador, className, estribillo }: B
               <span
                 className={
                   esEstribillo
-                    ? "font-mono-label text-sm text-accent"
-                    : `font-mono-label text-sm normal-case tracking-normal ${
-                        className ?? "text-text-muted"
-                      }`
+                    ? "font-mono-label text-sm text-superficie"
+                    : "font-mono-label text-sm normal-case tracking-normal text-apagado-abajo"
                 }
               >
                 {item}
               </span>
-              <span className="text-accent">{separador}</span>
+              <span className="text-superficie">{separador}</span>
             </span>
           );
         })}
@@ -131,13 +128,13 @@ function Banda({ items, sentido, duracion, separador, className, estribillo }: B
 
 export function Marquee() {
   return (
-    <div className="border-y border-line">
+    <div className="border-y border-conducto">
       <p className="sr-only">
         Sectores con plantilla propia publicada: {sectores.join(", ")}. Y lo que funciona solo
         mientras tú atiendes: {loQueHaceSolo.join(", ").toLowerCase()}.
       </p>
 
-      <div className="border-b border-line/60 py-6">
+      <div className="border-b border-conducto/60 py-6">
         <Banda items={sectores} sentido={-1} duracion={38} separador="/" />
       </div>
       <div className="py-6">
@@ -147,7 +144,6 @@ export function Marquee() {
           sentido={1}
           duracion={34}
           separador="·"
-          className="text-text-faint"
         />
       </div>
     </div>

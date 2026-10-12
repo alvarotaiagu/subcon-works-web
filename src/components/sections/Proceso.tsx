@@ -68,8 +68,8 @@ export function Proceso() {
                   aria-hidden={active === i ? undefined : true}
                 >
                   <p className="font-mono-label mb-2">{paso.numero}</p>
-                  <p className="text-3xl font-medium text-text-primary md:text-5xl">{paso.titulo}</p>
-                  <p className="mt-2 max-w-sm text-text-muted">{paso.descripcion}</p>
+                  <p className="text-3xl font-medium text-hueso md:text-5xl">{paso.titulo}</p>
+                  <p className="mt-2 max-w-sm text-apagado-abajo">{paso.descripcion}</p>
                 </div>
               ))}
             </div>
@@ -78,8 +78,8 @@ export function Proceso() {
               {proceso.map((paso) => (
                 <div key={paso.numero}>
                   <p className="font-mono-label mb-2">{paso.numero}</p>
-                  <p className="text-3xl font-medium text-text-primary md:text-5xl">{paso.titulo}</p>
-                  <p className="mt-2 max-w-sm text-text-muted">{paso.descripcion}</p>
+                  <p className="text-3xl font-medium text-hueso md:text-5xl">{paso.titulo}</p>
+                  <p className="mt-2 max-w-sm text-apagado-abajo">{paso.descripcion}</p>
                 </div>
               ))}
             </div>
@@ -88,7 +88,7 @@ export function Proceso() {
 
         <div className="relative hidden h-80 flex-col items-center md:flex">
           {pinned && (
-            <p className="font-mono-label mb-6 tabular-nums text-text-faint">
+            <p className="font-mono-label mb-6 tabular-nums text-apagado-abajo">
               {String(active + 1).padStart(2, "0")} / {String(proceso.length).padStart(2, "0")}
             </p>
           )}
@@ -98,14 +98,14 @@ export function Proceso() {
               className="absolute inset-0 w-px"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(to bottom, var(--text-faint) 0, var(--text-faint) 3px, transparent 3px, transparent 11px)",
+                  "repeating-linear-gradient(to bottom, var(--apagado-abajo) 0, var(--apagado-abajo) 3px, transparent 3px, transparent 11px)",
                 opacity: 0.5,
               }}
             />
-            <div ref={lineRef} className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-accent" />
+            <div ref={lineRef} className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-superficie" />
             <div
               ref={pulseRef}
-              className="pointer-events-none absolute left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_10px_2px_var(--accent)]"
+              className="pointer-events-none absolute left-1/2 h-[2px] w-3 -translate-x-1/2 -translate-y-1/2 bg-superficie"
               style={{ top: 0 }}
               aria-hidden="true"
             />
@@ -115,13 +115,13 @@ export function Proceso() {
                   key={paso.numero}
                   className="-ml-[6px] flex h-[13px] w-[13px] items-center justify-center rounded-[2px] border transition-colors duration-500"
                   style={{
-                    borderColor: active >= i ? "var(--accent)" : "var(--line)",
-                    backgroundColor: active >= i ? "var(--accent)" : "var(--bg-base)",
+                    borderColor: active >= i ? "var(--superficie)" : "var(--conducto)",
+                    backgroundColor: active >= i ? "var(--hueso)" : "var(--hondo)",
                   }}
                 >
                   <span
                     className="h-[3px] w-[3px] transition-colors duration-500"
-                    style={{ backgroundColor: active >= i ? "var(--bg-base)" : "var(--line)" }}
+                    style={{ backgroundColor: active >= i ? "var(--hondo)" : "var(--conducto)" }}
                   />
                 </span>
               ))}
