@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { plantillas, plantillasDestacadas } from "@/content/plantillas";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
@@ -72,7 +73,7 @@ export function Plantillas() {
             href="/plantillas/"
             className="link-underline font-mono-label shrink-0 text-xs text-hueso"
           >
-            Ver las {plantillas.length} →
+            Ver las {plantillas.length} <Glifo nombre="derecha" />
           </Link>
         </div>
         <p className="mt-6 max-w-xl text-apagado-abajo" data-reveal>

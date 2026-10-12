@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { entradaEstudio, personas } from "@/content/estudio";
 import { TarjetaPersona } from "@/components/ui/TarjetaPersona";
 import { useReveal } from "@/hooks/useReveal";
@@ -23,7 +24,7 @@ export function Equipo() {
           </p>
           <div className="mt-10" data-reveal>
             <Link href="/estudio/" className="link-underline font-mono-label text-xs text-superficie">
-              Cómo trabajamos →
+              Cómo trabajamos <Glifo nombre="derecha" />
             </Link>
           </div>
         </div>

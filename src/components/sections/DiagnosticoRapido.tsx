@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { Diagnostico } from "@/components/diagnostico/Diagnostico";
 import { sectores } from "@/content/sectores";
 
@@ -50,7 +51,7 @@ export function DiagnosticoRapido() {
             ))}
             <li>
               <Link href="/sectores/" className="link-underline text-apagado-abajo" data-cursor-hover>
-                Todos los sectores →
+                Todos los sectores <Glifo nombre="derecha" />
               </Link>
             </li>
           </ul>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ export default function PrivacidadPage() {
     <div className="pt-32 md:pt-40">
       <div className="container-max max-w-3xl pb-[var(--space-section)]">
         <Link href="/" className="link-underline font-mono-label text-xs">
-          ← Volver
+          <Glifo nombre="izquierda" /> Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Privacidad</p>
         <h1 className="text-4xl font-medium text-hueso md:text-6xl">

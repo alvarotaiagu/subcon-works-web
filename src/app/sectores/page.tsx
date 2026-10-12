@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { TarjetaSector } from "@/components/sectores/TarjetaSector";
 import { sectores } from "@/content/sectores";
 import { site } from "@/content/site";
@@ -16,7 +17,7 @@ export default function SectoresPage() {
     <div className="pt-32 md:pt-40">
       <header className="container-max mb-14">
         <Link href="/#diagnostico" className="link-underline font-mono-label text-xs">
-          ← Volver
+          <Glifo nombre="izquierda" /> Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Por sector</p>
         <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">

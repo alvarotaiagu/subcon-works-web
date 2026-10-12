@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { Boton } from "@/components/ui/Boton";
 import type { PaginaSector } from "@/content/sectores";
 
@@ -11,7 +12,7 @@ export function CabeceraSector({ pagina }: { pagina: PaginaSector }) {
   return (
     <header className="container-max mb-20 md:mb-28">
       <Link href="/sectores/" className="link-underline font-mono-label text-xs">
-        ← Sectores
+        <Glifo nombre="izquierda" /> Sectores
       </Link>
       <p className="font-mono-label mb-4 mt-8">{pagina.etiqueta}</p>
       <h1 className="max-w-4xl text-balance text-4xl font-medium text-hueso md:text-7xl">

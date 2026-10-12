@@ -39,6 +39,42 @@
   --estrato-5: #152725;
   --estrato-6: #111f1f;
 
+  /* Letras (§3.2). Los @font-face, con el basePath, van en línea en layout.tsx; detrás
+     de cada letra, sus respaldos medidos (uno por fuente del sistema). */
+  --letra-geologica:
+    "Geologica", "Geologica Arial", "Geologica Liberation", "Geologica Helvetica",
+    "Geologica Roboto", ui-sans-serif, system-ui, sans-serif;
+  --letra-kode:
+    "Kode Mono", "Kode Mono Arial", "Kode Mono Liberation", "Kode Mono Helvetica",
+    "Kode Mono Roboto", ui-monospace, monospace;
+
+  /* Escala (§3.2). Arriba: Geologica; debajo y datos: Kode Mono.
+     Interlineado de Geologica 300: la spec da .92 (hero) y 1 (titulares), pero una
+     mayúscula con tilde («Él», «Á») monta sobre la línea de arriba: medido en canvas a
+     390 y 1440 px, la tilde invade 2-4 px a .92 y queda pegada (0 px) a 1. Sube a 1.02,
+     el primero que deja aire a los dos tamaños (§3.2: «sube hasta que no toque»). */
+  /* Hero, línea de arriba: Geologica 300. */
+  --hero-arriba-tam: clamp(2.4rem, 6.1vw, 6.4rem);
+  --hero-arriba-interlineado: 1.02;
+  --hero-arriba-tracking: -0.04em;
+  /* Hero, línea de abajo: Kode Mono 500. */
+  --hero-abajo-tam: clamp(2rem, 4.9vw, 5.1rem);
+  --hero-abajo-interlineado: 0.98;
+  --hero-abajo-tracking: -0.05em;
+  /* H1 de interiores y H2: Geologica 300; la segunda línea (em), Kode Mono 500 y lima. */
+  --titular-tam: clamp(2rem, 4.6vw, 4.1rem);
+  --titular-interlineado: 1.02;
+  --titular-em-tam: 0.82em;
+  /* Número de paso: Geologica 200, «SHRP» 100, lima. */
+  --paso-tam: clamp(4.5rem, 11vw, 9.5rem);
+  --paso-interlineado: 0.85;
+  /* Texto: Geologica 400. */
+  --texto-tam: 1rem;
+  --texto-interlineado: 1.55;
+  /* Etiquetas y datos: Kode Mono 400-500; las cotas, en mayúsculas espaciadas. */
+  --dato-tam-min: 0.64rem;
+  --dato-tam-max: 0.82rem;
+
   /* Espaciado */
   --space-section: clamp(6rem, 16vw, 12rem);
   --space-xl: 6rem;
@@ -79,9 +115,10 @@
   --color-estrato-5: var(--estrato-5);
   --color-estrato-6: var(--estrato-6);
 
-  --font-display: var(--font-instrument-sans);
-  --font-body: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  /* Las clases font-display, font-body y font-mono siguen igual; cambia la letra. */
+  --font-display: var(--letra-geologica);
+  --font-body: var(--letra-geologica);
+  --font-mono: var(--letra-kode);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
@@ -101,7 +138,9 @@ html {
 body {
   background: var(--hondo);
   color: var(--hueso);
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--letra-geologica);
+  font-size: var(--texto-tam);
+  line-height: var(--texto-interlineado);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -122,8 +161,8 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-display), ui-sans-serif, sans-serif;
-  line-height: 0.98;
+  font-family: var(--letra-geologica);
+  line-height: var(--titular-interlineado);
   letter-spacing: -0.01em;
 }
 
@@ -135,7 +174,7 @@ h3 {
    el valor por defecto y cualquier text-* lo puede pisar. */
 @layer components {
   .font-mono-label {
-    font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--letra-kode);
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--apagado-abajo);

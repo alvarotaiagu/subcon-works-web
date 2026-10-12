@@ -194,7 +194,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       o texto negro por defecto);
     - lint y build en verde.
 
-- [ ] **T03 · Letras autoalojadas, escala y glifos.**
+- [x] **T03 · Letras autoalojadas, escala y glifos.**
   - *Cubre*: spec §3.2 (salvo «Palabras que emergen», que va en T06), §3.3
     (`alt` de OG), PD-4.
   - *Depende de*: T02. *En paralelo con*: T04.

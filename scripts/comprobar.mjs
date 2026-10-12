@@ -575,7 +575,7 @@ const comprobaciones = [
   {
     id: "§7 · Portada · letras: nada de Google Fonts, se piden los dos woff2",
     tarea: "T03",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const pedidas = [];
       const page = await h.abrir("", {
@@ -598,7 +598,7 @@ const comprobaciones = [
   {
     id: "§7 · basePath de las letras (build con GITHUB_ACTIONS=true)",
     tarea: "T03",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       // Se lanza sobre un build con GITHUB_ACTIONS=true y `--base /subcon-works-web`. Sin
       // --base mira lo mismo con la base vacía (el build normal).
