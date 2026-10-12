@@ -54,7 +54,7 @@ export function PlantillasSector({
             </p>
           </div>
         </div>
-        <div className="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
           {lista.map((plantilla) => (
             <TarjetaPlantilla key={plantilla.slug} plantilla={plantilla} />
           ))}
