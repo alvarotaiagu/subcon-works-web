@@ -444,7 +444,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       baja a `#diagnostico` **después** de la cortina;
     - lint y build en verde.
 
-- [ ] **T10 · Servicios («0 · Lo que montamos»).**
+- [x] **T10 · Servicios («0 · Lo que montamos»).**
   - *Cubre*: spec §3.7, §3.13 (titular y entradilla).
   - *Depende de*: T06.
   - *Hacer*:
