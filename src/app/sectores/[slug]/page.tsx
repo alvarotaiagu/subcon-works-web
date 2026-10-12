@@ -36,7 +36,8 @@ export default async function SectorPage({ params }: Props) {
   const pagina = sectorPorSlug(slug);
   if (!pagina) notFound();
 
-  const hayPlantillas = plantillasValidas(pagina.plantillas).length > 0;
+  const plantillas = plantillasValidas(pagina.plantillas);
+  const hayPlantillas = plantillas.length > 0;
   const bloque = "container-max pb-[var(--space-section)]";
 
   return (
@@ -80,7 +81,7 @@ export default async function SectorPage({ params }: Props) {
       </section>
 
       {/* 5 · Asistente: ejemplo fijo de un negocio inventado */}
-      <section id="asistente" className="container-max scroll-mt-28 py-[var(--space-section)]">
+      <section id="asistente" aria-label="Ejemplo del asistente" className="container-max scroll-mt-28 py-[var(--space-section)]">
         <ChatEjemplo
           conversacion={pagina.conversacion}
           ejemploDe={pagina.ejemplo.de}
@@ -89,7 +90,7 @@ export default async function SectorPage({ params }: Props) {
       </section>
 
       {/* 6 · Plantillas: no sale si no hay ninguna válida (D-007) */}
-      <PlantillasSector slugs={pagina.plantillas} className={`${bloque} scroll-mt-28`} />
+      <PlantillasSector plantillas={plantillas} className={`${bloque} scroll-mt-28`} />
 
       {/* 7 · Cierre */}
       <CtaFinal />

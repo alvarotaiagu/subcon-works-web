@@ -164,6 +164,14 @@ export interface MejoraDiagnosticada {
 const mejoraPorId = new Map<string, Mejora>(mejoras.map((m) => [m.id, m]));
 const rellenoPorSector = new Map(relleno.map((r) => [r.sector as string, r]));
 
+/** Las mejoras del catálogo con esos ids, en ese orden; las que no existen se saltan. */
+export function mejorasPorIds(ids: readonly IdMejora[]): Mejora[] {
+  return ids.flatMap((id) => {
+    const mejora = mejoraPorId.get(id);
+    return mejora ? [mejora] : [];
+  });
+}
+
 /** «Lo que haríamos en tu clínica dental». */
 export function tituloResultado(sector: Sector): string {
   const negocio = sectorPorCodigo.get(sector)?.negocio ?? "negocio";

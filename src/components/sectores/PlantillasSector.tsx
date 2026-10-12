@@ -20,8 +20,14 @@ export function plantillasValidas(slugs: string[]): Plantilla[] {
  * Si no queda ninguna plantilla válida no sale nada, ni el título (P-01). El
  * aviso de que son ficticias es el mismo texto que en `/plantillas/`.
  */
-export function PlantillasSector({ slugs, className }: { slugs: string[]; className?: string }) {
-  const lista = plantillasValidas(slugs);
+export function PlantillasSector({
+  plantillas: lista,
+  className,
+}: {
+  /** Ya filtradas con `plantillasValidas`. */
+  plantillas: Plantilla[];
+  className?: string;
+}) {
   if (lista.length === 0) return null;
 
   return (

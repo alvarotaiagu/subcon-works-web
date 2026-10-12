@@ -1,9 +1,6 @@
-import Link from "next/link";
-import { mejoras as catalogo } from "@/content/diagnostico";
-import type { IdMejora, Mejora, Sector } from "@/content/diagnostico";
-import { resolverEnlace, textoPara } from "@/lib/diagnostico";
-
-const mejoraPorId = new Map<string, Mejora>(catalogo.map((m) => [m.id, m]));
+import { EnlaceMejora } from "@/components/diagnostico/EnlaceMejora";
+import type { IdMejora, Sector } from "@/content/diagnostico";
+import { mejorasPorIds, resolverEnlace, textoPara } from "@/lib/diagnostico";
 
 /**
  * Bloque 3 de una página de sector (spec §3.8): «Lo que haríamos», con las
@@ -25,10 +22,7 @@ export function MejorasSector({
   hayPlantillas: boolean;
   className?: string;
 }) {
-  const lista = ids.flatMap((id) => {
-    const mejora = mejoraPorId.get(id);
-    return mejora ? [mejora] : [];
-  });
+  const lista = mejorasPorIds(ids);
 
   return (
     <section aria-labelledby="mejoras-titulo" className={className}>
@@ -58,30 +52,12 @@ export function MejorasSector({
                 <p className="mt-3 text-sm text-text-muted">
                   {textoPara(mejora.queResuelve, sector)}
                 </p>
-                {enlace && <EnlaceMejora href={enlace} />}
+                {enlace && <EnlaceMejora href={enlace} className="mt-auto self-start pt-5" />}
               </li>
             );
           })}
         </ul>
       </div>
     </section>
-  );
-}
-
-/** Rutas por `Link` (pone el basePath); anclas de la misma página, `<a>` normal. */
-function EnlaceMejora({ href }: { href: string }) {
-  const clases = "link-underline mt-auto self-start pt-5 text-sm text-text-primary";
-  const texto = "Más sobre esto →";
-  if (href.startsWith("#")) {
-    return (
-      <a href={href} className={clases} data-cursor-hover>
-        {texto}
-      </a>
-    );
-  }
-  return (
-    <Link href={href} className={clases} data-cursor-hover>
-      {texto}
-    </Link>
   );
 }

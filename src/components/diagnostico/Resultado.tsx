@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type Ref } from "react";
-import Link from "next/link";
 import { codificar, diagnosticar, tituloResultado, urlCanonica } from "@/lib/diagnostico";
 import type { MejoraDiagnosticada } from "@/lib/diagnostico";
 import type { Contexto, Respuestas, Sector } from "@/content/diagnostico";
 import { Boton } from "@/components/ui/Boton";
+import { EnlaceMejora } from "./EnlaceMejora";
 import { withBasePath } from "@/lib/utils";
 
 /** Lo que pasa al pulsar «Copiar el enlace»: nada aún, copiado o a mano. */
@@ -154,31 +154,9 @@ function MejoraFila({ mejora, numero }: { mejora: MejoraDiagnosticada; numero: n
           <p className="text-xl font-medium text-text-primary md:text-2xl">{mejora.titulo}</p>
           <p className="mt-2 text-text-muted">{mejora.queResuelve}</p>
           <p className="mt-3 text-sm italic text-text-muted">{mejora.porque}</p>
-          {mejora.enlace && <EnlaceMejora href={mejora.enlace} />}
+          {mejora.enlace && <EnlaceMejora href={mejora.enlace} className="mt-4 inline-block" />}
         </div>
       </div>
     </li>
-  );
-}
-
-/**
- * Las rutas (`/…`) van por `Link`, que pone el basePath; las anclas de la
- * misma página (`#asistente`, `#plantillas-sector`) son un `<a>` normal, como
- * el «#plantillas» del Hero.
- */
-function EnlaceMejora({ href }: { href: string }) {
-  const clases = "link-underline mt-4 inline-block text-sm text-text-primary";
-  const texto = "Más sobre esto →";
-  if (href.startsWith("#")) {
-    return (
-      <a href={href} className={clases} data-cursor-hover>
-        {texto}
-      </a>
-    );
-  }
-  return (
-    <Link href={href} className={clases} data-cursor-hover>
-      {texto}
-    </Link>
   );
 }
