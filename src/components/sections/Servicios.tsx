@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { servicios } from "@/content/servicios";
 import { useReveal } from "@/hooks/useReveal";
@@ -46,7 +47,7 @@ function EnlaceServicio({
       {...props}
     >
       {enlace.label}
-      <span aria-hidden="true">→</span>
+      <Glifo nombre="derecha" />
     </Link>
   );
 }

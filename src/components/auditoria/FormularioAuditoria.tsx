@@ -6,6 +6,7 @@ import { bloques, TOTAL_PREGUNTAS, loQueNoPedimos } from "@/content/auditoria";
 import { enviarSolicitud, type ResultadoEnvio } from "@/lib/auditoriaApi";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { Glifo } from "@/components/ui/Glifo";
 import { traerDeClaveAntigua } from "@/lib/almacenamiento";
 import { preguntas as preguntasDiagnostico } from "@/content/diagnostico";
 import { aRespuestasAuditoria, decodificar, mezclarConBorrador } from "@/lib/diagnostico";
@@ -647,7 +648,7 @@ function Navegacion({
           onClick={onAtras}
           className="rounded-full border border-apagado-abajo px-6 py-3 text-sm font-medium text-hueso transition-colors hover:border-superficie hover:text-superficie"
         >
-          ← Atrás
+          <Glifo nombre="izquierda" /> Atrás
         </button>
       )}
 
@@ -660,7 +661,7 @@ function Navegacion({
             onSiguiente();
           }}
         >
-          {paso === 0 ? "Empezar el cuestionario" : "Siguiente bloque"} →
+          {paso === 0 ? "Empezar el cuestionario" : "Siguiente bloque"} <Glifo nombre="derecha" />
         </button>
       )}
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import type { PaginaSector } from "@/content/sectores";
 
 /**
@@ -16,7 +17,7 @@ export function TarjetaSector({ pagina }: { pagina: PaginaSector }) {
       <h2 className="mt-4 text-2xl font-medium text-hueso">{pagina.nombre}</h2>
       <p className="mt-3 text-sm text-apagado-abajo">{pagina.titular}</p>
       <span className="mt-auto pt-8 text-sm font-medium text-hueso transition-colors group-hover:text-superficie">
-        Ver la página →
+        Ver la página <Glifo nombre="derecha" />
       </span>
     </Link>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Glifo } from "@/components/ui/Glifo";
 import { FormularioAuditoria } from "@/components/auditoria/FormularioAuditoria";
 import { TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { site } from "@/content/site";
@@ -16,7 +17,7 @@ export default function AuditoriaPage() {
     <div className="pt-32 md:pt-40">
       <header className="container-max mb-16 md:mb-24">
         <Link href="/#auditoria" className="link-underline font-mono-label text-xs">
-          ← Volver
+          <Glifo nombre="izquierda" /> Volver
         </Link>
         <p className="font-mono-label mb-4 mt-8">Auditoría gratuita</p>
         <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
