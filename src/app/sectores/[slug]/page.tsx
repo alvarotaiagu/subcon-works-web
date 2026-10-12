@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Diagnostico } from "@/components/diagnostico/Diagnostico";
+import { nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { CabeceraSector } from "@/components/sectores/CabeceraSector";
 import { ChatEjemplo } from "@/components/sectores/ChatEjemplo";
 import { MejorasSector } from "@/components/sectores/MejorasSector";
@@ -41,7 +42,7 @@ export default async function SectorPage({ params }: Props) {
   const bloque = "container-max pb-[var(--space-section)]";
 
   return (
-    <div className="pt-32 md:pt-40">
+    <div style={nitidezInterior("sectores")}>
       {/* 1 · Cabecera */}
       <CabeceraSector pagina={pagina} />
 

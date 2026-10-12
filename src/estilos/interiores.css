@@ -42,3 +42,43 @@
     border: 2px solid Highlight;
   }
 }
+
+/* T15 · Cabecera de las interiores
+   <CabeceraInterior> (spec 002 §3.12): el hueco de la cabecera fija (h-16 / md:h-20 más
+   1 px de borde), la superficie lima de 3 px justo debajo y, luego, «Volver», la cota y el
+   H1. Sin conducto: el hilo es de la portada. */
+@layer components {
+  .cabecera-interior {
+    padding-top: 65px;
+  }
+  .cabecera-interior-superficie {
+    height: 3px;
+    background: var(--superficie);
+  }
+  .cabecera-interior > .container-max {
+    padding-top: 2rem;
+  }
+  /* Cota y etiqueta en una línea; si no caben (390 px), la etiqueta pasa debajo. */
+  .cabecera-interior-cota {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .cabecera-interior-separador {
+    color: var(--apagado-abajo);
+  }
+  .cabecera-interior-etiqueta {
+    font-size: 0.74rem;
+  }
+  @media (min-width: 768px) {
+    .cabecera-interior {
+      padding-top: 81px;
+    }
+    .cabecera-interior > .container-max {
+      padding-top: 3rem;
+    }
+  }
+}

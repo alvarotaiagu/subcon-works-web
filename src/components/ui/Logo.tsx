@@ -33,11 +33,13 @@ const TONOS: Record<TonoLogo, CSSProperties> = {
  * og.png: si cambia aquí, cambiarla allí y regenerar (marca/LEEME.md).
  * Dentro de una caja de 48 × 48.
  */
-function PiezasSimbolo() {
+function PiezasSimbolo({ superficie = true }: { superficie?: boolean }) {
   return (
     <>
       <path d="M14 21.5 23 7.5l11 14z" fill="var(--logo-texto)" />
-      <path d="M4 21.5h40" fill="none" stroke="var(--logo-linea)" strokeWidth="2.5" strokeLinecap="round" />
+      {superficie && (
+        <path d="M4 21.5h40" fill="none" stroke="var(--logo-linea)" strokeWidth="2.5" strokeLinecap="round" />
+      )}
       <path
         d="M10 25.5h28l5.5 8.5-9 10.5H17L5.5 33z"
         fill="var(--logo-apagado)"
@@ -50,15 +52,21 @@ function PiezasSimbolo() {
   );
 }
 
-/** Solo el iceberg. El tamaño sale de `className`; decorativo (`aria-hidden`). */
+/**
+ * Solo el iceberg. El tamaño sale de `className`; decorativo (`aria-hidden`).
+ * `superficie={false}` lo pinta sin la línea de superficie (la 404: «no hay nada a esta
+ * cota», spec 002 §3.12).
+ */
 export function Simbolo({
   className,
   tono = "oscuro",
   style,
+  superficie = true,
 }: {
   className?: string;
   tono?: TonoLogo;
   style?: CSSProperties;
+  superficie?: boolean;
 }) {
   return (
     <svg
@@ -68,7 +76,7 @@ export function Simbolo({
       className={className}
       style={{ ...TONOS[tono], ...style }}
     >
-      <PiezasSimbolo />
+      <PiezasSimbolo superficie={superficie} />
     </svg>
   );
 }

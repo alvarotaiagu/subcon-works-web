@@ -1210,7 +1210,7 @@ const comprobaciones = [
   {
     id: "§7 · Interiores",
     tarea: "T15",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const paginas = [...INTERIORES, ...SECTORES.map((ruta) => ({ ruta, cota: "−4 · Sectores" }))];
       for (const ancho of [390, 1440]) {
@@ -1259,7 +1259,7 @@ const comprobaciones = [
   {
     id: "§7 · Sin scroll horizontal a 360 y 390 px",
     tarea: "T15",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const rutas = ["", ...INTERIORES.map((i) => i.ruta), ...SECTORES];
       const fallos = [];

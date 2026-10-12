@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Glifo } from "@/components/ui/Glifo";
+import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -33,21 +32,16 @@ function Apartado({ titulo, children }: { titulo: string; children: React.ReactN
 
 export default function PrivacidadPage() {
   return (
-    <div className="pt-32 md:pt-40">
-      <div className="container-max max-w-3xl pb-[var(--space-section)]">
-        <Link href="/" className="link-underline font-mono-label text-xs">
-          <Glifo nombre="izquierda" /> Volver
-        </Link>
-        <p className="font-mono-label mb-4 mt-8">Privacidad</p>
-        <h1 className="text-4xl font-medium text-hueso md:text-6xl">
-          Qué hacemos con tus datos
-        </h1>
-        <p className="mt-8 text-lg text-apagado-abajo">
+    <div style={nitidezInterior("privacidad")}>
+      <CabeceraInterior pagina="privacidad" arriba="Qué hacemos" em="con tus datos" className="mb-14">
+        <p className="mt-8 max-w-3xl text-lg text-apagado-abajo">
           En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay
           analítica, ni hay publicidad, ni hay cookies de terceros.
         </p>
+      </CabeceraInterior>
 
-        <div className="mt-14">
+      <div className="container-max pb-[var(--space-section)]">
+        <div className="max-w-3xl">
           <Apartado titulo="Quién responde">
             <p>
               {site.nombre}, {PENDIENTE} (nombre fiscal y NIF), con domicilio en {PENDIENTE} (
@@ -143,8 +137,9 @@ export default function PrivacidadPage() {
           <Apartado titulo="Cookies">
             <p>
               Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu
-              navegador es el borrador del formulario y el hecho de que ya has visto el aviso, y
-              ninguna de las dos cosas sale de tu ordenador.
+              navegador es el borrador del formulario, el hecho de que ya has visto el aviso y,
+              solo mientras tengas la pestaña abierta, que ya has visto la animación de entrada,
+              para no repetírtela. Ninguna de las tres cosas sale de tu ordenador.
             </p>
           </Apartado>
         </div>

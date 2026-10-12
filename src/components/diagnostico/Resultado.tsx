@@ -106,7 +106,7 @@ export function Resultado({
         <button
           type="button"
           onClick={onCambiar}
-          className="rounded-full px-2 py-3text-sm font-medium text-apagado-abajo transition-colors hover:text-hueso"
+          className="rounded-full px-2 py-3 text-sm font-medium text-apagado-abajo transition-colors hover:text-hueso"
         >
           Cambiar respuestas
         </button>

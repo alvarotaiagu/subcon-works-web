@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Glifo } from "@/components/ui/Glifo";
 import { Boton } from "@/components/ui/Boton";
+import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
+import { Titular } from "@/components/ui/Titular";
 import { CatalogoPlantillas } from "@/components/plantillas/CatalogoPlantillas";
 import { plantillas } from "@/content/plantillas";
 import { site } from "@/content/site";
@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 
 export default function PlantillasPage() {
   return (
-    <div className="pt-32 md:pt-40">
-      <header className="container-max mb-14">
-        <Link href="/#plantillas" className="link-underline font-mono-label text-xs">
-          <Glifo nombre="izquierda" /> Volver
-        </Link>
-        <p className="font-mono-label mb-4 mt-8">Catálogo</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-hueso md:text-7xl">
-          {plantillas.length} plantillas, cada una con una idea distinta.
-        </h1>
+    <div style={nitidezInterior("plantillas")}>
+      <CabeceraInterior
+        pagina="plantillas"
+        arriba={`${plantillas.length} plantillas,`}
+        em="cada una con una idea distinta."
+        volver={{ href: "/#plantillas" }}
+        titularClassName="max-w-6xl"
+        className="mb-14"
+      >
         <div className="mt-8 grid gap-8 md:grid-cols-2">
           <p className="text-lg text-apagado-abajo">
             Ninguna es la anterior con otro color: cambian la estructura, la paleta, la tipografía y
@@ -38,15 +38,13 @@ export default function PlantillasPage() {
             </p>
           </div>
         </div>
-      </header>
+      </CabeceraInterior>
 
       <div className="container-max pb-[var(--space-section)]">
         <CatalogoPlantillas />
 
         <div className="mt-24 border-t border-conducto pt-14">
-          <h2 className="max-w-xl text-3xl font-medium text-hueso md:text-5xl">
-            ¿Alguna se parece a lo tuyo?
-          </h2>
+          <Titular nivel={2} arriba="¿Alguna se parece a lo tuyo?" className="max-w-xl" />
           <p className="mt-5 max-w-xl text-apagado-abajo">
             Se adapta con tus datos, tus fotos y tu marca, y está en línea en dos semanas. Y si lo
             tuyo no está en la lista, se construye una nueva: el catálogo empezó igual.
