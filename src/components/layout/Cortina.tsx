@@ -6,7 +6,11 @@ import {
   CLAVE_CORTINA,
   EVENTO_CORTINA_FUERA,
   EVENTO_CORTINA_PARTIDA,
+  RE_REVISION_SOBRIA,
 } from "@/lib/scriptCabeza";
+
+/** Lo que el script del `<head>` deja en `window` para la cortina. */
+type VentanaCortina = Window & { __cortinaSeguro?: number; __cortinaDecidida?: boolean };
 
 /** Clave de `sessionStorage` de la cortina. La pone el script del `<head>`. */
 export const PRELOADER_SESSION_KEY = CLAVE_CORTINA;
@@ -80,6 +84,9 @@ function avisarPartida() {
 function quitarCortina() {
   if (retirada) return;
   retirada = true;
+  // Una recarga en caliente del módulo pone `retirada` a false otra vez: sin esto, la
+  // cortina volvería a salir.
+  (window as VentanaCortina).__cortinaDecidida = false;
   avisarPartida();
   document.documentElement.classList.remove("cortina-si");
   window.dispatchEvent(new Event(PRELOADER_GONE_EVENT));
@@ -112,14 +119,14 @@ export function Cortina() {
 
   useLayoutEffect(() => {
     const d = document.documentElement;
-    const w = window as Window & { __cortinaSeguro?: number; __cortinaDecidida?: boolean };
+    const w = window as VentanaCortina;
 
     // En desarrollo, el remontaje de Strict Mode deja <html> solo con lo que pone React
     // y se lleva las clases del script del <head> (guía de Next «Preventing flash»). Se
     // vuelven a poner aquí; en producción no cambia nada.
     d.classList.add("js-si");
     try {
-      if (/[?&]revision=sobria(&|$)/.test(location.search)) d.classList.add("densidad-sobria");
+      if (RE_REVISION_SOBRIA.test(location.search)) d.classList.add("densidad-sobria");
     } catch {}
     if (w.__cortinaDecidida && !retirada) d.classList.add("cortina-si");
 
@@ -143,6 +150,8 @@ export function Cortina() {
     let nivel = 0;
     /** Lo que se desplazan las capas del hero al salir (px). */
     let salto = 0;
+    /** El último `k` con el que se colocaron las capas (-1: sin colocar). */
+    let kCapas = -1;
 
     const bloquear = (e: Event) => {
       e.preventDefault();
@@ -174,6 +183,7 @@ export function Cortina() {
       // Las capas con contenido; los fondos (la cal) van con la superficie, no aquí. Se
       // miden sin desplazar.
       soltarCapas();
+      kCapas = -1; // recién soltadas: el próximo fotograma las vuelve a colocar
       capas = [...document.querySelectorAll<HTMLElement>("[data-hero] [data-capa]")]
         .filter((el) => el.childElementCount > 0 || (el.textContent ?? "").trim() !== "")
         .map((el) => {
@@ -227,7 +237,12 @@ export function Cortina() {
       arriba.style.borderRadius = `0 0 50% 50% / 0 0 ${comba}px ${comba}px`;
       arriba.style.transform = `translateY(${(-108 * p).toFixed(2)}%)`;
       abajo.style.transform = `translateY(${(104 * p).toFixed(2)}%)`;
-      colocarCapas(tramo(t, EMERGE));
+      // Hasta el paso 5 las capas no se mueven: no se reescriben en cada fotograma.
+      const k = tramo(t, EMERGE);
+      if (k !== kCapas) {
+        kCapas = k;
+        colocarCapas(k);
+      }
       if (t >= PARTE[0]) avisarPartida();
     };
 

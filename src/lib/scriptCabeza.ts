@@ -25,11 +25,14 @@ export const EVENTO_CORTINA_PARTIDA = "undertactics:preloader-done";
 export const EVENTO_CORTINA_FUERA = "undertactics:preloader-gone";
 /** Lo que espera el seguro del `<head>` antes de quitar la cortina por su cuenta (ms). */
 export const SEGURO_CORTINA_MS = 4500;
+/** La URL pide la revisión «Sobria» (§3.16). El script la escribe tal cual (`String(re)`). */
+export const RE_REVISION_SOBRIA = /[?&]revision=sobria(&|$)/;
 
 /** El código, como cadena. `base` es el basePath de Pages («» en local). */
 export function scriptCabeza(base: string): string {
   const portada = JSON.stringify(`${base}/`);
   const clave = JSON.stringify(CLAVE_CORTINA);
+  const partida = JSON.stringify(EVENTO_CORTINA_PARTIDA);
   const fuera = JSON.stringify(EVENTO_CORTINA_FUERA);
   return [
     "(function(){var d=document.documentElement,w=window;",
@@ -38,10 +41,12 @@ export function scriptCabeza(base: string): string {
     `var p=location.pathname;if(p===${portada}||p===${portada}+"index.html"){`,
     `if(!sessionStorage.getItem(${clave})&&!matchMedia("(prefers-reduced-motion: reduce)").matches){`,
     `sessionStorage.setItem(${clave},"1");d.classList.add("cortina-si");w.__cortinaDecidida=true;`,
-    'w.__cortinaSeguro=setTimeout(function(){d.classList.remove("cortina-si");',
-    `try{dispatchEvent(new Event(${fuera}))}catch(e){}},${SEGURO_CORTINA_MS})}}`,
-    '}catch(e){d.classList.remove("cortina-si")}',
-    'try{if(/[?&]revision=sobria(&|$)/.test(location.search))d.classList.add("densidad-sobria")}catch(e){}',
+    // El seguro también anula la decisión: si el JS hidrata después, Cortina.tsx no
+    // vuelve a poner la cortina (ni sube la página arriba) cuando ya se había ido.
+    'w.__cortinaSeguro=setTimeout(function(){w.__cortinaDecidida=false;d.classList.remove("cortina-si");',
+    `try{dispatchEvent(new Event(${partida}));dispatchEvent(new Event(${fuera}))}catch(e){}},${SEGURO_CORTINA_MS})}}`,
+    '}catch(e){w.__cortinaDecidida=false;d.classList.remove("cortina-si")}',
+    `try{if(${RE_REVISION_SOBRIA}.test(location.search))d.classList.add("densidad-sobria")}catch(e){}`,
     "})()",
   ].join("");
 }
