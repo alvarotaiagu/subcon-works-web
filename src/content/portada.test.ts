@@ -42,7 +42,7 @@ test("§3.5 · Recuento", () => {
   assert.match(fuente, /plantillas\.length/, "cifras.ts no calcula la cifra con plantillas.length");
 });
 
-test("§3.9 · Proceso", { skip: "T12" }, () => {
+test("§3.9 · Proceso", () => {
   // Los datos de la tabla del §3.9, en el orden de los pasos.
   const datos = ["10 min", "horas y euros", "gratis", "semanas, no meses", "antes de pagar", "a tu nombre"];
   assert.equal(proceso.length, 6);
