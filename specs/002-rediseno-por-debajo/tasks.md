@@ -69,7 +69,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Base
 
-- [ ] **T01 · Rama de integración, Playwright y pruebas pendientes.**
+- [x] **T01 · Rama de integración, Playwright y pruebas pendientes.**
   - *Cubre*: PD-1, PD-2, D-023, spec §7 (forma), §3.15 (`servir.mjs`,
     `medir.mjs`).
   - *Hacer*:
