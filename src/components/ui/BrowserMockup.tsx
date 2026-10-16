@@ -38,7 +38,7 @@ export function BrowserMockup({
           fill
           priority={priority}
           sizes="(min-width: 768px) 480px, 90vw"
-          className="plantilla-img object-cover object-top"
+          className="object-cover object-top"
         />
       </div>
     </div>

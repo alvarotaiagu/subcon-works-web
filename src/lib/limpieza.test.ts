@@ -121,7 +121,7 @@ const CLASES = [
 const CURSOR_VALIDO =
   "(?:auto|default|pointer|wait|text|move|help|not-allowed|context-menu|progress|cell|crosshair|vertical-text|alias|copy|no-drop|grab|grabbing|all-scroll|[a-z-]*resize|zoom-in|zoom-out)";
 
-test("§2 · Bajas", { skip: "T18" }, () => {
+test("§2 · Bajas", () => {
   const fallos: string[] = [];
   for (const nombre of IDENTIFICADORES) fallos.push(...buscar(new RegExp(`\\b${nombre}\\b`), undefined, { codigo: true }));
   // Rutas de import y ficheros de baja.
