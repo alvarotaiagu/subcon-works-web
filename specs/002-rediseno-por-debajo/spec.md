@@ -1,6 +1,6 @@
 # 002 · Rediseño «Por debajo»
 
-Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024, D-026, D-028 · Conflictos: — · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
+Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024, D-026, D-028, D-030 · Conflictos: — · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
 Plan: [plan.md](plan.md) (aprobado, D-025) · Tareas: [tasks.md](tasks.md)
 
 ## 1. Objetivo
@@ -365,7 +365,9 @@ primero y la etiqueta debajo, en la misma línea en escritorio separadas por
 **Composición.** Fondo partido por la superficie: `--cal` arriba y `--hondo`
 abajo, con la línea lima de 3 px a la altura del nivel.
 
-- **Escritorio** (≥ 768 px): alto `clamp(700px, 100svh, 900px)`, nivel al 50 %.
+- **Escritorio** (≥ 768 px): alto `clamp(700px, 100svh, 900px)`, nivel al 50 % de ese
+  clamp. Si lo de debajo de la superficie no cabe (pantallas bajas, o de 768 a 1023 px
+  de ancho, que va apilado), el hero crece y no recorta (D-030).
 - **Móvil**: alto `max(100svh, contenido)` (nunca recorta: el hero crece si
   no cabe), nivel fijo en px, medido para que encima quepan los objetos y la
   línea de arriba del titular a 360 px de ancho. Ningún texto del hero baja de
