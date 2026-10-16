@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { esperarCortina } from "@/components/layout/Cortina";
-import { registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { alCargarGsap, gsapCargado } from "@/lib/gsap";
 
 /** Lo lanza el hilo cada vez que se mide (PD-9). `detail`: `{ largo, fin }` (px, en el documento). */
 export const HILO_MEDIDO_EVENT = "undertactics:hilo-medido";
@@ -324,8 +324,7 @@ export function Hilo() {
       // alto (en el documento). Ahí no hay trazo: el recorrido es de la broca.
       let hueco: [number, number] | null = null;
       try {
-        registerGsap();
-        const pin = ScrollTrigger.getById(PIN_PROCESO);
+        const pin = gsapCargado()?.ScrollTrigger.getById(PIN_PROCESO);
         if (pin && pin.end > pin.start) {
           const escena = pin.trigger as HTMLElement | undefined;
           const altoEscena = escena?.offsetHeight ?? html.clientHeight;
@@ -463,12 +462,15 @@ export function Hilo() {
     reducido.addEventListener("change", alCambiarMovimiento);
     moHtml.observe(html, { attributes: true, attributeFilter: ["class"] });
     io.observe(svg);
-    try {
-      registerGsap();
+    // GSAP llega con `import()` (D-028) y no lo pide el hilo: si llega (con movimiento),
+    // escucha sus `refresh`. Sin GSAP se mide igual con el ResizeObserver.
+    let soltarGsap = () => {};
+    const dejarDeEsperar = alCargarGsap(({ ScrollTrigger }) => {
+      if (!vivo) return;
       ScrollTrigger.addEventListener("refresh", alRefresh);
-    } catch {
-      // Sin GSAP: se mide igual con el ResizeObserver.
-    }
+      soltarGsap = () => ScrollTrigger.removeEventListener("refresh", alRefresh);
+      if (empezado) pedirMedida();
+    });
 
     void (async () => {
       // Tras la cortina: mientras está puesta, las capas del hero van trasladadas.
@@ -493,9 +495,8 @@ export function Hilo() {
       window.removeEventListener("resize", alResize);
       document.removeEventListener("visibilitychange", alVisibilidad);
       reducido.removeEventListener("change", alCambiarMovimiento);
-      try {
-        ScrollTrigger.removeEventListener("refresh", alRefresh);
-      } catch {}
+      dejarDeEsperar();
+      soltarGsap();
       moHtml.disconnect();
       moSuperficie.disconnect();
       ro.disconnect();

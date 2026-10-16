@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { gsap, registerGsap, EASE_INOUT, ScrollTrigger } from "@/lib/gsap";
+import { cargarGsap, EASE_INOUT, gsapCargado, type Movimiento } from "@/lib/gsap";
 
 /**
  * Transición entre páginas (spec 002 §3.4). Al cambiar de ruta, la página nueva queda
@@ -10,6 +10,9 @@ import { gsap, registerGsap, EASE_INOUT, ScrollTrigger } from "@/lib/gsap";
  * abajo. Se anima un número (`p`, de 0 a 100) y con él se escriben el `clip-path` de la
  * tapa y la posición de la línea: GSAP normaliza `inset()` y no se anima entero.
  * Con movimiento reducido, cambio directo. En la primera carga no hace nada.
+ *
+ * GSAP llega con `import()` (D-028): si se navega antes de que llegue, la tapa se pinta en
+ * el acto y se descubre cuando llega; si no llega, se quita sin animar (§6).
  */
 export function PageTransition() {
   const pathname = usePathname();
@@ -31,7 +34,8 @@ export function PageTransition() {
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
       if (href.startsWith("#") || anchor.getAttribute("target") === "_blank") return;
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // Sin GSAP todavía no hay pins que soltar.
+      gsapCargado()?.ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
     document.addEventListener("click", onLinkClick, true);
     return () => document.removeEventListener("click", onLinkClick, true);
@@ -48,7 +52,6 @@ export function PageTransition() {
     if (!tapa || !linea) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    registerGsap();
     const estado = { p: 0 };
     const pintar = () => {
       tapa.style.clipPath = `inset(${estado.p}% 0 0 0)`;
@@ -61,17 +64,26 @@ export function PageTransition() {
     pintar();
     tapa.style.visibility = "visible";
     linea.style.visibility = "visible";
-    const tween = gsap.to(estado, {
-      p: 100,
-      duration: 0.8,
-      delay: 0.05,
-      ease: EASE_INOUT,
-      onUpdate: pintar,
-      onComplete: ocultar,
-    });
+    let tween: ReturnType<Movimiento["gsap"]["to"]> | undefined;
+    let vivo = true;
+    const descubrir = ({ gsap }: Movimiento) => {
+      if (!vivo) return;
+      tween = gsap.to(estado, {
+        p: 100,
+        duration: 0.8,
+        delay: 0.05,
+        ease: EASE_INOUT,
+        onUpdate: pintar,
+        onComplete: ocultar,
+      });
+    };
+    const ya = gsapCargado();
+    if (ya) descubrir(ya);
+    else cargarGsap().then(descubrir, () => vivo && ocultar());
 
     return () => {
-      tween.kill();
+      vivo = false;
+      tween?.kill();
       ocultar();
     };
   }, [pathname]);

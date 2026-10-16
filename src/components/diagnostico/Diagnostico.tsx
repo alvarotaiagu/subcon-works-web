@@ -14,7 +14,7 @@ import { preguntas as todasLasPreguntas } from "@/content/diagnostico";
 import type { ClaveRespuesta, Contexto, Respuestas, Sector } from "@/content/diagnostico";
 import { esperarCortina } from "@/components/layout/Cortina";
 import { irAAncla } from "@/lib/irAAncla";
-import { registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { gsapCargado } from "@/lib/gsap";
 import { withBasePath } from "@/lib/utils";
 import { PasoPregunta } from "./PasoPregunta";
 import { Resultado } from "./Resultado";
@@ -154,10 +154,10 @@ export function Diagnostico({
 
   // ScrollTrigger mide las secciones de abajo al cargar; si el diagnóstico
   // cambia de alto (pregunta ↔ resultado) sus posiciones quedan viejas (PD-10).
+  // Si GSAP aún no ha llegado (D-028) no hay triggers: medirán al crearse.
   const refrescar = useCallback(() => {
     window.clearTimeout(refrescoRef.current);
-    registerGsap();
-    ScrollTrigger.refresh();
+    gsapCargado()?.ScrollTrigger.refresh();
   }, []);
 
   useEffect(() => {

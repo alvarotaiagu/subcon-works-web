@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { cargarGsap, type Movimiento } from "@/lib/gsap";
 import { proceso } from "@/content/proceso";
 import { palabraSemanas, plazo } from "@/content/cifras";
 import { Seccion } from "@/components/ui/Seccion";
@@ -98,7 +98,6 @@ export function Proceso() {
     const main = document.querySelector("main");
     if (!testigo || !escena || !estratos || !broca || !main) return;
 
-    let pin: ScrollTrigger;
     let alto = estratos.clientHeight;
     let ultimo = -1;
     const pintar = (progreso: number) => {
@@ -113,53 +112,64 @@ export function Proceso() {
       }
     };
 
-    try {
-      registerGsap();
-      // Que la barra del navegador en móvil (solo cambia el alto) no recalcule el pin.
-      ScrollTrigger.config({ ignoreMobileResize: true });
-      pin = ScrollTrigger.create({
-        id: "proceso",
-        trigger: escena,
-        start: "top top",
-        end: RECORRIDO,
-        pin: true,
-        onRefresh: (self) => {
-          alto = estratos.clientHeight;
-          pintar(self.progress);
-        },
-        onUpdate: (self) => pintar(self.progress),
-      });
-    } catch {
-      // Sin GSAP: el proceso se queda como tabla (§6).
-      testigoStore.romper();
-      return;
-    }
-
-    // El `end` del pin depende de lo que haya encima: se recalcula cuando cambia el alto
-    // del <main> (imágenes, letras, secciones que se montan) y tras las letras (§6).
-    let altoMain = main.offsetHeight;
-    let pedido = 0;
-    const refrescar = () => {
-      cancelAnimationFrame(pedido);
-      pedido = requestAnimationFrame(() => ScrollTrigger.refresh());
-    };
-    const observador = new ResizeObserver(() => {
-      const h = main.offsetHeight;
-      if (Math.abs(h - altoMain) < 1) return;
-      altoMain = h;
-      refrescar();
-    });
-    observador.observe(main);
+    // GSAP llega con `import()` tras hidratar (D-028). Mientras tanto el testigo está
+    // pintado en reposo por CSS (broca arriba, paso 01), lejos de la primera pantalla.
     let vivo = true;
-    void document.fonts.ready.then(() => vivo && refrescar());
+    let quitar = () => {};
+    const anclar = ({ ScrollTrigger }: Movimiento) => {
+      if (!vivo) return;
+      let pin: ReturnType<typeof ScrollTrigger.create>;
+      try {
+        // Que la barra del navegador en móvil (solo cambia el alto) no recalcule el pin.
+        ScrollTrigger.config({ ignoreMobileResize: true });
+        pin = ScrollTrigger.create({
+          id: "proceso",
+          trigger: escena,
+          start: "top top",
+          end: RECORRIDO,
+          pin: true,
+          onRefresh: (self) => {
+            alto = estratos.clientHeight;
+            pintar(self.progress);
+          },
+          onUpdate: (self) => pintar(self.progress),
+        });
+      } catch {
+        // Sin GSAP: el proceso se queda como tabla (§6).
+        testigoStore.romper();
+        return;
+      }
+
+      // El `end` del pin depende de lo que haya encima: se recalcula cuando cambia el alto
+      // del <main> (imágenes, letras, secciones que se montan) y tras las letras (§6).
+      let altoMain = main.offsetHeight;
+      let pedido = 0;
+      const refrescar = () => {
+        cancelAnimationFrame(pedido);
+        pedido = requestAnimationFrame(() => ScrollTrigger.refresh());
+      };
+      const observador = new ResizeObserver(() => {
+        const h = main.offsetHeight;
+        if (Math.abs(h - altoMain) < 1) return;
+        altoMain = h;
+        refrescar();
+      });
+      observador.observe(main);
+      void document.fonts.ready.then(() => vivo && refrescar());
+
+      quitar = () => {
+        observador.disconnect();
+        cancelAnimationFrame(pedido);
+        pin.kill();
+        // Sin el pin-spacer la página encoge 4,4 pantallas: que los demás triggers lo sepan.
+        ScrollTrigger.refresh();
+      };
+    };
+    cargarGsap().then(anclar, () => vivo && testigoStore.romper());
 
     return () => {
       vivo = false;
-      observador.disconnect();
-      cancelAnimationFrame(pedido);
-      pin.kill();
-      // Sin el pin-spacer la página encoge 4,4 pantallas: que los demás triggers lo sepan.
-      ScrollTrigger.refresh();
+      quitar();
       broca.style.removeProperty("transform");
       setActivo(0);
     };
