@@ -130,7 +130,7 @@ export function crearServidor({ raiz = RAIZ_POR_DEFECTO, puerto = PUERTO_POR_DEF
     servidor.listen(puerto, host, () => {
       resolve({
         servidor,
-        url: `http://${host === "0.0.0.0" ? "127.0.0.1" : host}:${puerto}${b}/`,
+        url: `http://${host === "0.0.0.0" || host === "::" ? "127.0.0.1" : host.includes(":") ? `[${host}]` : host}:${puerto}${b}/`,
         cerrar: () => new Promise((ok) => servidor.close(() => ok())),
       });
     });
