@@ -1603,8 +1603,9 @@ const comprobaciones = [
     tarea: "D-028",
     pendiente: false,
     async fn(h) {
-      // Los chunks llevan hash: se reconocen por lo que traen dentro.
-      const MARCAS = /GreenSock|pin-spacer|CustomEase|lenis-smooth/;
+      // Los chunks llevan hash: se reconocen por lo que traen dentro (no vale «CustomEase» a
+      // secas: el nombre sale también en el chunk de la app que hace el import()).
+      const MARCAS = /GreenSock|pin-spacer|registerPlugin\(CustomEase\)|lenis-smooth/;
       const sinGsap = async (page) => {
         page.__abortados = [];
         await page.route(/\/_next\/static\/chunks\/.*\.js(\?.*)?$/, async (r) => {
@@ -1617,18 +1618,13 @@ const comprobaciones = [
           return r.fulfill({ response: resp, body: cuerpo });
         });
       };
-      // El hilo sin pin (movimiento reducido): los trozos que tiene que tener sin GSAP.
-      const reducido = await h.abrir("", { ancho: 390, reducedMotion: "reduce" });
-      await reducido.waitForSelector("svg.es-medido " + SEL.hiloTrazo, { state: "attached", timeout: 8000 });
-      const trozosSinPin = await reducido.$$eval(SEL.hiloTrazo, (t) => t.length);
-      await reducido.context().close();
-
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho, cortina: true, antes: sinGsap });
-        assert.ok(page.__abortados.length >= 2, `${ancho} px: solo se abortaron ${page.__abortados.join(", ") || "ninguno"} (¿cambió el empaquetado?)`);
         // La cortina no depende de GSAP: su secuencia acaba a los 2,5 s (§3.14, §6).
         const tarda = await h.esperarSinCortina(page, 3000);
         await page.waitForTimeout(1500);
+        // GSAP, ScrollTrigger, CustomEase y Lenis: cuatro chunks (al menos tres, por si se juntan).
+        assert.ok(page.__abortados.length >= 3, `${ancho} px: solo se abortaron ${page.__abortados.join(", ") || "ninguno"} (¿cambió el empaquetado?)`);
         const r = await page.evaluate(() => {
           const h2 = [...document.querySelectorAll("main h2")];
           return {
@@ -1649,10 +1645,28 @@ const comprobaciones = [
         );
         assert.deepEqual(h2Ocultos, [], `${ancho} px: sin GSAP, tras bajar no se ven estos h2`);
         await tablaProcesoVisible(page, `${ancho} px, sin GSAP (cortina fuera a los ${tarda} ms)`);
-        const trozos = await page.$$eval("svg.es-medido " + SEL.hiloTrazo, (t) => t.length);
-        assert.equal(trozos, trozosSinPin, `${ancho} px: sin GSAP el conducto tiene ${trozos} trozos y sin pin son ${trozosSinPin}`);
+        // Conducto entero: sin pin no hay hueco; los trozos (el del hero, el resto y el
+        // puente de la cortina) se tocan de arriba abajo.
+        const huecos = await page.$$eval("svg.es-medido " + SEL.hiloTrazo, (trazos) => {
+          const tramos = trazos
+            .map((t) => {
+              const d = t.getAttribute("d");
+              const ys = [...d.matchAll(/V(-?[\d.]+)/g)].map((m) => Number(m[1]));
+              const y0 = Number(d.match(/^M\s*-?[\d.]+\s+(-?[\d.]+)/)[1]);
+              return [y0, Math.max(y0, ...ys)];
+            })
+            .sort((a, b) => a[0] - b[0]);
+          const res = [];
+          let hasta = tramos[0]?.[1] ?? 0;
+          for (const [a, b] of tramos.slice(1)) {
+            if (a > hasta + 1) res.push(`${Math.round(hasta)}→${Math.round(a)}`);
+            hasta = Math.max(hasta, b);
+          }
+          return res;
+        });
+        assert.deepEqual(huecos, [], `${ancho} px: sin GSAP el conducto tiene huecos (y en px)`);
         // Navegar sin GSAP: la tapa de la transición no se queda puesta.
-        await page.locator('header a[href$="/plantillas/"]:visible, nav a[href$="/plantillas/"]:visible').first().click();
+        await page.locator('a[href$="/plantillas/"]:visible').first().click();
         await page.waitForURL(/\/plantillas\/$/);
         await page.waitForTimeout(800);
         const tapada = await page.evaluate(() => {
