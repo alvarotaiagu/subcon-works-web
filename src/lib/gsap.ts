@@ -38,10 +38,23 @@ export function cargarGsap(): Promise<Movimiento> {
       gsap.registerPlugin(ScrollTrigger, CustomEase);
       CustomEase.create(EASE_OUT, "0.16, 1, 0.3, 1");
       CustomEase.create(EASE_INOUT, "0.65, 0, 0.35, 1");
-      cargado = { gsap, ScrollTrigger };
-      esperando.forEach((aviso) => aviso(cargado!));
+      const m: Movimiento = { gsap, ScrollTrigger };
+      cargado = m;
+      // Un aviso que falla no tumba la carga: los demás y quien espera la promesa siguen.
+      esperando.forEach((aviso) => {
+        try {
+          aviso(m);
+        } catch (e) {
+          console.error(e);
+        }
+      });
       esperando.clear();
-      return cargado;
+      return m;
+    },
+    (e) => {
+      // Un chunk que no llega no se queda cacheado: la siguiente petición lo reintenta.
+      promesa = null;
+      throw e;
     },
   );
   return promesa.then(async (m) => {
