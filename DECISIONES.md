@@ -35,6 +35,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-025 | Plan de la 002 aprobado por Álvaro con PD-1 a PD-15 (`specs/002-rediseno-por-debajo/plan.md`). | 002 | 2026-10-12 |
 | D-026 | La portada solo enseña las plantillas destacadas: sale el banquillo (spec 002 §3.8) y en su lugar va «¿Tu sector no está?», con un correo (`mailto:`) para pedir la de su sector. Sin formulario: la web no guarda datos personales. `/plantillas/` sigue con el catálogo entero. | 002 | 2026-10-16 |
 | D-027 | Álvaro aprueba tal cual los textos nuevos de la 002 (P-04 cerrada): descripción del hero, entradilla de Servicios, cotas, las seis filas del proceso, ejemplos del hero y la frase de `/privacidad/` sobre la cortina. Los textos viven donde dice la PR de integración (#41). | 002 | 2026-10-16 |
+| D-028 | El tope «ninguna tarea larga > 200 ms» (§3.15) se mantiene y se cumple bajando el JS inicial: GSAP, ScrollTrigger y Lenis se cargan con `import()` tras hidratar (PR `fix/rd-carga-diferida`). No se relaja el tope ni se mide solo a máquina rápida. Hasta que esa PR entre, el README lo marca «no cumple todavía». Resuelve C-19. | 002 | 2026-10-16 |
 
 ## Pendientes
 
@@ -49,4 +50,5 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 
 ## Conflictos
 
-Ninguno abierto.
+Ninguno abierto. C-19 (tope de tareas largas, §3.15) resuelto el 2026-10-16 con la opción (a): D-028.
+|---|---|---|---|---|

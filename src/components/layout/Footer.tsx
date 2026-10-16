@@ -7,23 +7,30 @@ import { plantillas } from "@/content/plantillas";
 import { Logo } from "@/components/ui/Logo";
 import { Boton } from "@/components/ui/Boton";
 
+/** Un solo formato para todas las vueltas del reloj. */
+let formatoHora: Intl.DateTimeFormat | null = null;
+
 function useLocalClock() {
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
     const update = () => {
-      setTime(
-        new Intl.DateTimeFormat("es-ES", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          timeZone: site.zonaHoraria,
-        }).format(new Date())
-      );
+      formatoHora ??= new Intl.DateTimeFormat("es-ES", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZone: site.zonaHoraria,
+      });
+      setTime(formatoHora.format(new Date()));
     };
-    update();
+    // El primer formato arranca ICU (unos 35 ms con CPU ×4): en su propia tarea, no dentro
+    // de la hidratación (spec 002 §3.15).
+    const primera = setTimeout(update, 0);
     const id = setInterval(update, 1000);
-    return () => clearInterval(id);
+    return () => {
+      clearTimeout(primera);
+      clearInterval(id);
+    };
   }, []);
 
   return time;
