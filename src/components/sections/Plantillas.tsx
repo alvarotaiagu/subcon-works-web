@@ -1,3 +1,4 @@
+import { PideTuSector } from "@/components/plantillas/PideTuSector";
 import { Boton } from "@/components/ui/Boton";
 import { Seccion } from "@/components/ui/Seccion";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
@@ -11,16 +12,15 @@ const etiquetaRecuento =
   "Plantillas propias publicadas y en línea";
 
 /**
- * «−1 · La plantilla» (spec 002 §3.8, préstamo de la dirección B). Las destacadas son los
- * titulares, con dorsal del 1 al N; las demás, el banquillo, del N+1 en adelante: en
- * ambos casos, el orden de `plantillas.ts`. Todo sale de los datos: el título («Una
- * plantilla de N.»), los dorsales y el recuento. Sin pin ni carrusel: una rejilla y una
- * lista, que se leen igual con JS y sin él.
+ * «−1 · La plantilla» (spec 002 §3.8, préstamo de la dirección B). Solo las destacadas,
+ * con dorsal del 1 al N en el orden de `plantillas.ts`; las demás viven en `/plantillas/`.
+ * Debajo, «¿Tu sector no está?» con el correo para pedir la suya (D-026). Todo sale de
+ * los datos: el título («Una plantilla de N.»), los dorsales y el recuento. Sin pin ni
+ * carrusel: una rejilla, que se lee igual con JS y sin él.
  */
 export function Plantillas() {
   const conDorsales = conDorsal(plantillas);
   const titulares = conDorsales.filter((x) => x.plantilla.destacada);
-  const banquillo = conDorsales.filter((x) => !x.plantilla.destacada);
 
   return (
     <Seccion id="plantillas" className="py-[var(--space-section)]">
@@ -29,8 +29,8 @@ export function Plantillas() {
 
         <div className="mt-8 grid gap-8 md:grid-cols-2">
           <p className="max-w-xl text-apagado-abajo">
-            {titulares.length} titulares y {banquillo.length} en el banquillo, todas publicadas y en
-            línea. Cada una parte de una idea distinta, no de la misma retícula con otro color. Si
+            {titulares.length} de las {plantillas.length} que tenemos publicadas y en línea; las demás,
+            en el catálogo. Cada una parte de una idea distinta, no de la misma retícula con otro color. Si
             una encaja con lo tuyo, se adapta con tus datos y está en línea en dos semanas.
           </p>
           <div className="border-l-2 border-superficie pl-5">
@@ -54,26 +54,7 @@ export function Plantillas() {
           </ol>
         )}
 
-        {banquillo.length > 0 && (
-          <>
-            <h3 className="banquillo-titulo">Banquillo</h3>
-            <ol className="banquillo" start={banquillo[0].dorsal}>
-              {banquillo.map(({ plantilla, dorsal }) => (
-                <li key={plantilla.slug}>
-                  <a href={plantilla.demo} target="_blank" rel="noopener" className="banquillo-fila">
-                    <span data-dorsal className="banquillo-dorsal" aria-hidden="true">
-                      {dorsal}
-                    </span>
-                    <span className="banquillo-negocio">{plantilla.negocio}</span>
-                    <span className="banquillo-detalle">
-                      {plantilla.sector} · {plantilla.ciudad}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </>
-        )}
+        <PideTuSector vistas={titulares.length} />
 
         {/* Solo en la densidad sobria (§3.16): el dato que sustituye a los dorsales y a los
             pozos de las tarjetas. Todo sale de los datos. */}
