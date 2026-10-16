@@ -8,8 +8,9 @@ import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
 
-/** Recorrido del pin (§3.9: unas 4,4 pantallas), en % del alto de la ventana. */
-const RECORRIDO = "+=440%";
+/** Recorrido del pin (§3.9: unas 4,4 pantallas), en altos de la ventana. */
+const PANTALLAS = 4.4;
+const RECORRIDO = `+=${PANTALLAS * 100}%`;
 /** Alto de la broca (px): su borde de abajo es la punta que marca el estrato. */
 const BROCA = 3;
 /** El paso que lleva el pulso (§3.9: el 05). */
@@ -113,12 +114,17 @@ export function Proceso() {
     };
 
     // GSAP llega con `import()` tras hidratar (D-028). Mientras tanto el testigo está
-    // pintado en reposo por CSS (broca arriba, paso 01), lejos de la primera pantalla.
+    // pintado en reposo por CSS (broca arriba, paso 01) y el recorrido del pin se reserva
+    // ya, al hidratar, como hacía el pin: lo de debajo no salta cuando llega, y al recargar
+    // a mitad de página el navegador devuelve el scroll sobre la página con su alto final.
+    escena.style.marginBottom = `${Math.round(PANTALLAS * window.innerHeight)}px`;
     let vivo = true;
     let quitar = () => {};
     const anclar = ({ ScrollTrigger }: Movimiento) => {
       if (!vivo) return;
       let pin: ReturnType<typeof ScrollTrigger.create>;
+      // El pin-spacer ocupa ahora el sitio reservado (en la misma tarea: no se pinta entre medias).
+      escena.style.removeProperty("margin-bottom");
       try {
         // Que la barra del navegador en móvil (solo cambia el alto) no recalcule el pin.
         ScrollTrigger.config({ ignoreMobileResize: true });
@@ -170,6 +176,7 @@ export function Proceso() {
     return () => {
       vivo = false;
       quitar();
+      escena.style.removeProperty("margin-bottom");
       broca.style.removeProperty("transform");
       setActivo(0);
     };
