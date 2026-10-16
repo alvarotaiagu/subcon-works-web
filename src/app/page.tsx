@@ -7,6 +7,7 @@ import { QuienDebajo } from "@/components/sections/QuienDebajo";
 import { DiagnosticoRapido } from "@/components/sections/DiagnosticoRapido";
 import { Fondo } from "@/components/sections/Fondo";
 import { AnclaPortada } from "@/components/layout/AnclaPortada";
+import { Hilo } from "@/components/layout/Hilo";
 
 // La portada empieza arriba, en claro (spec 002 §3.1): su barra y su esquema son los de
 // la cal. Las interiores se quedan con los del layout (oscuro).
@@ -31,6 +32,8 @@ export default function Home() {
       <QuienDebajo />
       <DiagnosticoRapido />
       <Fondo hilo />
+      {/* El conducto principal (§3.10, T14): solo en la portada. */}
+      <Hilo />
       <AnclaPortada />
     </>
   );

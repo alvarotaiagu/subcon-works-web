@@ -69,6 +69,7 @@ const QUERY_001 = "v=1&s=dental&canales=tel,wa&reserva=llamando&fuera=sin-contes
 
 const CLAVE_BORRADOR = "undertactics:auditoria:v1"; // FormularioAuditoria.tsx
 const GONE_EVENT = "undertactics:preloader-gone";
+const HILO_MEDIDO = "undertactics:hilo-medido"; // Hilo.tsx (PD-9)
 
 /** Colores de §3.1 en rgb, para comparar con getComputedStyle. */
 const C = {
@@ -104,7 +105,8 @@ const SEL = {
   testigoEstratos: "#proceso [data-estrato]", // T12: los seis, de arriba abajo
   pasosProceso: "#proceso [data-paso]", // T12: los seis; encendido = .es-activo
   tablaProceso: "#proceso table", // T12: la tabla de dos columnas (está en el HTML)
-  hiloTrazo: "[data-hilo-trazo]", // T14: el <path> del conducto
+  hiloTrazo: "[data-hilo-trazo]", // T14: los <path> del conducto en reposo (uno por trozo: el pin del proceso lo corta)
+  hiloVivo: ".hilo .hilo-vivo", // T14: lo recorrido, encima de cada trozo
   fondoBoton: 'a[href$="/auditoria/"]:is([data-hilo-fin], [data-fondo-boton])', // T13: «Empezar la auditoría»
   fondoSimbolo: "[data-fondo-simbolo]", // T13: el iceberg junto al botón
   dorsal: "[data-dorsal]", // T11
@@ -1144,13 +1146,24 @@ const comprobaciones = [
   {
     id: "§7 · Hilo",
     tarea: "T14",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
+      // Cuántas veces se ha medido el hilo (evento de PD-9), desde antes de cargar.
+      const contarMedidas = (page) =>
+        page.addInitScript((ev) => {
+          window.__hiloMedido = 0;
+          addEventListener(ev, () => window.__hiloMedido++);
+        }, HILO_MEDIDO);
+      const notas = [];
       for (const ancho of [360, 390, 1440]) {
-        const page = await h.abrir("", { ancho });
+        const page = await h.abrir("", { ancho, antes: contarMedidas });
+        await page.waitForSelector(SEL.hiloTrazo, { state: "attached", timeout: 8000 });
+        assert.ok((await page.evaluate(() => window.__hiloMedido)) >= 1, `${ancho} px: el hilo no lanza ${HILO_MEDIDO}`);
         const alto = page.viewportSize().height;
         const fallos = [];
         let pinVisto = false;
+        let pantallas = 0;
+        const recorridoEnPin = [];
         for (let vuelta = 0; vuelta < 200; vuelta++) {
           const r = await page.evaluate(
             ({ trazo, cabeza }) => {
@@ -1163,12 +1176,11 @@ const comprobaciones = [
               if (!proceso) return { error: "no hay #proceso" };
               const pr = proceso.getBoundingClientRect();
               const enPin = pr.top <= 1 && pr.bottom >= innerHeight - 1;
-              // El trazo no pisa texto ni controles, salvo las cotas y el botón del Fondo.
-              const p = document.querySelector(trazo);
+              // El trazo (todos sus trozos) no pisa texto ni controles, salvo las cotas y el
+              // botón del Fondo.
+              const trozos = [...document.querySelectorAll(trazo)].filter((p) => p.getAttribute("d") && p.getTotalLength);
               const pisa = [];
-              if (p && p.getTotalLength) {
-                const largo = p.getTotalLength();
-                const m = p.getScreenCTM();
+              if (trozos.length) {
                 const prohibidos = [
                   ...__c.textos(document.querySelector("main"), { soloEnPantalla: true })
                     .filter((t) => !t.el.closest("[data-hilo], [data-hilo-fin]"))
@@ -1177,19 +1189,24 @@ const comprobaciones = [
                     .filter((e) => !e.closest("[data-hilo], [data-hilo-fin]") && __c.visible(e))
                     .map((e) => ({ q: e.getBoundingClientRect(), n: e.textContent.trim() || e.tagName })),
                 ];
-                for (let d = 0; d <= largo; d += 6) {
-                  const pt = p.getPointAtLength(d).matrixTransform(m);
-                  if (pt.y < 0 || pt.y > innerHeight) continue;
-                  const tocado = prohibidos.find(({ q }) => pt.x >= q.left && pt.x <= q.right && pt.y >= q.top && pt.y <= q.bottom);
-                  if (tocado) pisa.push(`«${tocado.n.slice(0, 25)}»`);
+                for (const p of trozos) {
+                  const largo = p.getTotalLength();
+                  const m = p.getScreenCTM();
+                  for (let d = 0; d <= largo; d += 6) {
+                    const pt = p.getPointAtLength(d).matrixTransform(m);
+                    if (pt.y < 0 || pt.y > innerHeight) continue;
+                    const tocado = prohibidos.find(({ q }) => pt.x >= q.left && pt.x <= q.right && pt.y >= q.top && pt.y <= q.bottom);
+                    if (tocado) pisa.push(`«${tocado.n.slice(0, 25)}» (${Math.round(pt.x)}, ${Math.round(pt.y + scrollY)})`);
+                  }
                 }
               }
-              return { cotas, enPin, cabezaY: innerHeight * cabeza, hayTrazo: !!p, pisa: [...new Set(pisa)] };
+              return { cotas, enPin, cabezaY: innerHeight * cabeza, hayTrazo: trozos.length > 0, pisa: [...new Set(pisa)] };
             },
             { trazo: SEL.hiloTrazo, cabeza: 0.66 },
           );
           assert.ok(!r.error, `${ancho} px: ${r.error}`);
           assert.ok(r.hayTrazo, `${ancho} px: no hay trazo del hilo (${SEL.hiloTrazo})`);
+          pantallas++;
           fallos.push(...r.pisa.map((n) => `${ancho} px: el trazo pisa ${n}`));
           const iProceso = r.cotas.findIndex((c) => c.texto.includes("−2"));
           assert.ok(iProceso >= 0, `${ancho} px: ninguna cota [data-hilo] lleva «−2»`);
@@ -1203,13 +1220,87 @@ const comprobaciones = [
             const pasadas = r.cotas.filter((c, i) => i > iProceso && c.alcanzada);
             if (pasadas.length) fallos.push(`${ancho} px: durante el pin la cabeza pasa de «−2»`);
           }
+          // Con la escena del proceso anclada de verdad, lo recorrido no cambia.
+          const anclado = await page.evaluate(
+            ({ broca, vivo }) => {
+              const escena = document.querySelector(broca)?.closest(".proceso-escena");
+              if (!escena || getComputedStyle(escena).position !== "fixed") return null;
+              return [...document.querySelectorAll(vivo)].reduce(
+                (s, p) => s + parseFloat(getComputedStyle(p).strokeDasharray) - parseFloat(getComputedStyle(p).strokeDashoffset),
+                0,
+              );
+            },
+            { broca: SEL.testigoBroca, vivo: SEL.hiloVivo },
+          );
+          if (anclado !== null) recorridoEnPin.push(anclado);
           const fin = await page.evaluate(() => innerHeight + scrollY >= document.documentElement.scrollHeight - 2);
           if (fin) break;
           await h.rueda(page, alto * 0.25, { pasos: 1, pausa: 40 });
         }
         assert.ok(pinVisto, `${ancho} px: no se vio el pin del proceso`);
+        assert.ok(recorridoEnPin.length >= 3, `${ancho} px: la escena del proceso no llegó a anclarse (${recorridoEnPin.length} muestras)`);
+        const salto = Math.max(...recorridoEnPin) - Math.min(...recorridoEnPin);
+        if (salto > 1) fallos.push(`${ancho} px: durante el pin el hilo avanza ${salto.toFixed(0)} px`);
         assert.deepEqual([...new Set(fallos)].slice(0, 10), [], `${ancho} px: el hilo no cumple`);
+        notas.push(`${ancho} px: ${pantallas} pantallas, ${recorridoEnPin.length} con el pin`);
       }
+
+      // Movimiento reducido (§3.17): entero y en lima desde el principio, y todas las cotas
+      // alcanzadas.
+      for (const ancho of [390, 1440]) {
+        const page = await h.abrir("", { ancho, reducedMotion: "reduce" });
+        await page.waitForSelector(SEL.hiloTrazo, { state: "attached", timeout: 8000 });
+        const r = await page.evaluate(
+          ({ vivo, lima }) => {
+            const vivos = [...document.querySelectorAll(vivo)];
+            const esLima = (c) => c.slice(0, 3).every((v, i) => Math.abs(v - lima[i]) <= 3);
+            return {
+              vivos: vivos.length,
+              aMedias: vivos.filter((p) => Math.abs(parseFloat(getComputedStyle(p).strokeDashoffset)) > 0.5).length,
+              noLima: vivos.filter((p) => !esLima(__c.rgba(getComputedStyle(p).stroke))).length,
+              sinAlcanzar: [...document.querySelectorAll("[data-hilo]")]
+                .filter((c) => !c.classList.contains("es-alcanzada"))
+                .map((c) => c.textContent.trim()),
+            };
+          },
+          { vivo: SEL.hiloVivo, lima: C.superficie },
+        );
+        assert.ok(r.vivos > 0, `${ancho} px, movimiento reducido: no hay trazo recorrido (${SEL.hiloVivo})`);
+        assert.equal(r.aMedias, 0, `${ancho} px, movimiento reducido: ${r.aMedias} trozos del hilo no están enteros`);
+        assert.equal(r.noLima, 0, `${ancho} px, movimiento reducido: ${r.noLima} trozos del hilo no van en lima`);
+        assert.deepEqual(r.sinAlcanzar, [], `${ancho} px, movimiento reducido: cotas sin alcanzar`);
+      }
+
+      // Abrir a mitad de página (§6): recargando con el scroll a la altura de «−3», las cotas
+      // de arriba ya están alcanzadas sin transición y las de abajo no.
+      {
+        const page = await h.abrir("", { ancho: 1440 });
+        await h.ruedaHasta(page, "#equipo", 100);
+        await page.waitForTimeout(800);
+        const antes = await page.evaluate(() => scrollY);
+        await page.reload({ waitUntil: "load" });
+        await page.waitForSelector(`${SEL.hiloTrazo}`, { state: "attached", timeout: 8000 });
+        await page.waitForFunction(() => document.querySelector(".hilo.es-medido"));
+        const r = await page.evaluate((cabeza) => {
+          const cotas = [...document.querySelectorAll("[data-hilo]")];
+          return {
+            y: scrollY,
+            mal: cotas
+              .filter((c) => Math.abs(c.getBoundingClientRect().top - innerHeight * cabeza) >= 12)
+              .filter((c) => c.classList.contains("es-alcanzada") !== c.getBoundingClientRect().top < innerHeight * cabeza)
+              .map((c) => c.textContent.trim()),
+            animandose: cotas.filter((c) => c.getAnimations().length).map((c) => c.textContent.trim()),
+          };
+        }, 0.66);
+        // Lenis aún puede estar frenando al recargar: basta con que vuelva a mitad de página.
+        if (r.y < antes / 2) {
+          notas.push(`la recarga no conserva el scroll (${Math.round(antes)} → ${Math.round(r.y)}): no se mira «a mitad de página»`);
+        } else {
+          assert.deepEqual(r.mal, [], "al abrir a mitad de página, cotas con el estado que no toca");
+          assert.deepEqual(r.animandose, [], "al abrir a mitad de página, cotas que se encienden con transición");
+        }
+      }
+      return notas.join(" · ");
     },
   },
   {

@@ -1,1 +1,61 @@
-/* Zona «hilo» (spec 002, PD-3): la rellena su tarea. */
+/* Zona «hilo» (spec 002 §3.10, PD-3, PD-9): el conducto principal de la portada, que
+   pinta layout/Hilo.tsx. Un SVG del alto de <main> pegado al origen del documento, por
+   encima de las secciones (z-index 1) y por debajo de la cabecera, el aviso y la cortina.
+   Solo dibujo: el conducto en reposo en --conducto y lo recorrido en --superficie (la lima
+   como línea, §3.1). */
+
+/* El canal (§3.10): a la mitad del gutter desde 640 px y a 8 px del borde por debajo, con
+   el gutter a 24 px como mínimo. Todas las secciones de la portada ponen su contenido en
+   `.container-max` (relleno de un gutter), así que el canal ya queda libre; la
+   comprobación «Hilo» lo mira a 360, 390 y 1440 px (el trazo no pisa texto ni controles).
+   Si una sección nueva sangra hasta el borde, su relleno izquierdo va aquí. */
+@layer components {
+  .hilo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: visible;
+    pointer-events: none;
+    /* Hasta la primera medida no hay trazo que enseñar. Solo existe con JS. */
+    visibility: hidden;
+  }
+  .hilo.es-medido {
+    visibility: visible;
+  }
+  /* Lo recorrido lo pinta el scroll, fotograma a fotograma: nada de transiciones (tampoco
+     las 0,2 s que pone a todo la regla de movimiento reducido de globals.css, que harían
+     crecer el conducto «entero desde el principio»). !important en capa gana a esa. */
+  .hilo,
+  .hilo path {
+    transition: none !important;
+  }
+  .hilo path {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+  }
+  .hilo .hilo-reposo {
+    stroke: var(--conducto);
+  }
+  .hilo .hilo-vivo {
+    stroke: var(--superficie);
+  }
+
+  /* El 66 % del alto de la pantalla, en svh: la cabeza del conducto. */
+  .hilo-sonda {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 66svh;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Al abrir a mitad de página, las cotas ya alcanzadas no se encienden con transición. */
+  .es-hilo-quieto .cota {
+    transition: none;
+  }
+}
