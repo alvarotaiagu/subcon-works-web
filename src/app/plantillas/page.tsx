@@ -3,6 +3,7 @@ import { Boton } from "@/components/ui/Boton";
 import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { Titular } from "@/components/ui/Titular";
 import { CatalogoPlantillas } from "@/components/plantillas/CatalogoPlantillas";
+import { correoSector } from "@/components/plantillas/PideTuSector";
 import { plantillas } from "@/content/plantillas";
 import { site } from "@/content/site";
 
@@ -51,8 +52,8 @@ export default function PlantillasPage() {
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Boton href="/auditoria/">Pedir la auditoría gratuita</Boton>
-            <Boton href={`mailto:${site.email}`} variante="secundario">
-              Escribir un correo
+            <Boton href={correoSector} variante="secundario">
+              Pedir la de mi sector
             </Boton>
           </div>
         </div>
