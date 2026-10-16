@@ -716,7 +716,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Cierre
 
-- [ ] **T20 · Textos (P-04) y revisión con `?revision`.** *Manual, con
+- [x] **T20 · Textos (P-04) y revisión con `?revision`.** *Manual, con
   Álvaro.*
   - *Cubre*: P-04, D-020, la lista «A mano» del §7.
   - *Depende de*: T19.
