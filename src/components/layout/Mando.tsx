@@ -52,11 +52,17 @@ export function Mando() {
   });
 
   useEffect(() => {
-    const sobria = RE_REVISION_SOBRIA.test(location.search);
-    document.documentElement.classList.toggle(CLASE, sobria);
-    // La URL solo se conoce en el cliente (export estático): el mando nace oculto.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setEstado({ visible: RE_REVISION.test(location.search), sobria });
+    const leer = () => {
+      const sobria = RE_REVISION_SOBRIA.test(location.search);
+      document.documentElement.classList.toggle(CLASE, sobria);
+      setEstado({ visible: RE_REVISION.test(location.search), sobria });
+    };
+    // La URL solo se conoce en el cliente (export estático): el mando nace oculto. Se
+    // vuelve a leer al cambiar de ruta y con atrás/adelante, que puede cambiar solo la
+    // query sin cambiar la ruta.
+    leer();
+    window.addEventListener("popstate", leer);
+    return () => window.removeEventListener("popstate", leer);
   }, [ruta]);
 
   if (!estado.visible) return null;

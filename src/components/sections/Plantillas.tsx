@@ -2,16 +2,13 @@ import { Boton } from "@/components/ui/Boton";
 import { Seccion } from "@/components/ui/Seccion";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
 import { Titular } from "@/components/ui/Titular";
-import { cifras } from "@/content/cifras";
+import { cifras, palabraSemanas, plazo } from "@/content/cifras";
 import { plantillas, sectoresPlantillas } from "@/content/plantillas";
 import { conDorsal } from "@/lib/dorsales";
 
 const etiquetaRecuento =
   cifras.find((c) => c.etiqueta.startsWith("Plantillas propias"))?.etiqueta ??
   "Plantillas propias publicadas y en línea";
-
-/** «2 semanas», de `cifras.ts`: el recuento de la Sobria (§3.16) lo escribe entero. */
-const plazo = cifras.find((c) => c.sufijo.trim() === "sem.");
 
 /**
  * «−1 · La plantilla» (spec 002 §3.8, préstamo de la dirección B). Las destacadas son los
@@ -92,7 +89,7 @@ export function Plantillas() {
             <>
               <span aria-hidden="true"> · </span>
               <span>
-                <b>{plazo.valor}</b> {plazo.valor === 1 ? "semana" : "semanas"}
+                <b>{plazo.valor}</b> {palabraSemanas(plazo.valor)}
               </span>
             </>
           )}

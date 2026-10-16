@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { registerGsap, ScrollTrigger } from "@/lib/gsap";
 import { proceso } from "@/content/proceso";
-import { cifras } from "@/content/cifras";
+import { palabraSemanas, plazo } from "@/content/cifras";
 import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
@@ -17,16 +17,13 @@ const PASO_PULSO = 4;
 /** El paso que lleva «2 semanas» debajo (§3.5: el 04). */
 const PASO_PLAZO = 3;
 
-/** «2 semanas», de `cifras.ts` (su sufijo « sem.» se escribe entero en esta vista, §3.5). */
-const plazo = cifras.find((c) => c.sufijo.trim() === "sem.");
-
 /** «2 semanas» y su etiqueta: bajo el paso 04 del testigo y en su fila de la tabla. */
 function Plazo({ como: Etiqueta }: { como: "p" | "span" }) {
   if (!plazo) return null;
   return (
     <Etiqueta className="proceso-plazo">
       <span className="proceso-plazo-valor">
-        {plazo.valor} {plazo.valor === 1 ? "semana" : "semanas"}
+        {plazo.valor} {palabraSemanas(plazo.valor)}
       </span>
       <span className="proceso-plazo-etiqueta">{plazo.etiqueta}</span>
     </Etiqueta>

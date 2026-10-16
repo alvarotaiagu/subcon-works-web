@@ -16,7 +16,9 @@
   position: fixed;
   right: 12px;
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-  z-index: 95;
+  /* Bajo el cursor propio (88), el aviso de cookies (90), la cortina (92) y la
+     transición (95): ni tapa el cursor ni asoma por encima de la entrada. */
+  z-index: 87;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -41,7 +43,6 @@
   color: var(--hueso);
   font: inherit;
   font-weight: 500;
-  cursor: pointer;
 }
 /* Pulsado: como el filtro activo del catálogo (§3.4), hueso con la línea lima debajo. */
 .mando-boton.es-activo {
@@ -56,8 +57,9 @@
     text-underline-offset: 0.25em;
   }
 }
-/* En móvil el aviso de cookies ocupa el borde de abajo a lo ancho: el mando sube. */
-@media (max-width: 767px) {
+/* Con el aviso de cookies abajo, el mando sube: en móvil el aviso va a lo ancho y, hasta
+   unos 900 px, su botón (a la derecha de 36rem) cae debajo del mando. */
+@media (max-width: 899px) {
   body:has(.aviso-cookies) .mando {
     bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
   }

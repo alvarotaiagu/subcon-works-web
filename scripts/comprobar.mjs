@@ -1514,7 +1514,10 @@ const comprobaciones = [
           ({ dorsal, hilo }) => ({
             dorsales: [...document.querySelectorAll(dorsal)].filter((d) => __c.visible(d)).length,
             hilo: [...document.querySelectorAll(hilo)].filter((d) => __c.visible(d)).length,
-            recuento: /\d+ sectores · \d+ bases · 2 semanas/.test(document.body.textContent.replace(/\s+/g, " ")),
+            // Visible, no solo en el DOM: fuera de la Sobria también está (con display: none).
+            recuento: [...document.querySelectorAll(".sobria-recuento")].some(
+              (p) => __c.visible(p) && /\d+ sectores · \d+ bases · 2 semanas/.test(p.textContent.replace(/\s+/g, " ")),
+            ),
           }),
           { dorsal: SEL.dorsal, hilo: SEL.hiloTrazo },
         );
