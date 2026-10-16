@@ -490,6 +490,29 @@ async function contrasteDePagina(h, page, donde) {
   let sinFondo = 0;
   const alto = page.viewportSize().height;
   for (let vuelta = 0; vuelta < 60; vuelta++) {
+    // Se mide en reposo: con Lenis ya parado y sin fundidos a medias (el paso del proceso
+    // que entra, una parada que se enciende). Un estado de paso no es el contraste real;
+    // las animaciones infinitas (el pulso) no se esperan.
+    await page.evaluate(
+      () =>
+        new Promise((listo) => {
+          const fin = performance.now() + 2500;
+          let y = scrollY;
+          let quietos = 0;
+          const mirar = () => {
+            const enCurso = document.getAnimations().some((a) => {
+              if (a.playState !== "running") return false;
+              const t = a.effect?.getComputedTiming?.();
+              return !t || t.iterations !== Infinity;
+            });
+            quietos = scrollY === y && !enCurso ? quietos + 1 : 0;
+            y = scrollY;
+            if (quietos >= 3 || performance.now() > fin) listo();
+            else requestAnimationFrame(mirar);
+          };
+          requestAnimationFrame(mirar);
+        }),
+    );
     const r = await page.evaluate(() => {
       const res = { fallos: [], sinFondo: 0 };
       for (const t of __c.textos(document.body, { soloEnPantalla: true })) {
@@ -1455,7 +1478,7 @@ const comprobaciones = [
   {
     id: "§7 · Mando",
     tarea: "T17",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const sinMando = await h.abrir("", { ancho: 1440 });
       assert.equal(await sinMando.locator(SEL.mando).count(), 0, "sin ?revision el mando está en el DOM");
@@ -1491,7 +1514,10 @@ const comprobaciones = [
           ({ dorsal, hilo }) => ({
             dorsales: [...document.querySelectorAll(dorsal)].filter((d) => __c.visible(d)).length,
             hilo: [...document.querySelectorAll(hilo)].filter((d) => __c.visible(d)).length,
-            recuento: /\d+ sectores · \d+ bases · 2 semanas/.test(document.body.textContent.replace(/\s+/g, " ")),
+            // Visible, no solo en el DOM: fuera de la Sobria también está (con display: none).
+            recuento: [...document.querySelectorAll(".sobria-recuento")].some(
+              (p) => __c.visible(p) && /\d+ sectores · \d+ bases · 2 semanas/.test(p.textContent.replace(/\s+/g, " ")),
+            ),
           }),
           { dorsal: SEL.dorsal, hilo: SEL.hiloTrazo },
         );
@@ -1504,7 +1530,7 @@ const comprobaciones = [
   {
     id: "§7 · Fondo y proceso en Sobria",
     tarea: "T17",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("?revision=sobria", { ancho });
@@ -1516,9 +1542,10 @@ const comprobaciones = [
   {
     id: "§7 · Contraste real",
     tarea: "T17",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const notas = [];
+      const fallos = [];
       for (const ancho of [390, 1440]) {
         for (const densidad of ["", "?revision=sobria"]) {
           for (const ruta of OCHO) {
@@ -1532,12 +1559,18 @@ const comprobaciones = [
                 await page.waitForTimeout(1600);
               }
             }
-            const nota = await contrasteDePagina(h, page, `${ancho} px /${ruta}${densidad}`);
-            if (nota) notas.push(nota);
+            // Se apuntan todas las páginas que fallan, no solo la primera.
+            try {
+              const nota = await contrasteDePagina(h, page, `${ancho} px /${ruta}${densidad}`);
+              if (nota) notas.push(nota);
+            } catch (e) {
+              fallos.push(e.message);
+            }
             await page.context().close();
           }
         }
       }
+      if (fallos.length) throw new Error(fallos.join("\n"));
       return notas.join(" · ");
     },
   },

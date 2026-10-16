@@ -22,3 +22,9 @@ export const cifras: Cifra[] = [
   { valor: 36, sufijo: "", etiqueta: "Preguntas de la auditoría, y las contestas en 10 minutos" },
   { valor: 0, sufijo: " €", etiqueta: "Lo que cuesta la auditoría y el presupuesto" },
 ];
+
+/** El plazo («2 sem.»), que el proceso y el recuento de la Sobria escriben entero. */
+export const plazo = cifras.find((c) => c.sufijo.trim() === "sem.");
+
+/** «semana» o «semanas» según el número. */
+export const palabraSemanas = (n: number) => (n === 1 ? "semana" : "semanas");

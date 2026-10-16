@@ -1,1 +1,146 @@
-/* Zona «sobria» (spec 002, PD-3): la rellena su tarea. */
+/* Zona «sobria» (spec 002 §3.16, PD-3): el mando de maqueta y la densidad sobria.
+
+   La Sobria es una clase en <html> (`densidad-sobria`, la pone el script del <head> con
+   `?revision=sobria` y la cambia layout/Mando.tsx) y este bloque de CSS: no son dos webs.
+   Se queda la superficie y el pozo activo del hero. Salen el conducto principal, los
+   pozos de las tarjetas y de Servicios (quedan como lista), el testigo dibujado y los
+   dorsales. Gana el proceso como tabla (lo decide Proceso.tsx) y, bajo las plantillas,
+   el recuento «N sectores · N bases · 2 semanas».
+
+   Fuera de capa a propósito: las zonas del hero y de Servicios van en
+   `@layer components`, y esto tiene que ganarles sin `!important`. */
+
+/* ─── Mando (solo con ?revision) ─────────────────────────────────────────────── */
+
+.mando {
+  position: fixed;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  /* Bajo el cursor propio (88), el aviso de cookies (90), la cortina (92) y la
+     transición (95): ni tapa el cursor ni asoma por encima de la entrada. */
+  z-index: 87;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--apagado-abajo);
+  background: var(--estrato);
+  font-family: var(--letra-kode);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+.mando-rotulo {
+  padding: 0 0.5rem 0 0.4rem;
+  color: var(--apagado-abajo);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.mando-boton {
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--hueso);
+  font: inherit;
+  font-weight: 500;
+}
+/* Pulsado: como el filtro activo del catálogo (§3.4), hueso con la línea lima debajo. */
+.mando-boton.es-activo {
+  background: var(--hueso);
+  color: var(--hondo);
+  box-shadow: 0 2px 0 0 var(--superficie);
+}
+@media (hover: hover) {
+  .mando-boton:not(.es-activo):hover {
+    text-decoration: underline;
+    text-decoration-color: var(--superficie);
+    text-underline-offset: 0.25em;
+  }
+}
+/* Con el aviso de cookies abajo, el mando sube: en móvil el aviso va a lo ancho y, hasta
+   unos 900 px, su botón (a la derecha de 36rem) cae debajo del mando. */
+@media (max-width: 899px) {
+  body:has(.aviso-cookies) .mando {
+    bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ─── Densidad sobria ────────────────────────────────────────────────────────── */
+
+/* El recuento solo existe en la Sobria: es el dato que sustituye al dibujo. */
+.sobria-recuento {
+  display: none;
+}
+html.densidad-sobria .sobria-recuento {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.4rem;
+  row-gap: 0.25rem;
+  margin-top: 3rem;
+  color: var(--apagado-abajo);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+html.densidad-sobria .sobria-recuento b {
+  margin-right: 0.2rem;
+  color: var(--hueso);
+  font-family: var(--letra-kode);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Fuera el conducto principal. Hilo.tsx ya no lo pinta en Sobria; esto cubre el
+   fotograma antes de que lo sepa. */
+html.densidad-sobria .hilo {
+  display: none;
+}
+
+/* Hero: la superficie y el pozo activo se quedan; los de los demás objetos, fuera. Con
+   `visibility` y no `display`, para que la fila de pozos no se recoloque. */
+html.densidad-sobria .hero-pozo:not(.es-activo) {
+  visibility: hidden;
+}
+
+/* La plantilla: sin dorsales (titulares y banquillo) y sin los pozos de las tarjetas (la
+   línea de superficie y el pozo de la parte de abajo). */
+html.densidad-sobria [data-dorsal],
+html.densidad-sobria .tarjeta-corte-linea,
+html.densidad-sobria .tarjeta-corte-inf::before {
+  display: none;
+}
+html.densidad-sobria .tarjeta-corte {
+  grid-template-rows: auto 1fr;
+}
+html.densidad-sobria .tarjeta-corte-inf {
+  padding: 0.9rem 0 1rem;
+}
+html.densidad-sobria .banquillo-fila {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Servicios: los diez quedan como lista. Sin tronco ni recuadros, sin encendido; los
+   `incluye` se alinean con el nombre y la línea de cada uno es un separador quieto. */
+html.densidad-sobria .servicio-pozo-cabecera {
+  border-bottom-color: var(--conducto);
+}
+html.densidad-sobria .servicio-pozo .servicio-pozo-numero {
+  color: var(--apagado-abajo);
+}
+html.densidad-sobria .servicio-pozo-paradas {
+  margin-left: 3rem;
+  padding: 0.75rem 0 0;
+  border-left: 0;
+}
+html.densidad-sobria .servicio-pozo-parada {
+  padding: 0.3rem 0;
+  color: var(--apagado-abajo);
+  transition: none;
+}
+html.densidad-sobria .servicio-pozo-parada::before {
+  display: none;
+}
+html.densidad-sobria .servicio-pozo .servicio-pozo-enlace {
+  margin-left: 3rem;
+}

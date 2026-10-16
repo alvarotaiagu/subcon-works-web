@@ -2,8 +2,8 @@ import { Boton } from "@/components/ui/Boton";
 import { Seccion } from "@/components/ui/Seccion";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
 import { Titular } from "@/components/ui/Titular";
-import { cifras } from "@/content/cifras";
-import { plantillas } from "@/content/plantillas";
+import { cifras, palabraSemanas, plazo } from "@/content/cifras";
+import { plantillas, sectoresPlantillas } from "@/content/plantillas";
 import { conDorsal } from "@/lib/dorsales";
 
 const etiquetaRecuento =
@@ -74,6 +74,26 @@ export function Plantillas() {
             </ol>
           </>
         )}
+
+        {/* Solo en la densidad sobria (§3.16): el dato que sustituye a los dorsales y a los
+            pozos de las tarjetas. Todo sale de los datos. */}
+        <p className="sobria-recuento">
+          <span>
+            <b>{sectoresPlantillas.length}</b> sectores
+          </span>
+          <span aria-hidden="true"> · </span>
+          <span>
+            <b>{plantillas.length}</b> bases
+          </span>
+          {plazo && (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span>
+                <b>{plazo.valor}</b> {palabraSemanas(plazo.valor)}
+              </span>
+            </>
+          )}
+        </p>
 
         <div className="mt-16 flex flex-wrap items-center justify-between gap-x-10 gap-y-6 border-t border-conducto pt-8">
           <p className="flex items-baseline gap-4">

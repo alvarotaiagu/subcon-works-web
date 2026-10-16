@@ -641,7 +641,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Mando, bajas y presupuesto
 
-- [ ] **T17 · Mando de maqueta, Sobria y contraste.**
+- [x] **T17 · Mando de maqueta, Sobria y contraste.**
   - *Cubre*: spec §3.16 (entero), §3.17 (repaso), §3.1 (reglas 3 a 5, con
     la comprobación de contraste real).
   - *Depende de*: T08, T14, T15, T16.
