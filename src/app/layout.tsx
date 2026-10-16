@@ -11,6 +11,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollLine } from "@/components/layout/ScrollLine";
 import { AvisoCookies } from "@/components/layout/AvisoCookies";
+import { Mando } from "@/components/layout/Mando";
 import { clasesBoton } from "@/components/ui/Boton";
 import { scriptCabeza } from "@/lib/scriptCabeza";
 
@@ -152,6 +153,7 @@ export default function RootLayout({
         <Grain />
         <ScrollLine />
         <AvisoCookies />
+        <Mando />
         <Nav />
         <main id="contenido">{children}</main>
         <Footer />
