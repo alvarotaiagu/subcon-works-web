@@ -97,12 +97,38 @@ frío intercaladas entre rutas), el 2026-10-16. La línea base es la de T01: el
 | CLS de las interiores medidas | ≤ 0,05 | 0,000 | 0,000 |
 | INP del instrumento (tres toques a objetos y 1 s de arrastre) | ≤ 200 ms | 80 ms (la peor carga, 96 ms); fotograma más largo arrastrando, 17-33 ms | sin tirador |
 | Letras | 2 ficheros, ≤ 70 KB | 2 ficheros · 62,9 KB | 3 pedidas · 116 KB (15 en `out/`) |
-| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **no cumple todavía (D-028)**: 150-190 ms con la máquina a toda velocidad, 300-340 ms con la máquina lenta | 778 ms (con `three`) |
+| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **no cumple (C-20)**: 217-398 ms con la máquina lenta, ya con D-028 (en T19, sin D-028: 150-190 ms a toda velocidad, 300-340 ms lenta) | 778 ms (con `three`) |
 
 Las tareas largas que quedan son dos y caen al llegar el JS (unos 5 s con 4G):
-el arranque de Next (compilar y evaluar el JS inicial) y la hidratación. Las dos
-escalan con la velocidad de la máquina que mide, y el tope solo se cumple cuando
-va rápida. Se arregla en `fix/rd-carga-diferida` (`DECISIONES.md`, D-028).
+el arranque de Next (evaluar `react-dom` y los módulos de la página) y el commit
+de la hidratación. Las dos escalan con la velocidad de la máquina que mide, y el
+tope solo se cumple cuando va rápida. D-028 sacó GSAP, ScrollTrigger y Lenis del
+JS inicial, pero no basta: está abierto C-20 (`DECISIONES.md`).
+
+### Carga diferida (D-028): antes y después
+
+`fix/rd-carga-diferida`, 2026-10-16. Mismo `medir`, con `--raiz` sobre el `out/`
+de antes y el de después, intercalados (antes, después, antes, después; 3 cargas
+por ruta cada vez). La máquina iba lenta en las cuatro pasadas.
+
+| Medida | Antes | Después |
+|---|---|---|
+| JS inicial de la portada (sin comprimir · gzip) | 839 KB · 272 KB | 702 KB · 221 KB |
+| JS inicial de `/plantillas/` | 774 KB · 251 KB | 636 KB · 200 KB |
+| JS inicial de `/sectores/alojamientos-rurales/` | 807 KB · 261 KB | 670 KB · 209 KB |
+| LCP de la portada, con cortina / sin cortina | 1,62-1,64 s / 1,65-1,68 s · `h1 > span.hero-l1` | 1,63-1,64 s / 1,66-1,68 s · `h1 > span.hero-l1` |
+| LCP de `/plantillas/` · de `/sectores/alojamientos-rurales/` | 1,97-2,00 s · 1,48 s | 1,96-1,98 s · 1,47-1,48 s |
+| CLS (todas las rutas medidas) | 0,000 | 0,000 |
+| INP del instrumento (mediana; con cortina / sin cortina) | 88 ms / 72-88 ms | 96-104 ms / 80-88 ms |
+| Tarea más larga por carga, portada con cortina | 230-360 ms | 217-398 ms |
+| Tarea más larga por carga, portada sin cortina | 237-354 ms | 212-365 ms |
+| Tarea más larga por carga, `/plantillas/` | 224-407 ms | 217-357 ms |
+| Tarea más larga por carga, `/sectores/alojamientos-rurales/` | 221-376 ms | 232-352 ms |
+
+Una traza de la portada (CDP, mismas condiciones) explica por qué no baja: GSAP
+ya no está en el arranque, pero el arranque sigue en 260-360 ms y el commit de la
+hidratación en 250-280 ms; la llegada de GSAP, ya repartida, son tres tareas de
+75-97 ms.
 
 ## Dos cosas que no se tocan
 

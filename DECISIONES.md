@@ -50,5 +50,8 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 
 ## Conflictos
 
-Ninguno abierto. C-19 (tope de tareas largas, §3.15) resuelto el 2026-10-16 con la opción (a): D-028.
+C-19 (tope de tareas largas, §3.15) resuelto el 2026-10-16 con la opción (a): D-028.
+
+| Nº | Conflicto | Opciones | Spec | Abierto |
 |---|---|---|---|---|
+| C-20 | Con D-028 aplicado (GSAP, ScrollTrigger y Lenis por `import()` tras hidratar; JS inicial de la portada de 839 a 702 KB), el tope «ninguna tarea larga > 200 ms» del §3.15 **sigue sin cumplirse**: la tarea más larga de cada carga da **217-398 ms** (A/B intercalado del 2026-10-16 con la máquina lenta; sin D-028, 230-407 ms: la diferencia no sale del ruido). Las tareas que pasan de 200 ms ya no son de GSAP: el arranque de Next (evaluar `react-dom` y los módulos de la página, 260-360 ms) y el commit de la hidratación (250-280 ms). La llegada de GSAP va en tres tareas de 75-97 ms. | (a) Partir la hidratación: `<Suspense>` alrededor de las zonas de cliente de debajo del hero (Diagnóstico, formulario de la auditoría, Proceso, Hilo) para que React las hidrate en tareas separadas, o cargarlas con `next/dynamic` para bajar el arranque. La ganancia hay que medirla (PR `fix/rd-…`). (b) Mantener el tope y medir solo con la máquina a toda velocidad, con una tarea de calibración. (c) Cambiar el tope de la spec (p. ej. 400 ms) o contar solo lo que pasa después de hidratar. | 002 §3.15 | 2026-10-16 |
