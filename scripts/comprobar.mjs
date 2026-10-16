@@ -1577,7 +1577,7 @@ const comprobaciones = [
   {
     id: "§7 · Glifos: ningún texto visible con ← → ★ ↕ (PD-4)",
     tarea: "T18",
-    pendiente: true,
+    pendiente: false,
     async fn(h) {
       const fallos = [];
       for (const ancho of [390, 1440]) {

@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
  * - `corte` (spec 002 §3.8): la tarjeta del corte. Arriba, la portada; luego la línea de
  *   superficie; debajo, en `--hondo`, el negocio, «sector · ciudad», el nombre del
  *   concepto en Kode Mono lima y, al pasar el ratón o al enfocar, lo que se mueve. El
- *   `dorsal` es opcional: la portada lo pone, `/plantillas/` no. Sin `data-cursor-*`.
+ *   `dorsal` es opcional: la portada lo pone, `/plantillas/` no.
  */
 export function TarjetaPlantilla({
   plantilla,
@@ -74,9 +74,7 @@ export function TarjetaPlantilla({
       href={plantilla.demo}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn("plantilla-card group block min-w-0", className)}
-      data-cursor-hover
-      data-cursor-label="Abrir"
+      className={cn("group block min-w-0", className)}
     >
       <BrowserMockup
         src={`/plantillas/${plantilla.slug}.jpg`}

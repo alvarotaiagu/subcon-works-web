@@ -11,7 +11,6 @@ export function TarjetaSector({ pagina }: { pagina: PaginaSector }) {
     <Link
       href={`/sectores/${pagina.slug}/`}
       className="group flex h-full flex-col rounded-2xl border border-conducto bg-estrato p-7 transition-colors duration-300 hover:border-superficie"
-      data-cursor-hover
     >
       <p className="font-mono-label text-[10px]">{pagina.etiqueta}</p>
       <h2 className="mt-4 text-2xl font-medium text-hueso">{pagina.nombre}</h2>

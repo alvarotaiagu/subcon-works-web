@@ -4,8 +4,7 @@ Web del estudio **Undertactics** (antes Subcon Works): diseño y desarrollo web,
 para negocios pequeños de Galicia.
 
 Next.js 16 con `output: "export"`, publicada como *project site* de GitHub Pages
-en `alvarotaiagu.github.io/subcon-works-web/`. Movimiento con GSAP + Lenis y
-tres escenas de Three.js (engranajes del hero, malla de nodos, blob del cierre).
+en `alvarotaiagu.github.io/subcon-works-web/`. Movimiento con GSAP + Lenis.
 
 ```bash
 npm install

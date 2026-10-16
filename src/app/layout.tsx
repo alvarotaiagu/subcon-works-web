@@ -3,13 +3,10 @@ import { preload } from "react-dom";
 import "./globals.css";
 import { site } from "@/content/site";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { Cursor } from "@/components/layout/Cursor";
-import { Grain } from "@/components/layout/Grain";
 import { Cortina } from "@/components/layout/Cortina";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
-import { ScrollLine } from "@/components/layout/ScrollLine";
 import { AvisoCookies } from "@/components/layout/AvisoCookies";
 import { Mando } from "@/components/layout/Mando";
 import { clasesBoton } from "@/components/ui/Boton";
@@ -149,9 +146,6 @@ export default function RootLayout({
         <Cortina />
         <PageTransition />
         <SmoothScroll />
-        <Cursor />
-        <Grain />
-        <ScrollLine />
         <AvisoCookies />
         <Mando />
         <Nav />

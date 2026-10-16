@@ -90,9 +90,6 @@
   --dur-fast: 0.3s;
   --dur-base: 0.7s;
   --dur-slow: 1.2s;
-
-  /* velocidad de scroll, la actualiza useScrollVelocity */
-  --scroll-velocity: 0;
 }
 
 @theme inline {
@@ -325,16 +322,6 @@ h3 {
   display: block;
 }
 
-/* Grano fijo, no interactivo */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-}
-
 /* Subrayado animado: entra por la izquierda, se retira por la derecha */
 .link-underline,
 .nav-link {
@@ -372,22 +359,6 @@ h3 {
 }
 .menu-movil-item {
   animation: menu-item-in var(--dur-base) var(--ease-out) both;
-}
-
-/* Plantillas: desaturación y leve acercamiento en reposo, revela al hover.
-   A diferencia del recorte que había aquí antes, la captura no se clipea: son
-   webs reales y lo que interesa es poder leerlas, no insinuarlas. */
-.plantilla-img {
-  filter: grayscale(0.85) contrast(1.02);
-  transform: scale(1.04);
-  transition:
-    filter var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out);
-}
-.plantilla-card:hover .plantilla-img,
-.plantilla-card:focus-visible .plantilla-img {
-  filter: grayscale(0);
-  transform: scale(1);
 }
 
 /* Campos del formulario de auditoría. Un solo estilo para input y textarea:
@@ -444,140 +415,6 @@ h3 {
 }
 .aviso-cookies {
   animation: aviso-in var(--dur-base) var(--ease-out) 0.6s both;
-}
-
-/* 404: la rueda del diente roto avanza, se traba al llegar al hueco y retrocede. */
-@keyframes rueda-atasco {
-  0%,
-  12% {
-    transform: rotate(0deg);
-  }
-  55% {
-    transform: rotate(38deg);
-  }
-  60% {
-    transform: rotate(34deg);
-  }
-  64% {
-    transform: rotate(37deg);
-  }
-  68%,
-  80% {
-    transform: rotate(35deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .rueda-rota {
-    animation: rueda-atasco 4.5s var(--ease-out) infinite;
-  }
-}
-
-/* Retícula de columnas: líneas de 1px que crecen desde arriba al entrar */
-@keyframes reticula-in {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-.reticula-line {
-  transform-origin: top;
-  animation: reticula-in 1.4s var(--ease-out) both;
-}
-
-/* Hero: eyebrow mono que precede al H1 */
-@keyframes eyebrow-in {
-  from {
-    opacity: 0;
-    letter-spacing: 0.4em;
-  }
-  to {
-    opacity: 1;
-    letter-spacing: 0.14em;
-  }
-}
-.hero-eyebrow {
-  animation: eyebrow-in 0.9s var(--ease-out) both;
-}
-
-/* Hero: capa de fondo "el umbral" */
-.umbral {
-  --umbral-x: 50%;
-  --umbral-y: 40%;
-  background: radial-gradient(
-    720px circle at var(--umbral-x) var(--umbral-y),
-    color-mix(in oklch, var(--hueso) 4%, transparent),
-    transparent 70%
-  );
-}
-
-@keyframes scroll-dot {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(500%);
-  }
-}
-.scroll-dot {
-  animation: scroll-dot 1.8s var(--ease-inout) infinite;
-}
-
-/* Cursor personalizado: se oculta el nativo solo cuando hay puntero fino (no táctil).
-   Se declara también en los elementos interactivos porque su cursor por defecto del
-   navegador (pointer/default en a, button, inputs) no es heredado y pisaría el `none`
-   puesto solo en body. */
-@media (pointer: fine) {
-  body,
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  label,
-  [role="button"] {
-    cursor: none;
-  }
-}
-
-.cursor-ring {
-  transition:
-    width 0.2s var(--ease-out),
-    height 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out),
-    background-color 0.2s var(--ease-out),
-    opacity 0.2s var(--ease-out);
-}
-.cursor-dot {
-  transition: transform 0.1s linear, opacity 0.2s var(--ease-out);
-}
-html[data-cursor-state="hidden"] .cursor-ring,
-html[data-cursor-state="hidden"] .cursor-dot {
-  opacity: 0;
-}
-html[data-cursor-state="hover"] .cursor-ring {
-  width: 3rem;
-  height: 3rem;
-  border-color: var(--superficie);
-}
-html[data-cursor-state="hover"] .cursor-dot {
-  opacity: 0;
-}
-html[data-cursor-state="label"] .cursor-ring {
-  width: 4.5rem;
-  height: 4.5rem;
-  background-color: var(--hueso);
-  border-color: var(--hueso);
-}
-html[data-cursor-state="label"] .cursor-ring span {
-  color: var(--hondo);
-}
-html[data-cursor-state="label"] .cursor-dot {
-  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
