@@ -49,4 +49,6 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 
 ## Conflictos
 
-Ninguno abierto.
+| Nº | Conflicto | Opciones | Spec | Abierto |
+|---|---|---|---|---|
+| C-19 | El tope «ninguna tarea larga > 200 ms» del §3.15 no se cumple de forma estable. Quedan dos tareas al llegar el JS: el arranque de Next (compilar y evaluar unos 840 KB de JS inicial, con GSAP, ScrollTrigger y Lenis) y la hidratación. Con CPU ×4 dan 150-190 ms cuando el portátil va a toda velocidad y 300-340 ms cuando baja el turbo. Un A/B en las mismas condiciones da lo mismo con y sin T19, así que no es una regresión. T19 ya quitó unos 70 ms de la hidratación (ICU en `plantillas.ts` y en el reloj del pie). Lo demás no tiene un arreglo claro. | (a) Bajar el JS inicial: GSAP, ScrollTrigger y Lenis por `import()` tras hidratar, en todas las zonas que los usan (PR `fix/rd-…`, varias zonas). (b) Mantener el tope y medir solo con la máquina a toda velocidad, con una tarea de calibración que descarte las cargas lentas. (c) Cambiar el tope de la spec (p. ej. 250 ms) o contar solo lo que pasa después de hidratar. | 002 §3.15 | 2026-10-16 |

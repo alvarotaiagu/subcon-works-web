@@ -4,32 +4,105 @@ Web del estudio **Undertactics** (antes Subcon Works): diseño y desarrollo web,
 para negocios pequeños de Galicia.
 
 Next.js 16 con `output: "export"`, publicada como *project site* de GitHub Pages
-en `alvarotaiagu.github.io/subcon-works-web/`. Movimiento con GSAP + Lenis.
+en `alvarotaiagu.github.io/subcon-works-web/`. Movimiento con GSAP + Lenis, sin
+canvas ni WebGL. Diseño: dirección **«Por debajo»** (spec 002): la línea lima del
+logo es la superficie; arriba, en claro, lo que ve el cliente del negocio; debajo,
+en oscuro, la instalación que lo hace funcionar.
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # export estático en out/
+npm run dev        # http://localhost:3000
+npm run build      # export estático en out/
 npm run lint
+npm test           # tests de Node (src/**/*.test.ts)
+npm run servir     # sirve out/ como Pages (puerto 4302; --puerto, --base)
+npm run comprobar  # comprobaciones en navegador de la spec 002 §7, sobre out/
+npm run medir      # presupuesto de rendimiento (abajo), sobre out/
 ```
 
 El `basePath` solo se activa en el build de CI (`GITHUB_ACTIONS=true`), para que
-`next dev` siga sirviendo en la raíz.
+`next dev` siga sirviendo en la raíz. Para probar ese build:
+`npm run comprobar -- --base /subcon-works-web`.
 
 ## Qué hay en la web
 
-| Sección | Contenido |
-|---|---|
-| Hero | Engranajes WebGL y la cortina de entrada |
-| Marquesina | Dos bandas cruzadas: los sectores con plantilla y lo que el sistema hace solo |
-| Servicios | Los diez servicios de `src/content/servicios.ts`, con su icono de línea |
-| Plantillas | Las 10 destacadas en carrusel horizontal anclado, y las 30 en `/plantillas/` |
-| Proceso | Los seis pasos, anclados con scrub |
-| Auditoría | La oferta de la auditoría gratuita, que lleva a `/auditoria/` |
-| Cifras | Contadores con anillo, todos comprobables |
-| Cierre | Blob WebGL y llamada final |
+La portada es un corte: baja de cota en cota, de la superficie al fondo. Cada
+sección lleva su cota encima del titular, y un conducto (el «hilo») baja por el
+margen izquierdo uniéndolas hasta el botón de la auditoría.
 
-Páginas: `/` · `/plantillas/` · `/herramientas/` · `/auditoria/` · `/privacidad/`.
+| Cota | Sección | Qué hay |
+|---|---|---|
+| Superficie | Hero (`#inicio`) | «Lo de arriba vende. Lo de abajo trabaja.» partido por la superficie. Arriba, cuatro cosas que ve el cliente (un WhatsApp, un pago con Bizum, una reseña en Google, un reel); debajo de cada una, su pozo con tres paradas que son servicios reales de `servicios.ts`. Se encienden al tocarlas (y solas, una vuelta, tras 5 s sin tocar nada, con «Pausar ejemplos»). El tirador de la derecha sube la superficie para ver más instalación |
+| 0 · Lo que montamos | Servicios (`#servicios`) | Los diez servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas |
+| −1 · La plantilla | La plantilla (`#plantillas`) | Las destacadas, con dorsal del 1 al 10, en tarjetas de corte (portada arriba, concepto debajo), y «¿Tu sector no está?» con un correo ya escrito. Las 30 están en `/plantillas/` |
+| −2 · El proceso | Proceso (`#proceso`) | Sección anclada con un testigo de sondeo: una broca baja por seis estratos y cada uno enciende su paso. Con movimiento reducido (y en Sobria), la tabla «Lo que ves tú / Lo que hacemos por debajo» |
+| −3 · Quién está debajo | Equipo y compromisos (`#equipo`) | Las personas del estudio, el enlace a `/estudio/` y los compromisos como paradas de un pozo |
+| −4 · Diagnóstico | Diagnóstico rápido (`#diagnostico`) | El diagnóstico de un minuto de la spec 001 |
+| Fondo · Auditoría | Fondo (`#auditoria`) | Lo que recibes con la auditoría gratuita, «36 preguntas» y «0 €», y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo |
+
+También: la cortina de entrada (solo la primera carga de la portada en cada
+sesión; la superficie que traza se queda como la del hero) y el mando de maqueta
+con `?revision` (densidades «Por debajo» y «Sobria»; sin ese parámetro no se ve).
+
+Páginas: `/` · `/plantillas/` · `/herramientas/` · `/estudio/` · `/auditoria/` ·
+`/sectores/` y las tres de sector (`/sectores/<slug>/`) · `/privacidad/` · la 404.
+Las interiores empiezan «debajo»: fondo oscuro desde arriba, la superficie bajo la
+cabecera y la cota junto al título.
+
+## Nivel
+
+Lo que pide el §5 bis del PLIEGO (D-021), aplicado a esta web:
+
+- **Piezas del kit quitadas**: marquesina, botones magnéticos, pilas sticky,
+  cursor propio, grano y hero WebGL. **Pieza propia**: los pozos, con paradas
+  que son servicios reales, y el conducto que baja de cota en cota.
+- **Recursos del §2 que quedan** (cinco, D-022):
+  - Lenis;
+  - char-reveal: los titulares de sección entran palabra a palabra desde la
+    superficie de su bloque (el `<h1>` del hero no, por el LCP);
+  - máscaras que se abren con el scroll: cada sección se descubre desde una
+    línea que baja;
+  - sección anclada con scrub: el testigo del proceso (vertical, no galería
+    horizontal);
+  - hero propio del concepto, en SVG en vez de canvas o WebGL (excepción de
+    D-022 por el presupuesto de rendimiento).
+- **Gesto táctil**: el tirador del hero (arrastrar con el dedo o el ratón; con
+  el teclado, flechas).
+- **Final del objeto**: el Fondo. Cuando el botón de la auditoría cruza el 66 %
+  de la pantalla, la línea de debajo se enciende y el iceberg se dibuja entero,
+  el mismo dibujo que abre la cortina.
+- **Foco con la forma del motivo**: un recuadro con una línea de superficie
+  debajo (lima sobre oscuro, tinta sobre claro); en el tirador, doble anillo.
+- **Presupuesto medido**: la tabla de abajo.
+- **Menú: inactividad**. Con el hero en pantalla y sin tocar nada, a los 5 s se
+  enciende el siguiente pozo, y así una sola vuelta (los cuatro ejemplos). Son
+  5 s en vez de los 15–20 s del PLIEGO (D-019) porque casi nadie se queda 15 s
+  mirando un hero. Un gesto da 15 s de silencio, y «Pausar ejemplos» la para
+  (WCAG 2.2.2). No guarda nada.
+
+## Presupuesto
+
+Spec 002 §3.15. Medido con `npm run build` y `npm run medir` (Playwright + CDP:
+iPhone 13, 4G de 150 ms y 1,6 Mbps, CPU ×4, caché vacía, mediana de 5 cargas en
+frío intercaladas entre rutas), el 2026-10-16. La línea base es la de T01: el
+`main` de antes del rediseño (engranajes WebGL, `next/font`).
+
+| Medida | Tope | Medido | Línea base (T01) |
+|---|---|---|---|
+| LCP de la portada, con cortina | ≤ 2,5 s y en el `<h1>` | 1,62 s · `h1 > span.hero-l1` | 1,98 s · `h1` |
+| LCP de la portada, sin cortina | ≤ 2,5 s y en el `<h1>` | 1,66 s · `h1 > span.hero-l1` | 1,96 s · `h1` |
+| LCP de `/plantillas/` | ≤ 2,5 s | 1,96 s | 1,99 s |
+| LCP de `/sectores/alojamientos-rurales/` | ≤ 2,5 s | 1,48 s | 1,86 s |
+| CLS de la portada: carga + 1 s de arrastre del tirador + scroll por el hero | ≤ 0,05 | 0,000 | 0,000 (sin tirador) |
+| CLS de las interiores medidas | ≤ 0,05 | 0,000 | 0,000 |
+| INP del instrumento (tres toques a objetos y 1 s de arrastre) | ≤ 200 ms | 80 ms (la peor carga, 96 ms); fotograma más largo arrastrando, 17-33 ms | sin tirador |
+| Letras | 2 ficheros, ≤ 70 KB | 2 ficheros · 62,9 KB | 3 pedidas · 116 KB (15 en `out/`) |
+| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **sin cerrar (C-19)**: 150-190 ms con la máquina a toda velocidad, 300-340 ms con la máquina lenta | 778 ms (con `three`) |
+
+Las tareas largas que quedan son dos y caen al llegar el JS (unos 5 s con 4G):
+el arranque de Next (compilar y evaluar el JS inicial) y la hidratación. Las dos
+escalan con la velocidad de la máquina que mide, y el tope solo se cumple cuando
+va rápida. Está en `DECISIONES.md`, C-19.
 
 ## Dos cosas que no se tocan
 
@@ -49,11 +122,15 @@ trabajos, no antes.
 | Archivo | Qué manda |
 |---|---|
 | `site.ts` | Nombre, contacto, navegación |
+| `portada.ts` | El corte: orden, cota, nitidez y fondo de las siete secciones |
+| `interiores.ts` | La cota de cada página interior |
+| `hero.ts` | Los cuatro ejemplos del hero y las paradas de cada pozo |
 | `servicios.ts` | Los diez servicios y lo que incluye cada uno |
 | `herramientas.ts` | El software propio de `/herramientas/`, con sus capturas |
 | `plantillas.ts` | El catálogo de 30, con su demo y su captura |
-| `proceso.ts` | Los seis pasos |
-| `cifras.ts` | Los cuatro contadores |
+| `proceso.ts` | Los seis pasos, con su dato y las dos columnas de la tabla |
+| `cifras.ts` | Las cuatro cifras, repartidas por la portada (sin contador) |
+| `estudio.ts` | Las personas y los compromisos |
 | `auditoria.ts` | Las 36 preguntas del cuestionario, P1–P36 |
 
 Las capturas de `public/plantillas/*.jpg` son fotos reales de cada demo, tomadas

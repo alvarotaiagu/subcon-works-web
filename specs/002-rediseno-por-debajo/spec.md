@@ -1,6 +1,6 @@
 # 002 · Rediseño «Por debajo»
 
-Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024, D-026 · Conflictos: — · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
+Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024, D-026 · Conflictos: C-19 · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
 Plan: [plan.md](plan.md) (aprobado, D-025) · Tareas: [tasks.md](tasks.md)
 
 ## 1. Objetivo
