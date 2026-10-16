@@ -34,6 +34,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-024 | Spec 002 (rediseño «Por debajo») aprobada por Álvaro tal como está, con D-014 a D-023 y los pendientes P-04 a P-07. | 002 | 2026-10-12 |
 | D-025 | Plan de la 002 aprobado por Álvaro con PD-1 a PD-15 (`specs/002-rediseno-por-debajo/plan.md`). | 002 | 2026-10-12 |
 | D-026 | La portada solo enseña las plantillas destacadas: sale el banquillo (spec 002 §3.8) y en su lugar va «¿Tu sector no está?», con un correo (`mailto:`) para pedir la de su sector. Sin formulario: la web no guarda datos personales. `/plantillas/` sigue con el catálogo entero. | 002 | 2026-10-16 |
+| D-027 | Álvaro aprueba tal cual los textos nuevos de la 002 (P-04 cerrada): descripción del hero, entradilla de Servicios, cotas, las seis filas del proceso, ejemplos del hero y la frase de `/privacidad/` sobre la cortina. Los textos viven donde dice la PR de integración (#41). | 002 | 2026-10-16 |
 
 ## Pendientes
 
@@ -42,7 +43,6 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | P-01 | Plantilla dental ficticia. Hasta que exista y entre en el catálogo, `/sectores/clinicas-dentales/` sale sin bloque de plantillas. Se encarga aparte en `plantillas-negocios-web`. | Álvaro | No |
 | P-02 | ¿Se dan de alta en el catálogo las cuatro plantillas de asesoría que hay en local (`casillas`, `cinta-sumadora`, `expediente`, `sello`)? No están en `plantillas.ts` ni en el `REGISTRO.md` del taller. Si entran, el contador «30 plantillas» de la web cambia. | Álvaro | No |
 | P-03 | Revisar los textos de las tres páginas de sector y del catálogo de mejoras antes de publicar. Los redacta el implementador. | Álvaro | Publicar |
-| P-04 | Revisar los textos nuevos de la 002 (descripción del hero, entradilla de Servicios, cotas, columnas del proceso, ejemplos del hero, frase nueva de `/privacidad/` sobre la cortina) antes de publicar. | Álvaro | Publicar la 002 |
 | P-05 | Widget del chatbot (`feat/chatbot`): lo que se mergee segundo lo adapta a los tokens de la 002. | Álvaro | No |
 | P-06 | Miniatura del reel del hero: portada de `panaderia` por ahora; cambiar por un fotograma real del estudio cuando exista. | Álvaro | No |
 | P-07 | ¿Se regenera `og.png` con el lema nuevo? Lleva grabado el viejo y la paleta vieja; DIRECCION dice «sin cambios». Mientras tanto, el `alt` de OG va fijo. | Álvaro | No |

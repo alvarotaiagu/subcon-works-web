@@ -10,6 +10,7 @@
    npm run servir -- --puerto 4301                 → otro puerto
    npm run servir -- --base /subcon-works-web      → build de CI
    npm run servir -- --raiz otra/carpeta
+   npm run servir -- --host 0.0.0.0                → visible en la red local (móvil)
 
    Puerto propio: si ya está ocupado, falla con un error (no se queda con el de otra sesión).
 */
@@ -87,7 +88,7 @@ export function resolver(raiz, base, url) {
  * @returns {Promise<{ servidor: http.Server, url: string, cerrar: () => Promise<void> }>}
  *          `url` acaba en "/" y ya lleva la base (p. ej. http://127.0.0.1:4302/subcon-works-web/).
  */
-export function crearServidor({ raiz = RAIZ_POR_DEFECTO, puerto = PUERTO_POR_DEFECTO, base = "" } = {}) {
+export function crearServidor({ raiz = RAIZ_POR_DEFECTO, puerto = PUERTO_POR_DEFECTO, base = "", host = "127.0.0.1" } = {}) {
   const raizAbs = path.resolve(raiz);
   const b = normalizarBase(base);
   if (!fs.existsSync(path.join(raizAbs, "index.html"))) {
@@ -126,10 +127,10 @@ export function crearServidor({ raiz = RAIZ_POR_DEFECTO, puerto = PUERTO_POR_DEF
           : e,
       ),
     );
-    servidor.listen(puerto, "127.0.0.1", () => {
+    servidor.listen(puerto, host, () => {
       resolve({
         servidor,
-        url: `http://127.0.0.1:${puerto}${b}/`,
+        url: `http://${host === "0.0.0.0" || host === "::" ? "127.0.0.1" : host.includes(":") ? `[${host}]` : host}:${puerto}${b}/`,
         cerrar: () => new Promise((ok) => servidor.close(() => ok())),
       });
     });
@@ -161,8 +162,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const puerto = Number(argumento(argv, "puerto", PUERTO_POR_DEFECTO));
   const base = argumento(argv, "base", "");
   const raiz = argumento(argv, "raiz", RAIZ_POR_DEFECTO);
+  const host = argumento(argv, "host", "127.0.0.1");
   try {
-    const { url } = await crearServidor({ raiz, puerto, base });
+    const { url } = await crearServidor({ raiz, puerto, base, host });
     const titulo = await comprobarTitulo(url);
     console.log(`«${titulo}» en ${url}`);
     console.log("Ctrl+C para parar.");
