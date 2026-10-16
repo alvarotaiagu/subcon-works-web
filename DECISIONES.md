@@ -33,6 +33,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-023 | `playwright` entra como `devDependency` del repo, solo para medir el rendimiento y comprobar en navegador (`scripts/medir.mjs`, `scripts/comprobar.mjs`). No entra ninguna dependencia de ejecución nueva. | 002 | 2026-10-12 |
 | D-024 | Spec 002 (rediseño «Por debajo») aprobada por Álvaro tal como está, con D-014 a D-023 y los pendientes P-04 a P-07. | 002 | 2026-10-12 |
 | D-025 | Plan de la 002 aprobado por Álvaro con PD-1 a PD-15 (`specs/002-rediseno-por-debajo/plan.md`). | 002 | 2026-10-12 |
+| D-026 | La portada solo enseña las plantillas destacadas: sale el banquillo (spec 002 §3.8) y en su lugar va «¿Tu sector no está?», con un correo (`mailto:`) para pedir la de su sector. Sin formulario: la web no guarda datos personales. `/plantillas/` sigue con el catálogo entero. | 002 | 2026-10-16 |
 
 ## Pendientes
 

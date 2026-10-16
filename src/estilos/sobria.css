@@ -103,7 +103,7 @@ html.densidad-sobria .hero-pozo:not(.es-activo) {
   visibility: hidden;
 }
 
-/* La plantilla: sin dorsales (titulares y banquillo) y sin los pozos de las tarjetas (la
+/* La plantilla: sin dorsales y sin los pozos de las tarjetas (la
    línea de superficie y el pozo de la parte de abajo). */
 html.densidad-sobria [data-dorsal],
 html.densidad-sobria .tarjeta-corte-linea,
@@ -115,9 +115,6 @@ html.densidad-sobria .tarjeta-corte {
 }
 html.densidad-sobria .tarjeta-corte-inf {
   padding: 0.9rem 0 1rem;
-}
-html.densidad-sobria .banquillo-fila {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 /* Servicios: los diez quedan como lista. Sin tronco ni recuadros, sin encendido; los
