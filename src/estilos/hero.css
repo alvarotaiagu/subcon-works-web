@@ -4,7 +4,9 @@
    La rejilla manda en la composición, y `--nivel` en la altura de la superficie:
    - móvil (< 768 px): nivel fijo en px; el hero crece si el contenido no cabe
      (alto `max(100svh, contenido)`, §3.6);
-   - desde 768 px: alto clamp(700px, 100svh, 900px) y nivel a la mitad. Hasta 1023 px
+   - desde 768 px: alto clamp(700px, 100svh, 900px) y nivel a la mitad del clamp. Si lo
+     de debajo no cabe en esa mitad (pantallas de menos de unos 830 px de alto, y de 768
+     a 1023 px de ancho, que va apilado), el hero crece y no recorta (D-030). Hasta 1023 px
      todo va apilado (los cuatro objetos no caben al lado del titular); desde 1024 px,
      titular a la izquierda e instrumento a la derecha.
 
@@ -201,13 +203,15 @@
     .hero-l1 {
       padding-bottom: 0.3em;
     }
+    /* Paddings ajustados para que lo de debajo de la superficie quepa en la mitad del
+       clamp (450 px) a 1440×900 y 1920×1080 (D-030). */
     .hero-l2 {
       grid-row: 3;
-      padding-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
     }
     .hero-cota {
       grid-row: 2;
-      padding-top: 1rem;
+      padding-top: 0.75rem;
       padding-bottom: 0.75rem;
     }
     .hero-instrumento {
@@ -218,7 +222,7 @@
       grid-row: 4;
       align-self: end;
       max-width: 34rem;
-      padding-bottom: 2.5rem;
+      padding-bottom: 1rem;
     }
   }
 

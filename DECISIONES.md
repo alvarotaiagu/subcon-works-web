@@ -36,6 +36,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-026 | La portada solo enseña las plantillas destacadas: sale el banquillo (spec 002 §3.8) y en su lugar va «¿Tu sector no está?», con un correo (`mailto:`) para pedir la de su sector. Sin formulario: la web no guarda datos personales. `/plantillas/` sigue con el catálogo entero. | 002 | 2026-10-16 |
 | D-027 | Álvaro aprueba tal cual los textos nuevos de la 002 (P-04 cerrada): descripción del hero, entradilla de Servicios, cotas, las seis filas del proceso, ejemplos del hero y la frase de `/privacidad/` sobre la cortina. Los textos viven donde dice la PR de integración (#41). | 002 | 2026-10-16 |
 | D-028 | El tope «ninguna tarea larga > 200 ms» (§3.15) se mantiene y se cumple bajando el JS inicial: GSAP, ScrollTrigger y Lenis se cargan con `import()` tras hidratar (PR `fix/rd-carga-diferida`). No se relaja el tope ni se mide solo a máquina rápida. Hasta que esa PR entre, el README lo marca «no cumple todavía». Resuelve C-19. | 002 | 2026-10-16 |
+| D-030 | Hero en escritorio (§3.6): el alto es `clamp(700px, 100svh, 900px)` como mínimo y el nivel va a la mitad de ese clamp. Lo de debajo de la superficie se ajusta para caber a 1440×900 y 1920×1080 (miden 900). En pantallas más bajas (menos de unos 830 px) y de 768 a 1023 px de ancho, donde va apilado, el hero crece y no recorta, como en móvil. Resuelve C-21 (T21: a 1440×900 medía 914 y a 1440×600 medía 814). | 002 | 2026-10-16 |
 
 ## Pendientes
 
@@ -50,5 +51,5 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 
 ## Conflictos
 
-Ninguno abierto. C-19 (tope de tareas largas, §3.15) resuelto el 2026-10-16 con la opción (a): D-028.
+Ninguno abierto. C-19 (tope de tareas largas, §3.15) resuelto el 2026-10-16 con la opción (a): D-028. C-21 (alto del hero en escritorio, §3.6) resuelto el 2026-10-16 con D-030.
 |---|---|---|---|---|
