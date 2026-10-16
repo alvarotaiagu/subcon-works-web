@@ -97,12 +97,12 @@ frío intercaladas entre rutas), el 2026-10-16. La línea base es la de T01: el
 | CLS de las interiores medidas | ≤ 0,05 | 0,000 | 0,000 |
 | INP del instrumento (tres toques a objetos y 1 s de arrastre) | ≤ 200 ms | 80 ms (la peor carga, 96 ms); fotograma más largo arrastrando, 17-33 ms | sin tirador |
 | Letras | 2 ficheros, ≤ 70 KB | 2 ficheros · 62,9 KB | 3 pedidas · 116 KB (15 en `out/`) |
-| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **sin cerrar (C-19)**: 150-190 ms con la máquina a toda velocidad, 300-340 ms con la máquina lenta | 778 ms (con `three`) |
+| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **no cumple todavía (D-028)**: 150-190 ms con la máquina a toda velocidad, 300-340 ms con la máquina lenta | 778 ms (con `three`) |
 
 Las tareas largas que quedan son dos y caen al llegar el JS (unos 5 s con 4G):
 el arranque de Next (compilar y evaluar el JS inicial) y la hidratación. Las dos
 escalan con la velocidad de la máquina que mide, y el tope solo se cumple cuando
-va rápida. Está en `DECISIONES.md`, C-19.
+va rápida. Se arregla en `fix/rd-carga-diferida` (`DECISIONES.md`, D-028).
 
 ## Dos cosas que no se tocan
 

@@ -695,7 +695,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - `out/` no tiene ningún chunk con `three`;
     - lint y build en verde.
 
-- [ ] **T19 · Presupuesto y «Nivel» en el README.**
+- [x] **T19 · Presupuesto y «Nivel» en el README.**
   - *Cubre*: spec §3.15 (entero), §3.18, PD-15.
   - *Depende de*: T18.
   - *Hacer*:

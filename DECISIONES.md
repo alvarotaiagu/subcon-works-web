@@ -35,6 +35,7 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | D-025 | Plan de la 002 aprobado por Álvaro con PD-1 a PD-15 (`specs/002-rediseno-por-debajo/plan.md`). | 002 | 2026-10-12 |
 | D-026 | La portada solo enseña las plantillas destacadas: sale el banquillo (spec 002 §3.8) y en su lugar va «¿Tu sector no está?», con un correo (`mailto:`) para pedir la de su sector. Sin formulario: la web no guarda datos personales. `/plantillas/` sigue con el catálogo entero. | 002 | 2026-10-16 |
 | D-027 | Álvaro aprueba tal cual los textos nuevos de la 002 (P-04 cerrada): descripción del hero, entradilla de Servicios, cotas, las seis filas del proceso, ejemplos del hero y la frase de `/privacidad/` sobre la cortina. Los textos viven donde dice la PR de integración (#41). | 002 | 2026-10-16 |
+| D-028 | El tope «ninguna tarea larga > 200 ms» (§3.15) se mantiene y se cumple bajando el JS inicial: GSAP, ScrollTrigger y Lenis se cargan con `import()` tras hidratar (PR `fix/rd-carga-diferida`). No se relaja el tope ni se mide solo a máquina rápida. Hasta que esa PR entre, el README lo marca «no cumple todavía». Resuelve C-19. | 002 | 2026-10-16 |
 
 ## Pendientes
 
@@ -49,6 +50,5 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 
 ## Conflictos
 
-| Nº | Conflicto | Opciones | Spec | Abierto |
+Ninguno abierto. C-19 (tope de tareas largas, §3.15) resuelto el 2026-10-16 con la opción (a): D-028.
 |---|---|---|---|---|
-| C-19 | El tope «ninguna tarea larga > 200 ms» del §3.15 no se cumple de forma estable. Quedan dos tareas al llegar el JS: el arranque de Next (compilar y evaluar unos 840 KB de JS inicial, con GSAP, ScrollTrigger y Lenis) y la hidratación. Con CPU ×4 dan 150-190 ms cuando el portátil va a toda velocidad y 300-340 ms cuando baja el turbo. Un A/B en las mismas condiciones da lo mismo con y sin T19, así que no es una regresión. T19 ya quitó unos 70 ms de la hidratación (ICU en `plantillas.ts` y en el reloj del pie). Lo demás no tiene un arreglo claro. | (a) Bajar el JS inicial: GSAP, ScrollTrigger y Lenis por `import()` tras hidratar, en todas las zonas que los usan (PR `fix/rd-…`, varias zonas). (b) Mantener el tope y medir solo con la máquina a toda velocidad, con una tarea de calibración que descarte las cargas lentas. (c) Cambiar el tope de la spec (p. ej. 250 ms) o contar solo lo que pasa después de hidratar. | 002 §3.15 | 2026-10-16 |
