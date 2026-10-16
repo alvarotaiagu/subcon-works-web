@@ -1596,6 +1596,75 @@ const comprobaciones = [
       assert.deepEqual([...new Set(fallos)], [], "textos visibles con glifos fuera del subconjunto");
     },
   },
+  {
+    // §6 «Sin GSAP» con la carga diferida (D-028): GSAP, ScrollTrigger, CustomEase y Lenis
+    // llegan con import() tras hidratar; si sus chunks no llegan, la web sigue entera.
+    id: "§6 · Sin GSAP: chunks de GSAP y Lenis abortados",
+    tarea: "D-028",
+    pendiente: false,
+    async fn(h) {
+      // Los chunks llevan hash: se reconocen por lo que traen dentro.
+      const MARCAS = /GreenSock|pin-spacer|CustomEase|lenis-smooth/;
+      const sinGsap = async (page) => {
+        page.__abortados = [];
+        await page.route(/\/_next\/static\/chunks\/.*\.js(\?.*)?$/, async (r) => {
+          const resp = await r.fetch();
+          const cuerpo = await resp.text();
+          if (MARCAS.test(cuerpo)) {
+            page.__abortados.push(r.request().url().split("/").pop());
+            return r.abort();
+          }
+          return r.fulfill({ response: resp, body: cuerpo });
+        });
+      };
+      // El hilo sin pin (movimiento reducido): los trozos que tiene que tener sin GSAP.
+      const reducido = await h.abrir("", { ancho: 390, reducedMotion: "reduce" });
+      await reducido.waitForSelector("svg.es-medido " + SEL.hiloTrazo, { state: "attached", timeout: 8000 });
+      const trozosSinPin = await reducido.$$eval(SEL.hiloTrazo, (t) => t.length);
+      await reducido.context().close();
+
+      for (const ancho of [390, 1440]) {
+        const page = await h.abrir("", { ancho, cortina: true, antes: sinGsap });
+        assert.ok(page.__abortados.length >= 2, `${ancho} px: solo se abortaron ${page.__abortados.join(", ") || "ninguno"} (¿cambió el empaquetado?)`);
+        // La cortina no depende de GSAP: su secuencia acaba a los 2,5 s (§3.14, §6).
+        const tarda = await h.esperarSinCortina(page, 3000);
+        await page.waitForTimeout(1500);
+        const r = await page.evaluate(() => {
+          const h2 = [...document.querySelectorAll("main h2")];
+          return {
+            h1: __c.visible(document.querySelector("h1")),
+            h2Ocultos: h2.filter((x) => !__c.visible(x)).map((x) => x.textContent.trim().slice(0, 40)),
+            lenis: document.documentElement.classList.contains("lenis"),
+            testigo: !!document.querySelector("#proceso.es-con-testigo"),
+          };
+        });
+        assert.ok(r.h1, `${ancho} px: sin GSAP no se ve el titular`);
+        assert.ok(!r.lenis, `${ancho} px: sin chunks de Lenis, <html> lleva la clase lenis`);
+        assert.ok(!r.testigo, `${ancho} px: sin GSAP sigue montado el testigo (tenía que quedarse la tabla)`);
+        // Todo el contenido visible: los titulares entran al bajar, sin GSAP también.
+        await h.ruedaHasta(page, "#auditoria", 0);
+        await page.waitForTimeout(800);
+        const h2Ocultos = await page.evaluate(() =>
+          [...document.querySelectorAll("main h2")].filter((x) => !__c.visible(x)).map((x) => x.textContent.trim().slice(0, 40)),
+        );
+        assert.deepEqual(h2Ocultos, [], `${ancho} px: sin GSAP, tras bajar no se ven estos h2`);
+        await tablaProcesoVisible(page, `${ancho} px, sin GSAP (cortina fuera a los ${tarda} ms)`);
+        const trozos = await page.$$eval("svg.es-medido " + SEL.hiloTrazo, (t) => t.length);
+        assert.equal(trozos, trozosSinPin, `${ancho} px: sin GSAP el conducto tiene ${trozos} trozos y sin pin son ${trozosSinPin}`);
+        // Navegar sin GSAP: la tapa de la transición no se queda puesta.
+        await page.locator('header a[href$="/plantillas/"]:visible, nav a[href$="/plantillas/"]:visible').first().click();
+        await page.waitForURL(/\/plantillas\/$/);
+        await page.waitForTimeout(800);
+        const tapada = await page.evaluate(() => {
+          const t = document.querySelector('div[class~="z-[95]"] > div.bg-hondo');
+          return !!t && getComputedStyle(t).visibility === "visible";
+        });
+        assert.ok(!tapada, `${ancho} px: sin GSAP, al navegar a /plantillas/ la tapa de la transición se queda puesta`);
+        assert.deepEqual(page.__errores ?? [], [], `${ancho} px: errores de página sin GSAP`);
+        await page.context().close();
+      }
+    },
+  },
 ];
 
 // ─── Ejecución ─────────────────────────────────────────────────────────────────
