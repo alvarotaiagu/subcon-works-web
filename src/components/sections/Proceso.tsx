@@ -123,7 +123,13 @@ export function Proceso() {
     const anclar = ({ ScrollTrigger }: Movimiento) => {
       if (!vivo) return;
       let pin: ReturnType<typeof ScrollTrigger.create>;
-      // El pin-spacer ocupa ahora el sitio reservado (en la misma tarea: no se pinta entre medias).
+      // El pin-spacer ocupa ahora el sitio reservado (en la misma tarea: no se pinta entre
+      // medias). Sin anclaje de scroll mientras dura el cambio: ScrollTrigger mide con la
+      // reserva ya quitada, y el navegador compensaría ese hueco subiendo la vista 4,4
+      // pantallas (con la página por debajo del proceso, la dejaba dentro del pin).
+      const raiz = document.documentElement;
+      const anclaje = raiz.style.overflowAnchor;
+      raiz.style.overflowAnchor = "none";
       escena.style.removeProperty("margin-bottom");
       try {
         // Que la barra del navegador en móvil (solo cambia el alto) no recalcule el pin.
@@ -144,6 +150,10 @@ export function Proceso() {
         // Sin GSAP: el proceso se queda como tabla (§6).
         testigoStore.romper();
         return;
+      } finally {
+        // Una medida con el pin-spacer ya puesto, y el anclaje vuelve.
+        void raiz.offsetHeight;
+        raiz.style.overflowAnchor = anclaje;
       }
 
       // El `end` del pin depende de lo que haya encima: se recalcula cuando cambia el alto

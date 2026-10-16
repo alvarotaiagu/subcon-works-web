@@ -7,6 +7,18 @@ import { cargarGsap } from "@/lib/gsap";
 /** La instancia viva, para los saltos programáticos (`irAAncla`). */
 let instancia: Lenis | null = null;
 
+let avisarListo = () => {};
+const listo = new Promise<void>((r) => (avisarListo = r));
+
+/**
+ * Se resuelve cuando ya se sabe si hay Lenis: creado, o descartado (movimiento reducido, o
+ * sus chunks no llegan). Lenis llega con `import()` tras hidratar (D-028): un salto
+ * programático antes de eso iría seco, sin Lenis, y Lenis no se enteraría.
+ */
+export function esperarLenis(): Promise<void> {
+  return listo;
+}
+
 /**
  * La instancia de Lenis, o `null` si no hay: con reduced-motion, antes de
  * que llegue, después de `destroy` o si no ha cargado.
@@ -26,7 +38,10 @@ export function getLenis(): Lenis | null {
 export function useLenis() {
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    if (prefersReduced) {
+      avisarListo();
+      return;
+    }
 
     let vivo = true;
     let quitar = () => {};
@@ -58,11 +73,13 @@ export function useLenis() {
       })
       .catch(() => {
         // Sin GSAP o sin Lenis: scroll nativo (§6).
-      });
+      })
+      .finally(avisarListo);
 
     return () => {
       vivo = false;
       quitar();
+      avisarListo();
     };
   }, []);
 }
