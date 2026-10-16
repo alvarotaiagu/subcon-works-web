@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
     // Asistente virtual (ver src/lib/chatbot.ts). Se define siempre, vacía si no existe,
     // para que el compilador la sustituya y quite las ramas del asistente del build de Pages.
     NEXT_PUBLIC_CHATBOT_URL: process.env.NEXT_PUBLIC_CHATBOT_URL ?? "",
+    // Lista de recursos por correo (ver src/lib/recursos.ts). Igual que el asistente:
+    // vacía en Pages hasta que haya dominio propio, y la sección no se pinta.
+    NEXT_PUBLIC_RECURSOS_ENDPOINT: process.env.NEXT_PUBLIC_RECURSOS_ENDPOINT ?? "",
   },
 };
 

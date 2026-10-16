@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/content/site";
 import { chatbotUrl } from "@/lib/chatbot";
+import { recursosEndpoint } from "@/lib/recursos";
 
 export const metadata: Metadata = {
   title: `Privacidad — ${site.nombre}`,
@@ -86,6 +87,79 @@ function ApartadoAsistente() {
   );
 }
 
+/**
+ * Solo se pinta con la lista de recursos activa (NEXT_PUBLIC_RECURSOS_ENDPOINT, ver
+ * src/lib/recursos.ts). Borrador pendiente de revisión, como el del asistente.
+ */
+function ApartadoRecursos() {
+  return (
+    <Apartado titulo="La lista de recursos por correo">
+      <p>
+        <span className="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">
+          [REVISAR]
+        </span>
+      </p>
+      <p>
+        En la portada puedes dejar tu correo para recibir skills, plantillas y checklists. Es
+        independiente del formulario de auditoría: pedir el informe no te apunta a esta lista, y
+        apuntarte a la lista no te obliga a nada más.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Qué se trata:</strong> tu correo y la
+        fecha en que confirmas la suscripción. Al apuntarte te llega un correo con un enlace, y
+        hasta que no lo pulsas no entras en la lista.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Para qué:</strong> para mandarte esos
+        recursos y, de vez en cuando, novedades del estudio, lo que incluye nuestros servicios. La
+        base legal es tu consentimiento (artículo 6.1.a del RGPD y artículo 21 de la Ley 34/2002 de
+        servicios de la sociedad de la información), que das al marcar la casilla y confirmar el
+        correo.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Quién lo procesa:</strong> la lista
+        vive en <strong className="font-medium text-text-primary">Brevo</strong> (Sendinblue SAS,
+        Francia), que envía los correos como encargado del tratamiento desde servidores de la
+        Unión Europea. Para evitar que alguien apunte correos ajenos una y otra vez, la web guarda
+        durante un día una huella del correo (su resumen SHA-256), no el correo escrito tal cual,
+        en la misma base de datos de Supabase del formulario.
+      </p>
+      <p>
+        <strong className="font-medium text-text-primary">Cuánto tiempo y cómo salir:</strong>{" "}
+        hasta que te des de baja. Cada correo lleva un enlace para hacerlo con un clic, y también
+        vale escribir a{" "}
+        <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+          {site.email}
+        </a>
+        . Después de la baja solo se guarda tu correo marcado como baja, para no volver a
+        escribirte.
+      </p>
+    </Apartado>
+  );
+}
+
+function ApartadoCookies() {
+  return chatbotUrl ? (
+    <Apartado titulo="Cookies">
+      <p>
+        Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu
+        navegador es el borrador del formulario, el hecho de que ya has visto el aviso y, si abres
+        el chat, su identificador de sesión. Los dos primeros no salen de tu ordenador; el
+        identificador viaja con cada mensaje del chat para que el servidor sepa a qué conversación
+        pertenece, y para nada más.
+      </p>
+    </Apartado>
+  ) : (
+    <Apartado titulo="Cookies">
+      <p>
+        Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu navegador
+        es el borrador del formulario y el hecho de que ya has visto el aviso, y ninguna de las dos
+        cosas sale de tu ordenador.
+      </p>
+    </Apartado>
+  );
+}
+
 export default function PrivacidadPage() {
   return (
     <div className="pt-32 md:pt-40">
@@ -98,9 +172,13 @@ export default function PrivacidadPage() {
           Qué hacemos con tus datos
         </h1>
         <p className="mt-8 text-lg text-text-muted">
-          {chatbotUrl
-            ? "En esta web se recogen datos en dos sitios: el formulario de la auditoría y, si lo abres, el chat del asistente virtual. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros."
-            : "En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros."}
+          {chatbotUrl && recursosEndpoint
+            ? "En esta web se recogen datos en tres sitios: el formulario de la auditoría, el chat del asistente virtual si lo abres y la lista de recursos por correo si te apuntas. Ni hay analítica, ni hay anuncios, ni hay cookies de terceros."
+            : recursosEndpoint
+              ? "En esta web se recogen datos en dos sitios: el formulario de la auditoría y, si te apuntas, la lista de recursos por correo. Ni hay analítica, ni hay anuncios, ni hay cookies de terceros."
+              : chatbotUrl
+                ? "En esta web se recogen datos en dos sitios: el formulario de la auditoría y, si lo abres, el chat del asistente virtual. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros."
+                : "En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros."}
         </p>
 
         <div className="mt-14">
@@ -196,28 +274,16 @@ export default function PrivacidadPage() {
             </p>
           </Apartado>
 
-          {/* Con el asistente activo, su apartado va delante de Cookies (ver src/lib/chatbot.ts). */}
-          {chatbotUrl ? (
+          {/* Con el asistente o la lista de recursos activos, sus apartados van delante de
+              Cookies (ver src/lib/chatbot.ts y src/lib/recursos.ts). */}
+          {chatbotUrl || recursosEndpoint ? (
             <>
-              <ApartadoAsistente />
-              <Apartado titulo="Cookies">
-                <p>
-                  Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en
-                  tu navegador es el borrador del formulario, el hecho de que ya has visto el
-                  aviso y, si abres el chat, su identificador de sesión. Los dos primeros no salen
-                  de tu ordenador; el identificador viaja con cada mensaje del chat para que el
-                  servidor sepa a qué conversación pertenece, y para nada más.
-                </p>
-              </Apartado>
+              {chatbotUrl ? <ApartadoAsistente /> : null}
+              {recursosEndpoint ? <ApartadoRecursos /> : null}
+              <ApartadoCookies />
             </>
           ) : (
-            <Apartado titulo="Cookies">
-              <p>
-                Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu
-                navegador es el borrador del formulario y el hecho de que ya has visto el aviso, y
-                ninguna de las dos cosas sale de tu ordenador.
-              </p>
-            </Apartado>
+            <ApartadoCookies />
           )}
         </div>
       </div>

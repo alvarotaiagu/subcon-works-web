@@ -76,7 +76,15 @@ guarda en una tabla con RLS activo y sin políticas. Después,
 kit con el formato que este espera, y el informe se genera allí.
 
 El circuito completo, la clave que hace falta y qué pasa si cambias las
-preguntas están en [`kit/LEEME.md`](kit/LEEME.md).
+preguntas están en [`kit/LEEME.md`](kit/LEEME.md). El código de la función está
+en `supabase/functions/solicitar-auditoria/`.
+
+## Lista de recursos por correo (apagada hasta tener dominio)
+
+Sección de la portada que pide el correo a cambio de skills, plantillas y
+checklists, con doble confirmación de Brevo. Se monta solo con
+`NEXT_PUBLIC_RECURSOS_ENDPOINT`, igual que el asistente. Cómo funciona y los
+pasos para encenderla están en [`docs/recursos.md`](docs/recursos.md).
 
 ## Asistente virtual (solo en local, de momento)
 

@@ -9,6 +9,8 @@ import { Equipo } from "@/components/sections/Equipo";
 import { Compromisos } from "@/components/sections/Compromisos";
 import { Cifras } from "@/components/sections/Cifras";
 import { CtaFinal } from "@/components/sections/CtaFinal";
+import { Recursos } from "@/components/sections/Recursos";
+import { recursosEndpoint } from "@/lib/recursos";
 
 export default function Home() {
   return (
@@ -23,7 +25,15 @@ export default function Home() {
       <DiagnosticoRapido />
       <Auditoria />
       <Cifras />
-      <CtaFinal />
+      {/* Recursos por correo: solo con NEXT_PUBLIC_RECURSOS_ENDPOINT (ver src/lib/recursos.ts). */}
+      {recursosEndpoint ? (
+        <>
+          <Recursos />
+          <CtaFinal />
+        </>
+      ) : (
+        <CtaFinal />
+      )}
     </>
   );
 }
