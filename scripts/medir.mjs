@@ -23,6 +23,7 @@
    npm run build && npm run medir
    npm run medir -- --puerto 4301 --veces 3
    npm run medir -- --base /subcon-works-web       (build con GITHUB_ACTIONS=true)
+   npm run medir -- --cpu 6                        (máquina lenta emulada; solo para comparar)
 */
 import fs from "node:fs";
 import path from "node:path";
@@ -63,6 +64,12 @@ if (!Number.isInteger(veces) || veces < 1) {
   process.exit(1);
 }
 const raiz = argumento(argv, "raiz", RAIZ_POR_DEFECTO);
+/** CPU ×4 es el del §3.15; `--cpu 6` emula una máquina más lenta para los A/B (C-20). */
+const cpu = Number(argumento(argv, "cpu", 4));
+if (!Number.isFinite(cpu) || cpu < 1) {
+  console.error("--cpu debe ser un número ≥ 1");
+  process.exit(1);
+}
 
 /** Ficheros de letra en out/ (recorre todo). */
 function letrasEnOut(dir) {
@@ -206,7 +213,7 @@ async function medirUna(nav, url, { cortina, portada }) {
     downloadThroughput: (1.6 * 1024 * 1024) / 8,
     uploadThroughput: (750 * 1024) / 8,
   });
-  await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+  await cdp.send("Emulation.setCPUThrottlingRate", { rate: cpu });
 
   await page.goto(url, { waitUntil: "load", timeout: 90000 });
   // La cortina dura como mucho 3 s (§3.14); el LCP se fija con la primera entrada del
@@ -299,7 +306,7 @@ let nav;
 try {
   srv = await crearServidor({ raiz, puerto, base });
   const titulo = await comprobarTitulo(srv.url);
-  console.log(`Midiendo «${titulo}» en ${srv.url} · iPhone 13, 4G, CPU ×4, mediana de ${veces}, cargas intercaladas\n`);
+  console.log(`Midiendo «${titulo}» en ${srv.url} · iPhone 13, 4G, CPU ×${cpu}, mediana de ${veces}, cargas intercaladas\n`);
   nav = await chromium.launch();
 
   const resultados = RUTAS.map(() => []);

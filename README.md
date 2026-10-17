@@ -97,7 +97,7 @@ frío intercaladas entre rutas), el 2026-10-16. La línea base es la de T01: el
 | CLS de las interiores medidas | ≤ 0,05 | 0,000 | 0,000 |
 | INP del instrumento (tres toques a objetos y 1 s de arrastre) | ≤ 200 ms | 80 ms (la peor carga, 96 ms); fotograma más largo arrastrando, 17-33 ms | sin tirador |
 | Letras | 2 ficheros, ≤ 70 KB | 2 ficheros · 62,9 KB | 3 pedidas · 116 KB (15 en `out/`) |
-| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **no cumple (C-20)**: ya con D-028, 196-243 ms con la máquina rápida y 212-398 ms con la lenta (en T19, sin D-028: 150-190 ms y 300-340 ms) | 778 ms (con `three`) |
+| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **no cumple (C-20)**: con D-028, 196-243 ms con la máquina rápida y 212-398 ms con la lenta; partir la hidratación con `<Suspense>` se probó y se descartó (más abajo) (en T19, sin D-028: 150-190 ms y 300-340 ms) | 778 ms (con `three`) |
 
 Las tareas largas que quedan son dos y caen al llegar el JS (unos 5 s con 4G):
 el arranque de Next (evaluar `react-dom` y los módulos de la página) y el commit
@@ -136,6 +136,28 @@ no baja. Una traza de la portada (CDP, máquina lenta) explica por qué: GSAP ya
 está en el arranque, pero el arranque sigue en 260-360 ms y el commit de la
 hidratación en 250-280 ms; la llegada de GSAP, repartida, son tres tareas de
 75-97 ms. Con la máquina rápida las dos rondan los 200 ms.
+
+### Hidratación partida con `<Suspense>`: probada y descartada
+
+`fix/rd-hidratacion-partida`, 2026-10-17. `<Suspense>` alrededor de Proceso,
+Diagnóstico rápido e Hilo en la portada. Mismo A/B intercalado (`npm run medir --
+--raiz out-antes|out`, 3 cargas por ruta, dos tandas; la máquina lenta, emulada con
+`--cpu 6`; es una emulación, no la «máquina lenta» de la tabla de D-028, que era la máquina cargada: no comparar sus cifras con las de allí). `out-antes/` era una copia del `out/` de la rama base; la prueba no se conserva en una rama, se reproduce envolviendo esas secciones en `<Suspense>` en `src/app/page.tsx`.
+
+| Medida (tarea más larga por carga) | Antes | Con `<Suspense>` |
+|---|---|---|
+| CPU ×4 · portada con cortina / sin cortina | 144-233 ms / 148-215 ms | 145-220 ms / 143-218 ms |
+| CPU ×4 · `/plantillas/` / `/sectores/alojamientos-rurales/` | 143-212 ms / 147-233 ms | 141-174 ms / 161-216 ms |
+| CPU ×6 · portada con cortina / sin cortina | 307-613 ms / 277-520 ms | 245-463 ms / 245-443 ms |
+| CPU ×6 · `/plantillas/` / `/sectores/alojamientos-rurales/` | 264-564 ms / 268-573 ms | 256-417 ms / 239-614 ms |
+
+Quita el commit de hidratación de 165-196 ms en la portada (las rutas interiores no cambian, y sus diferencias son ruido), pero no la evaluación del chunk de
+`react-dom` (229 KB, un solo fichero, 145-250 ms con CPU ×4), que es la única tarea de
+más de 200 ms en las interiores. Y en el export estático React saca esos límites como
+`<!--$?-->` con el HTML en un `<div hidden>` movido por un script con temporizador:
+sin JS las secciones quedan ocultas (`comprobar` T12 «Sin JS» falla) y con JS se
+revelan tarde. Se revierte; C-20 sigue abierto y la siguiente opción es la (c)
+(`DECISIONES.md`). El único cambio que se queda es `medir --cpu`.
 
 ## Dos cosas que no se tocan
 
