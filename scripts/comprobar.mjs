@@ -421,6 +421,12 @@ const pozoEncendido = (page) =>
 async function registrarCambiosDePozo(page) {
   const n = await page.locator(SEL.pozosHero).count();
   assert.equal(n, 4, `hay ${n} pozos en el hero (${SEL.pozosHero}), no 4`);
+  // Con basePath, `load` puede llegar antes de que el hero hidrate: si se empezara a contar
+  // sin pozo encendido, el encendido inicial (−1 → 0) contaría como un cambio.
+  await page.waitForFunction(
+    (sel) => [...document.querySelectorAll(sel)].some((p) => p.classList.contains("es-activo")),
+    SEL.pozosHero,
+  );
   await page.evaluate((sel) => {
     const ps = [...document.querySelectorAll(sel)];
     const r = (window.__cambiosPozo = []);

@@ -559,7 +559,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       como antes;
     - lint y build en verde.
 
-- [ ] **T14 · El hilo (conducto principal).**
+- [x] **T14 · El hilo (conducto principal).**
   - *Cubre*: spec §3.10 (entero), §6 (abrir a mitad de página; barra del
     navegador en móvil), §3.17 (conducto entero), PD-9.
   - *Depende de*: T07, T09, T10, T11, T12, T13.
@@ -668,7 +668,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       tras `domcontentloaded`);
     - lint y build en verde.
 
-- [ ] **T18 · Bajas del kit y de three.**
+- [x] **T18 · Bajas del kit y de three.**
   - *Cubre*: spec §2 («Bajas»), PD-14, PD-4 (comprobación de glifos).
   - *Depende de*: T17 (y con ella, todas las de la portada y las
     interiores).

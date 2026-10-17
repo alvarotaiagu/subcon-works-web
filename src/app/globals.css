@@ -148,10 +148,21 @@ body {
   color: var(--hondo);
 }
 
+/* La letra va en @layer base: suelta, fuera de capa, le ganaba a las clases de los
+   componentes (los títulos de los compromisos salían en Geologica, no en Kode Mono,
+   §3.11). El interlineado y el tracking siguen sueltos: así es como se aprobó el aspecto
+   en T20, y pasarlos a la capa cambiaría unos veinte titulares. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--letra-geologica);
+  }
+}
+
 h1,
 h2,
 h3 {
-  font-family: var(--letra-geologica);
   line-height: var(--titular-interlineado);
   letter-spacing: -0.01em;
 }
