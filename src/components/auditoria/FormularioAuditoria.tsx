@@ -6,6 +6,8 @@ import { bloques, TOTAL_PREGUNTAS, loQueNoPedimos } from "@/content/auditoria";
 import { enviarSolicitud, type ResultadoEnvio } from "@/lib/auditoriaApi";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { Glifo } from "@/components/ui/Glifo";
+import { Boton } from "@/components/ui/Boton";
 import { traerDeClaveAntigua } from "@/lib/almacenamiento";
 import { preguntas as preguntasDiagnostico } from "@/content/diagnostico";
 import { aRespuestasAuditoria, decodificar, mezclarConBorrador } from "@/lib/diagnostico";
@@ -239,7 +241,7 @@ export function FormularioAuditoria() {
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <Progreso paso={paso} progreso={progreso} respondidas={respondidas} irA={irA} />
         {teniaBorrador && paso === 0 && (
-          <p className="font-mono-label mt-6 text-[10px] text-accent">
+          <p className="font-mono-label mt-6 text-[10px] text-superficie">
             Recuperado lo que habías escrito en este navegador
           </p>
         )}
@@ -283,11 +285,11 @@ export function FormularioAuditoria() {
                 <p className="font-mono-label mb-3 text-[10px]">
                   Bloque {bloque.numero} de {bloques.length}
                 </p>
-                <h2 className="text-3xl font-medium text-text-primary md:text-5xl">
+                <h2 className="text-3xl font-medium text-hueso md:text-5xl">
                   {bloque.titulo}
                 </h2>
                 {bloque.entradilla && (
-                  <p className="mt-4 max-w-xl text-text-muted">{bloque.entradilla}</p>
+                  <p className="mt-4 max-w-xl text-apagado-abajo">{bloque.entradilla}</p>
                 )}
 
                 {/* Medida limitada: un campo de una línea a todo el ancho de la
@@ -329,7 +331,7 @@ export function FormularioAuditoria() {
 function AvisoPrerrelleno({ puestas, saltadas }: { puestas: number; saltadas: number }) {
   const una = puestas === 1;
   return (
-    <p className="font-mono-label mb-10 max-w-2xl text-[10px] leading-relaxed text-accent">
+    <p className="font-mono-label mb-10 max-w-2xl text-[10px] leading-relaxed text-superficie">
       Hemos puesto {puestas} {una ? "respuesta" : "respuestas"} de tu diagnóstico rápido.{" "}
       {una ? "Revísala y cámbiala si no cuadra." : "Revísalas y cámbialas si no cuadran."}
       {saltadas > 0 && " Las que ya habías escrito no las hemos tocado."}
@@ -361,9 +363,9 @@ function Progreso({
         </p>
       </div>
 
-      <div className="mt-3 h-px w-full bg-line">
+      <div className="mt-3 h-px w-full bg-conducto">
         <div
-          className="h-px origin-left bg-accent transition-transform duration-500 ease-out"
+          className="h-px origin-left bg-superficie transition-transform duration-500 ease-out"
           style={{ transform: `scaleX(${Math.max(progreso, 0.02)})` }}
         />
       </div>
@@ -376,8 +378,10 @@ function Progreso({
             <span
               aria-hidden="true"
               className={cn(
-                "mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full transition-colors",
-                i === paso ? "bg-accent" : i < paso ? "bg-text-muted" : "bg-line"
+                // El punto de paso es una línea de 2 px (§3.4): lima el actual,
+                // hueso los vistos y conducto (decorativo) los que faltan.
+                "mt-[0.6rem] h-[2px] w-3 shrink-0 transition-colors",
+                i === paso ? "h-[2px] bg-superficie" : i < paso ? "bg-hueso" : "bg-conducto"
               )}
             />
             <button
@@ -390,10 +394,10 @@ function Progreso({
                 // alfa: un gris al 60% sobre el fondo se queda en 3:1 y los
                 // pasos que aún no has visto dejan de leerse.
                 i === paso
-                  ? "text-accent"
+                  ? "text-superficie"
                   : i < paso
-                    ? "text-text-muted hover:text-text-primary"
-                    : "text-text-faint hover:text-text-muted"
+                    ? "text-hueso hover:text-superficie"
+                    : "text-apagado-abajo hover:text-hueso"
               )}
             >
               {etiqueta}
@@ -421,8 +425,8 @@ function PasoContacto({
     <fieldset>
       <legend className="sr-only">Tus datos</legend>
       <p className="font-mono-label mb-3 text-[10px]">Antes de empezar</p>
-      <h2 className="text-3xl font-medium text-text-primary md:text-5xl">Tus datos</h2>
-      <p className="mt-4 max-w-xl text-text-muted">
+      <h2 className="text-3xl font-medium text-hueso md:text-5xl">Tus datos</h2>
+      <p className="mt-4 max-w-xl text-apagado-abajo">
         Lo único obligatorio de todo el formulario. El resto puedes dejarlo a medias y mandarlo
         igual.
       </p>
@@ -492,38 +496,38 @@ function PasoContacto({
         />
       </div>
 
-      <div className="mt-10 max-w-3xl rounded-2xl border border-line bg-bg-raised p-6">
+      <div className="mt-10 max-w-3xl rounded-2xl border border-conducto bg-estrato p-6">
         <label className="flex cursor-pointer items-start gap-4">
           <input
             type="checkbox"
             checked={contacto.consentimiento}
             onChange={(e) => setContacto((c) => ({ ...c, consentimiento: e.target.checked }))}
-            className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-[var(--accent)]"
+            className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-[var(--hueso)]"
             aria-describedby={fallos.consentimiento ? "error-consentimiento" : undefined}
           />
-          <span className="text-sm text-text-muted">
+          <span className="text-sm text-apagado-abajo">
             Acepto que {site.nombre} guarde estos datos para preparar el informe y responderme.
             No se ceden a nadie y puedes pedir que se borren cuando quieras escribiendo a{" "}
-            <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+            <a href={`mailto:${site.email}`} className="link-underline text-hueso">
               {site.email}
             </a>
             . Más detalle en la{" "}
-            <Link href="/privacidad/" className="link-underline text-text-primary">
+            <Link href="/privacidad/" className="link-underline text-hueso">
               política de privacidad
             </Link>
             .
           </span>
         </label>
         {fallos.consentimiento && (
-          <p id="error-consentimiento" className="mt-3 pl-9 text-sm text-accent">
+          <p id="error-consentimiento" className="mt-3 pl-9 text-sm text-superficie">
             {fallos.consentimiento}
           </p>
         )}
       </div>
 
-      <div className="mt-8 border-l-2 border-line pl-5">
+      <div className="mt-8 border-l-2 border-conducto pl-5">
         <p className="font-mono-label mb-3 text-[10px]">Y lo que no te vamos a pedir</p>
-        <ul className="space-y-1.5 text-sm text-text-faint">
+        <ul className="space-y-1.5 text-sm text-apagado-abajo">
           {loQueNoPedimos.map((linea) => (
             <li key={linea}>{linea}</li>
           ))}
@@ -568,10 +572,10 @@ function Campo({
     <div className={multilinea ? "" : undefined}>
       <label htmlFor={id} className="flex items-baseline gap-3">
         {numero && <span className="font-mono-label shrink-0 text-[10px]">{numero}</span>}
-        <span className="text-text-primary">
+        <span className="text-hueso">
           {etiqueta}
           {obligatorio && (
-            <span className="text-accent" aria-hidden="true">
+            <span className="text-superficie" aria-hidden="true">
               {" "}
               *
             </span>
@@ -579,7 +583,7 @@ function Campo({
         </span>
       </label>
       {ayuda && (
-        <p id={idAyuda} className="mt-1.5 text-sm text-text-faint">
+        <p id={idAyuda} className="mt-1.5 text-sm text-apagado-abajo">
           {ayuda}
         </p>
       )}
@@ -610,7 +614,7 @@ function Campo({
         />
       )}
       {error && (
-        <p id={idError} className="mt-2 text-sm text-accent">
+        <p id={idError} className="mt-2 text-sm text-superficie">
           {error}
         </p>
       )}
@@ -636,43 +640,28 @@ function Navegacion({
   const ultimo = paso === TOTAL_PASOS - 1;
 
   return (
-    <div className="mt-14 flex max-w-3xl flex-wrap items-center gap-4 border-t border-line pt-8">
+    <div className="mt-14 flex max-w-3xl flex-wrap items-center gap-4 border-t border-conducto pt-8">
       {paso > 0 && (
-        <button
-          type="button"
-          onClick={onAtras}
-          className="rounded-full border border-line px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
-        >
-          ← Atrás
-        </button>
+        <Boton variante="secundario" onClick={onAtras}>
+          <Glifo nombre="izquierda" /> Atrás
+        </Boton>
       )}
 
       {!ultimo && (
-        <button
+        <Boton
           type="submit"
-          className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim"
           onClick={(e) => {
             e.preventDefault();
             onSiguiente();
           }}
         >
-          {paso === 0 ? "Empezar el cuestionario" : "Siguiente bloque"} →
-        </button>
+          {paso === 0 ? "Empezar el cuestionario" : "Siguiente bloque"} <Glifo nombre="derecha" />
+        </Boton>
       )}
 
-      <button
-        type="button"
-        onClick={onEnviar}
-        disabled={enviando}
-        className={cn(
-          "rounded-full px-7 py-3.5 text-sm font-medium transition-colors disabled:opacity-50",
-          ultimo
-            ? "bg-accent text-bg-base hover:bg-accent-dim"
-            : "border border-line text-text-primary hover:border-accent hover:text-accent"
-        )}
-      >
+      <Boton variante={ultimo ? "primario" : "secundario"} onClick={onEnviar} disabled={enviando}>
         {enviando ? "Enviando…" : ultimo ? "Enviar la solicitud" : "Enviar tal como está"}
-      </button>
+      </Boton>
 
       {paso > 0 && !ultimo && (
         <p className="font-mono-label w-full text-[10px] md:w-auto">
@@ -694,12 +683,12 @@ function Error({ resultado }: { resultado: Extract<ResultadoEnvio, { ok: false }
   return (
     <div
       role="alert"
-      className="mt-10 max-w-2xl rounded-2xl border border-accent/40 bg-accent/5 p-6 text-sm text-text-primary"
+      className="mt-10 max-w-2xl rounded-2xl border border-superficie/40 bg-estrato p-6 text-sm text-hueso"
     >
       <p>{mensajes[resultado.motivo]}</p>
-      <p className="mt-3 text-text-muted">
+      <p className="mt-3 text-apagado-abajo">
         Si sigue sin funcionar, escríbenos a{" "}
-        <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+        <a href={`mailto:${site.email}`} className="link-underline text-hueso">
           {site.email}
         </a>{" "}
         y lo resolvemos por correo.
@@ -711,31 +700,23 @@ function Error({ resultado }: { resultado: Extract<ResultadoEnvio, { ok: false }
 function Enviado({ nombre, respondidas }: { nombre: string; respondidas: number }) {
   return (
     <div className="max-w-xl" role="status">
-      <p className="font-mono-label mb-4 text-[10px] text-accent">Recibido</p>
-      <h2 className="text-4xl font-medium text-text-primary md:text-6xl">
+      <p className="font-mono-label mb-4 text-[10px] text-superficie">Recibido</p>
+      <h2 className="text-4xl font-medium text-hueso md:text-6xl">
         Gracias{nombre ? `, ${nombre.split(" ")[0]}` : ""}.
       </h2>
-      <p className="mt-6 text-lg text-text-muted">
+      <p className="mt-6 text-lg text-apagado-abajo">
         Nos han llegado {respondidas} de las {TOTAL_PREGUNTAS} respuestas. Lo primero que hacemos es
         leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de
         ponernos.
       </p>
-      <p className="mt-4 text-text-muted">
+      <p className="mt-4 text-apagado-abajo">
         El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte.
       </p>
       <div className="mt-10 flex flex-wrap gap-4">
-        <Link
-          href="/plantillas/"
-          className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim"
-        >
-          Mientras, mira las plantillas
-        </Link>
-        <Link
-          href="/"
-          className="rounded-full border border-line px-7 py-3.5 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
-        >
+        <Boton href="/plantillas/">Mientras, mira las plantillas</Boton>
+        <Boton href="/" variante="secundario">
           Volver al inicio
-        </Link>
+        </Boton>
       </div>
     </div>
   );

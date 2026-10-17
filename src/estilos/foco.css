@@ -1,0 +1,53 @@
+/* Zona «foco» (spec 002 §3.4, PD-3). Foco del teclado con la forma del motivo: un
+   recuadro (outline de 2 px, que sobrevive a forced-colors) y, dentro de él, una línea
+   de 4 px debajo del elemento (box-shadow): la superficie bajo lo enfocado.
+
+   Va fuera de capa a propósito: así gana a cualquier utilidad de Tailwind
+   (`outline-none`, `shadow-*`) y nunca se quita el foco sin poner este.
+
+   El color sale de la zona: sobre oscuro (lo de siempre), recuadro --hueso y línea
+   lima; sobre claro (--cal o --tarjeta), las dos en --tinta, porque la lima no se ve.
+   Quien pinte claro lo marca con `data-fondo="claro"` (la cabecera sobre la parte de
+   arriba del hero, el hero) o es un botón `fondo="claro"`. El doble anillo del tirador
+   lo pone el hero (T07). */
+
+:root,
+[data-fondo="oscuro"] {
+  --foco-recuadro: var(--hueso);
+  --foco-linea: var(--superficie);
+}
+
+[data-fondo="claro"],
+.boton-claro {
+  --foco-recuadro: var(--tinta);
+  --foco-linea: var(--tinta);
+}
+
+/* El color del recuadro, ya puesto en reposo: con `transition-colors` (que en
+   Tailwind v4 incluye outline-color) el recuadro llegaría fundiéndose desde
+   currentColor y los primeros fotogramas saldrían del color del texto. */
+:where(a, button, input, textarea, select, summary, [tabindex]) {
+  outline-color: var(--foco-recuadro);
+}
+
+:focus-visible {
+  outline: 2px solid var(--foco-recuadro);
+  outline-offset: 4px;
+  box-shadow: 0 4px 0 0 var(--foco-linea);
+}
+
+/* Dentro de un contenedor que recorta (tarjetas, hero), el recuadro y la línea van
+   por dentro, para que no se corten. `data-foco-dentro` para los recortes que no son
+   una utilidad de Tailwind. */
+:where(.overflow-hidden, .overflow-clip, [data-foco-dentro]) :focus-visible,
+[data-foco-dentro]:focus-visible {
+  outline-offset: -2px;
+  box-shadow: inset 0 -4px 0 0 var(--foco-linea);
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+    box-shadow: none;
+  }
+}

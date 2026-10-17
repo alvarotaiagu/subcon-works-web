@@ -1,7 +1,7 @@
 # 002 · Plan · Rediseño «Por debajo»
 
 Spec: [spec.md](spec.md) (aprobada, D-024) · Tareas: [tasks.md](tasks.md)
-Estado del plan: **por aprobar**, con PD-1 a PD-15.
+Estado del plan: **aprobado (D-025)**, con PD-1 a PD-15.
 
 ## 1. Punto de partida (leído en el código, 2026-10-12)
 

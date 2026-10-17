@@ -20,11 +20,11 @@ export function BrowserMockup({
   priority?: boolean;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-bg-raised transition-colors duration-500 group-hover:border-accent/40">
-      <div className="flex items-center gap-1.5 border-b border-line px-3 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-text-faint/40" />
-        <span className="h-2.5 w-2.5 rounded-full bg-text-faint/40" />
-        <span className="h-2.5 w-2.5 rounded-full bg-text-faint/40" />
+    <div className="overflow-hidden rounded-xl border border-conducto bg-estrato transition-colors duration-500 group-hover:border-superficie/40">
+      <div className="flex items-center gap-1.5 border-b border-conducto px-3 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-apagado-abajo/40" />
+        <span className="h-2.5 w-2.5 rounded-full bg-apagado-abajo/40" />
+        <span className="h-2.5 w-2.5 rounded-full bg-apagado-abajo/40" />
         {url && (
           <span className="font-mono-label ml-3 truncate text-[9px] normal-case tracking-normal">
             {url}
@@ -38,7 +38,7 @@ export function BrowserMockup({
           fill
           priority={priority}
           sizes="(min-width: 768px) 480px, 90vw"
-          className="plantilla-img object-cover object-top"
+          className="object-cover object-top"
         />
       </div>
     </div>

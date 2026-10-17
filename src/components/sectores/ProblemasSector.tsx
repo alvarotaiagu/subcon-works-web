@@ -10,26 +10,26 @@ export function ProblemasSector({
 }) {
   return (
     <section aria-labelledby="problemas-titulo" className={className}>
-      <div className="border-t border-line pt-14">
+      <div className="border-t border-conducto pt-14">
         <p className="font-mono-label mb-4">Lo que pasa hoy</p>
         <h2
           id="problemas-titulo"
-          className="max-w-2xl text-3xl font-medium text-text-primary md:text-5xl"
+          className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
         >
           Dónde se va el tiempo.
         </h2>
         <ol className="mt-12 grid gap-x-12 md:grid-cols-2">
           {problemas.map((problema, i) => (
-            <li key={problema.titulo} className="border-t border-line py-8">
+            <li key={problema.titulo} className="border-t border-conducto py-8">
               <div className="flex gap-6">
                 <span className="font-mono-label w-8 shrink-0 pt-1 text-sm">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="min-w-0">
-                  <h3 className="text-xl font-medium text-text-primary md:text-2xl">
+                  <h3 className="text-xl font-medium text-hueso md:text-2xl">
                     {problema.titulo}
                   </h3>
-                  <p className="mt-2 text-text-muted">{problema.texto}</p>
+                  <p className="mt-2 text-apagado-abajo">{problema.texto}</p>
                 </div>
               </div>
             </li>

@@ -1,20 +1,79 @@
 @import "tailwindcss";
 
+/* CSS por zonas (spec 002, PD-3). Cada tarea escribe solo en el suyo; esta
+   lista no la toca nadie más. Van arriba porque un @import tiene que preceder
+   a cualquier otra regla. */
+@import "../estilos/foco.css";
+@import "../estilos/cabecera.css";
+@import "../estilos/cortina.css";
+@import "../estilos/hero.css";
+@import "../estilos/portada.css";
+@import "../estilos/hilo.css";
+@import "../estilos/proceso.css";
+@import "../estilos/interiores.css";
+@import "../estilos/sobria.css";
+
 :root {
-  /* Color — dark premium, un solo acento */
-  --bg-base: #08090a;
-  --bg-raised: #0e1012;
-  --bg-sunken: #050506;
-  --line: #1c1f23;
-  --text-primary: #f2f3f4;
-  --text-muted: #8a9099;
-  /* #6b7178 se quedaba en 4,04:1 sobre el fondo y 3,87:1 sobre bg-raised, por
-     debajo del 4,5:1 de la AA — y lo usa `.font-mono-label`, que está en toda
-     la web. Subido lo justo para pasar sobre los tres fondos (4,73 / 4,52 /
-     4,83) sin dejar de leerse como el gris tenue del sistema. */
-  --text-faint: #767c83;
-  --accent: #c9f24d;
-  --accent-dim: #8fa832;
+  /* Color (spec 002 §3.1). Arriba, en claro, lo que ve el cliente; debajo, en
+     oscuro, la instalación. La lima es la superficie: solo línea o texto sobre
+     oscuro, nunca de fondo ni como texto sobre cal o tarjeta. */
+  --cal: #f1eee6;
+  --tinta: #15181a;
+  --apagado-arriba: #5c625f;
+  --tarjeta: #fbfaf6;
+  --superficie: #c9f24d;
+  --hondo: #0e1b1e;
+  --estrato: #14272b;
+  --roca: #0a1416;
+  --hueso: #e4ece8;
+  --apagado-abajo: #8fa19e;
+  /* 2,1:1 sobre hondo: solo decorativo, nunca texto ni borde que se lea. */
+  --conducto: #3a5156;
+  --bloque: #8a9099;
+
+  /* Estratos del testigo del proceso (PD-5), de arriba abajo. */
+  --estrato-1: #2a4844;
+  --estrato-2: #233f3b;
+  --estrato-3: #1e3633;
+  --estrato-4: #192e2c;
+  --estrato-5: #152725;
+  --estrato-6: #111f1f;
+
+  /* Letras (§3.2). Los @font-face, con el basePath, van en línea en layout.tsx; detrás
+     de cada letra, sus respaldos medidos (uno por fuente del sistema). */
+  --letra-geologica:
+    "Geologica", "Geologica Arial", "Geologica Liberation", "Geologica Helvetica",
+    "Geologica Roboto", ui-sans-serif, system-ui, sans-serif;
+  --letra-kode:
+    "Kode Mono", "Kode Mono Arial", "Kode Mono Liberation", "Kode Mono Helvetica",
+    "Kode Mono Roboto", ui-monospace, monospace;
+
+  /* Escala (§3.2). Arriba: Geologica; debajo y datos: Kode Mono.
+     Interlineado de Geologica 300: la spec da .92 (hero) y 1 (titulares), pero una
+     mayúscula con tilde («Él», «Á») monta sobre la línea de arriba: medido en canvas a
+     390 y 1440 px, la tilde invade 2-4 px a .92 y queda pegada (0 px) a 1. Sube a 1.02,
+     el primero que deja aire a los dos tamaños (§3.2: «sube hasta que no toque»). */
+  /* Hero, línea de arriba: Geologica 300. */
+  --hero-arriba-tam: clamp(2.4rem, 6.1vw, 6.4rem);
+  --hero-arriba-interlineado: 1.02;
+  --hero-arriba-tracking: -0.04em;
+  /* Hero, línea de abajo: Kode Mono 500. */
+  --hero-abajo-tam: clamp(2rem, 4.9vw, 5.1rem);
+  --hero-abajo-interlineado: 0.98;
+  --hero-abajo-tracking: -0.05em;
+  /* H1 de interiores y H2: Geologica 300; la segunda línea (em), Kode Mono 500 y lima. */
+  --titular-tam: clamp(2rem, 4.6vw, 4.1rem);
+  --titular-interlineado: 1.02;
+  --titular-em-tam: 0.82em;
+  /* Número de paso: Geologica 200, «SHRP» 100, lima. */
+  --paso-tam: clamp(4.5rem, 11vw, 9.5rem);
+  --paso-interlineado: 0.85;
+  /* Texto: Geologica 400. */
+  --texto-tam: 1rem;
+  --texto-interlineado: 1.55;
+  /* Etiquetas y datos: Kode Mono 400-500; las cotas, en mayúsculas espaciadas. */
+  --dato-tam-min: 0.64rem;
+  --dato-tam-max: 0.82rem;
 
   /* Espaciado */
   --space-section: clamp(6rem, 16vw, 12rem);
@@ -31,67 +90,80 @@
   --dur-fast: 0.3s;
   --dur-base: 0.7s;
   --dur-slow: 1.2s;
-
-  /* velocidad de scroll, la actualiza useScrollVelocity */
-  --scroll-velocity: 0;
 }
 
 @theme inline {
-  --color-bg-base: var(--bg-base);
-  --color-bg-raised: var(--bg-raised);
-  --color-bg-sunken: var(--bg-sunken);
-  --color-line: var(--line);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
-  --color-text-faint: var(--text-faint);
-  --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
+  --color-cal: var(--cal);
+  --color-tinta: var(--tinta);
+  --color-apagado-arriba: var(--apagado-arriba);
+  --color-tarjeta: var(--tarjeta);
+  --color-superficie: var(--superficie);
+  --color-hondo: var(--hondo);
+  --color-estrato: var(--estrato);
+  --color-roca: var(--roca);
+  --color-hueso: var(--hueso);
+  --color-apagado-abajo: var(--apagado-abajo);
+  --color-conducto: var(--conducto);
+  --color-bloque: var(--bloque);
+  --color-estrato-1: var(--estrato-1);
+  --color-estrato-2: var(--estrato-2);
+  --color-estrato-3: var(--estrato-3);
+  --color-estrato-4: var(--estrato-4);
+  --color-estrato-5: var(--estrato-5);
+  --color-estrato-6: var(--estrato-6);
 
-  --font-display: var(--font-instrument-sans);
-  --font-body: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  /* Las clases font-display, font-body y font-mono siguen igual; cambia la letra. */
+  --font-display: var(--letra-geologica);
+  --font-body: var(--letra-geologica);
+  --font-mono: var(--letra-kode);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-@media (prefers-color-scheme: light) {
-  /* La marca es intencionalmente dark-only: no se ofrece variante clara. */
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* El fondo de <html> es hondo en toda la web (§3.1); el rebote cal de la
+   portada lo pone su <body> (T06). */
 html {
-  background: var(--bg-base);
+  background: var(--hondo);
   color-scheme: dark;
 }
 
 body {
-  background: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  background: var(--hondo);
+  color: var(--hueso);
+  font-family: var(--letra-geologica);
+  font-size: var(--texto-tam);
+  line-height: var(--texto-interlineado);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* Sin lima de fondo, tampoco en la selección (§3.4). */
 ::selection {
-  background: var(--accent);
-  color: var(--bg-base);
+  background: var(--hueso);
+  color: var(--hondo);
 }
 
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 2px;
+/* La letra va en @layer base: suelta, fuera de capa, le ganaba a las clases de los
+   componentes (los títulos de los compromisos salían en Geologica, no en Kode Mono,
+   §3.11). El interlineado y el tracking siguen sueltos: así es como se aprobó el aspecto
+   en T20, y pasarlos a la capa cambiaría unos veinte titulares. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--letra-geologica);
+  }
 }
 
 h1,
 h2,
 h3 {
-  font-family: var(--font-display), ui-sans-serif, sans-serif;
-  line-height: 0.98;
+  line-height: var(--titular-interlineado);
   letter-spacing: -0.01em;
 }
 
@@ -103,10 +175,150 @@ h3 {
    el valor por defecto y cualquier text-* lo puede pisar. */
 @layer components {
   .font-mono-label {
-    font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--letra-kode);
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--text-faint);
+    color: var(--apagado-abajo);
+  }
+
+  /* Cota (§3.5): Kode Mono mayúscula, siempre sobre oscuro. En reposo apagada (sin
+     opacidad); alcanzada por el conducto, lima. El borde es dibujo, no se lee. */
+  .cota {
+    display: inline-block;
+    font-family: var(--letra-kode);
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--apagado-abajo);
+    border: 1px solid var(--conducto);
+    border-radius: 3px;
+    padding: 0.2em 0.6em;
+    transition:
+      color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  .cota.es-alcanzada {
+    color: var(--superficie);
+    border-color: var(--superficie);
+  }
+
+  /* Titular (§3.2, PD-6): H2 de la portada y H1 de las interiores. La nitidez sale de
+     `--shrp`, que pone la sección, y no se anima. Cada palabra va en su máscara; la
+     máscara baja .14em por debajo de la línea para que la entrada no corte las
+     descendentes (con el margen negativo, la caja de línea no cambia). */
+  .titular {
+    font-family: var(--letra-geologica);
+    font-weight: 300;
+    font-size: var(--titular-tam);
+    line-height: var(--titular-interlineado);
+    letter-spacing: -0.035em;
+    color: var(--hueso);
+    font-variation-settings: "SHRP" var(--shrp, 0);
+  }
+  .titular-em {
+    display: block;
+    margin-top: 0.12em;
+    font-family: var(--letra-kode);
+    font-size: var(--titular-em-tam);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -0.05em;
+    color: var(--superficie);
+  }
+  .titular-mascara {
+    display: inline-block;
+    white-space: nowrap;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  .titular-palabra {
+    display: inline-block;
+  }
+  /* El estado oculto lo pone <Titular> desde JS (solo con `js-si` y movimiento). */
+  .titular:is(.es-por-emerger, .es-emergiendo) .titular-mascara {
+    clip-path: inset(-0.6em -0.3em 0 -0.3em);
+  }
+  .titular.es-por-emerger .titular-palabra {
+    transform: translateY(calc(100% + 0.14em));
+  }
+  .titular.es-emergiendo .titular-palabra {
+    transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: calc(var(--i, 0) * 0.04s);
+  }
+
+  /* Botones (§3.4), los pinta <Boton> o clasesBoton(). `--boton-color` es el color
+     de su zona (relleno del primario, borde y texto del secundario) y
+     `--boton-contra` el del texto sobre ese relleno. Ninguno se rellena de lima. */
+  .boton {
+    --boton-color: var(--hueso);
+    --boton-contra: var(--hondo);
+    --boton-linea: var(--superficie);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border: 1.5px solid var(--boton-color);
+    border-radius: 9999px;
+    padding: 0.8125rem 1.6875rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .boton:disabled {
+    cursor: not-allowed;
+  }
+  .boton-claro {
+    --boton-color: var(--tinta);
+    --boton-contra: var(--cal);
+    --boton-linea: var(--tinta);
+  }
+  .boton-primario {
+    background-color: var(--boton-color);
+    color: var(--boton-contra);
+  }
+  /* La línea de 2 px debajo del primario: la superficie bajo el botón. */
+  .boton-primario::after {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: -8px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--boton-linea);
+    pointer-events: none;
+    transition: background-color var(--dur-base) var(--ease-out);
+  }
+  /* El botón del Fondo (§3.11): la línea descansa apagada hasta que se enciende. */
+  .boton-linea-apagada::after {
+    background: var(--conducto);
+  }
+  .boton-linea-apagada.es-encendida::after {
+    background: var(--superficie);
+  }
+  .boton-secundario {
+    background-color: transparent;
+    color: var(--boton-color);
+  }
+  @media (hover: hover) {
+    .boton-primario:not(:disabled):hover {
+      background-color: transparent;
+      color: var(--boton-color);
+    }
+    .boton-secundario:not(:disabled):hover {
+      background-color: var(--boton-color);
+      color: var(--boton-contra);
+    }
   }
 }
 
@@ -119,16 +331,6 @@ h3 {
 .mask-line {
   overflow: hidden;
   display: block;
-}
-
-/* Grano fijo, no interactivo */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
 }
 
 /* Subrayado animado: entra por la izquierda, se retira por la derecha */
@@ -170,22 +372,6 @@ h3 {
   animation: menu-item-in var(--dur-base) var(--ease-out) both;
 }
 
-/* Plantillas: desaturación y leve acercamiento en reposo, revela al hover.
-   A diferencia del recorte que había aquí antes, la captura no se clipea: son
-   webs reales y lo que interesa es poder leerlas, no insinuarlas. */
-.plantilla-img {
-  filter: grayscale(0.85) contrast(1.02);
-  transform: scale(1.04);
-  transition:
-    filter var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out);
-}
-.plantilla-card:hover .plantilla-img,
-.plantilla-card:focus-visible .plantilla-img {
-  filter: grayscale(0);
-  transform: scale(1);
-}
-
 /* Campos del formulario de auditoría. Un solo estilo para input y textarea:
    línea inferior, sin caja, para que un formulario de 36 preguntas no parezca
    un impreso de la administración. */
@@ -194,10 +380,11 @@ h3 {
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--line);
+  /* Borde de campo: tiene que leerse, así que apagado-abajo y no conducto. */
+  border-bottom: 1px solid var(--apagado-abajo);
   border-radius: 0;
   padding: 0.6rem 0.1rem;
-  color: var(--text-primary);
+  color: var(--hueso);
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.5;
@@ -206,24 +393,24 @@ h3 {
     background-color var(--dur-fast) var(--ease-out);
 }
 .campo::placeholder {
-  color: var(--text-faint);
+  color: var(--apagado-abajo);
 }
 .campo:hover {
-  border-bottom-color: var(--text-faint);
+  border-bottom-color: var(--hueso);
 }
+/* El tinte lima de fondo sale (§3.4): queda solo la línea. El foco (recuadro y
+   línea de abajo) es el de todos, en estilos/foco.css. */
 .campo:focus {
-  outline: none;
-  border-bottom-color: var(--accent);
-  background: color-mix(in oklch, var(--accent) 4%, transparent);
+  border-bottom-color: var(--superficie);
 }
 .campo[aria-invalid="true"] {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--superficie);
 }
 /* El autorrelleno de Chrome pinta un fondo blanco que se come el texto claro. */
 .campo:-webkit-autofill,
 .campo:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--text-primary);
-  -webkit-box-shadow: 0 0 0 1000px var(--bg-raised) inset;
+  -webkit-text-fill-color: var(--hueso);
+  -webkit-box-shadow: 0 0 0 1000px var(--estrato) inset;
 }
 
 /* Aviso de almacenamiento: entra una vez, desde abajo, sin robar el foco. */
@@ -239,148 +426,6 @@ h3 {
 }
 .aviso-cookies {
   animation: aviso-in var(--dur-base) var(--ease-out) 0.6s both;
-}
-
-/* 404: la rueda del diente roto avanza, se traba al llegar al hueco y retrocede. */
-@keyframes rueda-atasco {
-  0%,
-  12% {
-    transform: rotate(0deg);
-  }
-  55% {
-    transform: rotate(38deg);
-  }
-  60% {
-    transform: rotate(34deg);
-  }
-  64% {
-    transform: rotate(37deg);
-  }
-  68%,
-  80% {
-    transform: rotate(35deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .rueda-rota {
-    animation: rueda-atasco 4.5s var(--ease-out) infinite;
-  }
-}
-
-/* Retícula de columnas: líneas de 1px que crecen desde arriba al entrar */
-@keyframes reticula-in {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-.reticula-line {
-  transform-origin: top;
-  animation: reticula-in 1.4s var(--ease-out) both;
-}
-
-/* Hero: eyebrow mono que precede al H1 */
-@keyframes eyebrow-in {
-  from {
-    opacity: 0;
-    letter-spacing: 0.4em;
-  }
-  to {
-    opacity: 1;
-    letter-spacing: 0.14em;
-  }
-}
-.hero-eyebrow {
-  animation: eyebrow-in 0.9s var(--ease-out) both;
-}
-
-/* PageTransition: posición inicial fuera de pantalla.
-   No usar la utilidad translate-y-full de Tailwind aquí: en Tailwind v4 anima
-   la propiedad `translate` independiente, que se compone con el `transform`
-   que mueve GSAP y el resultado neto se queda a medio camino (pantalla tapada). */
-.page-transition-hidden {
-  transform: translateY(100%);
-}
-
-/* Hero: capa de fondo "el umbral" */
-.umbral {
-  --umbral-x: 50%;
-  --umbral-y: 40%;
-  background: radial-gradient(
-    720px circle at var(--umbral-x) var(--umbral-y),
-    color-mix(in oklch, var(--accent) 6%, transparent),
-    transparent 70%
-  );
-}
-
-@keyframes scroll-dot {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(500%);
-  }
-}
-.scroll-dot {
-  animation: scroll-dot 1.8s var(--ease-inout) infinite;
-}
-
-/* Cursor personalizado: se oculta el nativo solo cuando hay puntero fino (no táctil).
-   Se declara también en los elementos interactivos porque su cursor por defecto del
-   navegador (pointer/default en a, button, inputs) no es heredado y pisaría el `none`
-   puesto solo en body. */
-@media (pointer: fine) {
-  body,
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  label,
-  [role="button"] {
-    cursor: none;
-  }
-}
-
-.cursor-ring {
-  transition:
-    width 0.2s var(--ease-out),
-    height 0.2s var(--ease-out),
-    border-color 0.2s var(--ease-out),
-    background-color 0.2s var(--ease-out),
-    opacity 0.2s var(--ease-out);
-}
-.cursor-dot {
-  transition: transform 0.1s linear, opacity 0.2s var(--ease-out);
-}
-html[data-cursor-state="hidden"] .cursor-ring,
-html[data-cursor-state="hidden"] .cursor-dot {
-  opacity: 0;
-}
-html[data-cursor-state="hover"] .cursor-ring {
-  width: 3rem;
-  height: 3rem;
-  border-color: var(--accent);
-}
-html[data-cursor-state="hover"] .cursor-dot {
-  opacity: 0;
-}
-html[data-cursor-state="label"] .cursor-ring {
-  width: 4.5rem;
-  height: 4.5rem;
-  background-color: var(--accent);
-  border-color: var(--accent);
-}
-html[data-cursor-state="label"] .cursor-ring span {
-  color: var(--bg-base);
-}
-html[data-cursor-state="label"] .cursor-dot {
-  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

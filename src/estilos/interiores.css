@@ -1,0 +1,84 @@
+/* Zona «interiores» (spec 002, PD-3): la rellena su tarea. */
+
+/* T16 · Formularios */
+/* Botón desactivado («Seguir» sin nada marcado, «Enviando…»): se pinta con
+   `--apagado-abajo`, sin opacidad en el texto (§3.1 regla 4), y su línea de abajo
+   vuelve a `--conducto`, apagada. Sin hover: lo excluye `.boton-*:not(:disabled)`. */
+.boton:disabled {
+  --boton-color: var(--apagado-abajo);
+}
+.boton-primario:disabled::after {
+  background: var(--conducto);
+}
+
+/* T11 · Plantilla
+   /plantillas/: el filtro activo (spec 002 §3.4): fondo --hueso, texto --hondo y una línea
+   lima de 2 px debajo. La lima es la línea, nunca el relleno. El estado, con prefijo es-. */
+.filtro-sector {
+  position: relative;
+}
+
+/* El catálogo, con tarjetas más anchas que las de la portada (3 columnas como mucho). */
+.lista-titulares.lista-catalogo {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 3.5rem 2rem;
+}
+.filtro-sector.es-activo {
+  border-color: var(--hueso);
+  background: var(--hueso);
+  color: var(--hondo);
+}
+.filtro-sector.es-activo::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: -5px;
+  height: 2px;
+  background: var(--superficie);
+}
+@media (forced-colors: active) {
+  .filtro-sector.es-activo {
+    border: 2px solid Highlight;
+  }
+}
+
+/* T15 · Cabecera de las interiores
+   <CabeceraInterior> (spec 002 §3.12): el hueco de la cabecera fija (h-16 / md:h-20 más
+   1 px de borde), la superficie lima de 3 px justo debajo y, luego, «Volver», la cota y el
+   H1. Sin conducto: el hilo es de la portada. */
+@layer components {
+  .cabecera-interior {
+    padding-top: 65px;
+  }
+  .cabecera-interior-superficie {
+    height: 3px;
+    background: var(--superficie);
+  }
+  .cabecera-interior > .container-max {
+    padding-top: 2rem;
+  }
+  /* Cota y etiqueta en una línea; si no caben (390 px), la etiqueta pasa debajo. */
+  .cabecera-interior-cota {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .cabecera-interior-separador {
+    color: var(--apagado-abajo);
+  }
+  .cabecera-interior-etiqueta {
+    font-size: 0.74rem;
+  }
+  @media (min-width: 768px) {
+    .cabecera-interior {
+      padding-top: 81px;
+    }
+    .cabecera-interior > .container-max {
+      padding-top: 3rem;
+    }
+  }
+}

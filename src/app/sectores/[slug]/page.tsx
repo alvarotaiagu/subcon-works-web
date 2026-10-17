@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Diagnostico } from "@/components/diagnostico/Diagnostico";
+import { nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { CabeceraSector } from "@/components/sectores/CabeceraSector";
 import { ChatEjemplo } from "@/components/sectores/ChatEjemplo";
 import { MejorasSector } from "@/components/sectores/MejorasSector";
 import { PlantillasSector, plantillasValidas } from "@/components/sectores/PlantillasSector";
 import { ProblemasSector } from "@/components/sectores/ProblemasSector";
-import { CtaFinal } from "@/components/sections/CtaFinal";
+import { Fondo } from "@/components/sections/Fondo";
 import { sectores, sectorPorSlug } from "@/content/sectores";
 
 // Export estático: solo existen los tres slugs de D-009. Cualquier otro es la
@@ -41,7 +42,7 @@ export default async function SectorPage({ params }: Props) {
   const bloque = "container-max pb-[var(--space-section)]";
 
   return (
-    <div className="pt-32 md:pt-40">
+    <div style={nitidezInterior("sectores")}>
       {/* 1 · Cabecera */}
       <CabeceraSector pagina={pagina} />
 
@@ -60,17 +61,17 @@ export default async function SectorPage({ params }: Props) {
       <section
         id="diagnostico"
         aria-labelledby="diagnostico-titulo"
-        className="scroll-mt-28 border-y border-line bg-bg-sunken"
+        className="scroll-mt-28 border-y border-conducto bg-roca"
       >
         <div className="container-max py-[var(--space-section)]">
           <p className="font-mono-label mb-4">Diagnóstico rápido · un minuto</p>
           <h2
             id="diagnostico-titulo"
-            className="max-w-2xl text-3xl font-medium text-text-primary md:text-5xl"
+            className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
           >
             Lo primero que haríamos en tu caso.
           </h2>
-          <p className="mt-6 max-w-xl text-text-muted">
+          <p className="mt-6 max-w-xl text-apagado-abajo">
             Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más
             sentido tienen para vosotros. No se envía ni se guarda nada.
           </p>
@@ -92,8 +93,8 @@ export default async function SectorPage({ params }: Props) {
       {/* 6 · Plantillas: no sale si no hay ninguna válida (D-007) */}
       <PlantillasSector plantillas={plantillas} className={`${bloque} scroll-mt-28`} />
 
-      {/* 7 · Cierre */}
-      <CtaFinal />
+      {/* 7 · Cierre: el Fondo de la portada, sin el conducto (spec 002 §3.12) */}
+      <Fondo />
     </div>
   );
 }
