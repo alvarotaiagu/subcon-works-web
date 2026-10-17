@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { gsap, registerGsap, EASE_INOUT, ScrollTrigger } from "@/lib/gsap";
+import { cargarGsap, EASE_INOUT, gsapCargado, type Movimiento } from "@/lib/gsap";
 
 /**
  * Transición entre páginas (spec 002 §3.4). Al cambiar de ruta, la página nueva queda
@@ -10,6 +10,9 @@ import { gsap, registerGsap, EASE_INOUT, ScrollTrigger } from "@/lib/gsap";
  * abajo. Se anima un número (`p`, de 0 a 100) y con él se escriben el `clip-path` de la
  * tapa y la posición de la línea: GSAP normaliza `inset()` y no se anima entero.
  * Con movimiento reducido, cambio directo. En la primera carga no hace nada.
+ *
+ * GSAP llega con `import()` (D-028): si se navega antes de que llegue, o si no llega, el
+ * cambio es directo (§6).
  */
 export function PageTransition() {
   const pathname = usePathname();
@@ -31,7 +34,12 @@ export function PageTransition() {
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
       if (href.startsWith("#") || anchor.getAttribute("target") === "_blank") return;
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      const soltar = ({ ScrollTrigger }: Movimiento) => ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      const ya = gsapCargado();
+      if (ya) soltar(ya);
+      // GSAP en camino (D-028): los pins se ponen en cuanto llega, quizá antes de que React
+      // desmonte la página; se sueltan justo después (su tarea va tras la del pin).
+      else cargarGsap().then(soltar, () => {});
     };
     document.addEventListener("click", onLinkClick, true);
     return () => document.removeEventListener("click", onLinkClick, true);
@@ -47,8 +55,11 @@ export function PageTransition() {
     const linea = lineaRef.current;
     if (!tapa || !linea) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // GSAP aún en camino (D-028) o fallido: cambio directo, como con movimiento reducido.
+    // Esperarlo con la tapa puesta dejaría la página nueva oculta lo que tarde el chunk.
+    const movimiento = gsapCargado();
+    if (!movimiento) return;
 
-    registerGsap();
     const estado = { p: 0 };
     const pintar = () => {
       tapa.style.clipPath = `inset(${estado.p}% 0 0 0)`;
@@ -61,7 +72,7 @@ export function PageTransition() {
     pintar();
     tapa.style.visibility = "visible";
     linea.style.visibility = "visible";
-    const tween = gsap.to(estado, {
+    const tween = movimiento.gsap.to(estado, {
       p: 100,
       duration: 0.8,
       delay: 0.05,

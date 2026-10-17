@@ -14,7 +14,8 @@ import { preguntas as todasLasPreguntas } from "@/content/diagnostico";
 import type { ClaveRespuesta, Contexto, Respuestas, Sector } from "@/content/diagnostico";
 import { esperarCortina } from "@/components/layout/Cortina";
 import { irAAncla } from "@/lib/irAAncla";
-import { registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { gsapCargado } from "@/lib/gsap";
+import { esperarLenis } from "@/hooks/useLenis";
 import { withBasePath } from "@/lib/utils";
 import { PasoPregunta } from "./PasoPregunta";
 import { Resultado } from "./Resultado";
@@ -154,10 +155,10 @@ export function Diagnostico({
 
   // ScrollTrigger mide las secciones de abajo al cargar; si el diagnóstico
   // cambia de alto (pregunta ↔ resultado) sus posiciones quedan viejas (PD-10).
+  // Si GSAP aún no ha llegado (D-028) no hay triggers: medirán al crearse.
   const refrescar = useCallback(() => {
     window.clearTimeout(refrescoRef.current);
-    registerGsap();
-    ScrollTrigger.refresh();
+    gsapCargado()?.ScrollTrigger.refresh();
   }, []);
 
   useEffect(() => {
@@ -183,12 +184,14 @@ export function Diagnostico({
   // El salto a `#diagnostico` de un diagnóstico abierto por URL: después de
   // que la cortina se haya retirado (con ella el body está en
   // `overflow:hidden` y el salto se perdería), con el resultado ya pintado y
-  // con ScrollTrigger al día, que los pins de arriba cambian las medidas.
+  // con ScrollTrigger al día, que los pins de arriba cambian las medidas. Y
+  // con Lenis ya decidido (llega con `import()`, D-028): el salto va por él.
   useEffect(() => {
     if (!saltar) return;
     let vivo = true;
     void (async () => {
       await esperarCortina();
+      await esperarLenis();
       await dosFotogramas();
       if (!vivo) return;
       refrescar();

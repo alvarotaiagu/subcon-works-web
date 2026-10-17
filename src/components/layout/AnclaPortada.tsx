@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { esperarCortina } from "@/components/layout/Cortina";
 import { cortePortada } from "@/content/portada";
-import { registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { esperarLenis } from "@/hooks/useLenis";
+import { cargarGsap, gsapCargado } from "@/lib/gsap";
 import { irAAncla } from "@/lib/irAAncla";
 
 /**
@@ -34,10 +35,18 @@ export function AnclaPortada() {
     void (async () => {
       await esperarCortina();
       await document.fonts.ready;
+      // Con movimiento hay pins: se espera a GSAP, que llega con `import()` (D-028), para
+      // que estén puestos y medidos. Sin movimiento, o si no llega, no hay pins (§6). Y a
+      // que se sepa si hay Lenis, que el salto va por él.
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        try {
+          await cargarGsap();
+        } catch {}
+      }
+      await esperarLenis();
       await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
       if (!vivo) return;
-      registerGsap();
-      ScrollTrigger.refresh();
+      gsapCargado()?.ScrollTrigger.refresh();
       irAAncla(document.getElementById(id));
     })();
     return () => {

@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { cargarGsap, type Movimiento } from "@/lib/gsap";
 import { proceso } from "@/content/proceso";
 import { palabraSemanas, plazo } from "@/content/cifras";
 import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
 
-/** Recorrido del pin (§3.9: unas 4,4 pantallas), en % del alto de la ventana. */
-const RECORRIDO = "+=440%";
+/** Recorrido del pin (§3.9: unas 4,4 pantallas), en altos de la ventana. */
+const PANTALLAS = 4.4;
+const RECORRIDO = `+=${PANTALLAS * 100}%`;
 /** Alto de la broca (px): su borde de abajo es la punta que marca el estrato. */
 const BROCA = 3;
 /** El paso que lleva el pulso (§3.9: el 05). */
@@ -98,7 +99,6 @@ export function Proceso() {
     const main = document.querySelector("main");
     if (!testigo || !escena || !estratos || !broca || !main) return;
 
-    let pin: ScrollTrigger;
     let alto = estratos.clientHeight;
     let ultimo = -1;
     const pintar = (progreso: number) => {
@@ -113,53 +113,80 @@ export function Proceso() {
       }
     };
 
-    try {
-      registerGsap();
-      // Que la barra del navegador en móvil (solo cambia el alto) no recalcule el pin.
-      ScrollTrigger.config({ ignoreMobileResize: true });
-      pin = ScrollTrigger.create({
-        id: "proceso",
-        trigger: escena,
-        start: "top top",
-        end: RECORRIDO,
-        pin: true,
-        onRefresh: (self) => {
-          alto = estratos.clientHeight;
-          pintar(self.progress);
-        },
-        onUpdate: (self) => pintar(self.progress),
-      });
-    } catch {
-      // Sin GSAP: el proceso se queda como tabla (§6).
-      testigoStore.romper();
-      return;
-    }
-
-    // El `end` del pin depende de lo que haya encima: se recalcula cuando cambia el alto
-    // del <main> (imágenes, letras, secciones que se montan) y tras las letras (§6).
-    let altoMain = main.offsetHeight;
-    let pedido = 0;
-    const refrescar = () => {
-      cancelAnimationFrame(pedido);
-      pedido = requestAnimationFrame(() => ScrollTrigger.refresh());
-    };
-    const observador = new ResizeObserver(() => {
-      const h = main.offsetHeight;
-      if (Math.abs(h - altoMain) < 1) return;
-      altoMain = h;
-      refrescar();
-    });
-    observador.observe(main);
+    // GSAP llega con `import()` tras hidratar (D-028). Mientras tanto el testigo está
+    // pintado en reposo por CSS (broca arriba, paso 01) y el recorrido del pin se reserva
+    // ya, al hidratar, como hacía el pin: lo de debajo no salta cuando llega, y al recargar
+    // a mitad de página el navegador devuelve el scroll sobre la página con su alto final.
+    escena.style.marginBottom = `${Math.round(PANTALLAS * window.innerHeight)}px`;
     let vivo = true;
-    void document.fonts.ready.then(() => vivo && refrescar());
+    let quitar = () => {};
+    const anclar = ({ ScrollTrigger }: Movimiento) => {
+      if (!vivo) return;
+      let pin: ReturnType<typeof ScrollTrigger.create>;
+      // El pin-spacer ocupa ahora el sitio reservado (en la misma tarea: no se pinta entre
+      // medias). Sin anclaje de scroll mientras dura el cambio: ScrollTrigger mide con la
+      // reserva ya quitada, y el navegador compensaría ese hueco subiendo la vista 4,4
+      // pantallas (con la página por debajo del proceso, la dejaba dentro del pin).
+      const raiz = document.documentElement;
+      const anclaje = raiz.style.overflowAnchor;
+      raiz.style.overflowAnchor = "none";
+      escena.style.removeProperty("margin-bottom");
+      try {
+        // Que la barra del navegador en móvil (solo cambia el alto) no recalcule el pin.
+        ScrollTrigger.config({ ignoreMobileResize: true });
+        pin = ScrollTrigger.create({
+          id: "proceso",
+          trigger: escena,
+          start: "top top",
+          end: RECORRIDO,
+          pin: true,
+          onRefresh: (self) => {
+            alto = estratos.clientHeight;
+            pintar(self.progress);
+          },
+          onUpdate: (self) => pintar(self.progress),
+        });
+      } catch {
+        // Sin GSAP: el proceso se queda como tabla (§6).
+        testigoStore.romper();
+        return;
+      } finally {
+        // Una medida con el pin-spacer ya puesto, y el anclaje vuelve.
+        void raiz.offsetHeight;
+        raiz.style.overflowAnchor = anclaje;
+      }
+
+      // El `end` del pin depende de lo que haya encima: se recalcula cuando cambia el alto
+      // del <main> (imágenes, letras, secciones que se montan) y tras las letras (§6).
+      let altoMain = main.offsetHeight;
+      let pedido = 0;
+      const refrescar = () => {
+        cancelAnimationFrame(pedido);
+        pedido = requestAnimationFrame(() => ScrollTrigger.refresh());
+      };
+      const observador = new ResizeObserver(() => {
+        const h = main.offsetHeight;
+        if (Math.abs(h - altoMain) < 1) return;
+        altoMain = h;
+        refrescar();
+      });
+      observador.observe(main);
+      void document.fonts.ready.then(() => vivo && refrescar());
+
+      quitar = () => {
+        observador.disconnect();
+        cancelAnimationFrame(pedido);
+        pin.kill();
+        // Sin el pin-spacer la página encoge 4,4 pantallas: que los demás triggers lo sepan.
+        ScrollTrigger.refresh();
+      };
+    };
+    cargarGsap().then(anclar, () => vivo && testigoStore.romper());
 
     return () => {
       vivo = false;
-      observador.disconnect();
-      cancelAnimationFrame(pedido);
-      pin.kill();
-      // Sin el pin-spacer la página encoge 4,4 pantallas: que los demás triggers lo sepan.
-      ScrollTrigger.refresh();
+      quitar();
+      escena.style.removeProperty("margin-bottom");
       broca.style.removeProperty("transform");
       setActivo(0);
     };
