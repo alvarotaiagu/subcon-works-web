@@ -1,6 +1,7 @@
 # 003 · Posicionamiento y textos
 
-Estado: aprobada (D-032, 2026-11-01) · Depende de: 001, 002 · Decisiones: D-003, D-005, D-007, D-008, D-009, D-014 (se respeta), D-019, D-026, D-032; sustituye parte de D-027 cuando se apruebe `textos.md` (D-033); concreta, sin cambiarlos, los principios del SDD · Conflictos: C-22 y C-23, resueltos por D-032 · Pendientes: P-08 a P-13 · Cambia: 001 §3.4 §7 §8; 002 §1 §2 §3.6 §3.7 §3.8 §3.9 §3.11 §3.13 §4 §7 §9
+Estado: aprobada (D-032, 2026-11-01) · Depende de: 001, 002 · Decisiones: D-003, D-005, D-007, D-008, D-009, D-014 (se respeta), D-019, D-026, D-032; sustituye parte de D-027 cuando se apruebe `textos.md` (D-033); concreta, sin cambiarlos, los principios del SDD · Conflictos: C-22 y C-23, resueltos por D-032 · Pendientes: P-08 a P-13 · Cambia: 001 §3.4 §3.8 §7 §8; 002 §1 §2 §3.6 §3.7 §3.8 §3.9 §3.11 §3.13 §4 §7 §9
+Plan: [plan.md](plan.md) (aprobado, D-034; PD-1 a PD-9) · Tareas: [tasks.md](tasks.md) (T01-T12)
 
 ## 1. Objetivo
 
