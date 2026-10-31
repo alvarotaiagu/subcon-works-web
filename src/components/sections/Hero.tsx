@@ -8,7 +8,7 @@ import { Glifo } from "@/components/ui/Glifo";
 import { cortePortada } from "@/content/portada";
 import { flujos, type Flujo } from "@/content/hero";
 import { site } from "@/content/site";
-import { cn, withBasePath } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 /** La entrada «inicio» del corte: su cota y su nitidez salen de ahí, como las demás. */
 const SUPERFICIE = cortePortada[0];
@@ -770,12 +770,11 @@ function Tarjeta({ indice }: { indice: number }) {
       );
     default:
       return (
-        <span className="hero-tarjeta hero-reel">
-          {/* eslint-disable-next-line @next/next/no-img-element -- export estático, sin optimizador */}
-          <img src={withBasePath("/hero/reel.webp")} alt="Un reel" width={200} height={356} decoding="async" />
-          <svg className="hero-reel-play" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-            <path d="M5 3.5v9l7.5-4.5z" />
-          </svg>
+        <span className="hero-tarjeta hero-web">
+          <i className="hero-web-barra" aria-hidden="true" />
+          <i className="hero-relleno" aria-hidden="true" />
+          <i className="hero-relleno hero-relleno-corto" aria-hidden="true" />
+          <span className="hero-pagar">Escríbenos</span>
         </span>
       );
   }

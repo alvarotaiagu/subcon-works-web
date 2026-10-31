@@ -4,7 +4,7 @@ export const site = {
   tagline: "Lo de arriba vende. Lo de abajo trabaja.",
   // Descripción del hero y `description` de la portada (§3.13; P-04).
   descripcion:
-    "Diseñamos lo que ve tu cliente y montamos lo que lo hace funcionar: web, automatización y vídeo para negocios.",
+    "Diseñamos lo que ve tu cliente y montamos lo que lo hace funcionar: web, automatización e inteligencia artificial para negocios.",
   email: "alvarot2601@gmail.com",
   // Teléfono: no se publica ninguno hasta que haya una línea de estudio.
   // No se inventa: el contacto entra por correo y por el formulario.

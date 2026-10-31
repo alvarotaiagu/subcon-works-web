@@ -10,7 +10,7 @@ import { Titular } from "@/components/ui/Titular";
 /**
  * Servicios («0 · Lo que montamos») — spec 002 §3.7.
  *
- * Diez pozos, en el orden de `servicios.ts`. Cada uno: arriba de su línea, número, nombre
+ * Siete pozos, en el orden de `servicios.ts`. Cada uno: arriba de su línea, número, nombre
  * y descripción; debajo, los `incluye` como paradas de un pozo vertical; y el `enlace`, si
  * lo tiene. El pozo en reposo es dibujo en `--conducto` (decorativo); el texto va siempre
  * en `--hueso` o `--apagado-abajo`, nunca con opacidad.
@@ -76,7 +76,7 @@ export function Servicios() {
           className="max-w-3xl"
         />
         <p className="mt-6 max-w-xl text-apagado-abajo">
-          Diez servicios. Cada uno tiene una parte que ve tu cliente y otra que trabaja por debajo.
+          Siete servicios. Cada uno tiene una parte que ve tu cliente y otra que trabaja por debajo.
         </p>
 
         <ol ref={lista} className="servicio-pozos">

@@ -31,7 +31,7 @@
 @layer components {
   .hero {
     --nivel: var(--hero-nivel-movil);
-    /* Alto de la fila de los objetos: rótulo, tarjeta más alta (el reel) y el aire del
+    /* Alto de la fila de los objetos: rótulo, tarjeta más alta y el aire del
        rombo. Las tarjetas se apoyan en la superficie. */
     --obj-alto: max(150px, 9.375rem);
     /* Alto de los pozos cuando van apilados (en columnas, llegan hasta abajo). */
@@ -334,29 +334,16 @@
     color: #b98a00;
   }
 
-  .hero-reel {
-    position: relative;
-    width: 58px;
-    aspect-ratio: 9 / 16;
-    overflow: hidden;
+  /* La web: cabecera oscura, dos líneas de texto y un botón; mismo lenguaje que la tienda. */
+  .hero-web {
+    display: grid;
+    gap: 5px;
+    padding: 6px;
   }
-  .hero-objetos > li:last-child .hero-obj {
-    justify-items: center;
-  }
-  .hero-reel img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .hero-reel-play {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 40%;
-    height: 40%;
-    fill: #fff;
-    filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.5));
+  .hero-web-barra {
+    height: 8px;
+    border-radius: 3px;
+    background: var(--tinta);
   }
 
   /* PD-10: en móvil la burbuja y el rótulo se acortan y las tarjetas pierden el relleno. */
@@ -400,8 +387,12 @@
     .hero-estrellas {
       font-size: 0.8rem;
     }
-    .hero-reel {
-      width: 88px;
+    .hero-web {
+      gap: 6px;
+      padding: 10px;
+    }
+    .hero-web-barra {
+      height: 10px;
     }
   }
 

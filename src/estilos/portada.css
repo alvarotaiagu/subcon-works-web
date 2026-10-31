@@ -397,7 +397,7 @@ body:has([data-hero]) {
 }
 
 
-/* T10 · Servicios (spec 002 §3.7): diez pozos. El dibujo en reposo va en --conducto
+/* T10 · Servicios (spec 002 §3.7): siete pozos. El dibujo en reposo va en --conducto
    (decorativo, nunca se lee); el texto, siempre en --hueso o --apagado-abajo, sin
    opacidad. Encendido = lima solo en línea (la línea, el pozo, el recuadro de cada
    parada) y en el número, que es texto sobre oscuro. */

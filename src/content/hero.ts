@@ -42,9 +42,9 @@ export const flujos: readonly Flujo[] = [
     ],
     flechas: true,
     paradas: [
-      { servicio: "07", texto: "Agente contesta", clave: "WhatsApp" },
-      { servicio: "06", texto: "Cita en tu agenda", clave: "citas" },
-      { servicio: "06", texto: "Recordatorio la víspera", clave: "Recordatorios" },
+      { servicio: "05", texto: "Agente contesta", clave: "WhatsApp" },
+      { servicio: "04", texto: "Cita en tu agenda", clave: "citas" },
+      { servicio: "04", texto: "Recordatorio la víspera", clave: "Recordatorios" },
     ],
   },
   {
@@ -54,7 +54,7 @@ export const flujos: readonly Flujo[] = [
     flechas: true,
     paradas: [
       { servicio: "02", texto: "Cobro con tarjeta o Bizum", clave: "Bizum" },
-      { servicio: "06", texto: "Factura emitida", clave: "facturas" },
+      { servicio: "04", texto: "Factura emitida", clave: "facturas" },
       { servicio: "02", texto: "Aviso de qué reponer", clave: "reponer" },
     ],
   },
@@ -64,20 +64,20 @@ export const flujos: readonly Flujo[] = [
     lectura: ["Reseña de cinco estrellas", "respuesta con tu tono", "entra en el informe del mes."],
     flechas: true,
     paradas: [
-      { servicio: "08", texto: "Respuesta a la reseña", clave: "reseña" },
-      { servicio: "05", texto: "Ficha de Google al día", clave: "Ficha de Google" },
-      { servicio: "06", texto: "Informe del mes", clave: "Informes" },
+      { servicio: "06", texto: "Respuesta a la reseña", clave: "reseña" },
+      { servicio: "03", texto: "Ficha de Google al día", clave: "Ficha de Google" },
+      { servicio: "04", texto: "Informe del mes", clave: "Informes" },
     ],
   },
   {
-    rotulo: "Instagram",
-    rotuloCorto: "Instagram",
-    lectura: ["Lo que hay debajo de un reel:", "se graba en tu local,", "se monta con subtítulos", "y sale programado."],
-    flechas: false,
+    rotulo: "Tu web",
+    rotuloCorto: "Tu web",
+    lectura: ["La web vieja", "se rescata sin perder Google", "y queda vigilada cada día."],
+    flechas: true,
     paradas: [
-      { servicio: "09", texto: "Grabado en tu local", clave: "local" },
-      { servicio: "09", texto: "Montaje y subtítulos", clave: "subtítulos" },
-      { servicio: "09", texto: "Programado en el calendario", clave: "Calendario" },
+      { servicio: "01", texto: "Se saca la web vieja", clave: "Rescate de webs viejas" },
+      { servicio: "01", texto: "Sin perder Google", clave: "Redirecciones 301" },
+      { servicio: "07", texto: "Vigilada cada día", clave: "Vigilancia de caídas" },
     ],
   },
 ];
