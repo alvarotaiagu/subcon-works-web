@@ -7,7 +7,7 @@ import { Cota } from "@/components/ui/Cota";
 import { Glifo } from "@/components/ui/Glifo";
 import { cortePortada } from "@/content/portada";
 import { flujos, type Flujo } from "@/content/hero";
-import { site } from "@/content/site";
+import { hero as textoHero } from "@/content/consultora";
 import { cn } from "@/lib/utils";
 
 /** La entrada «inicio» del corte: su cota y su nitidez salen de ahí, como las demás. */
@@ -551,16 +551,17 @@ export function Hero() {
         {/* Un solo <h1>, entero (§3.2): el espacio entre las dos líneas es para el lector. */}
         <h1 className="hero-titular" data-sigue-superficie="">
           <span className="hero-l1" data-capa="arriba">
-            Lo de arriba vende.
+            {textoHero.linea1}
           </span>{" "}
           <span className="hero-l2" data-capa="abajo">
-            Lo de abajo <em>trabaja.</em>
+            {textoHero.linea2} <em>{textoHero.linea2em}</em>
           </span>
         </h1>
 
         <p className="hero-cota" data-capa="abajo">
           <span className="hero-cota-mov" data-sigue-superficie="">
             <Cota>{SUPERFICIE.cota}</Cota>
+            <span className="hero-lema font-mono-label">{textoHero.lema}</span>
           </span>
         </p>
 
@@ -702,13 +703,20 @@ export function Hero() {
               <span>{viva}</span>
             </p>
 
-            <p className="hero-descripcion">{site.descripcion}</p>
+            {textoHero.parrafos.map((parrafo) => (
+              <p key={parrafo} className="hero-descripcion">
+                {parrafo}
+              </p>
+            ))}
             <div className="hero-botones">
-              <Boton href="/auditoria/">Auditoría gratis</Boton>
+              <Boton href="#contacto">{textoHero.ctaPrincipal}</Boton>
               <Boton href="#servicios" variante="secundario">
-                Ver qué hay debajo
+                {textoHero.ctaSecundario}
               </Boton>
             </div>
+            <p className="hero-especialidades font-mono-label">
+              {textoHero.especialidades.join(" · ")}
+            </p>
           </div>
         </div>
       </div>

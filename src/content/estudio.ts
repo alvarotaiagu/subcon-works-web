@@ -88,10 +88,10 @@ export const comoTrabajamos: Punto[] = [
   {
     titulo: "Partimos de una base propia.",
     texto:
-      `${plantillas.length} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso son semanas y no meses.`,
+      `${plantillas.length} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas.`,
   },
   {
-    titulo: "Lo ves funcionando antes de pagar.",
+    titulo: "Lo ves funcionando antes de cada pago.",
     // El mismo texto que el paso 05 de Proceso, para que no se separen.
     texto: proceso[4].descripcion,
   },

@@ -78,7 +78,7 @@ export const viewport: Viewport = {
 // noindex en todas las páginas, y robots.ts bloqueando el rastreo entero.
 export const metadata: Metadata = {
   metadataBase: new URL("https://alvarotaiagu.github.io/subcon-works-web/"),
-  title: `${site.nombre} — ${site.tagline}`,
+  title: `${site.nombre} — IA, automatización y software a medida para pymes`,
   description: site.descripcion,
   robots: {
     index: false,
@@ -139,6 +139,7 @@ export default function RootLayout({
       <body>
         <a
           href="#contenido"
+          data-ancla-nativa=""
           className={`${clasesBoton()} fixed left-4 top-4 z-[100] -translate-y-24 px-5 py-2 transition-transform focus-visible:translate-y-0`}
         >
           Saltar al contenido

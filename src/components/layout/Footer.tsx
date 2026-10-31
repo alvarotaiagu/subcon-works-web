@@ -46,8 +46,8 @@ export function Footer() {
         <div className="md:col-span-2">
           <Logo className="mb-5 text-2xl" />
           <p className="max-w-sm text-apagado-abajo">{site.descripcion}</p>
-          <Boton href="/auditoria/" className="mt-7 px-6 py-3">
-            Auditoría gratis
+          <Boton href="/#contacto" className="mt-7 px-6 py-3">
+            Solicitar diagnóstico
           </Boton>
         </div>
 

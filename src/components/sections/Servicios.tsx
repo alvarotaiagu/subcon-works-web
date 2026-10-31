@@ -3,14 +3,15 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
-import { servicios } from "@/content/servicios";
+import { servicios as serviciosPortada, type Servicio } from "@/content/servicios";
 import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 
 /**
  * Servicios («0 · Lo que montamos») — spec 002 §3.7.
  *
- * Siete pozos, en el orden de `servicios.ts`. Cada uno: arriba de su línea, número, nombre
+ * Un pozo por servicio, en el orden de `servicios.ts` (o de `contenido`: la portada
+ * «consultora» pinta así sus cuatro líneas). Cada uno: arriba de su línea, número, nombre
  * y descripción; debajo, los `incluye` como paradas de un pozo vertical; y el `enlace`, si
  * lo tiene. El pozo en reposo es dibujo en `--conducto` (decorativo); el texto va siempre
  * en `--hueso` o `--apagado-abajo`, nunca con opacidad.
@@ -23,10 +24,27 @@ import { Titular } from "@/components/ui/Titular";
  *    desde aquí). Sin JS no se enciende, pero se lee entero.
  */
 
+/** Lo que pinta cada pozo (el `icono` de `Servicio` no sale aquí). */
+type Pozo = Pick<Servicio, "numero" | "nombre" | "descripcion" | "enlace"> & { incluye: readonly string[] };
+
+interface ContenidoServicios {
+  arriba: string;
+  em: string;
+  intro: string;
+  pozos: readonly Pozo[];
+}
+
+const contenidoPortada: ContenidoServicios = {
+  arriba: "Montamos lo que se ve",
+  em: "y lo que va debajo.",
+  intro: "Siete servicios. Cada uno tiene una parte que ve tu cliente y otra que trabaja por debajo.",
+  pozos: serviciosPortada,
+};
+
 /** Escritorio de verdad: hay hover y cabe en filas. Lo demás es la lista vertical. */
 const ESCRITORIO = "(hover: hover) and (min-width: 768px)";
 
-export function Servicios() {
+export function Servicios({ contenido = contenidoPortada }: { contenido?: ContenidoServicios }) {
   const lista = useRef<HTMLOListElement>(null);
 
   useEffect(() => {
@@ -69,18 +87,11 @@ export function Servicios() {
   return (
     <Seccion id="servicios" className="py-[var(--space-section)]">
       <div className="container-max">
-        <Titular
-          nivel={2}
-          arriba="Montamos lo que se ve"
-          em="y lo que va debajo."
-          className="max-w-3xl"
-        />
-        <p className="mt-6 max-w-xl text-apagado-abajo">
-          Siete servicios. Cada uno tiene una parte que ve tu cliente y otra que trabaja por debajo.
-        </p>
+        <Titular nivel={2} arriba={contenido.arriba} em={contenido.em} className="max-w-3xl" />
+        <p className="mt-6 max-w-xl text-apagado-abajo">{contenido.intro}</p>
 
         <ol ref={lista} className="servicio-pozos">
-          {servicios.map((servicio) => (
+          {contenido.pozos.map((servicio) => (
             // Focusable a propósito: el teclado enciende el pozo (§3.7). El foco visible
             // lo pinta `foco.css`; el pozo encendido, `portada.css`.
             <li key={servicio.numero} className="servicio-pozo" tabIndex={0}>

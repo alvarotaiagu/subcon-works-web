@@ -34,6 +34,8 @@ export function PageTransition() {
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
       if (href.startsWith("#") || anchor.getAttribute("target") === "_blank") return;
+      // `/#servicios` desde la portada no cambia de ruta: no se desmonta nada y los pins siguen.
+      if (new URL(href, window.location.href).pathname === window.location.pathname) return;
       const soltar = ({ ScrollTrigger }: Movimiento) => ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       const ya = gsapCargado();
       if (ya) soltar(ya);
