@@ -1,13 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { gsap, registerGsap, EASE_INOUT, ScrollTrigger } from "@/lib/gsap";
+import { cargarGsap, EASE_INOUT, gsapCargado, type Movimiento } from "@/lib/gsap";
 
-/** Overlay que cubre y descubre en cada cambio de ruta. */
+/**
+ * Transición entre páginas (spec 002 §3.4). Al cambiar de ruta, la página nueva queda
+ * tapada por el terreno (--hondo) y se descubre desde una línea lima que baja de arriba
+ * abajo. Se anima un número (`p`, de 0 a 100) y con él se escriben el `clip-path` de la
+ * tapa y la posición de la línea: GSAP normaliza `inset()` y no se anima entero.
+ * Con movimiento reducido, cambio directo. En la primera carga no hace nada.
+ *
+ * GSAP llega con `import()` (D-028): si se navega antes de que llegue, o si no llega, el
+ * cambio es directo (§6).
+ */
 export function PageTransition() {
   const pathname = usePathname();
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const tapaRef = useRef<HTMLDivElement>(null);
+  const lineaRef = useRef<HTMLDivElement>(null);
   const isFirst = useRef(true);
 
   useEffect(() => {
@@ -24,45 +34,67 @@ export function PageTransition() {
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
       if (href.startsWith("#") || anchor.getAttribute("target") === "_blank") return;
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      const soltar = ({ ScrollTrigger }: Movimiento) => ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      const ya = gsapCargado();
+      if (ya) soltar(ya);
+      // GSAP en camino (D-028): los pins se ponen en cuanto llega, quizá antes de que React
+      // desmonte la página; se sueltan justo después (su tarea va tras la del pin).
+      else cargarGsap().then(soltar, () => {});
     };
     document.addEventListener("click", onLinkClick, true);
     return () => document.removeEventListener("click", onLinkClick, true);
   }, []);
 
-  useEffect(() => {
+  // Antes de pintar: la página nueva no llega a verse ni un fotograma sin tapar.
+  useLayoutEffect(() => {
     if (isFirst.current) {
       isFirst.current = false;
       return;
     }
-    const overlay = overlayRef.current;
-    if (!overlay) return;
+    const tapa = tapaRef.current;
+    const linea = lineaRef.current;
+    if (!tapa || !linea) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // GSAP aún en camino (D-028) o fallido: cambio directo, como con movimiento reducido.
+    // Esperarlo con la tapa puesta dejaría la página nueva oculta lo que tarde el chunk.
+    const movimiento = gsapCargado();
+    if (!movimiento) return;
 
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    registerGsap();
-    // La posición inicial viene de la clase CSS .page-transition-hidden (transform:
-    // translateY(100%)), no de GSAP. GSAP la lee como un offset "y" en píxeles y lo
-    // arrastraría sumado al yPercent que anima a continuación, dejando la cortina a
-    // medio camino al terminar. Se limpia ese "y" heredado antes de animar.
-    gsap.set(overlay, { y: 0 });
-    const tl = gsap.timeline();
-    tl.fromTo(overlay, { yPercent: 100 }, { yPercent: 0, duration: 0.4, ease: EASE_INOUT }).to(
-      overlay,
-      { yPercent: -100, duration: 0.5, ease: EASE_INOUT, delay: 0.05 }
-    );
+    const estado = { p: 0 };
+    const pintar = () => {
+      tapa.style.clipPath = `inset(${estado.p}% 0 0 0)`;
+      linea.style.transform = `translateY(${estado.p}%)`;
+    };
+    const ocultar = () => {
+      tapa.style.visibility = "hidden";
+      linea.style.visibility = "hidden";
+    };
+    pintar();
+    tapa.style.visibility = "visible";
+    linea.style.visibility = "visible";
+    const tween = movimiento.gsap.to(estado, {
+      p: 100,
+      duration: 0.8,
+      delay: 0.05,
+      ease: EASE_INOUT,
+      onUpdate: pintar,
+      onComplete: ocultar,
+    });
 
     return () => {
-      tl.kill();
+      tween.kill();
+      ocultar();
     };
   }, [pathname]);
 
   return (
-    <div
-      ref={overlayRef}
-      className="page-transition-hidden pointer-events-none fixed inset-0 z-[95] bg-bg-base"
-      aria-hidden="true"
-    />
+    <div className="pointer-events-none fixed inset-0 z-[95]" aria-hidden="true">
+      <div ref={tapaRef} className="invisible absolute inset-0 bg-hondo" />
+      {/* La línea va en una capa del alto de la ventana: su translateY en % es el mismo
+          número que el recorte de la tapa. */}
+      <div ref={lineaRef} className="invisible absolute inset-0">
+        <div className="h-[3px] w-full bg-superficie" />
+      </div>
+    </div>
   );
 }

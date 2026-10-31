@@ -371,7 +371,16 @@ export const plantillas: Plantilla[] = [
 
 export const plantillasDestacadas = plantillas.filter((p) => p.destacada);
 
-/** Sectores únicos, en el orden en que aparecen. Alimenta el filtro de /plantillas. */
-export const sectoresPlantillas = Array.from(new Set(plantillas.map((p) => p.sector))).sort(
-  (a, b) => a.localeCompare(b, "es")
-);
+/**
+ * Sin tildes ni mayúsculas. Con estos sectores ordena igual que `localeCompare(…, "es")`
+ * (lo comprueba un test), sin arrancar el collator de ICU: eso son unos 35 ms con CPU ×4
+ * dentro de la hidratación de la portada (spec 002 §3.15).
+ */
+const claveOrden = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+/** Sectores únicos, en orden alfabético. Alimenta el filtro de /plantillas. */
+export const sectoresPlantillas = Array.from(new Set(plantillas.map((p) => p.sector))).sort((a, b) => {
+  const x = claveOrden(a);
+  const y = claveOrden(b);
+  return x < y ? -1 : x > y ? 1 : 0;
+});

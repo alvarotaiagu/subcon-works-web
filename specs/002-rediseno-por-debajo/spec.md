@@ -1,7 +1,7 @@
 # 002 · Rediseño «Por debajo»
 
-Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024 · Conflictos: — · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
-Plan: [plan.md](plan.md) (por aprobar) · Tareas: [tasks.md](tasks.md)
+Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024, D-026, D-028, D-030 · Conflictos: — · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
+Plan: [plan.md](plan.md) (aprobado, D-025) · Tareas: [tasks.md](tasks.md)
 
 ## 1. Objetivo
 
@@ -365,7 +365,9 @@ primero y la etiqueta debajo, en la misma línea en escritorio separadas por
 **Composición.** Fondo partido por la superficie: `--cal` arriba y `--hondo`
 abajo, con la línea lima de 3 px a la altura del nivel.
 
-- **Escritorio** (≥ 768 px): alto `clamp(700px, 100svh, 900px)`, nivel al 50 %.
+- **Escritorio** (≥ 768 px): alto `clamp(700px, 100svh, 900px)`, nivel al 50 % de ese
+  clamp. Si lo de debajo de la superficie no cabe (pantallas bajas, o de 768 a 1023 px
+  de ancho, que va apilado), el hero crece y no recorta (D-030).
 - **Móvil**: alto `max(100svh, contenido)` (nunca recorta: el hero crece si
   no cabe), nivel fijo en px, medido para que encima quepan los objetos y la
   línea de arriba del titular a 360 px de ancho. Ningún texto del hero baja de
@@ -505,13 +507,17 @@ Préstamo de B. Título: «Una plantilla de 30.» El número sale de
   - el dorsal en Kode Mono, lima sobre `--hondo`, en una esquina de la parte
     de abajo.
   - El enlace va a `demo`, en pestaña nueva, con `rel="noopener"`.
-- **Banquillo**: las no destacadas, en lista en Kode Mono pequeño, con dorsal
-  del 11 en adelante: `dorsal · negocio · sector · ciudad`, cada una enlazada a
-  su `demo`. En móvil, dos columnas o una (lo que no corte el texto).
+- **Sin banquillo** (D-026, sustituye a la lista de las no destacadas): las
+  demás solo están en `/plantillas/`. En su lugar, **«¿Tu sector no está?»**:
+  «Aquí hay N de las 30 que tenemos publicadas. Escríbenos con tu sector y te
+  enseñamos la que más se acerca a lo tuyo, o te preparamos una para él.»
+  (P-04) y el botón secundario «Pedir la de mi sector», un `mailto:` a
+  `site.email` con asunto y cuerpo ya escritos. La web no guarda nada: no hay
+  formulario ni datos personales. El mismo correo sustituye a «Escribir un
+  correo» en el cierre de `/plantillas/`.
 - El dorsal **no se guarda**: se calcula con el orden de `plantillas.ts`
   (destacadas primero). Solo sale en la portada.
-- Bajo el banquillo: «30 plantillas» (de `cifras.ts`) y un enlace a
-  `/plantillas/`.
+- Debajo: «30 plantillas» (de `cifras.ts`) y un enlace a `/plantillas/`.
 - Fuera de B no se trae nada: ni campo, ni fichas, ni Alumni Sans ni Host
   Grotesk.
 
@@ -652,6 +658,7 @@ antes de publicar.
 | Entradilla de Servicios (P-04) | «Diez servicios. Cada uno tiene una parte que ve tu cliente y otra que trabaja por debajo.» |
 | Título de La plantilla | «Una plantilla de 30.» |
 | Rótulo de los ejemplos del hero | «Ejemplo» |
+| «¿Tu sector no está?» bajo las destacadas (P-04, D-026) | «Aquí hay N de las 30 que tenemos publicadas. Escríbenos con tu sector y te enseñamos la que más se acerca a lo tuyo, o te preparamos una para él.» · botón «Pedir la de mi sector» |
 | Cotas | las del §3.5 y §3.12 |
 | Tabla del proceso (P-04) | columnas «Lo que ves tú» / «Lo que hacemos por debajo» |
 
@@ -731,7 +738,7 @@ Las cifras **medidas** se escriben en una tabla «Presupuesto» del `README.md`.
 | CLS de la portada: carga, scroll por el hero y 1 s de arrastre del tirador | ≤ 0,05 en total | `layout-shift` con `hadRecentInput` incluido |
 | INP del instrumento (tocar un objeto, arrastrar el tirador) | ≤ 200 ms | `event` timing (Event Timing API) con CPU ×4 |
 | Letras | 2 ficheros, ≤ 70 KB entre las dos (con los glifos añadidos) | tamaño en `out/` |
-| Tareas largas tras `document.fonts.ready` | ninguna > 200 ms | `longtask`, control lanzado con `setTimeout` |
+| Tareas largas tras `document.fonts.ready` | mediana de la tarea más larga por carga ≤ 300 ms con CPU ×4 (D-031; antes «ninguna > 200 ms») | `longtask`, control lanzado con `setTimeout` |
 
 - Sin canvas ni WebGL en ninguna parte (sale `three`). Pozos, hilo y testigo
   son SVG y CSS.
@@ -852,8 +859,8 @@ No hay base de datos ni migraciones. Cambios en el contenido:
   proceso sale como tabla (la tabla está en el HTML y el testigo se monta
   encima solo con JS).
 - **Catálogo con más de 30 plantillas o con menos de 10 destacadas** (P-02):
-  el título y el banquillo salen de los datos; si hay menos de 10 destacadas,
-  los titulares son las que haya y el banquillo sigue la numeración.
+  el título y el recuento salen de los datos; si hay menos de 10 destacadas,
+  los titulares son las que haya.
 - **Estado y bloque con el mismo nombre**: las clases de estado van con
   prefijo `es-` (`es-activo`, `es-alcanzada`, `es-pasado`).
 - **Texto suelto en un grid** (paradas, datos): siempre dentro de un `<span>`.

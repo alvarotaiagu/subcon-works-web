@@ -1,0 +1,81 @@
+/* Zona «cortina» (spec 002 §3.14, plan PD-8 y PD-13): la cortina de entrada de la
+   portada. La decide el script del <head> (`html.cortina-si`); sin esa clase no se pinta
+   ni un fotograma. Para retirarla se quita la clase (lo hacen Cortina.tsx y el seguro
+   del <head>): con ella se van la cortina y el bloqueo del scroll a la vez, sin otro
+   selector que tenga que ganar en especificidad. */
+
+/* Mientras está puesta no se hace scroll (la rueda y el dedo, para Lenis, los corta
+   Cortina.tsx). El hueco de la barra se queda reservado: al volver la barra no se
+   recoloca nada. */
+html.cortina-si {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+@layer components {
+  .cortina {
+    display: none;
+  }
+
+  html.cortina-si .cortina {
+    /* La altura de la superficie del hero (hero.css), hasta que Cortina.tsx la mide: así
+       el corte entre los dos fondos no salta al medir. */
+    --cortina-nivel: var(--hero-nivel-movil, 50svh);
+    display: block;
+    position: fixed;
+    inset: 0;
+    /* Por encima de la cabecera (80) y del aviso de cookies (90); por debajo de la
+       transición (95) y de «Saltar al contenido» (100). */
+    z-index: 92;
+    overflow: hidden;
+    pointer-events: auto;
+  }
+  @media (min-width: 768px) {
+    html.cortina-si .cortina {
+      --cortina-nivel: max(calc(clamp(700px, 100svh, 900px) / 2), 21.875rem);
+    }
+  }
+
+  /* Los dos fondos (§3.14): distintos de lo que destapan. */
+  .cortina-arriba,
+  .cortina-abajo {
+    position: absolute;
+    inset-inline: 0;
+  }
+  .cortina-arriba {
+    top: 0;
+    height: var(--cortina-nivel);
+    display: grid;
+    place-items: center;
+    background: #10262a;
+  }
+  .cortina-abajo {
+    top: var(--cortina-nivel);
+    bottom: 0;
+    background: #081113;
+  }
+
+  /* El símbolo aparece en el paso 1 (Cortina.tsx); hasta entonces no está. */
+  .cortina-simbolo {
+    display: block;
+    width: clamp(90px, 12vw, 150px);
+    opacity: 0;
+  }
+  .cortina-simbolo svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* La superficie: la misma línea del hero (3 px, lima), a su misma altura. Se traza
+     desde el centro. */
+  .cortina-superficie {
+    position: absolute;
+    inset-inline: 0;
+    top: var(--cortina-nivel);
+    height: 3px;
+    margin-top: -1.5px;
+    background: var(--superficie);
+    transform: scaleX(0);
+  }
+}

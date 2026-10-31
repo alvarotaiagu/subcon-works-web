@@ -69,7 +69,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Base
 
-- [ ] **T01 · Rama de integración, Playwright y pruebas pendientes.**
+- [x] **T01 · Rama de integración, Playwright y pruebas pendientes.**
   - *Cubre*: PD-1, PD-2, D-023, spec §7 (forma), §3.15 (`servir.mjs`,
     `medir.mjs`).
   - *Hacer*:
@@ -159,7 +159,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - `npm run medir` da cifras de la web de hoy;
     - lint y build en verde.
 
-- [ ] **T02 · Tokens de color y cambio de todas las clases.**
+- [x] **T02 · Tokens de color y cambio de todas las clases.**
   - *Cubre*: spec §3.1 (entero), §3.4 («Ningún elemento se rellena de lima»,
     como cambio de clases), PD-3, PD-5.
   - *Depende de*: T01.
@@ -194,7 +194,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       o texto negro por defecto);
     - lint y build en verde.
 
-- [ ] **T03 · Letras autoalojadas, escala y glifos.**
+- [x] **T03 · Letras autoalojadas, escala y glifos.**
   - *Cubre*: spec §3.2 (salvo «Palabras que emergen», que va en T06), §3.3
     (`alt` de OG), PD-4.
   - *Depende de*: T02. *En paralelo con*: T04.
@@ -231,7 +231,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       (mira `getComputedStyle` en tres páginas);
     - lint y build en verde.
 
-- [ ] **T04 · Logo y símbolo.**
+- [x] **T04 · Logo y símbolo.**
   - *Cubre*: spec §3.3 (salvo OG, que va en T03).
   - *Depende de*: T02. *En paralelo con*: T03.
   - *Hacer*:
@@ -258,7 +258,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Piezas comunes y el corte
 
-- [ ] **T05 · Cabecera, botones, foco, pie, aviso y transición.**
+- [x] **T05 · Cabecera, botones, foco, pie, aviso y transición.**
   - *Cubre*: spec §3.4 (entero), PD-9 (cabecera), §3.5 (cotas del menú).
   - *Depende de*: T03, T04.
   - *Hacer*:
@@ -305,7 +305,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       `src/` (el fichero del hook lo borra T18);
     - lint y build en verde.
 
-- [ ] **T06 · El corte de la portada.**
+- [x] **T06 · El corte de la portada.**
   - *Cubre*: spec §3.5 (entero), §3.2 («Palabras que emergen» y «Nitidez por
     cota»), §3.1 (`colorScheme` y `themeColor` de la portada; fondo cal en
     el rebote), PD-6, PD-7.
@@ -344,7 +344,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Portada
 
-- [ ] **T07 · Hero: composición, pozos y encendido.**
+- [x] **T07 · Hero: composición, pozos y encendido.**
   - *Cubre*: spec §3.6 (composición, titular, LCP, descripción, botones,
     objetos y pozos, rótulo «Ejemplo», encender un pozo, anuncios, «al
     cargar», móvil), §3.13 (`site.tagline`, `site.descripcion`,
@@ -388,7 +388,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       en la PR;
     - lint y build en verde.
 
-- [ ] **T08 · Hero vivo: inactividad, tirador, scroll y bajada de calidad.**
+- [x] **T08 · Hero vivo: inactividad, tirador, scroll y bajada de calidad.**
   - *Cubre*: spec §3.6 (inactividad, «Pausar ejemplos», tirador, scroll),
     §3.15 (bucle parado fuera de pantalla, bajada de calidad), §3.17 (hero),
     §6 (toque durante la inactividad, arrastre durante el scroll), PD-11.
@@ -415,7 +415,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       commitea);
     - lint y build en verde.
 
-- [ ] **T09 · Cortina y script del `<head>`.**
+- [x] **T09 · Cortina y script del `<head>`.**
   - *Cubre*: spec §3.14 (entero), §3.16 («Sin parpadeo»: la clase
     `densidad-sobria`), §6 (sin GSAP, sin JS), PD-8, PD-13.
   - *Depende de*: T07. *En paralelo con*: T08.
@@ -444,7 +444,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       baja a `#diagnostico` **después** de la cortina;
     - lint y build en verde.
 
-- [ ] **T10 · Servicios («0 · Lo que montamos»).**
+- [x] **T10 · Servicios («0 · Lo que montamos»).**
   - *Cubre*: spec §3.7, §3.13 (titular y entradilla).
   - *Depende de*: T06.
   - *Hacer*:
@@ -464,7 +464,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - el teclado enciende cada pozo;
     - lint y build en verde.
 
-- [ ] **T11 · La plantilla («−1») y la tarjeta de corte.**
+- [x] **T11 · La plantilla («−1») y la tarjeta de corte.**
   - *Cubre*: spec §3.8 (entero), §3.12 (`/plantillas/`: tarjeta sin dorsal,
     filtros, `priority` en las tres primeras), §3.4 (filtro activo), §6
     (catálogo con más de 30 o menos de 10 destacadas), §5 (`rel="noopener"`).
@@ -498,7 +498,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - a 360 px el banquillo no corta texto;
     - lint y build en verde.
 
-- [ ] **T12 · Proceso («−2») con el testigo.**
+- [x] **T12 · Proceso («−2») con el testigo.**
   - *Cubre*: spec §3.9 (entero), §3.5 («2 semanas»), §6 (pin y carga
     tardía; sin JS: tabla), §3.17 (proceso como tabla).
   - *Depende de*: T06.
@@ -530,7 +530,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - el pin funciona a 390 y a 1440 px sin saltos al soltarse;
     - lint y build en verde.
 
-- [ ] **T13 · Quién está debajo («−3»), Diagnóstico («−4») y Fondo.**
+- [x] **T13 · Quién está debajo («−3»), Diagnóstico («−4») y Fondo.**
   - *Cubre*: spec §3.11 (entero), §3.5 (las cifras «36» y «0 €»), §3.12
     (`/sectores/<slug>/` acaba en el Fondo), PD-12.
   - *Depende de*: T06.
@@ -559,7 +559,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       como antes;
     - lint y build en verde.
 
-- [ ] **T14 · El hilo (conducto principal).**
+- [x] **T14 · El hilo (conducto principal).**
   - *Cubre*: spec §3.10 (entero), §6 (abrir a mitad de página; barra del
     navegador en móvil), §3.17 (conducto entero), PD-9.
   - *Depende de*: T07, T09, T10, T11, T12, T13.
@@ -587,7 +587,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Interiores
 
-- [ ] **T15 · Páginas interiores y 404.**
+- [x] **T15 · Páginas interiores y 404.**
   - *Cubre*: spec §3.12 (entero salvo `/plantillas/` tarjetas, T11, y
     `/auditoria/` campos, T16), §3.2 (H1 de interiores), §5 (frase de
     `/privacidad/`), deltas de la 001 §3.8 («Aspecto»).
@@ -615,7 +615,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - las siete páginas a 390 y 1440 px, capturas en la PR;
     - lint y build en verde.
 
-- [ ] **T16 · Formularios y estados (auditoría, diagnóstico, chat).**
+- [x] **T16 · Formularios y estados (auditoría, diagnóstico, chat).**
   - *Cubre*: spec §3.4 (botones de `FormularioAuditoria` y «Seguir» de
     `PasoPregunta`; opción marcada; burbujas de `ChatEjemplo`), §3.12
     (`/auditoria/`: bordes en `--apagado-abajo` y foco), §3.11 («−4»: el
@@ -641,7 +641,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Mando, bajas y presupuesto
 
-- [ ] **T17 · Mando de maqueta, Sobria y contraste.**
+- [x] **T17 · Mando de maqueta, Sobria y contraste.**
   - *Cubre*: spec §3.16 (entero), §3.17 (repaso), §3.1 (reglas 3 a 5, con
     la comprobación de contraste real).
   - *Depende de*: T08, T14, T15, T16.
@@ -668,7 +668,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       tras `domcontentloaded`);
     - lint y build en verde.
 
-- [ ] **T18 · Bajas del kit y de three.**
+- [x] **T18 · Bajas del kit y de three.**
   - *Cubre*: spec §2 («Bajas»), PD-14, PD-4 (comprobación de glifos).
   - *Depende de*: T17 (y con ella, todas las de la portada y las
     interiores).
@@ -695,7 +695,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     - `out/` no tiene ningún chunk con `three`;
     - lint y build en verde.
 
-- [ ] **T19 · Presupuesto y «Nivel» en el README.**
+- [x] **T19 · Presupuesto y «Nivel» en el README.**
   - *Cubre*: spec §3.15 (entero), §3.18, PD-15.
   - *Depende de*: T18.
   - *Hacer*:
@@ -716,7 +716,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Cierre
 
-- [ ] **T20 · Textos (P-04) y revisión con `?revision`.** *Manual, con
+- [x] **T20 · Textos (P-04) y revisión con `?revision`.** *Manual, con
   Álvaro.*
   - *Cubre*: P-04, D-020, la lista «A mano» del §7.
   - *Depende de*: T19.

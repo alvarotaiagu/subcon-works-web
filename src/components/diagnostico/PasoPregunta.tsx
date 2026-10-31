@@ -2,6 +2,8 @@
 
 import { useId, type Ref } from "react";
 import { cn } from "@/lib/utils";
+import { Glifo } from "@/components/ui/Glifo";
+import { Boton } from "@/components/ui/Boton";
 import type { OpcionVista, PreguntaVista } from "@/lib/diagnostico";
 
 /**
@@ -54,12 +56,12 @@ export function PasoPregunta({
         ref={tituloRef}
         id={idTitulo}
         tabIndex={-1}
-        className="mt-10 max-w-3xl text-2xl font-medium text-text-primary outline-none md:text-4xl"
+        className="mt-10 max-w-3xl text-2xl font-medium text-hueso outline-none md:text-4xl"
       >
         {pregunta.titulo}
       </h3>
       {pregunta.ayuda && (
-        <p id={idAyuda} className="mt-3 text-text-muted">
+        <p id={idAyuda} className="mt-3 text-apagado-abajo">
           {pregunta.ayuda}
         </p>
       )}
@@ -84,25 +86,14 @@ export function PasoPregunta({
       {(onAtras || varias) && (
         <div className="mt-8 flex flex-wrap items-center gap-4">
           {onAtras && (
-            <button
-              type="button"
-              onClick={onAtras}
-              className="rounded-full border border-line px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
-              data-cursor-hover
-            >
-              ← Atrás
-            </button>
+            <Boton variante="secundario" onClick={onAtras}>
+              <Glifo nombre="izquierda" /> Atrás
+            </Boton>
           )}
           {varias && (
-            <button
-              type="button"
-              onClick={onSeguir}
-              disabled={!puedeSeguir}
-              className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-bg-base transition-colors hover:bg-accent-dim disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-accent"
-              data-cursor-hover
-            >
-              Seguir →
-            </button>
+            <Boton onClick={onSeguir} disabled={!puedeSeguir}>
+              Seguir <Glifo nombre="derecha" />
+            </Boton>
           )}
         </div>
       )}
@@ -118,7 +109,7 @@ function Progreso({ numero, total }: { numero: number; total: number }) {
         Pregunta {numero} de {total}
       </p>
       <div
-        className="mt-3 h-px w-full bg-line"
+        className="mt-3 h-px w-full bg-conducto"
         role="progressbar"
         aria-label="Progreso del diagnóstico"
         aria-valuemin={1}
@@ -127,7 +118,7 @@ function Progreso({ numero, total }: { numero: number; total: number }) {
         aria-valuetext={`Pregunta ${numero} de ${total}`}
       >
         <div
-          className="h-px origin-left bg-accent transition-transform duration-500 ease-out motion-reduce:transition-none"
+          className="h-px origin-left bg-superficie transition-transform duration-500 ease-out motion-reduce:transition-none"
           style={{ transform: `scaleX(${Math.max(numero / total, 0.02)})` }}
         />
       </div>
@@ -154,10 +145,9 @@ function BotonOpcion({
       className={cn(
         "flex w-full items-center gap-4 rounded-2xl border px-5 py-4 text-left transition-colors",
         marcada
-          ? "border-accent text-text-primary"
-          : "border-line text-text-muted hover:border-text-muted hover:text-text-primary"
+          ? "border-hueso bg-hueso text-hondo shadow-[0_2px_0_var(--superficie)]"
+          : "border-apagado-abajo text-apagado-abajo hover:border-hueso hover:text-hueso"
       )}
-      data-cursor-hover
     >
       {/* Casilla en las de varias, punto en las de una: se ve de un vistazo
           si se puede marcar más de una. */}
@@ -166,11 +156,11 @@ function BotonOpcion({
         className={cn(
           "flex h-4 w-4 shrink-0 items-center justify-center border transition-colors",
           varias ? "rounded-[4px]" : "rounded-full",
-          marcada ? "border-accent bg-accent" : "border-line"
+          marcada ? "border-hondo bg-hondo" : "border-apagado-abajo"
         )}
       >
         {marcada && (
-          <span className={cn("bg-bg-base", varias ? "h-1.5 w-1.5 rounded-[1px]" : "h-1.5 w-1.5 rounded-full")} />
+          <span className={cn("bg-hueso", varias ? "h-1.5 w-1.5 rounded-[1px]" : "h-1.5 w-1.5 rounded-full")} />
         )}
       </span>
       <span>{opcion.etiqueta}</span>

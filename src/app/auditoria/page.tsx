@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { FormularioAuditoria } from "@/components/auditoria/FormularioAuditoria";
 import { TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { site } from "@/content/site";
@@ -13,16 +13,15 @@ export const metadata: Metadata = {
 
 export default function AuditoriaPage() {
   return (
-    <div className="pt-32 md:pt-40">
-      <header className="container-max mb-16 md:mb-24">
-        <Link href="/#auditoria" className="link-underline font-mono-label text-xs">
-          ← Volver
-        </Link>
-        <p className="font-mono-label mb-4 mt-8">Auditoría gratuita</p>
-        <h1 className="max-w-3xl text-4xl font-medium text-text-primary md:text-7xl">
-          Cómo trabajáis por dentro
-        </h1>
-        <p className="mt-8 max-w-xl text-lg text-text-muted">
+    <div style={nitidezInterior("auditoria")}>
+      <CabeceraInterior
+        pagina="auditoria"
+        arriba="Cómo trabajáis"
+        em="por dentro"
+        volver={{ href: "/#auditoria" }}
+        className="mb-16 md:mb-24"
+      >
+        <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
           {TOTAL_PREGUNTAS} preguntas sobre el día a día del negocio. Se contesta en unos diez
           minutos, con tus palabras, y no hace falta que sepas nada de tecnología.
         </p>
@@ -43,13 +42,13 @@ export default function AuditoriaPage() {
                 "Lo que escribas se guarda en este navegador. Cierra la pestaña y vuelve cuando quieras.",
             },
           ].map((nota) => (
-            <li key={nota.titulo} className="border-t border-line pt-4">
-              <p className="text-sm font-medium text-text-primary">{nota.titulo}</p>
-              <p className="mt-1.5 text-sm text-text-muted">{nota.texto}</p>
+            <li key={nota.titulo} className="border-t border-conducto pt-4">
+              <p className="text-sm font-medium text-hueso">{nota.titulo}</p>
+              <p className="mt-1.5 text-sm text-apagado-abajo">{nota.texto}</p>
             </li>
           ))}
         </ul>
-      </header>
+      </CabeceraInterior>
 
       <div className="container-max pb-[var(--space-section)]">
         <FormularioAuditoria />

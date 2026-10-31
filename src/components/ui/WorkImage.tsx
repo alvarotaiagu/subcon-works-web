@@ -26,7 +26,7 @@ export function WorkImage({ className, alt, src, ...props }: ImageProps) {
     return (
       <div
         className={cn(
-          "flex items-center justify-center bg-bg-raised text-text-faint",
+          "flex items-center justify-center bg-estrato text-apagado-abajo",
           className
         )}
         role="img"

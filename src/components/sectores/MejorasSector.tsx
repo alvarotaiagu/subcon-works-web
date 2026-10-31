@@ -26,15 +26,15 @@ export function MejorasSector({
 
   return (
     <section aria-labelledby="mejoras-titulo" className={className}>
-      <div className="border-t border-line pt-14">
+      <div className="border-t border-conducto pt-14">
         <p className="font-mono-label mb-4">Lo que haríamos</p>
         <h2
           id="mejoras-titulo"
-          className="max-w-2xl text-3xl font-medium text-text-primary md:text-5xl"
+          className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
         >
           Lo que puede quedar funcionando solo.
         </h2>
-        <p className="mt-6 max-w-xl text-text-muted">
+        <p className="mt-6 max-w-xl text-apagado-abajo">
           Son las mismas que puede darte el diagnóstico de más abajo. Cuáles van primero depende
           de cómo trabajéis.
         </p>
@@ -44,12 +44,12 @@ export function MejorasSector({
             return (
               <li
                 key={mejora.id}
-                className="flex flex-col rounded-2xl border border-line bg-bg-raised p-7"
+                className="flex flex-col rounded-2xl border border-conducto bg-estrato p-7"
               >
-                <h3 className="text-xl font-medium text-text-primary">
+                <h3 className="text-xl font-medium text-hueso">
                   {textoPara(mejora.titulo, sector)}
                 </h3>
-                <p className="mt-3 text-sm text-text-muted">
+                <p className="mt-3 text-sm text-apagado-abajo">
                   {textoPara(mejora.queResuelve, sector)}
                 </p>
                 {enlace && <EnlaceMejora href={enlace} className="mt-auto self-start pt-5" />}

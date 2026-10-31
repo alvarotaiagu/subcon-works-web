@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { CabeceraInterior, nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -16,42 +16,37 @@ export const metadata: Metadata = {
  * completarlos antes de que el formulario reciba una sola solicitud real.
  */
 const PENDIENTE = (
-  <span className="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[0.85em] text-accent">
+  <span className="rounded bg-estrato px-1.5 py-0.5 font-mono text-[0.85em] text-superficie">
     [PENDIENTE]
   </span>
 );
 
 function Apartado({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <section className="border-t border-line py-10">
-      <h2 className="mb-4 text-xl font-medium text-text-primary md:text-2xl">{titulo}</h2>
-      <div className="space-y-4 text-text-muted">{children}</div>
+    <section className="border-t border-conducto py-10">
+      <h2 className="mb-4 text-xl font-medium text-hueso md:text-2xl">{titulo}</h2>
+      <div className="space-y-4 text-apagado-abajo">{children}</div>
     </section>
   );
 }
 
 export default function PrivacidadPage() {
   return (
-    <div className="pt-32 md:pt-40">
-      <div className="container-max max-w-3xl pb-[var(--space-section)]">
-        <Link href="/" className="link-underline font-mono-label text-xs">
-          ← Volver
-        </Link>
-        <p className="font-mono-label mb-4 mt-8">Privacidad</p>
-        <h1 className="text-4xl font-medium text-text-primary md:text-6xl">
-          Qué hacemos con tus datos
-        </h1>
-        <p className="mt-8 text-lg text-text-muted">
+    <div style={nitidezInterior("privacidad")}>
+      <CabeceraInterior pagina="privacidad" arriba="Qué hacemos" em="con tus datos" className="mb-14">
+        <p className="mt-8 max-w-3xl text-lg text-apagado-abajo">
           En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay
           analítica, ni hay publicidad, ni hay cookies de terceros.
         </p>
+      </CabeceraInterior>
 
-        <div className="mt-14">
+      <div className="container-max pb-[var(--space-section)]">
+        <div className="max-w-3xl">
           <Apartado titulo="Quién responde">
             <p>
               {site.nombre}, {PENDIENTE} (nombre fiscal y NIF), con domicilio en {PENDIENTE} (
               {site.ubicacion}). Para cualquier cosa relacionada con esto:{" "}
-              <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+              <a href={`mailto:${site.email}`} className="link-underline text-hueso">
                 {site.email}
               </a>
               .
@@ -71,7 +66,7 @@ export default function PrivacidadPage() {
               ordenador y se borra al enviar el formulario.
             </p>
             <p>
-              El cuestionario <strong className="font-medium text-text-primary">no pide</strong>{" "}
+              El cuestionario <strong className="font-medium text-hueso">no pide</strong>{" "}
               datos de vuestros clientes, contraseñas ni accesos a vuestros programas. Si llega algo
               así igualmente, se borra sin usarlo y te avisamos.
             </p>
@@ -95,13 +90,13 @@ export default function PrivacidadPage() {
 
           <Apartado titulo="Dónde se guardan y quién los ve">
             <p>
-              En una base de datos de <strong className="font-medium text-text-primary">Supabase</strong>{" "}
+              En una base de datos de <strong className="font-medium text-hueso">Supabase</strong>{" "}
               alojada en servidores de la Unión Europea (región de París). Solo se puede acceder a
               ella con las claves del estudio: la web no puede leer lo que han mandado otros.
             </p>
             <p>
               El informe se redacta con herramientas de IA de{" "}
-              <strong className="font-medium text-text-primary">Anthropic</strong>, que procesa las
+              <strong className="font-medium text-hueso">Anthropic</strong>, que procesa las
               respuestas para generarlo y no las usa para entrenar sus modelos. Aparte de esos dos
               proveedores, no se cede nada a nadie.
             </p>
@@ -119,7 +114,7 @@ export default function PrivacidadPage() {
             <p>
               Puedes pedir ver lo que tenemos, corregirlo, borrarlo, limitar su uso, oponerte a él o
               llevártelo a otro sitio. Se hace escribiendo a{" "}
-              <a href={`mailto:${site.email}`} className="link-underline text-text-primary">
+              <a href={`mailto:${site.email}`} className="link-underline text-hueso">
                 {site.email}
               </a>{" "}
               — sin formularios ni trámites, y se contesta en menos de un mes.
@@ -131,7 +126,7 @@ export default function PrivacidadPage() {
                 href="https://www.aepd.es"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-underline text-text-primary"
+                className="link-underline text-hueso"
               >
                 aepd.es
               </a>
@@ -142,8 +137,9 @@ export default function PrivacidadPage() {
           <Apartado titulo="Cookies">
             <p>
               Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu
-              navegador es el borrador del formulario y el hecho de que ya has visto el aviso, y
-              ninguna de las dos cosas sale de tu ordenador.
+              navegador es el borrador del formulario, el hecho de que ya has visto el aviso y,
+              solo mientras tengas la pestaña abierta, que ya has visto la animación de entrada,
+              para no repetírtela. Ninguna de las tres cosas sale de tu ordenador.
             </p>
           </Apartado>
         </div>

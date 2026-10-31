@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Glifo } from "@/components/ui/Glifo";
 
 /**
  * «Más sobre esto →» de una mejora, en el resultado del diagnóstico y en «Lo
@@ -8,17 +9,21 @@ import { cn } from "@/lib/utils";
  * `#plantillas-sector`) son un `<a>` normal, como el «#plantillas» del Hero.
  */
 export function EnlaceMejora({ href, className }: { href: string; className?: string }) {
-  const clases = cn("link-underline text-sm text-text-primary", className);
-  const texto = "Más sobre esto →";
+  const clases = cn("link-underline text-sm text-hueso", className);
+  const texto = (
+    <>
+      Más sobre esto <Glifo nombre="derecha" />
+    </>
+  );
   if (href.startsWith("#")) {
     return (
-      <a href={href} className={clases} data-cursor-hover>
+      <a href={href} className={clases}>
         {texto}
       </a>
     );
   }
   return (
-    <Link href={href} className={clases} data-cursor-hover>
+    <Link href={href} className={clases}>
       {texto}
     </Link>
   );

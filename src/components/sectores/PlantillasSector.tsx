@@ -36,19 +36,19 @@ export function PlantillasSector({
       aria-labelledby="plantillas-sector-titulo"
       className={className}
     >
-      <div className="border-t border-line pt-14">
+      <div className="border-t border-conducto pt-14">
         <p className="font-mono-label mb-4">Plantillas del sector</p>
         <div className="grid gap-8 md:grid-cols-2">
           <h2
             id="plantillas-sector-titulo"
-            className="max-w-xl text-3xl font-medium text-text-primary md:text-5xl"
+            className="max-w-xl text-3xl font-medium text-hueso md:text-5xl"
           >
             Así puede quedar la web.
           </h2>
-          <div className="border-l-2 border-accent/50 pl-5">
-            <p className="font-mono-label mb-2 text-[10px] text-accent">Aviso</p>
-            <p className="text-sm text-text-muted">
-              Todos los negocios que aparecen son <strong className="font-medium text-text-primary">inventados</strong>:
+          <div className="border-l-2 border-superficie/50 pl-5">
+            <p className="font-mono-label mb-2 text-[10px] text-superficie">Aviso</p>
+            <p className="text-sm text-apagado-abajo">
+              Todos los negocios que aparecen son <strong className="font-medium text-hueso">inventados</strong>:
               nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar
               cómo queda una web terminada, con contenido de verdad en vez de «Lorem ipsum».
             </p>
