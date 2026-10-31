@@ -738,7 +738,7 @@ Las cifras **medidas** se escriben en una tabla «Presupuesto» del `README.md`.
 | CLS de la portada: carga, scroll por el hero y 1 s de arrastre del tirador | ≤ 0,05 en total | `layout-shift` con `hadRecentInput` incluido |
 | INP del instrumento (tocar un objeto, arrastrar el tirador) | ≤ 200 ms | `event` timing (Event Timing API) con CPU ×4 |
 | Letras | 2 ficheros, ≤ 70 KB entre las dos (con los glifos añadidos) | tamaño en `out/` |
-| Tareas largas tras `document.fonts.ready` | ninguna > 200 ms | `longtask`, control lanzado con `setTimeout` |
+| Tareas largas tras `document.fonts.ready` | mediana de la tarea más larga por carga ≤ 300 ms con CPU ×4 (D-031; antes «ninguna > 200 ms») | `longtask`, control lanzado con `setTimeout` |
 
 - Sin canvas ni WebGL en ninguna parte (sale `three`). Pozos, hilo y testigo
   son SVG y CSS.

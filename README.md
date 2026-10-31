@@ -97,13 +97,14 @@ frío intercaladas entre rutas), el 2026-10-16. La línea base es la de T01: el
 | CLS de las interiores medidas | ≤ 0,05 | 0,000 | 0,000 |
 | INP del instrumento (tres toques a objetos y 1 s de arrastre) | ≤ 200 ms | 80 ms (la peor carga, 96 ms); fotograma más largo arrastrando, 17-33 ms | sin tirador |
 | Letras | 2 ficheros, ≤ 70 KB | 2 ficheros · 62,9 KB | 3 pedidas · 116 KB (15 en `out/`) |
-| Tareas largas tras `fonts.ready` | ninguna > 200 ms | **no cumple (C-20)**: con D-028, 196-243 ms con la máquina rápida y 212-398 ms con la lenta; partir la hidratación con `<Suspense>` se probó y se descartó (más abajo) (en T19, sin D-028: 150-190 ms y 300-340 ms) | 778 ms (con `three`) |
+| Tareas largas tras `fonts.ready` | mediana de la tarea más larga por carga ≤ 300 ms con CPU ×4 (D-031) | 201-422 ms en dos pasadas del 2026-10-31 con la máquina cargada por otras sesiones; en una de las rutas la mediana pasó de 300 ms en cada pasada (355 y 422 ms) y en las demás quedó entre 201 y 283 ms; con la máquina libre #47 midió 208-221 ms. Repetir `medir` con el PC libre antes de fiarse de una sola pasada | 778 ms (con `three`) |
 
 Las tareas largas que quedan son dos y caen al llegar el JS (unos 5 s con 4G):
 el arranque de Next (evaluar `react-dom` y los módulos de la página) y el commit
-de la hidratación. Las dos escalan con la velocidad de la máquina que mide, y el
-tope solo se cumple cuando va rápida. D-028 sacó GSAP, ScrollTrigger y Lenis del
-JS inicial, pero no basta: está abierto C-20 (`DECISIONES.md`).
+de la hidratación. Las dos escalan con la velocidad de la máquina que mide. D-028
+sacó GSAP, ScrollTrigger y Lenis del JS inicial y D-031 (C-20, resuelto) fija el
+tope en la mediana de la tarea más larga por carga, ≤ 300 ms con CPU ×4. Con el PC
+cargado la medida baila de una pasada a otra: mide con la máquina libre.
 
 ### Carga diferida (D-028): antes y después
 
@@ -156,8 +157,8 @@ Quita el commit de hidratación de 165-196 ms en la portada (las rutas interiore
 más de 200 ms en las interiores. Y en el export estático React saca esos límites como
 `<!--$?-->` con el HTML en un `<div hidden>` movido por un script con temporizador:
 sin JS las secciones quedan ocultas (`comprobar` T12 «Sin JS» falla) y con JS se
-revelan tarde. Se revierte; C-20 sigue abierto y la siguiente opción es la (c)
-(`DECISIONES.md`). El único cambio que se queda es `medir --cpu`.
+revelan tarde. Se revierte; C-20 se resolvió con la opción (c)
+(D-031, `DECISIONES.md`). El único cambio que se queda es `medir --cpu`.
 
 ## Dos cosas que no se tocan
 

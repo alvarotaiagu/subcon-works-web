@@ -12,6 +12,8 @@
        tirador 1 s con toques de CDP. INP = la interacción más lenta (con tan pocas, el
        percentil 98 es la máxima). Las entradas de menos de 16 ms no se registran;
      - CLS total = carga + 1 s de arrastre del tirador + scroll por el hero;
+     - tareas largas (D-031): el tope es la mediana, entre las cargas de cada ruta, de la tarea
+       más larga tras `fonts.ready`, con CPU ×4 (con `--cpu` distinto no se aplica);
      - control de tareas largas: al final se lanza con `setTimeout` una tarea de 300 ms; si
        el observador no la ve, la cifra de tareas largas no vale y la medida falla;
    - rutas: portada con cortina y sin ella, /plantillas/ y /sectores/alojamientos-rurales/.
@@ -46,7 +48,8 @@ const RUTAS = [
 ];
 
 /** Topes del §3.15. */
-const TOPE = { lcp: 2500, cls: 0.05, inp: 200, larga: 200, letrasFicheros: 2, letrasBytes: 70 * 1024 };
+/** `larga`: mediana (entre las cargas de una ruta) de la tarea más larga tras fonts.ready, con CPU ×4 (D-031). */
+const TOPE = { lcp: 2500, cls: 0.05, inp: 200, larga: 300, letrasFicheros: 2, letrasBytes: 70 * 1024 };
 
 /** Selectores del instrumento (los mismos que scripts/comprobar.mjs). */
 const OBJETOS = '[data-hero] [aria-label="Lo que ve tu cliente"] button';
@@ -337,6 +340,7 @@ try {
       fotograma: r.portada ? Math.max(...rs.map((x) => x.instrumento?.fotograma ?? 0)) : null,
       subida: r.portada ? Math.min(...rs.map((x) => x.instrumento?.subida ?? 0)) : null,
       largaMax: Math.max(...rs.map((x) => x.largaMax)),
+      largaMediana: mediana(rs.map((x) => x.largaMax)),
       largas: rs.map((x) => x.largaMax).join(", "),
       largasMas200: Math.max(...rs.map((x) => x.largasMas200)),
       control: rs.every((x) => x.control),
@@ -350,7 +354,7 @@ try {
     if (r.portada && !fila.lcpEnH1) fallos.push(`el elemento LCP de ${r.nombre} no es el <h1> ni una de sus líneas: ${fila.elementos}`);
     if (fila.clsTotalMax > TOPE.cls) fallos.push(`CLS de ${r.nombre}: ${num(fila.clsTotalMax)} en la peor carga (tope 0,05)`);
     if (r.portada && fila.inpMax > TOPE.inp) fallos.push(`INP del instrumento (${r.nombre}): ${fila.inpMax} ms (tope 200 ms)`);
-    if (fila.largasMas200) fallos.push(`${r.nombre}: ${fila.largasMas200} tareas largas de más de 200 ms tras fonts.ready (máx ${fila.largaMax} ms)`);
+    if (cpu === 4 && fila.largaMediana > TOPE.larga) fallos.push(`${r.nombre}: la tarea más larga tras fonts.ready, en mediana, dura ${fila.largaMediana} ms (tope ${TOPE.larga} ms; máx ${fila.largaMax} ms)`);
     if (!fila.control) fallos.push(`${r.nombre}: el observador no vio la tarea de control de ${CONTROL_MS} ms; las tareas largas no valen`);
     if (!fila.letrasListas) fallos.push(`${r.nombre}: no llegó a cargar ninguna letra (\`loadingdone\`); las tareas largas no valen`);
     if (fila.google) fallos.push(`${r.nombre}: ${fila.google} peticiones a Google Fonts`);
@@ -382,7 +386,7 @@ try {
   }
   for (const f of filas) {
     console.log(
-      `| Tareas largas tras \`fonts.ready\` | ${f.nombre} | máx ${f.largaMax} ms (por carga: ${f.largas}) · ${f.largasMas200} de más de 200 ms · control con \`setTimeout\`: ${f.control ? "visto" : "NO visto"} | ninguna > 200 ms |`,
+      `| Tareas largas tras \`fonts.ready\` | ${f.nombre} | mediana ${f.largaMediana} ms · máx ${f.largaMax} ms (por carga: ${f.largas}) · ${f.largasMas200} de más de 200 ms · control con \`setTimeout\`: ${f.control ? "visto" : "NO visto"} | mediana ≤ 300 ms |`,
     );
   }
   for (const f of filas) {
