@@ -117,7 +117,7 @@ html.densidad-sobria .tarjeta-corte-inf {
   padding: 0.9rem 0 1rem;
 }
 
-/* Servicios: los diez quedan como lista. Sin tronco ni recuadros, sin encendido; los
+/* Servicios: los siete quedan como lista. Sin tronco ni recuadros, sin encendido; los
    `incluye` se alinean con el nombre y la línea de cada uno es un separador quieto. */
 html.densidad-sobria .servicio-pozo-cabecera {
   border-bottom-color: var(--conducto);

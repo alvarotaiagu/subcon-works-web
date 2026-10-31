@@ -101,7 +101,7 @@ export const herramientas: Herramienta[] = [
         {
           titulo: "Encaja con lo demás",
           texto:
-            "Las fotos y los reels de producto, la ficha de Google y el correo a tus clientes trabajan sobre la misma tienda.",
+            "Las fichas de producto, la ficha de Google y el correo a tus clientes trabajan sobre la misma tienda.",
         },
       ],
     },
@@ -119,7 +119,7 @@ export const herramientas: Herramienta[] = [
     ],
     sostiene: [
       { nombre: "La auditoría gratuita", href: "/#auditoria" },
-      { nombre: "Rescate de webs y migraciones", href: "/#servicios" },
+      { nombre: "Diseño y desarrollo web", href: "/#servicios" },
     ],
     capturas: [
       {
