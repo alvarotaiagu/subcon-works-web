@@ -63,20 +63,29 @@ export function useDescubrir<T extends HTMLElement>(ref: RefObject<T | null>) {
       raf = requestAnimationFrame(paso);
     };
 
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return;
-        io.disconnect();
-        // Entra por arriba (se vuelve subiendo, o un salto la ha dejado atrás): ya.
-        if (e.boundingClientRect.top < 0) terminar();
-        else descubrir();
-      },
-      { rootMargin: `0px 0px -${Math.round((1 - DISPARO) * 100)}% 0px` },
-    );
-    io.observe(el);
+    // No vale un IntersectionObserver: la sección está recortada del todo y, para él, solo
+    // cuenta una línea de alto 0 en su borde de arriba. Un salto del menú (`/#plantillas`)
+    // que deja ese borde en 0 o por encima de la pantalla no lo dispara nunca y la sección
+    // se queda oculta. Se mira la posición en cada scroll (y al cambiar el tamaño).
+    const mirar = () => {
+      const arriba = el.getBoundingClientRect().top;
+      if (arriba >= document.documentElement.clientHeight * DISPARO) return;
+      quitar();
+      // Entra por arriba (se vuelve subiendo, o un salto la ha dejado atrás): ya.
+      if (arriba < 0) terminar();
+      else descubrir();
+    };
+    const quitar = () => {
+      window.removeEventListener("scroll", mirar);
+      window.removeEventListener("resize", mirar);
+    };
+    window.addEventListener("scroll", mirar, { passive: true });
+    window.addEventListener("resize", mirar);
+    // Un salto puede haber ocurrido entre el render y este efecto.
+    mirar();
 
     return () => {
-      io.disconnect();
+      quitar();
       cancelAnimationFrame(raf);
       terminar();
     };
