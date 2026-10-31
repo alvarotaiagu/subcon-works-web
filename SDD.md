@@ -21,3 +21,4 @@ Decisiones, pendientes y conflictos: [DECISIONES.md](DECISIONES.md).
 |---|---|---|---|---|---|
 | 001 | [Diagnóstico rápido y páginas por sector](specs/001-diagnostico-y-sectores/spec.md) | hecha | — | [plan](specs/001-diagnostico-y-sectores/plan.md) (aprobado, D-012) | [tareas](specs/001-diagnostico-y-sectores/tasks.md) (T01-T15) |
 | 002 | [Rediseño «Por debajo»](specs/002-rediseno-por-debajo/spec.md) | aprobada (D-024) | 001 | [plan](specs/002-rediseno-por-debajo/plan.md) (aprobado, D-025) | [tareas](specs/002-rediseno-por-debajo/tasks.md) (T01-T21) |
+| 003 | [Posicionamiento y textos](specs/003-posicionamiento-y-textos/spec.md) | aprobada (D-032) | 001, 002 | — | — |
