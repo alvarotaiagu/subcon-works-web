@@ -10,9 +10,9 @@ import { herramientas, type Herramienta } from "@/content/herramientas";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: `Herramientas — ${site.nombre}`,
+  title: `Productos — ${site.nombre}`,
   description:
-    "El software que hemos escrito para sostener cada servicio: la plataforma de tiendas, el informe de mejoras de tu web, la vigilancia diaria, la auditoría de la ficha de Google y los formularios de contacto.",
+    "La tienda online, el informe de mejoras de tu web y el formulario de contacto: lo que hemos construido nosotros y funciona hoy, enseñado con datos de ejemplo.",
   robots: { index: false, follow: false },
 };
 
@@ -23,7 +23,7 @@ const sinCaptura = resto.filter((h) => !h.capturas?.length);
 function Sostiene({ herramienta }: { herramienta: Herramienta }) {
   return (
     <p className="mt-8 text-sm text-apagado-abajo">
-      <span className="font-mono-label mr-2 text-[10px]">Sostiene</span>
+      <span className="font-mono-label mr-2 text-[10px]">Servicio</span>
       {herramienta.sostiene.map((s, i) => (
         <span key={s.nombre}>
           {i > 0 && <span aria-hidden="true"> · </span>}
@@ -54,7 +54,9 @@ function Capturas({ herramienta }: { herramienta: Herramienta }) {
   const movil = herramienta.capturas?.find((c) => c.marco === "movil");
 
   return (
-    <div className={movil ? "relative md:pb-16" : "relative"}>
+    // `data-ejemplo` (spec 003, PD-5): las capturas son de negocios inventados y llevan su rótulo.
+    <div className={movil ? "relative md:pb-16" : "relative"} data-ejemplo="">
+      <p className="font-mono-label mb-3 text-[10px] text-superficie">Ejemplo</p>
       {navegador && (
         <div className={movil ? "md:w-[80%]" : undefined}>
           <BrowserMockup src={navegador.src} alt={navegador.alt} />
@@ -83,23 +85,21 @@ export default function HerramientasPage() {
       >
         <div className="mt-8 grid gap-8 md:grid-cols-2">
           <p className="text-lg text-apagado-abajo">
-            No son programas comprados ni el panel de otra empresa con nuestro logo encima: es
-            software que hemos escrito nosotros, y cada pieza sostiene uno de los servicios. Si algo
-            no le encaja a tu negocio, se cambia en el código, no se espera a que lo arregle otro.
+            No son programas comprados ni el panel de otra empresa con nuestro logo encima: la
+            tienda online, el informe de mejoras de tu web y el formulario de contacto los hemos
+            escrito nosotros. Si algo no le encaja a tu negocio, podemos cambiarlo a medida.
           </p>
           <div className="border-l-2 border-superficie/50 pl-5">
             <p className="font-mono-label mb-2 text-[10px] text-superficie">Aviso</p>
             <p className="text-sm text-apagado-abajo">
-              La plataforma de tiendas se está estrenando con su{" "}
-              <strong className="font-medium text-hueso">primera tienda</strong>. Las capturas
-              de esta página salen de una tienda de ejemplo y de la demo de una de nuestras
+              Las capturas de esta página salen de una tienda de ejemplo y de la demo de una de nuestras
               plantillas: los negocios, los productos, los pedidos y las cifras que aparecen son
               inventados.
             </p>
           </div>
         </div>
 
-        <nav aria-label="Herramientas de esta página" className="mt-14">
+        <nav aria-label="Productos de esta página" className="mt-14">
           <ul className="flex flex-wrap gap-2">
             {herramientas.map((h) => (
               <li key={h.id}>
@@ -188,11 +188,11 @@ export default function HerramientasPage() {
         <div className="mt-24 border-t border-conducto pt-14">
           <Titular nivel={2} arriba="¿Cuál le hace falta a tu negocio?" className="max-w-xl" />
           <p className="mt-5 max-w-xl text-apagado-abajo">
-            Casi nunca son todas. La auditoría gratuita parte del informe de mejoras de tu web y te
-            dice qué falta antes de hablar de precio.
+            Casi nunca hacen falta todos. Cuéntanos qué te gustaría mejorar y te damos una propuesta
+            por escrito, con el precio de cada fase. La propuesta no se cobra.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
-            <Boton href="/auditoria/">Pedir la auditoría gratuita</Boton>
+            <Boton href="/#contacto">Pedir una propuesta</Boton>
             <Boton href={`mailto:${site.email}`} variante="secundario">
               Escribir un correo
             </Boton>

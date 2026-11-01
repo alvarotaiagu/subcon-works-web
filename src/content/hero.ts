@@ -50,11 +50,11 @@ export const flujos: readonly Flujo[] = [
   {
     rotulo: "Tu tienda",
     rotuloCorto: "Tu tienda",
-    lectura: ["Pago con Bizum", "factura emitida sola", "aviso de qué reponer."],
+    lectura: ["Pago con Bizum", "pedido en tu panel", "aviso de qué reponer."],
     flechas: true,
     paradas: [
       { servicio: "02", texto: "Cobro con tarjeta o Bizum", clave: "Bizum" },
-      { servicio: "04", texto: "Factura emitida", clave: "facturas" },
+      { servicio: "02", texto: "Pedido en tu panel", clave: "Panel en el móvil" },
       { servicio: "02", texto: "Aviso de qué reponer", clave: "reponer" },
     ],
   },
@@ -72,12 +72,12 @@ export const flujos: readonly Flujo[] = [
   {
     rotulo: "Tu web",
     rotuloCorto: "Tu web",
-    lectura: ["La web vieja", "se rescata sin perder Google", "y queda vigilada cada día."],
+    lectura: ["La web vieja", "se rescata sin perder Google", "y se cambia cuando lo pidas."],
     flechas: true,
     paradas: [
       { servicio: "01", texto: "Se saca la web vieja", clave: "Rescate de webs viejas" },
       { servicio: "01", texto: "Sin perder Google", clave: "Redirecciones 301" },
-      { servicio: "07", texto: "Vigilada cada día", clave: "Vigilancia de caídas" },
+      { servicio: "07", texto: "Cambios cuando los pidas", clave: "Cambios de contenido" },
     ],
   },
 ];

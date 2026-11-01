@@ -8,6 +8,9 @@
 
 export type FondoCorte = "cal-hondo" | "hondo" | "estrato" | "roca";
 
+/** Las dos puertas de la promesa (003 §3.1): lo que ve el cliente y lo que va por debajo. */
+export type Puerta = "Lo que ve tu cliente" | "Lo que va por debajo";
+
 export interface EntradaCorte {
   /** `id` de la `<section>`: el ancla del menú (`/#servicios`…). */
   id: string;
@@ -16,18 +19,23 @@ export interface EntradaCorte {
   /** Valor del eje `SHRP` de sus titulares (§3.2: no se anima). */
   shrp: number;
   fondo: FondoCorte;
+  /**
+   * El rótulo de puerta de la sección (003 §3.1, CA-15): uno solo, detrás de la cota. Lo pinta
+   * `Seccion`. El hero lo lleva en `hero.lema`; las secciones fuera de la portada no tienen.
+   */
+  puerta?: Puerta;
 }
 
 export const cortePortada: readonly EntradaCorte[] = [
   { id: "inicio", cota: "Superficie", shrp: 0, fondo: "cal-hondo" },
-  { id: "problemas", cota: "0 · Lo que pasa", shrp: 12, fondo: "hondo" },
-  { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25, fondo: "hondo" },
-  { id: "soluciones", cota: "−2 · Soluciones en acción", shrp: 40, fondo: "estrato" },
-  { id: "proceso", cota: "−3 · El proceso", shrp: 55, fondo: "hondo" },
-  { id: "plantillas", cota: "−4 · Proyectos y demostraciones", shrp: 70, fondo: "estrato" },
-  { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82, fondo: "hondo" },
-  { id: "faq", cota: "−6 · Dudas", shrp: 92, fondo: "estrato" },
-  { id: "contacto", cota: "Fondo · Contacto", shrp: 100, fondo: "roca" },
+  { id: "problemas", cota: "0 · Lo que suele pasar", shrp: 12, fondo: "hondo", puerta: "Lo que va por debajo" },
+  { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25, fondo: "hondo", puerta: "Lo que va por debajo" },
+  { id: "soluciones", cota: "−2 · Soluciones de ejemplo", shrp: 40, fondo: "estrato", puerta: "Lo que va por debajo" },
+  { id: "proceso", cota: "−3 · El proceso", shrp: 55, fondo: "hondo", puerta: "Lo que va por debajo" },
+  { id: "plantillas", cota: "−4 · Webs de ejemplo", shrp: 70, fondo: "estrato", puerta: "Lo que ve tu cliente" },
+  { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82, fondo: "hondo", puerta: "Lo que va por debajo" },
+  { id: "faq", cota: "−6 · Dudas", shrp: 92, fondo: "estrato", puerta: "Lo que va por debajo" },
+  { id: "contacto", cota: "Fondo · Contacto", shrp: 100, fondo: "roca", puerta: "Lo que va por debajo" },
 ];
 
 /**

@@ -404,13 +404,21 @@ function leerTextos() {
 
 const APROBADA = new Set(["aprobada", "corregida"]);
 
-/** `{n}` es un número cualquiera; lo demás se compara tal cual, normalizado. */
+/**
+ * `{n}` es una variable: un número cualquiera o, en el código, la expresión que la pinta
+ * (`{plantillas.length}`, `${descripcion}`, `{datos.nombre}`); lo demás se compara tal cual,
+ * normalizado.
+ */
 function regExpDeTexto(t) {
   return new RegExp(
     norm(t)
       .split(/\{n\}/)
       .map(esc)
+<<<<<<< HEAD
       .join("(?:[\\d.,]+|\\$?\\{[^}]*\\})"),
+=======
+      .join("(?:[\\d.,]+|\\$?\\{[^{}]+\\})"),
+>>>>>>> origin/exp/consultora
   );
 }
 
@@ -607,7 +615,7 @@ const comprobaciones = [
   ...["T06", "T07", "T08", "T09"].map((tarea) => ({
     id: `CA-4 · Filas aprobadas en su fichero · ficheros de ${tarea}`,
     tarea,
-    pendiente: tarea !== "T09",
+    pendiente: !["T07", "T09"].includes(tarea), // T07 y T09 hechas; T06 y T08 ponen la suya al terminar
     fn: async () => filasEnFichero(tarea),
   })),
   {
@@ -647,7 +655,7 @@ const comprobaciones = [
   {
     id: "CA-6 · Aviso de inventadas en su <section> y sin palabras de §3.5 · portada",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     fn: avisoDeInventadas("portada"),
   },
   {
@@ -665,13 +673,13 @@ const comprobaciones = [
   {
     id: "CA-7 · Rótulo «Ejemplo» · hero y /herramientas/",
     tarea: "T06",
-    pendiente: true,
+    pendiente: false,
     fn: rotuloEjemplo("T06"),
   },
   {
     id: "CA-7 · … · «Tecnología aplicada»",
     tarea: "T07",
-    pendiente: true,
+    pendiente: false,
     fn: rotuloEjemplo("T07"),
   },
   {

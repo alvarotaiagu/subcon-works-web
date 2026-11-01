@@ -16,9 +16,9 @@ export const servicios: Servicio[] = [
     numero: "01",
     nombre: "Diseño y desarrollo web",
     descripcion:
-      "Una web escrita a mano para tu negocio, no un tema comprado con tu logo encima. Es tuya, se puede cambiar y no paga cuota a nadie por seguir existiendo. Y si ya tienes una en WordPress, Wix o Webnode que va lenta o a la que nadie tiene las claves, se saca de ahí sin perder lo que ya te posiciona en Google.",
+      "Una web escrita a mano para tu negocio, no un tema comprado con tu logo encima, y a tu nombre. Y si ya tienes una en WordPress, Wix o Webnode que va lenta o a la que nadie tiene las claves, se saca de ahí sin perder lo que ya te posiciona en Google.",
     incluye: [
-      "Diseño propio",
+      "Diseño a medida",
       "Código sin constructores",
       "Textos incluidos",
       "Logotipo redibujado",
@@ -32,14 +32,12 @@ export const servicios: Servicio[] = [
     numero: "02",
     nombre: "Tienda online",
     descripcion:
-      "Te la entregamos con el catálogo subido y cobrando desde el primer día. Después la llevas tú desde el móvil, y te dice qué reponer y qué se mira sin venderse.",
+      "Te la entregamos con el catálogo subido y cobrando desde el primer día. Después la llevas tú desde el móvil, y te avisa de qué reponer.",
     incluye: [
       "Catálogo cargado",
       "Tarjeta y Bizum",
-      "Recogida y reparto local",
-      "Pedidos por WhatsApp",
+      "Recogida en tienda",
       "Panel en el móvil",
-      "Instagram y Google Shopping",
       "Páginas legales",
     ],
     icono: "/servicios/tienda.svg",
@@ -49,27 +47,24 @@ export const servicios: Servicio[] = [
     numero: "03",
     nombre: "Aparecer en Google",
     descripcion:
-      "La mitad de los negocios de aquí se buscan por el móvil a dos calles de distancia. Eso se trabaja con la ficha de Google, las reseñas y una web que cargue rápido de verdad.",
+      "Que te encuentren en Google se trabaja a mano: con la ficha de Google, las reseñas y una web que cargue rápido de verdad.",
     incluye: [
       "Ficha de Google",
       "SEO local",
       "Reseñas",
       "Datos estructurados",
       "Core Web Vitals",
-      "Medición sin cookies",
     ],
     icono: "/servicios/google.svg",
-    enlace: { href: "/herramientas/#ficha-google", label: "Ver cómo funciona" },
   },
   {
     numero: "04",
     nombre: "Automatización de procesos",
     descripcion:
-      "Presupuestos, citas, recordatorios, facturas, informes. Lo que hoy copias de un sitio a otro a mano, funcionando solo mientras tú atiendes.",
+      "Presupuestos, citas, recordatorios, informes: si algo se copia a mano de un sitio a otro, podemos montar que funcione solo mientras tú atiendes.",
     incluye: [
       "Reservas y citas",
       "Recordatorios",
-      "Facturación",
       "Conexión entre programas",
       "Informes automáticos",
     ],
@@ -79,13 +74,11 @@ export const servicios: Servicio[] = [
     numero: "05",
     nombre: "Agentes y chatbots con IA",
     descripcion:
-      "Atención en la web, en WhatsApp y al teléfono. Contestan lo de siempre, cogen la cita y te pasan solo lo que de verdad necesita que estés tú.",
+      "Un asistente en tu web que contesta lo de siempre, coge la cita y te pasa lo que necesita que estés tú. Y, a tu medida, también en WhatsApp.",
     incluye: [
-      "Web y WhatsApp",
+      "Web, y WhatsApp a medida",
       "Fuera de horario",
       "Reserva de cita",
-      "Filtra y te avisa",
-      "Habla como tu negocio",
     ],
     icono: "/servicios/agentes.svg",
   },
@@ -107,15 +100,13 @@ export const servicios: Servicio[] = [
     numero: "07",
     nombre: "Mantenimiento y soporte",
     descripcion:
-      "Cambiar la carta, subir precios, abrir los domingos de verano. Se hace y ya está: sin abrir una incidencia, sin esperar tres semanas y sin que se caiga nada por el camino.",
+      "Cambiar la carta, subir precios, abrir los domingos de verano: nos lo dices y lo cambiamos. También hacemos las copias de seguridad y las actualizaciones.",
     incluye: [
       "Cambios de contenido",
       "Copias de seguridad",
       "Actualizaciones",
-      "Vigilancia de caídas",
-      "Te lo llevas cuando quieras",
+      "Te lo llevas entero",
     ],
     icono: "/servicios/mantenimiento.svg",
-    enlace: { href: "/herramientas/#vigilancia", label: "Ver cómo funciona" },
   },
 ];

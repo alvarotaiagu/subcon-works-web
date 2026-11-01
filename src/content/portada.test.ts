@@ -23,11 +23,11 @@ test("§3.5 · Las cotas de la portada", async () => {
     cortePortada.map(({ id, cota, shrp }) => ({ id, cota, shrp })),
     [
       { id: "inicio", cota: "Superficie", shrp: 0 },
-      { id: "problemas", cota: "0 · Lo que pasa", shrp: 12 },
+      { id: "problemas", cota: "0 · Lo que suele pasar", shrp: 12 },
       { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25 },
-      { id: "soluciones", cota: "−2 · Soluciones en acción", shrp: 40 },
+      { id: "soluciones", cota: "−2 · Soluciones de ejemplo", shrp: 40 },
       { id: "proceso", cota: "−3 · El proceso", shrp: 55 },
-      { id: "plantillas", cota: "−4 · Proyectos y demostraciones", shrp: 70 },
+      { id: "plantillas", cota: "−4 · Webs de ejemplo", shrp: 70 },
       { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82 },
       { id: "faq", cota: "−6 · Dudas", shrp: 92 },
       { id: "contacto", cota: "Fondo · Contacto", shrp: 100 },
@@ -35,8 +35,22 @@ test("§3.5 · Las cotas de la portada", async () => {
   );
 });
 
+test("003 §3.1 · Cada sección de la portada lleva el rótulo de una sola puerta", async () => {
+  const { cortePortada } = await cargar<{ cortePortada: (EntradaCorte & { puerta?: string })[] }>("./portada.ts");
+  const puertas = ["Lo que ve tu cliente", "Lo que va por debajo"];
+  for (const e of cortePortada) {
+    // El hero lleva el suyo en `hero.lema` (junto a «Superficie»); el resto, aquí.
+    if (e.id === "inicio") {
+      assert.equal(e.puerta, undefined, "el hero no lleva `puerta`: su rótulo es `hero.lema`");
+      continue;
+    }
+    assert.ok(e.puerta && puertas.includes(e.puerta), `«${e.id}» no tiene un rótulo de puerta válido`);
+  }
+  assert.equal(cortePortada.find((e) => e.id === "plantillas")?.puerta, "Lo que ve tu cliente");
+});
+
 test("§3.5 · Recuento", () => {
-  const c = cifras.find((x) => x.etiqueta === "Plantillas propias publicadas y en línea");
+  const c = cifras.find((x) => x.etiqueta === "Plantillas publicadas, con su demo entera");
   assert.ok(c, "cifras.ts no tiene la cifra de plantillas");
   assert.equal(c.valor, plantillas.length);
   // Que salga del catálogo, no de un número escrito a mano que hoy coincide.
@@ -45,8 +59,8 @@ test("§3.5 · Recuento", () => {
 });
 
 test("§3.9 · Proceso", () => {
-  // Los datos de la tabla del §3.9, en el orden de los pasos (versión «consultora», 2026-10-31).
-  const datos = ["5 min", "horas y euros", "gratis", "por fases", "antes de cada pago", "a tu nombre"];
+  // Los datos de la tabla del §3.9, en el orden de los pasos: los aprobados en la 003 (textos.md, D-033).
+  const datos = ["con tus palabras", "cómo trabajas", "por escrito", "por fases", "antes de cada pago", "a tu nombre"];
   assert.equal(proceso.length, 6);
   for (const [i, paso] of proceso.entries()) {
     const p = paso as typeof paso & { dato?: string; vesTu?: string; debajo?: string };

@@ -4,16 +4,15 @@ import { cifras } from "@/content/cifras";
 import { loQueRecibes, loQueNoPedimos, TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { FondoObjeto } from "./FondoObjeto";
 
-// «36» y «0 €» (spec 002 §3.5): las dos cifras de la auditoría de `cifras.ts`, buscadas
-// por lo que son (no por su posición, que otra tarea puede cambiar).
+// «36» (spec 002 §3.5): la cifra de la auditoría de `cifras.ts`, buscada por lo que es (no por
+// su posición). «0 €» salió en la 003 (A34, A80: el precio se dice «no se cobra»).
 const preguntas = cifras.find((c) => c.etiqueta.startsWith("Preguntas de la auditoría"));
-const coste = cifras.find((c) => c.sufijo.trim() === "€");
-if (!preguntas || !coste) throw new Error("Fondo: faltan las cifras de la auditoría en cifras.ts");
-const cifrasFondo = [preguntas, coste];
+if (!preguntas) throw new Error("Fondo: falta la cifra de la auditoría en cifras.ts");
+const cifrasFondo = [preguntas];
 
 /**
  * «Fondo · Auditoría» (spec 002 §3.11, plan PD-12): el final del corte y del objeto. La
- * oferta, lo que lleva el informe, lo que no se pide, las dos cifras de la auditoría y el
+ * oferta, lo que lleva el informe, lo que no se pide, la cifra de la auditoría y el
  * objeto que se completa (`FondoObjeto`). Debajo va el pie, en roca.
  *
  * `hilo`: en la portada, el botón es donde acaba el conducto (`data-hilo-fin`). En
@@ -80,7 +79,7 @@ export function Fondo({ hilo = false }: { hilo?: boolean }) {
           </div>
         </div>
 
-        {/* El final: las dos cifras y el objeto (donde acaba el conducto). Debajo, el pie. */}
+        {/* El final: la cifra y el objeto (donde acaba el conducto). Debajo, el pie. */}
         <div className="mt-20 grid gap-12 border-t border-conducto pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-24">
           <ul className="fondo-cifras">
             {cifrasFondo.map((c) => (

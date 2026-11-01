@@ -34,14 +34,13 @@ export interface Herramienta {
 export const herramientas: Herramienta[] = [
   {
     id: "tiendas",
-    nombre: "Plataforma de tiendas",
+    nombre: "Tienda online",
     resuelve:
       "Vender por internet sin montar ni aprender una tienda: te la damos funcionando y la llevas desde el móvil.",
     hace: [
-      "Catálogo, cobro y envíos listos el primer día",
+      "Catálogo, cobro y recogida en tienda listos el primer día",
       "Panel pensado para el móvil",
-      "Avisos de qué reponer y qué no se vende",
-      "Catálogo sincronizado con Instagram, Facebook y Google Shopping",
+      "Avisos de qué reponer",
     ],
     sostiene: [{ nombre: "Tienda online", href: "/#servicios" }],
     capturas: [
@@ -67,7 +66,7 @@ export const herramientas: Herramienta[] = [
         {
           titulo: "Vende como un comercio de aquí",
           texto:
-            "Bizum, recogida en tienda, reparto en tu pueblo por código postal y pedidos por WhatsApp o por teléfono, que cobras con un enlace de pago o en mano.",
+            "Cobra con tarjeta y Bizum, y tu cliente puede recoger en tienda. Si quieres reparto en tu pueblo o pedidos por WhatsApp o por teléfono con enlace de pago, podemos montarlo.",
         },
         {
           titulo: "Se lleva desde el móvil",
@@ -75,33 +74,33 @@ export const herramientas: Herramienta[] = [
             "Subir un producto, ocultar lo agotado o marcar un pedido como enviado se hace desde el teléfono, sin encender el ordenador.",
         },
         {
-          titulo: "Te dice qué hacer, no te enseña gráficas",
+          titulo: "Te avisa de qué reponer",
           texto:
-            "«Repón la M del vestido de lino.» «Esto se mira mucho y no se vende.» Avisos así, y un resumen cada semana en tu correo.",
+            "«Repón la M del vestido de lino.» Avisos así, en tu panel.",
         },
         {
           titulo: "Con la cara de tu tienda",
-          texto: "Diseño propio a partir de tu marca, no un tema que comparten otras tiendas.",
+          texto: "Diseño a medida a partir de tu marca.",
         },
         {
-          titulo: "Tu escaparate en Instagram, Facebook y Google Shopping",
+          titulo: "También en Instagram, Facebook y Google Shopping, a medida",
           texto:
-            "El catálogo se sincroniza solo, y quien ve un producto allí entra a comprarlo en tu tienda.",
+            "Podemos conectar tu catálogo a Instagram, Facebook y Google Shopping, para que quien vea un producto allí entre a comprarlo en tu tienda.",
         },
         {
           titulo: "Lo legal, hecho",
           texto:
-            "Aviso legal, privacidad, condiciones, envíos y el botón de desistir que exige la ley desde junio de 2026. Sin banner de cookies, porque las estadísticas no las usan.",
+            "Aviso legal, privacidad, condiciones y envíos.",
         },
         {
           titulo: "Alguien detrás que la conoce",
           texto:
-            "Si un cobro o un aviso falla, la alerta nos llega a nosotros. Y cuando preguntas, te contesta quien la ha hecho.",
+            "Cuando preguntas, te contesta quien la ha hecho.",
         },
         {
           titulo: "Encaja con lo demás",
           texto:
-            "Las fichas de producto, la ficha de Google y el correo a tus clientes trabajan sobre la misma tienda.",
+            "Si te llevamos también la ficha de Google o el correo a tus clientes, podemos montarlos sobre la misma tienda.",
         },
       ],
     },
@@ -118,7 +117,6 @@ export const herramientas: Herramienta[] = [
       "Ordena los fallos por prioridad: alta, media o baja",
     ],
     sostiene: [
-      { nombre: "La auditoría gratuita", href: "/#contacto" },
       { nombre: "Diseño y desarrollo web", href: "/#servicios" },
     ],
     capturas: [
@@ -130,39 +128,11 @@ export const herramientas: Herramienta[] = [
     ],
   },
   {
-    id: "vigilancia",
-    nombre: "Vigilancia diaria",
-    resuelve: "Que si tu web se cae nos enteremos nosotros antes que tus clientes.",
-    hace: [
-      "Comprueba cada día que la web responde y abre por https",
-      "Avisa dos semanas antes de que caduque el certificado",
-      "Avisa un mes antes de que caduque el dominio",
-      "Detecta si el dominio deja de apuntar a tu web",
-      "Comprueba que el servicio del formulario de contacto sigue en pie",
-    ],
-    sostiene: [{ nombre: "Mantenimiento y soporte", href: "/#servicios" }],
-    icono: "/servicios/mantenimiento.svg",
-  },
-  {
-    id: "ficha-google",
-    nombre: "Auditoría de la ficha de Google",
-    resuelve: "Que lo que dice Google de tu negocio coincida con lo que dice tu web.",
-    hace: [
-      "Compara nombre, teléfono y dirección con los de tu web",
-      "Revisa la web enlazada, el horario y el estado de la ficha",
-      "Sigue la valoración y las reseñas para ver si suben o bajan",
-      "Deja los cambios escritos, listos para pegar en la ficha",
-    ],
-    sostiene: [{ nombre: "Aparecer en Google", href: "/#servicios" }],
-    icono: "/servicios/google.svg",
-  },
-  {
     id: "formularios",
-    nombre: "Formularios de contacto propios",
-    resuelve: "Que los mensajes de tu web te lleguen a ti, sin un formulario de otra empresa incrustado.",
+    nombre: "Formulario de contacto",
+    resuelve: "Que cada mensaje de tu web se reciba y se guarde, sin un formulario de otra empresa incrustado.",
     hace: [
       "El código que recibe cada mensaje lo hemos escrito nosotros",
-      "Te llega el aviso a tu correo y quien escribe recibe su confirmación",
       "Funciona igual esté la web donde esté alojada",
     ],
     sostiene: [{ nombre: "Diseño y desarrollo web", href: "/#servicios" }],

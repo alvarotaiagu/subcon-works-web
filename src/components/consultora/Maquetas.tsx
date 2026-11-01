@@ -2,9 +2,10 @@ import type { CSSProperties } from "react";
 import type { Maqueta } from "@/content/consultora";
 
 /**
- * Los seis ejemplos de «Soluciones en acción», hechos con HTML y CSS (no son capturas de
+ * Los seis ejemplos de «Soluciones de ejemplo», hechos con HTML y CSS (no son capturas de
  * nada que exista): una conversación, una factura leída, una nota de voz, un embudo, un
- * panel y una agenda. Todos los datos son inventados y el marco lo dice («Ejemplo»).
+ * panel y una agenda. Todos los datos son inventados y el marco lo dice («Ejemplo»); el marco
+ * lleva `data-ejemplo` (003 PD-5, CA-7): lo que va dentro no cuenta como cifra del sitio (CA-8).
  * Cada uno es una imagen para el lector de pantalla (`role="img"` con su descripción) y
  * su interior va oculto: leer una tabla de mentira celda a celda no ayuda a nadie.
  *
@@ -24,7 +25,7 @@ function Marco({
   children: React.ReactNode;
 }) {
   return (
-    <div className="maqueta" role="img" aria-label={`Ejemplo: ${descripcion}`}>
+    <div className="maqueta" data-ejemplo="" role="img" aria-label={`Ejemplo: ${descripcion}`}>
       <div className="maqueta-barra" aria-hidden="true">
         <span className="maqueta-puntos">
           <i />

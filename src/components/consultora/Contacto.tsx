@@ -9,7 +9,7 @@ import { FormularioContacto } from "./FormularioContacto";
 /**
  * «Fondo · Contacto»: el final del corte y del conducto, que acaba en el botón del
  * formulario (`data-hilo-fin`). A la izquierda el titular y las otras dos puertas
- * (diagnóstico rápido de un minuto, que no envía nada, y la auditoría completa); a la
+ * (diagnóstico rápido, que no envía nada, y la auditoría de tu negocio); a la
  * derecha el formulario corto. Debajo va el pie, en roca.
  */
 export function Contacto() {
@@ -32,13 +32,16 @@ export function Contacto() {
                 <Link href="/sectores/" className="link-underline text-hueso">
                   Diagnóstico rápido <Glifo nombre="derecha" />
                 </Link>
-                <span>Un minuto, en tu navegador: no envía ni guarda nada.</span>
+                <span>
+                  Unas preguntas en tu navegador: no se envía ni se guarda nada, y las respuestas van en la dirección de la
+                  página.
+                </span>
               </li>
               <li>
                 <Link href="/auditoria/" className="link-underline text-hueso">
-                  Auditoría completa <Glifo nombre="derecha" />
+                  Auditoría de tu negocio <Glifo nombre="derecha" />
                 </Link>
-                <span>36 preguntas sobre cómo trabajáis, con informe.</span>
+                <span>36 preguntas sobre cómo trabajáis, y un informe por correo. La auditoría no se cobra.</span>
               </li>
             </ul>
           </div>
