@@ -4,7 +4,8 @@ Spec: [spec.md](spec.md) (§3.6) · Plan: [plan.md](plan.md) (PD-3, PD-9) ·
 Tareas: [tasks.md](tasks.md) (T04, T05)
 
 Estado del documento: **propuesta** (T04, 2026-11-01), sobre `exp/consultora` en
-`7718dcf` y con el Anexo A confirmado (D-035). Lo aprueba Álvaro fila a fila en
+`7718dcf` (parte 1) y `23f5723` (parte 2, desde `## /auditoria/`), con el
+Anexo A confirmado (D-035). Lo aprueba Álvaro fila a fila en
 T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de estado.
 
 **Cómo se lee.**
@@ -21,7 +22,13 @@ T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de estado.
   clave: se busca por el texto actual.
 - No llevan fila: la numeración de estructura (01-07, A-C de las bandas,
   «Paso n de 8», P1-P36), los comentarios del código y los componentes que no
-  pinta ninguna ruta de esta rama (la portada vigente, spec §2).
+  pinta ninguna ruta de esta rama (la portada vigente, spec §2). Tampoco, y
+  cada tabla dice por qué: los datos de las plantillas que no cambian
+  (`## /plantillas/`), lo de `diagnostico.ts` que no afirma nada
+  (`## /sectores/clinicas-dentales/`) y la nota de anclas del README, que el
+  script no lee (`## README`).
+- Un texto que en el código va partido por una etiqueta (`<strong>`) lleva una
+  fila por trozo: CA-4 busca cada texto seguido.
 - Las filas `por confirmar` del Anexo (A10, A26, A36, A52, A54, A81, A99) no
   sirven para escribir (spec §3.3): donde un texto de hoy se apoya en una de
   ellas, el texto nuevo la quita.
@@ -111,9 +118,10 @@ filas.
      «propio» en lo que se enseña, y «propias» no añade nada que el cliente
      compre. La etiqueta pasa a «Plantillas publicadas, con su demo entera»
      (A05, A57).
-   - La pinta `Fondo` en las páginas de sector, así que su fila va en
-     `## /sectores/<slug>/` (parte 2), y `portada.test.ts` la busca por esa
-     etiqueta (lo actualiza T07).
+   - No la pinta ninguna ruta de esta rama (solo `Plantillas.tsx`, de la
+     portada vigente; `Fondo` pinta otras dos cifras), pero `portada.test.ts`
+     la busca por esa etiqueta (lo actualiza T07). Su fila va con las demás de
+     `cifras.ts`, en `## /sectores/clinicas-dentales/`.
    - «Una plantilla de 30.» no se toca (D-014, C-23): solo la pinta la portada
      vigente.
 4. **«Proyectos»** (`site.ts:17`, `portada.ts:27`, titular del bloque; §3.5).
@@ -608,11 +616,661 @@ cita sin repetirlos.
 | / | `src/components/consultora/FormularioContacto.tsx` | `jsx · enviado, enlace a /auditoria/` | auditoría completa | auditoría de tu negocio | Nombre de la puerta 3 (P-11). | propuesta |
 | / | `src/components/consultora/FormularioContacto.tsx` | `jsx · enviado, después del enlace` | nos da el detalle de cómo trabajáis. | (igual) | A52 no se cita: solo dice qué nos das tú. | propuesta |
 
-pendiente: parte 2 — faltan las tablas `## /auditoria/`, `## /estudio/`,
-`## /herramientas/` (con su `description`, §3.7), `## /plantillas/`,
-`## /privacidad/` (según A44, A75, A90-A99), `## /sectores/`, `## /sectores/clinicas-dentales/`,
-`## /sectores/alojamientos-rurales/`, `## /sectores/asesorias-y-despachos/`,
-`## /404` y `## README` (con la nota entre `<!-- 003-anclas -->`). Lo hace
-otro chat cuando esta parte esté mergeada; tiene que seguir las decisiones y
-los nombres de arriba (en especial las 3, 6 y 8) y no repetir las filas que ya
-están en `## /`.
+## /auditoria/
+
+La puerta 3, «Auditoría de tu negocio» (P-11, recomendado). Las filas
+`por confirmar` del Anexo pesan aquí: lo que el informe lleva dentro (A52, A36,
+A81) no se puede escribir hasta que Álvaro las confirme. Donde un texto de hoy
+se apoya en ellas, sale o se reescribe sin ellas; si Álvaro las confirma en T05,
+esas filas pueden volver a `(igual)` (estado `corregida`).
+
+`loQueNoPedimos` (`auditoria.ts`) va aquí y `/sectores/<slug>/` lo cita. Las
+preguntas P1-P36 llevan fila aunque casi no cambien: son el formulario del kit
+03 y el informe las cita por su número (no se renumeran). La numeración
+(«Paso n de 8», «Bloque n de 7», «n / 36», P1-P36) no lleva fila.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /auditoria/ | `src/app/auditoria/page.tsx` | `metadata.title` | Auditoría gratuita — {n} | Auditoría de tu negocio — {n} | Nombre de la puerta 3 (P-11). A34 corregida (D-035): sin «gratuita». `{n}` = `site.nombre`. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `metadata.description` | Cuéntanos cómo trabajáis en diez minutos y te devolvemos un informe con las horas que se van cada semana, lo que cuestan y qué se arregla primero. | Cuéntanos cómo trabajáis, con tus palabras, y te mandamos por correo un informe de tu negocio. La auditoría no se cobra. | A72 (informe por correo), A34 corregida («no se cobra»). Sale «diez minutos» (A35, C hasta cronometrar). Salen «las horas que se van», «lo que cuestan» y «qué se arregla primero»: A36 y A52 siguen `por confirmar`. | propuesta |
+| /auditoria/ | `src/content/interiores.ts` | `cotasInterior.auditoria.cota` | Fondo · Auditoría | (igual) | Cota (D-014). | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `CabeceraInterior` · `arriba` | Cómo trabajáis | (igual) | Título del cuestionario del kit 03. No afirma nada. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `CabeceraInterior` · `em` | por dentro | (igual) | Ídem. | propuesta |
+| /auditoria/ | `src/components/ui/CabeceraInterior.tsx` | `jsx · enlace de vuelta` | Volver | (igual) | Interfaz. Lo pintan todas las interiores; la fila va solo aquí. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · entradilla` | {n} preguntas sobre el día a día del negocio. Se contesta en unos diez minutos, con tus palabras, y no hace falta que sepas nada de tecnología. | {n} preguntas sobre el día a día del negocio. Se contestan con tus palabras, y no hace falta que sepas nada de tecnología. La auditoría no se cobra. | A38 (`{n}` = `TOTAL_PREGUNTAS`), A56, A34 corregida. Sale «unos diez minutos» (A35, C hasta cronometrar). | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[0].titulo` | No contestes lo que no sepas | (igual) | A98: solo es obligatorio el primer paso. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[0].texto` | Déjalo en blanco. El informe marca los huecos en vez de inventárselos. | Déjalo en blanco. Solo hacen falta el nombre del negocio, el tuyo y tu correo. | A98. Sale «el informe marca los huecos»: A52 sigue `por confirmar`. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[1].titulo` | Los números a ojo valen | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[1].texto` | «Unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio. | Por ejemplo, «unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio. | A78: una cifra de ejemplo fuera de una maqueta va rotulada como ejemplo (o dentro de `[data-ejemplo]`; T05 la pone en `CIFRAS` con A78). | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[2].titulo` | Puedes parar y seguir | (igual) | A93. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[2].texto` | Lo que escribas se guarda en este navegador. Cierra la pestaña y vuelve cuando quieras. | Lo que escribas se guarda en este navegador durante 30 días, y se borra al enviarlo. Cierra la pestaña y vuelve cuando te venga bien. | A93 corregida (D-035): el borrador caduca a los 30 días, así que «cuando quieras» no era verdad. A44: se borra si el envío sale bien. Ojo: hoy el borrador **no caduca** (A44); T08 tiene que hacer que caduque antes de copiar este texto. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · borrador recuperado` | Recuperado lo que habías escrito en este navegador | (igual) | A93. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · inicio | Hemos puesto {n} | (igual) | Interfaz. `{n}` = nº de respuestas prerrellenadas; sigue «respuesta» o «respuestas» según sea una o varias. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · texto | de tu diagnóstico rápido. | (igual) | Va tras «Hemos puesto {n} respuesta(s)». Nombre de la puerta 2 (P-11): es el diagnóstico rápido, así que CA-17 lo admite (T05 lo pone en `DIAGNOSTICO_PERMITIDO`). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · una | Revísala y cámbiala si no cuadra. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · varias | Revísalas y cámbialas si no cuadran. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · saltadas | Las que ya habías escrito no las hemos tocado. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · campo trampa` | No rellenes este campo | (igual) | Oculto (`aria-hidden`); solo lo ven los robots. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · rótulo | Antes de empezar | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · titular y `legend` | Tus datos | (igual) | Interfaz. También es la primera etiqueta del índice (`Progreso`). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · entradilla | Lo único obligatorio de todo el formulario. El resto puedes dejarlo a medias y mandarlo igual. | (igual) | A98 (la casilla de consentimiento va en este mismo paso). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo negocio` · `etiqueta` | Nombre del negocio | (igual) | A44 (datos de la auditoría). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `etiqueta` | A qué os dedicáis | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `ayuda` | Peluquería, taller, clínica, tienda… | (igual) | Ejemplos de sector; no afirman nada. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo ciudad` · `etiqueta` | Ciudad | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `etiqueta` | Vuestra web, si tenéis | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `ayuda` | Con ella se puede auditar también la mitad de fuera. Si no tenéis, déjalo vacío. | Si no tenéis, déjalo vacío. | Sale «se puede auditar también la mitad de fuera»: «miramos tu web por fuera» es A52, que sigue `por confirmar`. Filtro 1: «la mitad de fuera» no se entendía. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_nombre` · `etiqueta` | Tu nombre | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `etiqueta` | Tu correo | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `ayuda` | Es por donde te llega el informe. | (igual) | A72. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_telefono` · `etiqueta` | Teléfono | (igual) | A44 (opcional). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_telefono` · `ayuda` | Opcional. Solo si prefieres que te llamemos. | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · consentimiento` | Acepto que {n} guarde estos datos para preparar el informe y responderme. No se ceden a nadie y puedes pedir que se borren cuando quieras escribiendo a | Acepto que {n} guarde estos datos para preparar el informe y responderme. Los guardamos en Supabase y el informe lo redactamos con la IA de Anthropic; no se ceden a nadie más. Puedes pedir que se borren cuando quieras escribiendo a | A91: la casilla nombra a los dos encargados igual que `/privacidad/` (antes decía «no se ceden a nadie» sin ellos). A90 (Supabase), A96 (para qué), A44. «Cuando quieras» es un derecho (RGPD art. 17), no un reclamo de condición. `{n}` = `site.nombre`. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · consentimiento, final` | . Más detalle en la | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · enlace del consentimiento` | política de privacidad | (igual) | A44: `/privacidad/` nombra este formulario (CA-14). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · rótulo de lo que no se pide | Y lo que no te vamos a pedir | (igual) | A97. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[0]` | Datos de tus clientes: listados, fichas, historiales, nombres con teléfonos. | (igual) | A97. También lo pinta `Fondo` (`/sectores/<slug>/`). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[1]` | Contraseñas, claves ni accesos a tus programas. | (igual) | A97. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[2]` | Facturas, contabilidad ni exportaciones de tus bases de datos. | (igual) | A97. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · negocio | Dinos cómo se llama el negocio. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · nombre | Necesitamos tu nombre. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · correo | Revisa el correo: es por donde te llega el informe. | (igual) | A72. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · consentimiento | Hace falta que lo aceptes para poder escribirte. | (igual) | A98 (la casilla también es obligatoria). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Atrás | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón, paso 0 | Empezar el cuestionario | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Siguiente bloque | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón enviando | Enviando… | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón, último paso | Enviar la solicitud | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Enviar tal como está | (igual) | Interfaz (A98: se puede mandar a medias). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · a medias | Puedes mandarlo a medias: {n} contestadas | (igual) | A98. `{n}` = respuestas contestadas (recuento de la interfaz, no una cifra que afirme algo). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.validacion` | Faltan datos obligatorios. Vuelve al primer paso y revísalos. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.ritmo` | Has mandado ya varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo. | (igual) | A73: «unos minutos» casa con el límite de la función (3 envíos por correo cada 10 min). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.red` | No hemos podido conectar. Comprueba la conexión y vuelve a darle a enviar. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.servidor` | Algo ha fallado por nuestro lado. Inténtalo en un rato. | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · antes del correo | Si sigue sin funcionar, escríbenos a | (igual) | A44 (correo directo). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · después del correo | y lo resolvemos por correo. | (igual) | A44. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · rótulo | Recibido | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · titular | Gracias{n}. | (igual) | Interfaz. `{n}` = «, » y el nombre de pila. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · texto | Nos han llegado {n} de las {n} respuestas. Lo primero que hacemos es leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de ponernos. | Nos han llegado {n} de las {n} respuestas. Lo leemos entero y, si falta algo importante, te escribimos antes de ponernos. | A56 (lo leemos nosotros). Sale «mirar tu web por fuera»: A52 sigue `por confirmar`. `{n}` = contestadas y `TOTAL_PREGUNTAS` (A38). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · plazo | El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte. | (igual) | A72 (procedimiento, D-035). | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Mientras, mira las plantillas | (igual) | A57. | propuesta |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Volver al inicio | (igual) | Interfaz. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].titulo` | El negocio | (igual) | Cuestionario del kit 03 (A38). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[0].etiqueta` | Nombre del negocio | (igual) | P1. Pregunta: no afirma ni presupone (§3.1). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[1].etiqueta` | A qué os dedicáis, en una frase | (igual) | P2. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[2].etiqueta` | Ciudad | (igual) | P3. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[3].etiqueta` | ¿Cuántas personas trabajáis y qué hace cada una? | (igual) | P4. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[3].ayuda` | Por ejemplo: «3: yo atiendo y hago presupuestos, mi socio produce, y una persona a media jornada en recepción». | (igual) | A78: cifra de ejemplo, ya rotulada «Por ejemplo» (T05 la pone en `CIFRAS` con A78). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[4].etiqueta` | Horario de atención al público | (igual) | P5. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[5].etiqueta` | ¿A cuántos clientes atendéis a la semana, más o menos? | (igual) | P6. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].titulo` | Cómo os llegan los clientes | (igual) | Kit 03. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[0].etiqueta` | ¿Por dónde os contactan? | (igual) | P7. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[0].ayuda` | Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, email, gente que entra por la puerta, otros. | Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, correo, gente que entra por la puerta, otros. | Filtro 6: «correo», como en el resto de la web (y en el formulario corto, `## /`). Ofrece opciones, no presupone ninguna (§3.1). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[1].etiqueta` | ¿Quién responde a esas llamadas y mensajes, y desde qué dispositivo? | (igual) | P8. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[1].ayuda` | Por ejemplo: «la recepcionista, desde su móvil personal» o «un móvil de empresa que está en el mostrador». | (igual) | Ejemplo rotulado. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[2].etiqueta` | ¿Cuánto se tarda normalmente en contestar un mensaje? | (igual) | P9. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[3].etiqueta` | ¿Qué pasa con las llamadas y mensajes que llegan fuera de horario o cuando estáis ocupados? | (igual) | P10. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[3].ayuda` | ¿Sabéis cuántos se quedan sin contestar? | (igual) | P10. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[4].etiqueta` | ¿Cuántas consultas de clientes nuevos entran a la semana, más o menos? | (igual) | P11. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].titulo` | Agenda y citas | (igual) | Kit 03. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].entradilla` | Si en tu negocio no se trabaja con cita previa, salta este bloque entero: escribe «no trabajamos con cita» en la primera y sigue. | (igual) | Ya va con «si» (§3.1). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[0].etiqueta` | ¿Dónde apuntáis las citas? | (igual) | P12. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[0].ayuda` | Agenda de papel, Excel, Google Calendar, un programa concreto: dime cuál. | (igual) | P12. Opciones, no supuestos. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[1].etiqueta` | ¿Quién las apunta, y desde dónde se puede consultar la agenda? | (igual) | P13. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[2].etiqueta` | ¿Puede el cliente reservar él solo por internet, sin llamar? | (igual) | P14. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[3].etiqueta` | ¿Cómo le recordáis la cita al cliente? | (igual) | P15. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[3].ayuda` | ¿Quién lo hace, y cuánto tiempo se le va a la semana en eso? | (igual) | P15. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[4].etiqueta` | ¿Cuántas citas se pierden porque el cliente no aparece o cancela a última hora? | (igual) | P16. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[4].ayuda` | ¿Cuánto factura de media una cita? | (igual) | P16. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].titulo` | Presupuestos, cobro y facturación | (igual) | Kit 03. Pregunta por cómo factura el negocio; no dice que nosotros facturemos (A16). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[0].etiqueta` | ¿Cómo preparáis un presupuesto y cómo se lo hacéis llegar al cliente? | (igual) | P17. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[1].etiqueta` | ¿Cuántos presupuestos mandáis al mes, y cuántos acaban en trabajo? | (igual) | P18. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[2].etiqueta` | ¿Cómo cobráis? | (igual) | P19. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[2].ayuda` | Efectivo, tarjeta, transferencia, pago por internet, financiación… | (igual) | P19. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[3].etiqueta` | ¿Quién hace las facturas y con qué programa? | (igual) | P20. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[3].ayuda` | ¿Cuánto tiempo al mes os lleva? | (igual) | P20. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[4].etiqueta` | ¿Tenéis impagos, o pagos pendientes que se os olvida reclamar? | (igual) | P21. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].titulo` | Después de la venta | (igual) | Kit 03. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[0].etiqueta` | Cuando un cliente termina, ¿qué pasa? ¿Volvéis a hablar con él? | (igual) | P22. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[1].etiqueta` | ¿Pedís reseñas? Si sí, ¿cómo? | (igual) | P23. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[1].ayuda` | ¿Cuántas tenéis ahora mismo y con qué nota? | (igual) | P23. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[2].etiqueta` | ¿Vuestros clientes deberían volver cada cierto tiempo (revisión, mantenimiento, retoque, renovación)? | (igual) | P24. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[2].ayuda` | ¿Cómo les avisáis de que les toca? | (igual) | P24. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[3].etiqueta` | ¿Mandáis alguna comunicación cada cierto tiempo (novedades, ofertas, recordatorios)? | (igual) | P25. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[3].ayuda` | ¿Con qué herramienta? | ¿Con qué programa? | Decisión 6: «herramienta» queda fuera de lo que se enseña, y el resto del formulario dice «programa» (P20, P26). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].titulo` | Herramientas y datos | Programas y datos | Ídem: casa con P26 («programas y aplicaciones»). | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[0].etiqueta` | Lista de programas y aplicaciones que pagáis | (igual) | P26. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[0].ayuda` | De cada uno: nombre, para qué lo usáis y cuánto cuesta al mes, si lo sabes. | (igual) | P26. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[1].etiqueta` | ¿Dónde está la información de vuestros clientes? | (igual) | P27. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[1].ayuda` | Un programa, un Excel, la agenda de papel, el móvil de alguien, varias cosas a la vez. | (igual) | P27. Opciones, no supuestos. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[2].etiqueta` | ¿Hay copia de seguridad de eso? ¿Quién la hace y cada cuánto? | (igual) | P28. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[3].etiqueta` | ¿Quién tiene acceso a esa información? | (igual) | P29. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[3].ayuda` | Y una pregunta incómoda: si mañana esa persona no viene, ¿el negocio puede seguir funcionando? | (igual) | P29. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[4].etiqueta` | ¿Qué números miráis cada mes para saber si el negocio va bien? | (igual) | P30. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].titulo` | Tiempo, IA y objetivos | (igual) | Kit 03. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[0].etiqueta` | Las 3 tareas repetitivas que más tiempo os comen | Las tareas repetitivas que más tiempo os comen | Filtro 5 y PD-6: «3» cuenta como cifra y no tiene fila en el Anexo. La ayuda ya dice «de cada una». Si Álvaro prefiere dejar el número (es el formulario del kit 03), T05 la deja `(igual)` y la pone como excepción con motivo. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[0].ayuda` | De cada una, dime cuánto tiempo a la semana, aunque sea a ojo. | (igual) | P31. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[1].etiqueta` | ¿Cuánto cuesta más o menos una hora de trabajo de la persona que hace esas tareas? | (igual) | P32. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[1].ayuda` | Con lo que le cuesta a la empresa, aproximado. Si prefieres no decirlo, no pasa nada. | (igual) | P32. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[2].etiqueta` | ¿Habéis probado alguna herramienta de inteligencia artificial o de automatización? | ¿Habéis probado algún programa de inteligencia artificial o de automatización? | Decisión 6, como P25. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[2].ayuda` | ¿Qué pasó? | (igual) | P33. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[3].etiqueta` | ¿Qué os preocuparía de usar inteligencia artificial con vuestros clientes? | (igual) | P34. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[4].etiqueta` | Si pudieras arreglar una sola cosa del día a día, ¿cuál sería? | (igual) | P35. | propuesta |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[5].etiqueta` | ¿Qué presupuesto tienes en mente para montarlo? ¿Y para el mantenimiento mensual? | (igual) | P36. | propuesta |
+
+## /estudio/
+
+Los compromisos, su nota y la tarjeta de persona (`Compromisos.tsx`,
+`estudio.ts` `compromisos`/`notaCompromisos`, `TarjetaPersona.tsx`) van en
+`## /`. `comoTrabajamos[2].texto` es `proceso[4].descripcion` (en `## /`). Los
+textos de persona repiten los de la portada (decisión 8): uno por persona, que
+leen Álvaro y Yanin antes de publicarlo (A40).
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /estudio/ | `src/app/estudio/page.tsx` | `metadata.title` | Estudio — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `metadata.description` | Quién hace Undertactics, cómo trabajamos y qué queda a nombre de cada negocio: el código, el dominio y las claves. | (igual) | A40, A31 (la excepción de la tienda la dice la nota de los compromisos, A60). | propuesta |
+| /estudio/ | `src/content/interiores.ts` | `cotasInterior.estudio.cota` | −3 · Estudio | (igual) | Cota (D-014). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `CabeceraInterior` · `arriba` | Quién hace | (igual) | A40. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `CabeceraInterior` · `em` | esto. | (igual) | Ídem. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `entradaEstudio` | En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien diseña tu web, escribe el código o monta tu vídeo. | En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien hace el trabajo. | A40. Sale «monta tu vídeo» (A21, C: el vídeo no es un servicio). El mismo final que `quien.texto` de la portada (decisión 8). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · segundo párrafo` | Somos un estudio pequeño a propósito: cada encargo lo llevan las mismas dos personas de principio a fin. | (igual) | A40, A76 (fuente: `estudio.ts`, 2 personas). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[0].nombre` | Álvaro | (igual) | A40. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[0].rol` | Web, código y automatización | (igual) | A40. Decisión 8: la portada pasa a este mismo rol. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[0].texto` | Diseña y programa las webs, las tiendas y las herramientas del estudio, y monta las automatizaciones con IA. Si algo del código no te encaja, se lo dices a él y se cambia. | Diseña y programa las webs y las tiendas, y monta las automatizaciones con IA que se encargan a medida. Si algo del código no te encaja, se lo dices a él. | Decisión 8: el mismo texto que `quien.personas.Álvaro.texto` (`## /`). A40, A06, A01, A22 (B, por encargo). Sale «y se cambia» (A51, B: en la tienda el código no es del cliente) y «las herramientas del estudio» (decisión 6). Lo lee Álvaro antes de publicarlo. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[1].nombre` | Yanin | (igual) | A40. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[1].rol` | Foto, vídeo y redes | (igual) | A40 corregida (D-035). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[1].texto` | Produce y edita las fotos y los vídeos para redes, que es lo que mejor se le da y lo que más le gusta. También trabaja con IA en el día a día del estudio. | Hace y edita las fotos y los vídeos del estudio. | Decisión 8: el mismo texto que `quien.personas.Yanin.texto` (`## /`). «Para redes» al lado de los servicios se lee como servicio de vídeo (A21, C). Salen «lo que mejor se le da» y «trabaja con IA»: sin fila en el Anexo (§3.2 regla 6). Lo lee Yanin antes de publicarlo (A40). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `Titular` · `arriba` | Cómo trabajamos. | (igual) | Titular. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].titulo` | Primero miramos, luego hablamos de precio. | (igual) | A56, A30 (procedimiento, D-035). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].texto` | La auditoría gratuita son {n} preguntas y te deja un informe que es tuyo, sigas con nosotros o no. | La auditoría de tu negocio son {n} preguntas y un informe que te llega por correo. No se cobra. | Nombre de la puerta 3 (P-11). A38 (`{n}` = `TOTAL_PREGUNTAS`), A72, A34 corregida (sin «gratuita»). Sale «un informe que es tuyo, sigas con nosotros o no»: A52 sigue `por confirmar`. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[1].titulo` | Partimos de una base propia. | No empezamos de cero. | Decisión 3: sin «propia» (§3.4 regla 1). El texto dice de qué se parte. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[1].texto` | {n} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas. | Partimos de {n} plantillas publicadas y de la tienda online, el informe de mejoras de tu web y el formulario de contacto, que hemos construido nosotros. Se adapta a lo tuyo, y por eso lo primero funciona en semanas. | A05 (`{n}` = `plantillas.length`), A50 corregida («lo construimos nosotros», solo para las piezas A: A01, A03, A29), A37 (procedimiento). Nombres recomendados (P-11). Sale «herramientas» (decisión 6). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[2].titulo` | Lo ves funcionando antes de cada pago. | (igual) | A30 (procedimiento, D-035). El texto es `proceso[4].descripcion` (`## /`). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[3].titulo` | Una conversación, no un ticket. | (igual) | A39 (procedimiento, D-035). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[3].texto` | Escribes a quien lo hace y te contesta esa misma persona. | (igual) | A40, A39. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `Titular` · `arriba` del cierre | ¿Hablamos de tu negocio? | (igual) | Titular (CA-11: casa con la entradilla y los botones). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · entradilla del cierre` | Empieza por la auditoría gratuita: diez minutos de formulario y te decimos qué falta antes de hablar de precio. | Empieza por la auditoría de tu negocio: contestas unas preguntas sobre cómo trabajáis y te mandamos un informe por correo, antes de hablar de precio. La auditoría no se cobra. | Nombre de la puerta 3 (P-11). A34 corregida, A72, A56. Sale «diez minutos» (A35, C). Sale «te decimos qué falta»: lo que lleva el informe es A52, `por confirmar`. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · botón a /auditoria/` | Pedir la auditoría gratuita | Empezar la auditoría | Forma corta de la puerta 3 («Auditoría»). A34 corregida: sin «gratuita». | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · botón de correo` | Escribir un correo | (igual) | A44 (correo directo). | propuesta |
+
+## /herramientas/
+
+La ruta no cambia (D-009; la enlazan otras páginas), pero en el menú pasa a
+«Productos» (decisión 6) y la página, con ella: título, cota y `description`
+dicen lo mismo que el H1 («Lo construimos nosotros.»). Tras §3.7 quedan tres
+piezas, las tres de nivel A: la tienda online (A01), el informe de mejoras de tu
+web (A03) y el formulario de contacto (A29). Las entradas `vigilancia` y
+`ficha-google` salen enteras (A19, A20; CA-2): sus filas van como `(quitar)`.
+Al quedarse el formulario solo en la fila de tarjetas sin captura, la rejilla de
+tres columnas tendrá un hueco: es maquetación (T06), no texto.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /herramientas/ | `src/app/herramientas/page.tsx` | `metadata.title` | Herramientas — {n} | Productos — {n} | Decisión 6: el cliente compra el resultado (§3.4). `{n}` = `site.nombre`. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `metadata.description` | El software que hemos escrito para sostener cada servicio: la plataforma de tiendas, el informe de mejoras de tu web, la vigilancia diaria, la auditoría de la ficha de Google y los formularios de contacto. | La tienda online, el informe de mejoras de tu web y el formulario de contacto: lo que hemos construido nosotros y funciona hoy, enseñado con datos de ejemplo. | §3.7 (la `description`): salen la vigilancia (A19) y la auditoría de la ficha (A20), los dos C (CA-2, CA-3). A50 corregida: «lo construimos nosotros», solo para las piezas A (A01, A03, A29), y sin «sostener cada servicio». A59. Nombres recomendados (P-11). | propuesta |
+| /herramientas/ | `src/content/interiores.ts` | `cotasInterior.herramientas.cota` | 0 · Herramientas | 0 · Productos | Decisión 6, como el menú. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `CabeceraInterior` · `arriba` | Lo construimos | (igual) | A50 corregida (para las piezas A). Es el H1 de la página. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `CabeceraInterior` · `em` | nosotros. | (igual) | Ídem. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · entradilla` | No son programas comprados ni el panel de otra empresa con nuestro logo encima: es software que hemos escrito nosotros, y cada pieza sostiene uno de los servicios. Si algo no le encaja a tu negocio, se cambia en el código, no se espera a que lo arregle otro. | No son programas comprados ni el panel de otra empresa con nuestro logo encima: la tienda online, el informe de mejoras de tu web y el formulario de contacto los hemos escrito nosotros. Si algo no le encaja a tu negocio, podemos cambiarlo a medida. | A50 corregida: sale «cada pieza sostiene uno de los servicios». A51 (B): «se cambia en el código» pasa a «podemos cambiarlo a medida» (§3.2 regla 1; en la tienda el código no es del cliente, A60). | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · rótulo del aviso` | Aviso | (igual) | Interfaz. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · aviso, primera frase` | La plataforma de tiendas se está estrenando con su | (quitar) | A41 (C, regla 3): posible cliente real sin autorización anotada. Sale la frase entera, con su `<strong>` («primera tienda»). | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · aviso, <strong>` | primera tienda | (quitar) | A41 (C, regla 3): es el trozo con etiqueta de la frase anterior; sale con ella. El `.` que sigue se une a «Las capturas…». | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · aviso` | Las capturas de esta página salen de una tienda de ejemplo y de la demo de una de nuestras plantillas: los negocios, los productos, los pedidos y las cifras que aparecen son inventados. | (igual) | A59 (D-007). Las capturas llevan `data-ejemplo` (CA-7, T06). | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `aria-label` del índice | Herramientas de esta página | Productos de esta página | Decisión 6. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · rótulo de la primera` | La principal | (igual) | Interfaz. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `Sostiene` · rótulo | Sostiene | Servicio | A50 corregida: sale «cada pieza sostiene uno de los servicios». El rótulo dice solo de qué servicio forma parte. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].nombre` | Plataforma de tiendas | Tienda online | Nombre recomendado (P-11). Filtro 1: «plataforma» es jerga. A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].resuelve` | Vender por internet sin montar ni aprender una tienda: te la damos funcionando y la llevas desde el móvil. | (igual) | A25, A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].hace[0]` | Catálogo, cobro y envíos listos el primer día | Catálogo, cobro y recogida en tienda listos el primer día | A02 corregida: «envíos» cubría el reparto local, que es B (A64). Como `proyectos.categorias[software].items[0].texto` (`## /`). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].hace[1]` | Panel pensado para el móvil | (igual) | A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].hace[2]` | Avisos de qué reponer y qué no se vende | Avisos de qué reponer | A01. Sale «qué no se vende»: A26 sigue `por confirmar`. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].hace[3]` | Catálogo sincronizado con Instagram, Facebook y Google Shopping | (quitar) | A53 corregida: B, conectarlo es trabajo a medida; no va en la lista de lo que hace (§3.2 regla 1). Se dice como «podemos conectar» en `ventajas.items[5]`. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].sostiene[0].nombre` | Tienda online | (igual) | Enlace al servicio. A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].capturas[0].alt` | Novedades de una papelería de ejemplo hecha con la plataforma, en el ordenador. | (igual) | A01, A59. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].capturas[1].alt` | Inicio del panel de la tienda de ejemplo en un móvil: ventas de la semana y la lista «Para hacer» con lo que toca reponer. | (igual) | A01, A59. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[tiendas].ventajas.titulo` | Montada por nosotros, llevada por ti | (igual) | A25, A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[0].titulo` | Abre vendiendo, no configurando | (igual) | A25. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[0].texto` | Subimos el catálogo con sus fotos, tallas y precios, conectamos el cobro, decidimos contigo los envíos y la recogida y la ponemos en tu dominio. | (igual) | A25 (confirmada tal cual). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[1].titulo` | Vende como un comercio de aquí | (igual) | A02 corregida. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[1].texto` | Bizum, recogida en tienda, reparto en tu pueblo por código postal y pedidos por WhatsApp o por teléfono, que cobras con un enlace de pago o en mano. | Cobra con tarjeta y Bizum, y tu cliente puede recoger en tienda. Si quieres reparto en tu pueblo o pedidos por WhatsApp o por teléfono con enlace de pago, podemos montarlo. | A02 corregida (tarjeta, Bizum y recogida: A, presente). A64 (reparto local, enlace de pago y pedidos por WhatsApp o teléfono: B, «podemos montarlo»; §3.2 regla 1). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[2].titulo` | Se lleva desde el móvil | (igual) | A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[2].texto` | Subir un producto, ocultar lo agotado o marcar un pedido como enviado se hace desde el teléfono, sin encender el ordenador. | (igual) | A01. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[3].titulo` | Te dice qué hacer, no te enseña gráficas | Te avisa de qué reponer | A01. «No te enseña gráficas» no tiene fila en el Anexo (§3.2 regla 6) y el panel enseña las ventas de la semana (ver el `alt` de la captura). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[3].texto` | «Repón la M del vestido de lino.» «Esto se mira mucho y no se vende.» Avisos así, y un resumen cada semana en tu correo. | «Repón la M del vestido de lino.» Avisos así, en tu panel. | A01. Sale «se mira mucho y no se vende» (A26, `por confirmar`) y «un resumen cada semana» (A19, C; está en `FRASES_C`, CA-3). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[4].titulo` | Con la cara de tu tienda | (igual) | A25. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[4].texto` | Diseño propio a partir de tu marca, no un tema que comparten otras tiendas. | Diseño a medida a partir de tu marca. | A25. Decisión 3: sin «propio» (§3.4 regla 1). Sale «no un tema que comparten otras tiendas»: sin fila en el Anexo, y la plataforma sí es compartida (A60). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[5].titulo` | Tu escaparate en Instagram, Facebook y Google Shopping | También en Instagram, Facebook y Google Shopping, a medida | A53 corregida: B, lleva «a medida» (§3.2 regla 1). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[5].texto` | El catálogo se sincroniza solo, y quien ve un producto allí entra a comprarlo en tu tienda. | Podemos conectar tu catálogo a Instagram, Facebook y Google Shopping, para que quien vea un producto allí entre a comprarlo en tu tienda. | A53 corregida: «podemos conectar», no «se sincroniza» (D-035). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[6].titulo` | Lo legal, hecho | (igual) | A25 (páginas legales). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[6].texto` | Aviso legal, privacidad, condiciones, envíos y el botón de desistir que exige la ley desde junio de 2026. Sin banner de cookies, porque las estadísticas no las usan. | Aviso legal, privacidad, condiciones y envíos. | A25. Salen el botón de desistir «desde junio de 2026» (A10) y «sin banner de cookies» (A54): las dos siguen `por confirmar`. Si Álvaro las confirma, vuelven. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[7].titulo` | Alguien detrás que la conoce | (igual) | A40. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[7].texto` | Si un cobro o un aviso falla, la alerta nos llega a nosotros. Y cuando preguntas, te contesta quien la ha hecho. | Cuando preguntas, te contesta quien la ha hecho. | A40. Sale «la alerta nos llega a nosotros» (A19, C; en `FRASES_C`, CA-3). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[8].titulo` | Encaja con lo demás | (igual) | Titular de la ventaja. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `ventajas.items[8].texto` | Las fichas de producto, la ficha de Google y el correo a tus clientes trabajan sobre la misma tienda. | Si te llevamos también la ficha de Google o el correo a tus clientes, podemos montarlos sobre la misma tienda. | A27 (B): en condicional (§3.2 regla 1). A08, A17. Salen «las fichas de producto»: la plataforma no las escribe (A01). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].nombre` | Informe de mejoras de tu web | (igual) | A03. Nombre recomendado (P-11). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].resuelve` | Saber qué falla en tu web y qué arreglar primero, con pruebas y no con opiniones. | (igual) | A03. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].hace[0]` | Mide velocidad, accesibilidad y cómo se ve en el móvil con un navegador de verdad | (igual) | A03. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].hace[1]` | Lee los textos de la portada y de las páginas de dentro | (igual) | A03. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].hace[2]` | Cada fallo trae su prueba: la medida, la frase exacta o la captura | (igual) | A03. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].hace[3]` | Lo que no se puede probar se descarta o se marca como sospecha | (igual) | A03 (cada fallo con su prueba). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].hace[4]` | Ordena los fallos por prioridad: alta, media o baja | (igual) | A03. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].sostiene[0].nombre` | La auditoría gratuita | (quitar) | Sale el enlace entero (con su `href`): que la auditoría parta del informe de tu web es A52, `por confirmar`, y «gratuita» sale por A34 corregida. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].sostiene[1].nombre` | Diseño y desarrollo web | (igual) | Enlace al servicio. A06. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[informe].capturas[0].alt` | Informe de mejoras sobre la demo de una de nuestras plantillas, con los fallos y su prueba. | (igual) | A03 (el que se enseña es sobre una plantilla), A59. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].nombre` | Vigilancia diaria | (quitar) | A19 (C), §3.7, CA-2. Sale la entrada entera: nombre, `resuelve`, `hace`, `sostiene` e icono. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].resuelve` | Que si tu web se cae nos enteremos nosotros antes que tus clientes. | (quitar) | A19 (C), §3.7. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].hace[0]` | Comprueba cada día que la web responde y abre por https | (quitar) | A19 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].hace[1]` | Avisa dos semanas antes de que caduque el certificado | (quitar) | A19 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].hace[2]` | Avisa un mes antes de que caduque el dominio | (quitar) | A19 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].hace[3]` | Detecta si el dominio deja de apuntar a tu web | (quitar) | A19 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[vigilancia].hace[4]` | Comprueba que el servicio del formulario de contacto sigue en pie | (quitar) | A19 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[ficha-google].nombre` | Auditoría de la ficha de Google | (quitar) | A20 (C), §3.7, CA-2, CA-3. Sale la entrada entera. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[ficha-google].resuelve` | Que lo que dice Google de tu negocio coincida con lo que dice tu web. | (quitar) | A20 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[ficha-google].hace[0]` | Compara nombre, teléfono y dirección con los de tu web | (quitar) | A20 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[ficha-google].hace[1]` | Revisa la web enlazada, el horario y el estado de la ficha | (quitar) | A20 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[ficha-google].hace[2]` | Sigue la valoración y las reseñas para ver si suben o bajan | (quitar) | A20 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[ficha-google].hace[3]` | Deja los cambios escritos, listos para pegar en la ficha | (quitar) | A20 (C). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[formularios].nombre` | Formularios de contacto propios | Formulario de contacto | Nombre recomendado (P-11); sin «propios» (§3.4 regla 1). A29. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[formularios].resuelve` | Que los mensajes de tu web te lleguen a ti, sin un formulario de otra empresa incrustado. | Que cada mensaje de tu web se reciba y se guarde, sin un formulario de otra empresa incrustado. | A29. «Te lleguen a ti» daba a entender el aviso por correo, que es C (A04). Como el texto de la portada (`## /`). | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[formularios].hace[0]` | El código que recibe cada mensaje lo hemos escrito nosotros | (igual) | A29, A50 corregida. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[formularios].hace[1]` | Te llega el aviso a tu correo y quien escribe recibe su confirmación | (quitar) | A04 (C): ni el aviso por correo ni la confirmación están probados (D-035). Si Álvaro lo prueba y funciona, A04 sube a A y vuelve. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[formularios].hace[2]` | Funciona igual esté la web donde esté alojada | (igual) | A29. | propuesta |
+| /herramientas/ | `src/content/herramientas.ts` | `herramientas[formularios].sostiene[0].nombre` | Diseño y desarrollo web | (igual) | Enlace al servicio. A06. | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `Titular` · `arriba` del cierre | ¿Cuál le hace falta a tu negocio? | (igual) | Titular (CA-11: casa con la entradilla y el botón nuevos). | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · entradilla del cierre` | Casi nunca son todas. La auditoría gratuita parte del informe de mejoras de tu web y te dice qué falta antes de hablar de precio. | Casi nunca hacen falta todos. Cuéntanos qué te gustaría mejorar y te damos una propuesta por escrito, con el precio de cada fase. La propuesta no se cobra. | Puerta 1 (P-11): lo que enseña esta página es lo que ve tu cliente. A30, A56, A80 corregida («no se cobra»). Sale «la auditoría gratuita parte del informe…» (A52 `por confirmar`, A34 corregida). | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · botón del cierre` | Pedir la auditoría gratuita | Pedir una propuesta | Nombre de la puerta 1 (P-11), CA-17. Su `href` pasa de `/auditoria/` a `/#contacto` (el formulario corto), para que titular, entradilla y botón prometan lo mismo (CA-11). | propuesta |
+| /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · botón de correo` | Escribir un correo | (igual) | A44 (correo directo). | propuesta |
+
+## /plantillas/
+
+El catálogo se nombra por §3.5: **«Webs de ejemplo por sector»** (el
+recomendado) en el título de la página, como el bloque de la portada; dentro,
+«plantillas» sigue siendo la palabra común (como en `## *` y `## /`). El aviso
+de negocios inventados tiene que ir **dentro de la misma `<section>`** que el
+catálogo y sin letra menor (§3.5, CA-6): hoy va en la cabecera y en `text-sm`.
+Moverlo, con `data-aviso-inventadas`, es trabajo de T08; el texto es el de
+abajo.
+
+**Los datos de cada plantilla** (`plantillas.ts`: `negocio`, `ciudad`,
+`sector`, `concepto`, `movimiento` y `etiquetas`, 30 × 8 textos) describen
+negocios inventados (A59) y lo que hace cada demo (A57, A58; sus cifras, A79).
+Se han leído todos con los seis filtros y **solo cambian los cuatro de
+abajo**; el resto queda tal cual y no lleva fila, como el texto de dentro de un
+ejemplo (spec §3.3, «No tienen fila»). Si Álvaro quiere una fila por cada uno,
+se añaden en T05 sin cambiar nada. Sus cifras («20/90/180/400 días», «46
+lomos», «12°»…) las pone T05 en `CIFRAS` con A79. Las tarjetas (`TarjetaPlantilla`)
+las pintan también la portada (banda A) y `/sectores/<slug>/`: sus filas van
+solo aquí.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /plantillas/ | `src/app/plantillas/page.tsx` | `metadata.title` | Plantillas — {n} | Webs de ejemplo por sector — {n} | §3.5: el catálogo se nombra «Webs de ejemplo por sector» (recomendado), como el bloque de la portada y el menú («Webs de ejemplo», `## *`). `{n}` = `site.nombre`. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `metadata.description` | Las {n} bases por sector del taller, publicadas y abiertas. Negocios ficticios: son escaparates de lo que se construye, no clientes. | Las {n} plantillas por sector que hemos publicado, cada una con su demo entera visitable. Los negocios son inventados: enseñan lo que construimos y no son clientes. | A05 (`{n}` = `plantillas.length`), A57 corregida («abiertas» pasa a «visitables»: no es código abierto), A59. Filtro 1: «bases del taller» es jerga. | propuesta |
+| /plantillas/ | `src/content/interiores.ts` | `cotasInterior.plantillas.cota` | −1 · Catálogo | (igual) | Cota (D-014). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `CabeceraInterior` · `arriba` | {n} plantillas, | (igual) | A05: el número sale de `plantillas.length`. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `CabeceraInterior` · `em` | cada una con una idea distinta. | (igual) | A57. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · entradilla` | Ninguna es la anterior con otro color: cambian la estructura, la paleta, la tipografía y lo que se mueve. Pincha en cualquiera y se abre la demo entera, con su scroll y sus animaciones. | (igual) | A57 (se comprueba abriendo las demos). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · rótulo del aviso` | Aviso | (igual) | Interfaz. Va con el aviso dentro de la `<section>` del catálogo (CA-6, T08). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · aviso, antes del <strong>` | Todos los negocios que aparecen son | (igual) | A59 (D-007, §3.5). Sigue «inventados» en su `<strong>`. Sin letra menor: hoy lleva `text-sm` (CA-6, lo cambia T08). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · aviso, <strong>` | inventados | (igual) | A59. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · aviso, después del <strong>` | : nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar cómo queda una web terminada, con contenido de verdad en vez de «Lorem ipsum». | : nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar cómo queda una web terminada, con todo su contenido en vez de «Lorem ipsum». | A59 (§3.5). «Contenido de verdad» al lado de negocios inventados se lee como si fueran reales (como en `proyectos.categorias[webs].intro`, `## /`). | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `aria` · `legend` | Filtrar plantillas por sector | (igual) | Accesibilidad. | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `TODOS` | Todos | (igual) | Interfaz. El botón lleva detrás el recuento `({n})` (A05). | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `jsx · recuento, todas` | {n} plantillas | (igual) | A05 (`plantillas.length`). | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `jsx · recuento, filtradas` | {n} de {n} | (igual) | A05. Recuento de la interfaz. | propuesta |
+| /plantillas/ | `src/components/ui/TarjetaPlantilla.tsx` | `alt` de la portada | Portada de la plantilla {n}, del sector {n} | (igual) | A59. `{n}` = `negocio` y `sector` de la plantilla. Lo pintan también la portada y `/sectores/<slug>/`. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[queseria].etiquetas[1]` | SVG propio | SVG a medida | Decisión 3: «propio» sale de lo que se enseña, aquí y donde aparezca (§3.4 regla 1). A57. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[floristeria].etiquetas[0]` | Ilustración propia | Ilustración a medida | Ídem. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[viajes].etiquetas[1]` | Ilustración propia | Ilustración a medida | Ídem. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[ceramica].etiquetas[1]` | Ilustración propia | Ilustración a medida | Ídem. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `Titular` · `arriba` del cierre | ¿Alguna se parece a lo tuyo? | (igual) | Titular (CA-11: casa con la entradilla y el botón nuevos). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · entradilla del cierre` | Se adapta con tus datos, tus fotos y tu marca, y está en línea en dos semanas. Y si lo tuyo no está en la lista, se construye una nueva: el catálogo empezó igual. | Se adapta con tus datos, tus fotos y tu marca. Y si lo tuyo no está en la lista, te enseñamos la que más se acerca o preparamos una nueva para tu sector. | A57 corregida (si tu sector no está, la más cercana o una nueva). Sale «en dos semanas» (A32, C: la FAQ dice que no se da plazo cerrado). Sale «el catálogo empezó igual»: sin fila en el Anexo (§3.2 regla 6). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · botón del cierre` | Pedir la auditoría gratuita | Pedir una propuesta | Nombre de la puerta 1 (P-11), CA-17; A34 corregida (sin «gratuita»). Adaptar una plantilla es lo que ve tu cliente (puerta 1), así que su `href` pasa de `/auditoria/` a `/#contacto` (CA-11). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · botón de correo` | Pedir la de mi sector | (igual) | A57. Abre el correo (`correoSector`); la web no guarda nada (A44, correo directo). | propuesta |
+| /plantillas/ | `src/components/plantillas/PideTuSector.tsx` | `correoSector` · asunto | Plantilla para mi sector | (igual) | Lo lee quien abre el correo. A44 (correo directo). El resto de `PideTuSector` solo lo pinta la portada vigente: no lleva fila. | propuesta |
+| /plantillas/ | `src/components/plantillas/PideTuSector.tsx` | `correoSector` · cuerpo | Hola. Mi negocio es de este sector: | (igual) | Ídem. Sigue, tras dos saltos de línea, «Y está en:». | propuesta |
+| /plantillas/ | `src/components/plantillas/PideTuSector.tsx` | `correoSector` · cuerpo, final | Y está en: | (igual) | Ídem. | propuesta |
+
+## /privacidad/
+
+Tiene que decir lo que hace el código (A44, spec §5, CA-14). Hoy dice que solo
+recoge datos el formulario de la auditoría, y en esta rama también lo hace el
+formulario corto de la portada. Lo de abajo sale de leer, el 2026-11-01,
+`FormularioContacto.tsx` (envía `negocio`, `sector`, nombre, correo, teléfono
+opcional, P2 y P35 con «(formulario corto de la portada)», consentimiento y
+`origen: "web"`), `FormularioAuditoria.tsx` (datos de contacto, P1-P36,
+consentimiento y el borrador `undertactics:auditoria:v1` en `localStorage`),
+`src/lib/auditoriaApi.ts` (los dos por la Edge Function `solicitar-auditoria`,
+a la tabla `solicitudes_auditoria`) y `kit/traer-solicitudes.mjs` (baja las
+solicitudes con la clave de servicio a `.md` en el disco de Álvaro y solo cambia
+su estado; no borra nada). Al copiarlo, T08 lo vuelve a comprobar frase a frase
+(tasks.md, T08).
+
+Dos cosas que el texto promete y el código **todavía no hace**, y que T08 no
+puede arreglar redactando: el borrador no caduca (A93 corregida dice 30 días) y
+nada borra las solicitudes al año (A75 corregida, P-14). Ver «Pendiente» en la PR.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /privacidad/ | `src/app/privacidad/page.tsx` | `metadata.title` | Privacidad — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `metadata.description` | Qué datos se recogen en el formulario de auditoría, para qué y durante cuánto. | Qué datos recogen el formulario de la portada y el de la auditoría, para qué, dónde se guardan y durante cuánto. | A44, A, obligatorio: son dos formularios, no uno. | propuesta |
+| /privacidad/ | `src/content/interiores.ts` | `cotasInterior.privacidad.cota` | Fondo · Privacidad | (igual) | Cota (D-014). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `CabeceraInterior` · `arriba` | Qué hacemos | (igual) | Titular. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `CabeceraInterior` · `em` | con tus datos | (igual) | Ídem. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `jsx · entradilla` | En esta web solo se recogen datos en un sitio: el formulario de la auditoría. Ni hay analítica, ni hay publicidad, ni hay cookies de terceros. | En esta web se recogen datos en dos sitios: el formulario de la portada para pedir una propuesta y el formulario de la auditoría. Ni hay analítica, ni hay publicidad, ni hay cookies. | A44 (A, obligatorio): hoy era falso, también recoge datos el formulario corto (`FormularioContacto.tsx`). A94: no hay cookies de ningún tipo (como el aviso, `## *`). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Quién responde | (igual) | A99. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `PENDIENTE` | [PENDIENTE] | (igual) | A99 (A, obligatorio) sigue `por confirmar` (P-15): nombre fiscal, NIF y domicilio. No se inventan; hay que completarlos **antes de publicar** (los formularios ya envían a una función real). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `jsx · responsable` | (nombre fiscal y NIF), con domicilio en | (igual) | A99. Va entre `{n}` (`site.nombre`), los dos `[PENDIENTE]` y `({n})` (`site.ubicacion`). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `jsx · contacto` | Para cualquier cosa relacionada con esto: | (igual) | A44 (correo directo). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Qué se recoge | (igual) | A44. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Qué se recoge` · párrafo nuevo, primero | (no hay) | En el formulario de la portada para pedir una propuesta: tu nombre, el de tu empresa, tu correo, tu teléfono si lo pones, el tipo de negocio y lo que nos cuentes que te gustaría mejorar. | A44, formulario corto: `negocio`, `sector`, `contacto_nombre`, `contacto_email`, `contacto_telefono` (opcional) y el texto libre (P35); el tipo va también como P2. El consentimiento se guarda con ellos. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Qué se recoge` · párrafo de la auditoría | Lo que escribas en el formulario de auditoría: el nombre del negocio, la ciudad, el sector, la dirección de vuestra web si la tenéis, tu nombre, tu correo, tu teléfono si lo pones, y las respuestas a las preguntas del cuestionario. | En el formulario de la auditoría: el nombre del negocio, la ciudad, el sector, la dirección de vuestra web si la tenéis, tu nombre, tu correo, tu teléfono si lo pones, y las respuestas a las preguntas del cuestionario. | A44, auditoría (`FormularioAuditoria.tsx`): coincide campo a campo. Empieza igual que el párrafo del formulario corto. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Qué se recoge` · párrafo nuevo, correo | (no hay) | Si nos escribes directamente al correo, el mensaje llega a nuestro buzón y la web no guarda nada. | A44, correo directo (`mailto:` de «Escribir un correo», «Pedir la de mi sector» y los errores de envío). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Qué se recoge` · párrafo de IP y borrador | No se recoge tu dirección IP, ni se te pone ninguna cookie de seguimiento, ni se guarda de qué página vienes. Lo único que se guarda en tu navegador es el borrador de tus respuestas, para que no las pierdas si cierras la pestaña: eso se queda en tu ordenador y se borra al enviar el formulario. | Nosotros no guardamos tu dirección IP ni te ponemos ninguna cookie. El formulario de la portada no guarda nada en tu navegador. El de la auditoría guarda un borrador con tus datos de contacto y tus respuestas, para que no las pierdas si cierras la pestaña: se queda en tu ordenador, se borra al enviar el formulario y caduca a los 30 días. | A92 corregida: «no guardamos nosotros tu IP», sin afirmar lo que no se ha visto en la función (sale «ni se guarda de qué página vienes»). A94. A93 corregida: el borrador guarda también nombre, correo y teléfono, y caduca a los 30 días (hoy no caduca: lo hace T08). A44: el formulario corto no guarda nada en el navegador. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Qué se recoge` · lo que no se pide | datos de vuestros clientes, contraseñas ni accesos a vuestros programas. Si llega algo así igualmente, se borra sin usarlo y te avisamos. | (igual) | A97, A96 (procedimiento, D-035). Va tras «El cuestionario **no pide**» (con su `<strong>`). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Qué se recoge` · diagnóstico rápido | El diagnóstico rápido no envía ni guarda tus respuestas; solo pasan a la auditoría si pulsas el botón, y ahí aplica lo de arriba. | El diagnóstico rápido no envía ni guarda tus respuestas: van en la dirección de la página (y en el enlace, si lo copias). Solo pasan a la auditoría si pulsas el botón; allí se quitan de la dirección, pasan al borrador y aplica lo de arriba. | A95 corregida: se matiza que las respuestas van en la dirección. A44 (diagnóstico rápido). Es el diagnóstico rápido: CA-17 lo admite aquí (T05 lo pone en `DIAGNOSTICO_PERMITIDO`). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Para qué | (igual) | A96. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Para qué` · párrafo 1 | Para preparar el informe que has pedido y para responderte. Nada más: ni se te apunta a un boletín, ni se te manda publicidad después, ni se usan tus respuestas como ejemplo en ningún sitio sin que nos digas que sí por escrito. | Para responderte y, si has pedido la auditoría, para preparar su informe. Nada más: ni se te apunta a un boletín, ni se te manda publicidad después, ni se usan tus respuestas como ejemplo en ningún sitio sin que nos digas que sí por escrito. | A96 (procedimiento, D-035), para los dos formularios: el corto no lleva informe (A44). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Para qué` · base legal | La base legal es la aplicación de medidas precontractuales a petición tuya (artículo 6.1.b del RGPD): nos lo pides tú rellenando el formulario. | La base legal es la aplicación de medidas precontractuales a petición tuya (artículo 6.1.b del RGPD): nos lo pides tú rellenando cualquiera de los dos formularios. | A74 (fuente: RGPD art. 6.1.b). A44: son dos formularios. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Dónde se guardan y quién los ve | (igual) | A44. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Dónde se guardan` · Supabase | En una base de datos de {n}Supabase{n} alojada en servidores de la Unión Europea (región de París). Solo se puede acceder a ella con las claves del estudio: la web no puede leer lo que han mandado otros. | Los dos formularios envían a la misma base de datos de Supabase, alojada en servidores de la Unión Europea (región de París). Solo se puede acceder a ella con las claves del estudio: la web no puede leer lo que han mandado otros. | A90 (eu-west-3, RLS sin políticas), A44 (la misma función y la misma tabla para los dos). Sin `<strong>` dentro: CA-4 busca la frase seguida. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Dónde se guardan` · párrafo nuevo, quién | (no hay) | Las lee Álvaro, que es quien tiene esas claves, y para preparar el informe de la auditoría las copia en su ordenador. | A44: quien tiene la clave de servicio es Álvaro, y `kit/traer-solicitudes.mjs --bajar` copia cada solicitud en un `.md` en su disco. Lo lee Álvaro antes de publicarlo (A40, persona con nombre). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Dónde se guardan` · Anthropic | El informe se redacta con herramientas de IA de {n}Anthropic{n}, que procesa las respuestas para generarlo y no las usa para entrenar sus modelos. Aparte de esos dos proveedores, no se cede nada a nadie. | El informe de la auditoría se redacta con la IA de Anthropic, que procesa las respuestas para generarlo y no las usa para entrenar sus modelos. Los correos que nos mandas directamente están en nuestra cuenta de Gmail, de Google. Aparte de esos proveedores, no se cede nada a nadie. | A91 (fuente: condiciones comerciales de Anthropic). A44 (el correo directo llega a la cuenta de `site.email`, que es de Gmail). Decisión 6: sin «herramientas». Sin `<strong>` dentro, como la de arriba. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Cuánto tiempo | (igual) | A75. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Cuánto tiempo` · párrafo | Un año desde que nos escribes, si no acabamos trabajando juntos. Si acabamos trabajando juntos, lo que dure la relación y los plazos que exija la ley después. Puedes pedir que se borren antes y se borran. | Lo que mandes por cualquiera de los dos formularios, y las copias que bajamos para preparar el informe, se guardan un año desde tu último mensaje, si no acabamos trabajando juntos. Si acabamos trabajando juntos, lo que dure la relación y los plazos que exija la ley después. Puedes pedir que se borren antes y se borran. | A75 corregida (P-14): un año desde el último mensaje, para los dos formularios. A44: también las copias en `.md`. Ojo: hoy nada lo aplica, ni en Supabase ni en los `.md` (ver «Pendiente» de la PR). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Tus derechos | (igual) | RGPD. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Tus derechos` · párrafo 1 | Puedes pedir ver lo que tenemos, corregirlo, borrarlo, limitar su uso, oponerte a él o llevártelo a otro sitio. Se hace escribiendo a | (igual) | RGPD (arts. 15-21). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Tus derechos` · tras el correo | — sin formularios ni trámites, y se contesta en menos de un mes. | (igual) | A74 (fuente: RGPD art. 12.3). «Sin formularios ni trámites» dice cómo se ejerce el derecho, no es un reclamo comercial (§3.2 regla 2). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Tus derechos` · reclamación | Si crees que no lo estamos haciendo bien, puedes reclamar ante la Agencia Española de Protección de Datos ( | (igual) | Obligatorio (RGPD art. 13.2.d). | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Tus derechos` · enlace | aepd.es | (igual) | Ídem. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Cookies | (igual) | A93, A94. | propuesta |
+| /privacidad/ | `src/app/privacidad/page.tsx` | `Cookies` · párrafo | Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu navegador es el borrador del formulario, el hecho de que ya has visto el aviso y, solo mientras tengas la pestaña abierta, que ya has visto la animación de entrada, para no repetírtela. Ninguna de las tres cosas sale de tu ordenador. | Esta web no usa cookies ni analítica. Lo único que se guarda en tu navegador es el borrador de la auditoría, si la empiezas (hasta que la envíes, y como mucho 30 días), el hecho de que ya has visto el aviso y, solo mientras tengas la pestaña abierta, que ya has visto la animación de entrada, para no repetírtela. Nada de eso se nos manda solo: el borrador sale de tu ordenador cuando envías el formulario, y no antes. | A93 corregida (borrador de la auditoría y aviso en `localStorage`, la cortina en `sessionStorage`; el borrador caduca a los 30 días). A94. «Ninguna sale de tu ordenador» no era exacto: el borrador es lo que se envía. Casa con el aviso de cookies (`## *`). | propuesta |
+
+## /sectores/
+
+El índice de las tres páginas de sector. Las tarjetas (`TarjetaSector`) pintan
+`etiqueta`, `nombre` y `titular` de cada sector: sus filas van en la tabla de
+cada `/sectores/<slug>/`. `sections/DiagnosticoRapido.tsx` no lo pinta ninguna
+ruta de esta rama (no lo importa nadie): no lleva fila.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /sectores/ | `src/app/sectores/page.tsx` | `metadata.title` | Por sector — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `metadata.description` | Clínicas dentales, alojamientos rurales, y asesorías y despachos: lo que se puede automatizar en cada uno, con su diagnóstico rápido y un ejemplo del asistente. | (igual) | A22 (B, «se puede»), A11 (el asistente, como ejemplo). Nombre de la puerta 2 (P-11): CA-17 lo admite aquí (T05 pone `/sectores/` en `DIAGNOSTICO_PERMITIDO`). | propuesta |
+| /sectores/ | `src/content/interiores.ts` | `cotasInterior.sectores.cota` | −4 · Sectores | (igual) | Cota (D-014). | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `arriba` | Lo que se puede automatizar | (igual) | A22 (B, «se puede»). | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `em` | en tu sector. | (igual) | Ídem. | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `jsx · entradilla` | Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña cómo contestaría su asistente. | Cada página cuenta situaciones habituales en ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña, con un ejemplo, cómo contestaría su asistente. | P-13 y §3.1 (filtro 4): situaciones habituales, no hechos sobre quien lee. A11: el asistente sale como ejemplo rotulado (D-019). | propuesta |
+| /sectores/ | `src/components/sectores/TarjetaSector.tsx` | `jsx · enlace` | Ver la página | (igual) | Interfaz. | propuesta |
+
+## /sectores/clinicas-dentales/
+
+Las tres páginas de sector comparten componentes (`[slug]/page.tsx`,
+`CabeceraSector`, `ProblemasSector`, `MejorasSector`, `ChatEjemplo`,
+`PlantillasSector`, `Fondo`, el diagnóstico rápido y las mejoras de
+`diagnostico.ts`). **Sus filas van solo aquí, con ruta `/sectores/<slug>/`**;
+las de `sectores.ts` propias de cada sector van en su tabla, con su ruta.
+
+- **Situaciones habituales (P-13).** Los problemas de cada sector se escriben
+  como situaciones que suelen pasar («si…», «suele…»), no como hechos sobre
+  quien lee (§3.1, delta a la 001 §3.8).
+- **`diagnostico.ts` no se reescribe (§6).** Se ha leído entero y solo cambia
+  lo que afirma (A42, A43, A48, A55, A04), sus enlaces (§3.7) y lo que
+  presupone. Las mejoras van siempre bajo «Lo que haríamos» o «Lo que haríamos
+  en tu…», que es el condicional que pide un B (§3.2): describen lo que
+  montaríamos, no un producto. Por eso las de nivel B (A43, A61, A62, A63) se
+  quedan `(igual)` salvo donde afirman algo de más. Las preguntas, opciones,
+  `frasesPrerrelleno`, `nombresCanal` y los «porque» que repiten la respuesta
+  no afirman nada ni presuponen (son preguntas, §3.1): no llevan fila. Sí la
+  lleva cada mejora y cada «porque» que cambia.
+- **`Fondo`** (el cierre de las tres páginas) no tiene dueño en el plan §5
+  (lo da como solo de la portada vigente, pero lo pintan estas páginas): lo
+  copia T09 o T10, lo que diga quien reparta.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /sectores/<slug>/ | `src/components/sectores/CabeceraSector.tsx` | `jsx · botón a #diagnostico` | Haz el diagnóstico | Haz el diagnóstico rápido | Nombre entero de la puerta 2 (P-11, CA-5): en la misma página está la auditoría, y «el diagnóstico» a secas se confunde. CA-17 lo admite en estas páginas. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/CabeceraSector.tsx` | `jsx · botón a /auditoria/` | Auditoría gratis | Auditoría de tu negocio | Nombre de la puerta 3 (P-11). A34 corregida (D-035): sin «gratis». | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ProblemasSector.tsx` | `jsx · rótulo` | Lo que pasa hoy | Lo que suele pasar | P-13, filtro 4: situaciones habituales, no hechos sobre quien lee. Como la cota de la portada («0 · Lo que suele pasar», `## /`). | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ProblemasSector.tsx` | `jsx · titular` | Dónde se va el tiempo. | Situaciones que se repiten. | §3.1 y filtro 4: daba por hecho que el problema es el tiempo (CA-9). | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/MejorasSector.tsx` | `jsx · rótulo` | Lo que haríamos | (igual) | Condicional (§3.2, B). | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/MejorasSector.tsx` | `jsx · titular` | Lo que puede quedar funcionando solo. | (igual) | A22 (B, «puede»). | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/MejorasSector.tsx` | `jsx · entradilla` | Son las mismas que puede darte el diagnóstico de más abajo. Cuáles van primero depende de cómo trabajéis. | Son las mismas que puede darte el diagnóstico rápido de más abajo. Cuáles van primero depende de cómo trabajéis. | Nombre entero de la puerta 2 (P-11, CA-5). | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/EnlaceMejora.tsx` | `texto` | Más sobre esto | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/app/sectores/[slug]/page.tsx` | `jsx · rótulo del diagnóstico` | Diagnóstico rápido · un minuto | Diagnóstico rápido | A70 (C hasta cronometrarlo, D-035): sale «un minuto». Nombre de la puerta 2 (P-11). | propuesta |
+| /sectores/<slug>/ | `src/app/sectores/[slug]/page.tsx` | `jsx · titular del diagnóstico` | Lo primero que haríamos en tu caso. | (igual) | Condicional (§3.2). | propuesta |
+| /sectores/<slug>/ | `src/app/sectores/[slug]/page.tsx` | `jsx · entradilla del diagnóstico` | Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más sentido tienen para vosotros. No se envía ni se guarda nada. | Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más sentido tienen para vosotros. No se envía ni se guarda nada: las respuestas van en la dirección de la página. | A95 corregida (D-035): se matiza que las respuestas van en la dirección. Como el texto de la puerta 2 en la portada (`## /`). | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/PasoPregunta.tsx` | `aria-label` de la barra | Progreso del diagnóstico | (igual) | Accesibilidad. Es el diagnóstico rápido (CA-17 lo admite). | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/PasoPregunta.tsx` | `jsx · botón` | Atrás | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/PasoPregunta.tsx` | `jsx · botón` | Seguir | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Diagnostico.tsx` | `noscript` · texto | El diagnóstico rápido necesita JavaScript para ir pregunta a pregunta. Si lo tienes desactivado, puedes pedirnos directamente la | (igual) | Interfaz. Sigue el enlace de abajo. | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Diagnostico.tsx` | `noscript` · enlace a /auditoria/ | auditoría gratuita | auditoría de tu negocio | Nombre de la puerta 3 (P-11). A34 corregida: sin «gratuita». | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · rótulo` | Tu diagnóstico | (igual) | Es el resultado del diagnóstico rápido (CA-17 lo admite). | propuesta |
+| /sectores/<slug>/ | `src/lib/diagnostico.ts` | `tituloResultado` | Lo que haríamos en tu {n} | (igual) | Condicional (§3.2). `{n}` = `nombresSector[].negocio` o «negocio». | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · tras las mejoras` | Esto lo podemos montar nosotros o cualquier agencia que sepa hacerlo. | (igual) | B en condicional («podemos montar», §3.2). | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · botón` | Llevar estas respuestas a la auditoría | (igual) | A95: las respuestas pasan a la auditoría solo con este botón (A44). | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · botón` | Copiar el enlace a este diagnóstico | (igual) | A95 (las respuestas van en el enlace). | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · botón` | Cambiar respuestas | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · copiado` | Enlace copiado | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/components/diagnostico/Resultado.tsx` | `jsx · copia a mano` | No hemos podido copiarlo. Cópialo desde aquí: | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-online].titulo.base` | Que pidan cita sin llamar | (igual) | A61 (B), bajo «Lo que haríamos». | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-online].titulo.despachos` | Que pidan la primera consulta sin llamar | (igual) | A61 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-online].queResuelve.base` | Un calendario en tu web con tus horas libres de verdad: el cliente elige la suya y el sistema de citas le manda la confirmación y un recordatorio antes de venir. Tú dejas de cuadrar huecos al teléfono. | (igual) | A61 (B): describe lo que montaríamos, bajo «Lo que haríamos». No dice que lo haga el asistente (A11 no manda recordatorios). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-online].queResuelve.dental` | Un calendario en tu web con las horas libres de verdad: el paciente elige la suya y el sistema de citas le manda la confirmación y un recordatorio antes de venir. Recepción deja de cuadrar huecos al teléfono. | (igual) | A61 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-online].queResuelve.despachos` | Un calendario en tu web con los huecos que guardas para primeras consultas: el cliente elige uno, cuenta en una línea de qué va su asunto y el sistema de citas le manda la confirmación y un recordatorio. | (igual) | A61 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-directas].titulo.base` | Reservas en tu propia web | (igual) | A62 (B). «Propia» es la web del cliente, no un producto nuestro (§3.4 regla 1 no aplica). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[reservas-directas].queResuelve.base` | Un motor de reservas en tu web, con el calendario enlazado al de Booking y Airbnb para no vender dos veces la misma noche. Quien ya te conoce reserva contigo, y las plataformas quedan para que te encuentren los nuevos. | Un motor de reservas en tu web, con el calendario enlazado al de Booking y Airbnb para no vender dos veces la misma noche. Así, quien ya te conoce puede reservar contigo, y las plataformas quedan para que te encuentren los nuevos. | A62 (B). «Quien ya te conoce reserva contigo» atribuía un comportamiento al huésped (A46, C): pasa a posibilidad («puede», §3.1). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[asistente].titulo.base` | Que alguien conteste fuera de horario | (igual) | A11. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[asistente].queResuelve.base` | Un asistente en tu web que contesta lo de siempre a cualquier hora y recoge los datos de quien necesita hablar contigo, para que le llames tú. | (igual) | A11 (A). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[asistente].queResuelve.dental` | Un asistente en tu web que contesta lo de siempre a cualquier hora, ofrece las horas libres para pedir cita y pasa a una persona lo que no le toca, como una urgencia. No da consejos clínicos. | (igual) | A11 (A: en dental ofrece horas y reserva). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[asistente].queResuelve.rural` | Un asistente en tu web que contesta a cualquier hora lo que siempre se pregunta (cómo llegar, a qué hora es la entrada, si se admiten mascotas) y te deja el contacto de quien quiere que le llames. | (igual) | A11. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[asistente].queResuelve.despachos` | Un asistente en tu web que contesta a cualquier hora lo que siempre se pregunta (horario, qué llevar a la primera consulta, qué asuntos lleváis) y recoge el contacto para que llame una persona. | (igual) | A11. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[formularios].titulo.base` | Mensajes de la web que llegan ordenados | (igual) | A29. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[formularios].queResuelve.base` | Un formulario propio en tu web que te deja cada mensaje en tu correo, con los mismos datos siempre, y le confirma a quien escribe que lo has recibido. Sin el formulario de otra empresa incrustado. | Un formulario en tu web que recibe y guarda cada mensaje, con los mismos datos siempre y sin el formulario de otra empresa incrustado. | A29. Salen el aviso a tu correo y la confirmación a quien escribe (A04, C) y «propio» (§3.4 regla 1). Su enlace (`/herramientas/#formularios`) sigue: el ancla existe. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[ficha-google].titulo.base` | Tu ficha de Google, completa y al día | (igual) | A08 (a mano): es un consejo, no una herramienta (§3.7). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[ficha-google].queResuelve.base` | Horario, teléfono, dirección y enlace a la web revisados y coherentes con lo que dice tu web, para que quien te busca en el mapa sepa a qué atenerse antes de llamarte. | (igual) | A08 (lo hacemos a mano). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[ficha-google].enlace.portada` | /herramientas/#ficha-google | /#servicios | §3.7: la mejora se queda (D-003 exige enlace) y el enlace pasa a `/#servicios` (delta a la 001 §3.4). CA-2. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[ficha-google].enlace.sector` | /herramientas/#ficha-google | /#servicios | Ídem, en los dos sitios. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[web-nueva].titulo.base` | Una web que puedas cambiar tú | Una web rápida y al día | A55 (B): no hay un editor para el cliente; los cambios los hacemos nosotros (A07). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[web-nueva].queResuelve.base` | Una web rápida en el móvil, que cuenta lo que haces y cómo contactarte, y en la que cambiar un horario o un texto no depende de nadie. | Una web rápida en el móvil, que cuenta lo que haces y cómo contactarte, y que cambiamos cuando nos lo pidas. | A06, A07 (A). Sale «cambiar un horario o un texto no depende de nadie» (A55, B en presente). Como la parada nueva del hero («Cambios cuando los pidas», decisión 1). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[web-nueva].queResuelve.dental` | Una web rápida en el móvil, con tus tratamientos, tu equipo y cómo pedir cita, en la que cambiar un horario o un texto no depende de nadie. | Una web rápida en el móvil, con tus tratamientos, tu equipo y cómo pedir cita, que cambiamos cuando nos lo pidas. | Ídem. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[web-nueva].queResuelve.rural` | Una web rápida en el móvil, con tus fotos, tus habitaciones y la zona, en la que cambiar una tarifa o un texto no depende de nadie. | Una web rápida en el móvil, con tus fotos, tus habitaciones y la zona, que cambiamos cuando nos lo pidas. | Ídem. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[web-nueva].queResuelve.despachos` | Una web rápida en el móvil, que explica qué asuntos llevas y cómo se trabaja contigo, y en la que cambiar un texto no depende de nadie. | Una web rápida en el móvil, que explica qué asuntos llevas y cómo se trabaja contigo, y que cambiamos cuando nos lo pidas. | Ídem. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[informe-web].titulo.base` | Saber qué falla en tu web | (igual) | A03. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[informe-web].queResuelve.base` | Un repaso con pruebas de la velocidad, el móvil, la accesibilidad y los textos, con cada fallo ordenado por prioridad para arreglar primero lo que más pesa. | (igual) | A03. Su enlace (`/herramientas/#informe`) sigue. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[resenas].titulo.base` | Que la reseña se pida sola | (igual) | A43 (B), bajo «Lo que haríamos». | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[resenas].queResuelve.base` | Después de cada servicio, el cliente recibe un correo con el enlace directo a tu ficha de Google. Se pide a todos y en el momento bueno, sin que tengas que acordarte. | (igual) | A43 (B): describe lo que montaríamos. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[resenas].queResuelve.dental` | Después de la visita, el paciente recibe un correo con el enlace directo a tu ficha de Google. Se pide a todos y en el momento bueno, sin que recepción tenga que acordarse. | (igual) | A43 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[resenas].queResuelve.rural` | Al acabar la estancia, el huésped recibe un correo con el enlace directo a tu ficha de Google. Se pide a todos y en el momento bueno, sin que tengas que acordarte. | (igual) | A43 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[resenas].queResuelve.despachos` | Al cerrar un asunto, el cliente recibe un correo con el enlace directo a tu ficha de Google. Se pide a todos y en el momento bueno, sin que tengas que acordarte. | (igual) | A43 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].titulo.base` | Los papeles, en un sitio ordenado | (igual) | A63 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].titulo.dental` | La ficha del paciente, antes de la primera visita | (igual) | A63 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].titulo.rural` | Los datos del huésped, antes de que llegue | (igual) | A63 (B), A43. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].titulo.despachos` | La documentación, ordenada y no por WhatsApp | La documentación, ordenada en un solo sitio | A63 (B). Filtro 4: daba por hecho que hoy llega por WhatsApp (CA-9). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].queResuelve.base` | Un formulario donde el cliente te manda lo que le pides, con la lista de lo que falta a la vista. Todo llega junto y con su nombre, no repartido entre el correo y el móvil. | (igual) | A63 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].queResuelve.dental` | El paciente nuevo rellena sus datos desde casa antes de venir y te llegan completos y legibles, en vez de en papel en la sala de espera. | (igual) | A63 (B; datos de salud: si se monta, lleva su propio análisis de datos). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].queResuelve.rural` | El huésped deja los datos del registro de viajeros en un formulario antes de llegar, y no hay que pedírselos uno a uno en la entrada. | (igual) | A43, A63 (B; el registro recoge el DNI: si se monta, lleva su propio análisis de datos). A47. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[documentacion].queResuelve.despachos` | Cada cliente sube su documentación a un formulario con la lista de lo que falta. Llega junta y con su nombre, no repartida entre el correo y el WhatsApp. | Cada cliente sube su documentación a un formulario con la lista de lo que falta. Llega junta y con su nombre, en vez de repartida entre varios sitios. | A63 (B). Filtro 4: daba por hecho el correo y el WhatsApp (CA-9). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[cobros].titulo.base` | Facturas y cobros que salen solos | (igual) | A43 (B), bajo «Lo que haríamos». Si se monta y emite facturas, entra Verifactu (RD 1007/2023): no se dice aquí. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[cobros].queResuelve.base` | La factura se hace al cerrar el trabajo y, si no se paga, el aviso de cobro sale en su fecha. Ya no persigues a nadie y ves de un vistazo qué falta por cobrar. | (igual) | A43 (B). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[clientes-nuevos].titulo.base` | Aparecer cuando te buscan | (igual) | A08, A09. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[clientes-nuevos].queResuelve.base` | La ficha de Google, las reseñas y una web rápida trabajando juntas para que te encuentre quien busca lo tuyo cerca. | (igual) | A08, A09. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[clientes-nuevos].queResuelve.dental` | La ficha de Google, las reseñas y una web rápida trabajando juntas para que te encuentre quien busca dentista cerca de casa. | (igual) | A08, A09. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[clientes-nuevos].queResuelve.rural` | La ficha de Google, las reseñas y una web rápida trabajando juntas para que te encuentre quien busca dónde dormir por la zona. | (igual) | A08, A09. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `mejoras[clientes-nuevos].queResuelve.despachos` | La ficha de Google, las reseñas y una web rápida trabajando juntas para que te encuentre quien busca asesoría o abogado en tu zona. | (igual) | A08, A09. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `reglas[13] (ficha-google).porque.base` | Porque nos dijiste que tampoco tienes ficha de Google, y es lo primero que sale en el mapa. | Porque nos dijiste que tampoco tienes ficha de Google. | A48 (C): juicio sobre Google sin fuente (§3.2 regla 5). | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `reglas[16] (ficha-google).porque.base` | Porque nos dijiste que tu web no la toca nadie, y la ficha de Google se suele quedar igual de atrás. | Porque nos dijiste que tu web no la toca nadie: conviene revisar también la ficha de Google. | A48 (C): «se suele quedar igual de atrás» es un juicio sin fuente; pasa a consejo nuestro. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `relleno[dental].porque` | Es de lo que más compensa en una clínica dental. | La recomendamos en cualquier clínica dental. | A48 (C): superlativo sin fuente; pasa a recomendación nuestra. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `relleno[rural].porque` | Es de lo que más compensa en un alojamiento rural. | La recomendamos en cualquier alojamiento rural. | Ídem. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `relleno[despachos].porque` | Es de lo que más compensa en una asesoría o un despacho. | La recomendamos en cualquier asesoría o despacho. | Ídem. | propuesta |
+| /sectores/<slug>/ | `src/content/diagnostico.ts` | `relleno[otro].porque` | Es de lo que más compensa en casi cualquier negocio. | La recomendamos en casi cualquier negocio. | Ídem. | propuesta |
+| /sectores/<slug>/ | `src/app/sectores/[slug]/page.tsx` | `aria-label` del ejemplo | Ejemplo del asistente | (igual) | Lleva «Ejemplo» (D-019). | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ChatEjemplo.tsx` | `Etiqueta` | Ejemplo · negocio inventado | (igual) | D-019, no se toca (§3.8). A59. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ChatEjemplo.tsx` | `jsx · titular` | Así contestaría el asistente de {n} | (igual) | A11, en condicional. `{n}` = `ejemplo.de` del sector. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ChatEjemplo.tsx` | `jsx · cabecera del chat` | Asistente virtual | (igual) | Dentro del ejemplo. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ChatEjemplo.tsx` | `sr-only` · asistente | Asistente: | (igual) | Accesibilidad. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/ChatEjemplo.tsx` | `sr-only` · cliente | Cliente: | (igual) | Accesibilidad. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/PlantillasSector.tsx` | `jsx · rótulo` | Plantillas del sector | (igual) | A57. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/PlantillasSector.tsx` | `jsx · titular` | Así puede quedar la web. | (igual) | A57, condicional. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/PlantillasSector.tsx` | `jsx · rótulo del aviso` | Aviso | (igual) | Interfaz. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/PlantillasSector.tsx` | `jsx · aviso, antes del <strong>` | Todos los negocios que aparecen son | (igual) | A59 (§3.5). El aviso ya va dentro de la `<section>`; falta `data-aviso-inventadas` y quitar la letra menor (`text-sm`): CA-6, T09. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/PlantillasSector.tsx` | `jsx · aviso, <strong>` | inventados | (igual) | A59. | propuesta |
+| /sectores/<slug>/ | `src/components/sectores/PlantillasSector.tsx` | `jsx · aviso, después del <strong>` | : nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar cómo queda una web terminada, con contenido de verdad en vez de «Lorem ipsum». | : nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar cómo queda una web terminada, con todo su contenido en vez de «Lorem ipsum». | A59. El mismo texto que en `/plantillas/`. | propuesta |
+| /sectores/<slug>/ | `src/components/sections/Fondo.tsx` | `Titular` · `arriba` | Antes de venderte nada, te decimos qué te está costando dinero. | Antes de hablar de precio, miramos cómo trabajáis. | A56. «Qué te está costando dinero» se apoya en A36 y A52 (`por confirmar`) y da por hecho una pérdida (filtro 4). Como `/estudio/` («Primero miramos, luego hablamos de precio.»). | propuesta |
+| /sectores/<slug>/ | `src/components/sections/Fondo.tsx` | `jsx · entradilla` | Contestas {n} preguntas sobre cómo trabajáis —diez minutos, con tus palabras— y te devolvemos un informe con las horas que se van cada semana, lo que cuestan al año y qué se arregla primero. | Contestas {n} preguntas sobre cómo trabajáis, con tus palabras, y te mandamos por correo un informe de tu negocio. | A38 (`{n}` = `TOTAL_PREGUNTAS`), A72. Sale «diez minutos» (A35, C). Salen las horas, lo que cuestan y qué se arregla primero: A36 y A52 siguen `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/components/sections/Fondo.tsx` | `jsx · segundo párrafo` | Sin coste, sin compromiso y sin que tengas que darnos acceso a nada. Si con el informe te apañas por tu cuenta, nos parece bien: al menos ya sabes por dónde ibas sangrando. | La auditoría no se cobra, y no te pedimos acceso a ninguno de tus programas. | A34 corregida («no se cobra»), A97. Salen «sin coste, sin compromiso» (A33, C; CA-16). Sale «si con el informe te apañas…»: que el informe es tuyo sigas o no es A52, `por confirmar`. Filtro 4 y 6: «por dónde ibas sangrando» daba por hecho una pérdida. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[0].titulo` | Tu web, puntuada | (quitar) | A52 y A81 siguen `por confirmar`. Sale la entrada entera. Si Álvaro las confirma en T05, vuelve `(igual)`. Solo la pinta `Fondo`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[0].texto` | Once dimensiones con la prueba delante: qué carga lento, qué no se ve en el móvil, qué te está costando posiciones en Google y qué falla de accesibilidad. | (quitar) | A81 («once dimensiones») y A52, `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[1].titulo` | Las horas que se van | (quitar) | A36 y A52, `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[1].texto` | Lo que tú nos cuentas, convertido en horas a la semana y en euros al año. Con el cálculo a la vista para que puedas discutirlo. | (quitar) | A36, `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[2].titulo` | Qué automatizar primero | (quitar) | A52, `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[2].texto` | Ocho áreas puntuadas y una lista ordenada por lo que más compensa, no por lo que más nos gustaría vender. | (quitar) | A81 («ocho áreas») y A52, `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[3].titulo` | Lo que no sabemos | (quitar) | A52, `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/content/auditoria.ts` | `loQueRecibes[3].texto` | Lo que dejes en blanco sale marcado como «sin datos». Un informe con huecos sinceros vale más que uno relleno de suposiciones. | (quitar) | A52 («sin datos» donde dejes en blanco), `por confirmar`. | propuesta |
+| /sectores/<slug>/ | `src/components/sections/Fondo.tsx` | `jsx · rótulo de lo que no se pide` | Lo que no te vamos a pedir | (igual) | A97. La lista es `loQueNoPedimos` (filas en `## /auditoria/`). | propuesta |
+| /sectores/<slug>/ | `src/components/sections/Fondo.tsx` | `jsx · nota de lo que no se pide` | La auditoría se hace sobre cómo trabajáis, no entrando en vuestros sistemas. Si algo de eso llega igualmente, se devuelve sin abrirlo. | La auditoría se hace sobre cómo trabajáis, sin entrar en vuestros programas. Si aun así nos llega algo de eso, lo borramos y te avisamos. | A97. A96 (procedimiento, D-035): lo que llega se borra y te avisamos; «se devuelve sin abrirlo» no era lo confirmado (y casa con `/privacidad/`). | propuesta |
+| /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[0].etiqueta` | Plantillas propias publicadas y en línea | Plantillas publicadas, con su demo entera | Decisión 3: sale «propias». A05, A57. No la pinta ninguna ruta de esta rama (solo `Plantillas.tsx`, de la portada vigente), pero `portada.test.ts` la busca por esta etiqueta: T07 cambia los dos juntos. | propuesta |
+| /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[1].etiqueta` | Desde que dices que sí hasta que está en línea | (quitar) | A32 (C): «2 sem.» no tiene fuente y la FAQ dice que no se da plazo cerrado. Sale la entrada entera (valor 2 y sufijo «sem.»). Ojo: `plazo` y `Plantillas.tsx` (portada vigente) la usan: T07 ve cómo queda el código. | propuesta |
+| /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[2].etiqueta` | Preguntas de la auditoría, y las contestas en 10 minutos | Preguntas de la auditoría | A38 (el valor, 36, sale de la fuente). Sale «10 minutos» (A35, C hasta cronometrar). `Fondo` la sigue encontrando (busca por «Preguntas de la auditoría»). | propuesta |
+| /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[3].etiqueta` | Lo que cuesta la auditoría y el presupuesto | (quitar) | A34 y A80 corregidas (D-035): el precio se dice «no se cobra», sin «0 €». Sale la entrada entera (valor 0 y sufijo «€»). `Fondo` la exige hoy (lanza un error si falta): el cambio de código es de quien copie `Fondo` (la fila de la cifra se queda con una sola). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].nombre` | Clínicas dentales | (igual) | Sector de D-006. También lo pinta la tarjeta de `/sectores/`. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].etiqueta` | Clínicas dentales | (igual) | Ídem. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].titular` | Que el teléfono no saque a nadie del gabinete | (igual) | Es lo que se busca, no un hecho sobre quien lee (P-13). Lo pinta también la tarjeta de `/sectores/`. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].entradilla` | Citas, preguntas de siempre, reseñas y la ficha del paciente nuevo: lo que puede quedar funcionando solo para que recepción atienda a quien ya está en la clínica. | (igual) | B en condicional («puede»): A61, A11, A43, A63. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].metadatos.title` | Webs y automatización para clínicas dentales — {n} | (igual) | A06, A22. `{n}` = `site.nombre`. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].metadatos.description` | Citas sin llamar, respuestas a cualquier hora y la ficha del paciente antes de la primera visita. Lo que se puede automatizar en una clínica dental, con un ejemplo del asistente. | (igual) | A61, A11, A63; B en condicional («se puede»). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[0].titulo` | El teléfono suena en mitad de un tratamiento | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[0].texto` | Quien coge el teléfono también ayuda en el gabinete o esteriliza instrumental. Si suena en ese momento, la llamada se pierde, y el paciente que no vuelve a llamar pide cita en otra clínica. | Si quien coge el teléfono también ayuda en el gabinete o esteriliza instrumental, la llamada que entra en ese momento se pierde, y puede que ese paciente no vuelva a llamar. | P-13, filtro 4: con «si», no como hecho sobre la clínica que lee. Sale «pide cita en otra clínica»: comportamiento que no podemos citar (§3.2 regla 5). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[1].titulo` | Una hora de sillón que se queda vacía | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[1].texto` | Un paciente que cancela la víspera deja el gabinete parado. Si las horas libres solo se saben llamando a la clínica, ese hueco no lo coge nadie, aunque haya quien lo quisiera. | Si un paciente cancela la víspera, el gabinete se queda parado. Y si las horas libres solo se saben llamando a la clínica, ese hueco no lo coge nadie, aunque haya quien lo quisiera. | P-13, filtro 4. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[2].titulo` | Las mismas preguntas, todos los días | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[2].texto` | Si trabajáis con tal seguro, si la primera visita se paga, si la ortodoncia se puede pagar a plazos. Son siempre las mismas, y cada una corta lo que se estaba haciendo. | Si trabajáis con tal seguro, si la primera visita se paga, si la ortodoncia se puede pagar a plazos. Suelen ser las mismas, y cada una corta lo que se estaba haciendo. | P-13: habitual («suelen»), no un hecho («son siempre»). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[3].titulo` | Un dolor de muela un domingo por la noche | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].problemas[3].texto` | Llega por el formulario de la web o por un mensaje en redes, nadie lo lee hasta el lunes y el paciente no sabe a quién llamar. Una urgencia tiene que llegar a una persona, y rápido. | Si llega por la web o por un mensaje en redes y nadie lo lee hasta el lunes, el paciente no sabe a quién llamar. Una urgencia tiene que llegar a una persona, y rápido. | P-13, filtro 4: daba por hecho que la clínica tiene formulario y redes (CA-9). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].ejemplo.de` | una clínica | (igual) | Va en «Así contestaría el asistente de {n}». | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].ejemplo.negocio` | Clínica Dental Demo | (igual) | Negocio inventado (A59), dentro del ejemplo. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[0].texto` | Hola, soy la asistente virtual de Clínica Dental Demo. Puedo resolver dudas y pedirte cita. ¿En qué te ayudo? | (igual) | Dentro del chat «Ejemplo» (D-019, CA-7). A11 (en dental reserva la cita). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[1].texto` | Quiero una limpieza el jueves por la tarde. | (igual) | Ejemplo. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[2].texto` | El jueves por la tarde tengo libres las 16:30, las 17:00 y las 18:30. ¿Cuál te viene mejor? | (igual) | Ejemplo: las horas van dentro de `data-ejemplo` (CA-8). A11. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[3].texto` | Las 17:00. | (igual) | Ejemplo. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[4].texto` | Perfecto. Para reservarla solo necesito tu nombre y un teléfono de contacto. | (igual) | Ejemplo. A11. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[5].texto` | Ana Ejemplo, 600 000 000. | (igual) | Ejemplo: datos inventados. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[6].texto` | Te resumo: limpieza dental el jueves a las 17:00, a nombre de Ana Ejemplo, con el teléfono 600 000 000. ¿La reservo? | (igual) | Ejemplo. A11. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[7].texto` | Sí. Y otra cosa: me duele muchísimo una muela y tengo la cara hinchada. | (igual) | Ejemplo. | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[8].texto` | Reservada la limpieza del jueves a las 17:00. Lo del dolor no puedo valorarlo yo: tiene que verlo el equipo cuanto antes. Llama ahora a la clínica al 981 000 000 y te dirán qué hacer. | (igual) | Ejemplo. A11 (pasa a una persona lo que no le toca; no da consejos clínicos). | propuesta |
+| /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].conversacion[9].texto` | Vale, llamo ahora. Gracias. | (igual) | Ejemplo. | propuesta |
+
+## /sectores/alojamientos-rurales/
+
+Lo común a las tres páginas de sector va en `## /sectores/clinicas-dentales/`.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].nombre` | Casas, apartamentos y hoteles rurales | (igual) | Sector de D-006. También lo pinta la tarjeta de `/sectores/`. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].etiqueta` | Alojamientos rurales | (igual) | Ídem. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].titular` | Que no todas las reservas tengan que pasar por Booking | (igual) | Lo que se busca, no un hecho sobre quien lee (P-13). Lo pinta también la tarjeta de `/sectores/`. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].entradilla` | Una web con reservas propias, las respuestas de siempre a cualquier hora y los datos del huésped antes de que llegue, para que las plataformas sean una vía más y no la única. | Una web donde te puedan reservar directamente, las respuestas de siempre a cualquier hora y los datos del huésped antes de que llegue: lo que podemos montar para que las plataformas sean una vía más y no la única. | A62, A63 (B, «podemos montar», §3.2 regla 1), A11. Decisión 3: sin «propias». | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].metadatos.title` | Webs y automatización para alojamientos rurales — {n} | (igual) | A06, A22. `{n}` = `site.nombre`. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].metadatos.description` | Reservas en tu propia web, respuestas a cualquier hora y el registro de viajeros antes de la llegada. Lo que se puede automatizar en una casa o un hotel rural, con un ejemplo del asistente. | (igual) | A62, A11, A43; B en condicional («se puede»). «Propia» es la web del cliente. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[0].titulo` | La comisión, también del huésped que repite | (igual) | A42. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[0].texto` | Quien ya estuvo en la casa y quiere volver la busca en Booking, porque es donde la encontró, y esa noche vuelve a pagar comisión. Sin una web donde reservar contigo, la plataforma se queda también con los que ya te conocen. | Según sus condiciones, Booking y Airbnb cobran comisión por cada reserva, también por la de quien ya estuvo en la casa. Si quien quiere volver la busca en la plataforma donde la encontró, esa noche vuelve a pagar comisión. | A42 (A, de terceros: sin cifra y citando sus condiciones, §3.2 regla 5). A46 (C): el comportamiento del huésped pasa a situación posible, con «si» (§3.1). Sale «la plataforma se queda también con los que ya te conocen» (A46). | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[1].titulo` | Calendarios que no se hablan | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[1].texto` | Las reservas por teléfono en una libreta o en el móvil; las de Booking y Airbnb, cada una en su panel. Cada reserva nueva obliga a cerrar a mano las mismas fechas en los demás sitios, y un descuido vende dos veces la misma noche. | Si las reservas por teléfono van en una libreta o en el móvil, y las de Booking y Airbnb cada una en su panel, cada reserva nueva obliga a cerrar a mano las mismas fechas en los demás sitios, y un descuido vende dos veces la misma noche. | P-13, filtro 4: con «si», sin dar por hecho cómo lleva las reservas quien lee. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[2].titulo` | Las preguntas llegan cuando estás limpiando | Las preguntas llegan cuando hay más trabajo | Filtro 4: daba por hecho qué hace quien lee. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[2].texto` | Cómo se llega por la pista, si hay cobertura, si se admiten perros, a qué hora se entrega la llave. Llegan de noche y en fin de semana, que es justo cuando hay huéspedes entrando y saliendo. | Cómo se llega por la pista, si hay cobertura, si se admiten perros, a qué hora se entrega la llave. Suelen llegar de noche y en fin de semana, que es justo cuando hay huéspedes entrando y saliendo. | P-13: habitual («suelen»), no un hecho. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[3].titulo` | El registro de viajeros, uno a uno en la entrada | (igual) | A47. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].problemas[3].texto` | Cada huésped tiene que dar sus datos para el registro, y pedírselos a la llegada, con las maletas en la puerta, es lento para los dos. Con un grupo, más. | Cada huésped tiene que dar sus datos para el registro de viajeros (lo exige el Real Decreto 933/2021). Si se piden a la llegada, con las maletas en la puerta, es lento para los dos, y con un grupo, más. | A47 (A): fuente RD 933/2021, que se cita al nombrarlo. P-13: con «si». «933/2021» es el número de la norma, no una cifra (T05 lo pone en `CIFRAS` con A47). | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].ejemplo.de` | un alojamiento | (igual) | Va en «Así contestaría el asistente de {n}». | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].ejemplo.negocio` | Casa Rural Demo | (igual) | Negocio inventado (A59), dentro del ejemplo. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[0].texto` | Hola, soy el asistente virtual de Casa Rural Demo. Puedo resolver dudas sobre la casa y, si quieres reservar, dejar tu contacto para que te llame quien lleva las reservas. ¿En qué te ayudo? | (igual) | Dentro del chat «Ejemplo» (D-019, CA-7). A11 (recoge el contacto; no reserva). | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[1].texto` | ¿Admitís perros? | (igual) | Ejemplo. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[2].texto` | Sí, avisando al hacer la reserva. Pueden estar en las zonas comunes y en el jardín, pero no en los dormitorios. | (igual) | Ejemplo. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[3].texto` | ¿Y a qué hora se puede entrar? Llegaríamos tarde, sobre las diez de la noche. | (igual) | Ejemplo (las horas van dentro de `data-ejemplo`, CA-8). | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[4].texto` | La entrada es a partir de las cuatro de la tarde. Si llegáis más tarde se os puede dejar la llave preparada, pero hay que acordarlo antes con la casa. | (igual) | Ejemplo. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[5].texto` | ¿Tenéis libre el puente de diciembre para cuatro personas y el perro? | (igual) | Ejemplo. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[6].texto` | Las fechas libres no las veo yo: las confirma la persona que lleva las reservas. Si me dejas tu nombre y un teléfono o un correo, te llama para cerrarlo. | (igual) | Ejemplo. A11 (no ve la disponibilidad: lo que no hace es A28). | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[7].texto` | Marta Ejemplo, 600 000 000. | (igual) | Ejemplo: datos inventados. | propuesta |
+| /sectores/alojamientos-rurales/ | `src/content/sectores.ts` | `paginas[rural].conversacion[8].texto` | Apuntado: Marta Ejemplo, 600 000 000, puente de diciembre, cuatro personas y un perro. Te llamarán de Casa Rural Demo para decirte si hay sitio y el precio. | (igual) | Ejemplo. A11. | propuesta |
+
+## /sectores/asesorias-y-despachos/
+
+Lo común a las tres páginas de sector va en `## /sectores/clinicas-dentales/`.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].nombre` | Asesorías y despachos | (igual) | Sector de D-006. También lo pinta la tarjeta de `/sectores/`. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].etiqueta` | Asesorías y despachos | (igual) | Ídem. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].titular` | Menos llamadas de «¿lleváis esto?» y menos papeles por WhatsApp | Menos llamadas de «¿lleváis esto?» y menos papeles sueltos | Filtro 4: daba por hecho que los papeles llegan por WhatsApp (CA-9). Lo pinta también la tarjeta de `/sectores/`. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].entradilla` | Las primeras preguntas, la documentación de cada cliente y las citas pueden ir solas, para que el tiempo del despacho se vaya en los asuntos y no en lo que los rodea. | (igual) | B en condicional («pueden»): A11, A63, A61. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].metadatos.title` | Webs y automatización para asesorías y despachos — {n} | (igual) | A06, A22. `{n}` = `site.nombre`. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].metadatos.description` | Documentación que llega ordenada, primeras consultas sin llamar y respuestas a cualquier hora. Lo que se puede automatizar en una asesoría o un despacho de abogados, con un ejemplo del asistente. | (igual) | A63, A61, A11; B en condicional («se puede»). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[0].titulo` | Llamadas para saber si lleváis su asunto | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[0].texto` | Antes de ser cliente, la gente llama para preguntar si lleváis herencias, despidos o la renta de un autónomo, y cuánto cuesta la primera consulta. Cada llamada saca a alguien de un expediente. | Antes de ser cliente, es habitual llamar para preguntar si lleváis herencias, despidos o la renta de un autónomo, y cuánto cuesta la primera consulta. Cada llamada saca a alguien de un expediente. | P-13: situación habitual, no un hecho sobre el despacho que lee. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[1].titulo` | La documentación llega en fotos por WhatsApp | La documentación llega por todas partes | Filtro 4: daba por hecho el WhatsApp (CA-9). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[1].texto` | Nóminas, escrituras, facturas del trimestre: llegan en fotos torcidas por WhatsApp, en correos sueltos y en mano. Juntarlas en cada expediente y ver qué falta es trabajo que no se factura. | Nóminas, escrituras, facturas del trimestre: si llegan en fotos por WhatsApp, en correos sueltos y en mano, juntarlas en cada expediente y ver qué falta es trabajo que no se factura. | P-13, filtro 4: con «si». | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[2].titulo` | Todo el mundo, el último día | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[2].texto` | En la campaña de la renta y en cada cierre de trimestre, los papeles llegan a la vez y a última hora. Ir avisando cliente por cliente de lo que le falta se come los días que más trabajo hay. | En la campaña de la renta y en cada cierre de trimestre, los papeles suelen llegar a la vez y a última hora. Ir avisando cliente por cliente de lo que le falta se come los días que más trabajo hay. | P-13: habitual («suelen»). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[3].titulo` | La carta de Hacienda se lee de noche | (igual) | Situación habitual (P-13). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].problemas[3].texto` | Quien recibe un requerimiento o una carta de despido busca ayuda esa misma noche. Si la web solo tiene un teléfono, espera a la mañana siguiente, y puede que llame antes a otro despacho. | Quien recibe un requerimiento o una carta de despido suele buscar ayuda esa misma noche. Si la web solo tiene un teléfono, espera a la mañana siguiente, y puede que llame antes a otro despacho. | P-13: habitual («suele»), no un hecho. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].ejemplo.de` | un despacho | (igual) | Va en «Así contestaría el asistente de {n}». | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].ejemplo.negocio` | Despacho Demo | (igual) | Negocio inventado (A59), dentro del ejemplo. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[0].texto` | Hola, soy el asistente virtual de Despacho Demo. Puedo contarte qué asuntos llevamos y cómo trabajamos, y dejar tu contacto para que te llame una persona del despacho. ¿En qué te ayudo? | (igual) | Dentro del chat «Ejemplo» (D-019, CA-7). A11. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[1].texto` | Me ha llegado una carta de Hacienda por la renta del año pasado. ¿Lleváis eso? | (igual) | Ejemplo. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[2].texto` | Sí, el despacho lleva requerimientos y comprobaciones de Hacienda. Qué dice tu carta y qué conviene hacer lo valora una persona del despacho: yo no puedo asesorarte sobre tu caso. | (igual) | Ejemplo. A11 (pasa a una persona lo que no le toca). | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[3].texto` | ¿Qué tengo que llevar a la primera consulta? | (igual) | Ejemplo. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[4].texto` | La carta, la declaración de ese año y tu DNI. Si no tienes la declaración a mano, en la consulta te ayudan a sacarla. | (igual) | Ejemplo. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[5].texto` | ¿Me podéis dar hora para mañana? | (igual) | Ejemplo. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[6].texto` | Las citas no las doy yo. Si me dejas tu nombre y un teléfono o un correo, una persona del despacho te contacta para darte hora. | (igual) | Ejemplo. A11. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[7].texto` | Jorge Ejemplo, jorge@ejemplo.com. | (igual) | Ejemplo: datos inventados. | propuesta |
+| /sectores/asesorias-y-despachos/ | `src/content/sectores.ts` | `paginas[despachos].conversacion[8].texto` | Apuntado: Jorge Ejemplo, jorge@ejemplo.com, por una carta de Hacienda sobre la renta. Te escribirán de Despacho Demo para darte hora. | (igual) | Ejemplo. A11. | propuesta |
+
+## /404
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /404 | `src/app/not-found.tsx` | `metadata.title` | Página no encontrada — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
+| /404 | `src/content/interiores.ts` | `cotasInterior.error404.cota` | Sin fondo · 404 | (igual) | Cota (D-014). «404» es numeración (`data-numeracion`, PD-5), no una cifra. | propuesta |
+| /404 | `src/app/not-found.tsx` | `CabeceraInterior` · `arriba` | No hay nada | (igual) | Concepto (D-014, spec 002 §3.12). | propuesta |
+| /404 | `src/app/not-found.tsx` | `CabeceraInterior` · `em` | a esta cota. | (igual) | Ídem. | propuesta |
+| /404 | `src/app/not-found.tsx` | `jsx · texto` | La página que buscas no existe o ha cambiado de sitio. Vuelve al principio o mira las plantillas. | (igual) | A57. También es lo que ve quien llegue con un ancla vieja que ya no existe (spec §6): ahí la ruta sí existe y abre arriba, no da 404. | propuesta |
+| /404 | `src/app/not-found.tsx` | `jsx · botón` | Ir al inicio | (igual) | Interfaz. | propuesta |
+| /404 | `src/app/not-found.tsx` | `jsx · botón` | Ver plantillas | (igual) | A57. | propuesta |
+
+## README
+
+Solo lo que repite lo que dice la web (spec §2), no la documentación técnica.
+El README describe aún la portada vigente (la de `main`): llevarlo a la de la
+consultora es de P-08, no de esta spec. Aquí se corrigen las afirmaciones, los
+nombres y los recuentos.
+
+**La nota de anclas** (spec §6) va entre `<!-- 003-anclas -->` y
+`<!-- /003-anclas -->`, justo después del párrafo «Páginas: …» de «Qué hay en la
+web». No lleva fila porque `comprobar-textos.mjs` ignora ese bloque (también
+CA-4, que no la encontraría). Estado: `propuesta`. Texto:
+
+```markdown
+<!-- 003-anclas -->
+**Anclas que ya no existen.** Hasta la spec 003, `/herramientas/` tenía las
+secciones `#vigilancia` y `#ficha-google`, y algún enlace ya mandado puede
+llevarlas. La 003 las quitó: la vigilancia diaria y la auditoría de la ficha de
+Google no existen todavía (A19 y A20, nivel C) y se nombrarán en la spec 004,
+cuando estén hechas. La ruta sigue: el ancla no encuentra nada y la página se
+abre arriba. Se acepta así (spec 003 §6).
+<!-- /003-anclas -->
+```
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| README | `README.md` | entradilla (líneas 3-4) | diseño y desarrollo web, automatización y IA para negocios pequeños de Galicia. | hacemos la web, la tienda online y la ficha de Google de tu negocio, y montamos a tu medida lo que va por debajo: automatizaciones, asistentes con IA y programas de gestión. | A45: una sola descripción en todo el sitio, README incluido; es `site.descripcion` (`## *`). Va tras «Web del estudio **Undertactics** (antes Subcon Works):». | propuesta |
+| README | `README.md` | «Qué hay en la web», fila `0 · Lo que montamos` | Los diez servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas | Los siete servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas | A76 (fuente: `servicios.ts`, 7). «Diez» era falso desde la PR #50. | propuesta |
+| README | `README.md` | «Qué hay en la web», fila `−4 · Diagnóstico` | El diagnóstico de un minuto de la spec 001 | El diagnóstico rápido de la spec 001 | A70 (C hasta cronometrarlo): sale «un minuto». Nombre de la puerta 2 (P-11). | propuesta |
+| README | `README.md` | «Qué hay en la web», fila `Fondo · Auditoría` | Lo que recibes con la auditoría gratuita, «36 preguntas» y «0 €», y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo | La auditoría de tu negocio: lo que no se pide, «36 preguntas» y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo | Nombre de la puerta 3 (P-11). A34 corregida (sin «gratuita» ni «0 €»), A38. «Lo que recibes» sale con `loQueRecibes` (A52, `por confirmar`). | propuesta |
+| README | `README.md` | «No hay clientes» | Lo que se enseña son las **30 plantillas** del taller | (igual) | A05, A59. | propuesta |
+| README | `README.md` | tabla de `src/content/`, fila `servicios.ts` | Los diez servicios y lo que incluye cada uno | Los siete servicios y lo que incluye cada uno | A76. | propuesta |
+| README | `README.md` | tabla de `src/content/`, fila `herramientas.ts` | El software propio de `/herramientas/`, con sus capturas | Los productos de `/herramientas/` (tienda online, informe de mejoras de tu web y formulario de contacto), con sus capturas | CA-1: sin «software propio» (spec §1 cita `README.md:185`). Decisión 6 y nombres recomendados (P-11). A01, A03, A29. | propuesta |
+| README | `README.md` | tabla de `src/content/`, fila `cifras.ts` | Las cuatro cifras, repartidas por la portada (sin contador) | Las cifras que quedan (plantillas publicadas y preguntas de la auditoría), sin contador | A76: tras quitar el plazo (A32) y el «0 €» (A34) quedan dos. | propuesta |
+| README | `README.md` | título de apartado | La auditoría gratuita | La auditoría de tu negocio | Nombre de la puerta 3 (P-11). A34 corregida. | propuesta |
+| README | `README.md` | «La auditoría…», primer párrafo | las mismas 36 preguntas con la misma numeración, en ocho pasos, con borrador guardado en el navegador y con la posibilidad de mandarlo a medias. | las mismas 36 preguntas con la misma numeración, en ocho pasos, con borrador guardado en el navegador durante 30 días y con la posibilidad de mandarlo a medias. | A38, A76 (ocho pasos), A93 corregida (el borrador caduca a los 30 días; lo hace T08). | propuesta |
+| README | `README.md` | «Pendiente antes de recibir una solicitud de verdad» | Completar el nombre fiscal, el NIF y el domicilio en `src/app/privacidad/page.tsx` | (igual) | A99 (P-15). | propuesta |
+| README | `README.md` | «Pendiente…», punto nuevo | (no hay) | Hacer que se cumpla el plazo de `/privacidad/`: borrar las solicitudes (en Supabase y en los `.md` de `entrada/`) un año después del último mensaje (P-14). | A75 corregida: la página lo promete y hoy nada lo borra (A44). | propuesta |
