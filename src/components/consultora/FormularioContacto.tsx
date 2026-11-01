@@ -54,7 +54,7 @@ function validar(d: Datos): Fallos {
 }
 
 const MENSAJES: Record<string, string> = {
-  ritmo: "Has enviado varias solicitudes seguidas. Espera un minuto y vuelve a probar.",
+  ritmo: "Has enviado varias solicitudes seguidas. Espera unos minutos y vuelve a probar.",
   red: "No hemos podido conectar. Revisa tu conexión y vuelve a probar.",
   servidor: "Algo ha fallado de nuestra parte y tu solicitud no ha salido.",
   validacion: "Hay algún dato que no hemos podido aceptar. Revísalo y vuelve a probar.",
@@ -121,7 +121,7 @@ export function FormularioContacto() {
         <p>
           Mientras tanto, si quieres adelantar trabajo, la{" "}
           <Link href="/auditoria/" className="link-underline text-hueso">
-            auditoría completa
+            auditoría de tu negocio
           </Link>{" "}
           nos da el detalle de cómo trabajáis.
         </p>
@@ -172,7 +172,7 @@ export function FormularioContacto() {
       </div>
 
       <div className="contacto-dos">
-        <Campo id="email" etiqueta="Email" error={fallos.email}>
+        <Campo id="email" etiqueta="Correo" error={fallos.email}>
           <input
             id="contacto-email"
             className="campo"
@@ -207,7 +207,7 @@ export function FormularioContacto() {
           aria-describedby={fallos.tipo ? "contacto-tipo-error" : undefined}
           required
         >
-          <option value="">Elige uno…</option>
+          <option value="">Elige el más parecido…</option>
           {contacto.tipos.map((t) => (
             <option key={t} value={t}>
               {t}
@@ -259,7 +259,7 @@ export function FormularioContacto() {
         <Boton type="submit" lineaApagada data-hilo-fin="" disabled={estado === "enviando"}>
           {estado === "enviando" ? "Enviando…" : contacto.cta}
         </Boton>
-        <p className="text-sm text-apagado-abajo">Sin coste y sin compromiso.</p>
+        <p className="text-sm text-apagado-abajo">La propuesta no se cobra.</p>
       </div>
 
       <p role="alert" className="contacto-aviso" hidden={!aviso}>

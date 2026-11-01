@@ -5,7 +5,7 @@ import { EnVista } from "./EnVista";
 import { Maqueta } from "./Maquetas";
 
 /**
- * «−2 · Soluciones en acción»: cuatro casos de uso, cada uno con su ejemplo hecho a mano
+ * «−2 · Soluciones de ejemplo»: cuatro casos de uso, cada uno con su ejemplo hecho a mano
  * (conversación, factura, voz, agenda; el embudo y el panel siguen en `Maquetas` sin usar).
  * La rejilla alterna anchos (7+5, 5+7) para que no sean cuatro tarjetas iguales. Los ejemplos se rotulan
  * «Ejemplo» y el aviso de arriba dice que los datos son inventados: ni clientes ni

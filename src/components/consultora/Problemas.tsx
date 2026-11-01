@@ -5,7 +5,7 @@ import { Titular } from "@/components/ui/Titular";
 import { problemas } from "@/content/consultora";
 
 /**
- * «0 · Lo que pasa»: los tres problemas del día a día. Los números son grandes y la
+ * «0 · Lo que suele pasar»: tres situaciones habituales, escritas con «si…» (003 §3.1). Los números son grandes y la
  * segunda columna baja medio paso: la sección se lee en zigzag, no como una rejilla de
  * tarjetas. El cierre enlaza a los servicios; el contacto ya tiene su sitio en el hero y
  * al final.
