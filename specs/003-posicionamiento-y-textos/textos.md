@@ -169,49 +169,49 @@ filas.
 
 | ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
 |---|---|---|---|---|---|---|
-| * | `src/content/site.ts` | `site.nombre` | Undertactics | (igual) | Marca. | propuesta |
-| * | `src/content/site.ts` | `site.tagline` | Lo de arriba vende. Lo de abajo trabaja. | (igual) | Frase de D-014; no se toca (C-23). | propuesta |
-| * | `src/content/site.ts` | `site.descripcion` | Consultora tecnológica para pymes y autónomos: inteligencia artificial, automatización de procesos, software a medida y desarrollo web. | Hacemos la web, la tienda online y la ficha de Google de tu negocio, y montamos a tu medida lo que va por debajo: automatizaciones, asistentes con IA y programas de gestión. | A45: una sola descripción en todo el sitio, la de la promesa (§3.1). A06, A01, A08 (A, presente); A22, A11, A28, A23 (B, «a tu medida»). Filtro 1: «pymes» y «consultora tecnológica» son jerga para un dueño de negocio. La pintan `description` y OG de todas las rutas sin metadatos propios, y el pie. | propuesta |
-| * | `src/content/site.ts` | `site.ubicacion` | Carballo, A Coruña | (igual) | Dato del estudio (A40). | propuesta |
-| * | `src/content/site.ts` | `site.email` | alvarot2601@gmail.com | (igual) | Correo de contacto (A44, correo directo). | propuesta |
-| * | `src/content/site.ts` | `site.nav[0].label` | Servicios | (igual) | Interfaz: ancla `/#servicios`. | propuesta |
-| * | `src/content/site.ts` | `site.nav[1].label` | Soluciones | (igual) | Ancla `/#soluciones`; la sección dice que son ejemplos (A15). | propuesta |
-| * | `src/content/site.ts` | `site.nav[2].label` | Proyectos | Webs de ejemplo | Decisión 4: «Proyectos» sugiere trabajos de cliente (§3.2 regla 3, §3.5). A59. | propuesta |
-| * | `src/content/site.ts` | `site.nav[3].label` | Herramientas | Productos | Decisión 6: el cliente compra el resultado (§3.4). Lo que queda en `/herramientas/` es nivel A (A01, A03, A29, A50). | propuesta |
-| * | `src/content/site.ts` | `site.nav[4].label` | Proceso | (igual) | Interfaz: ancla `/#proceso`. | propuesta |
-| * | `src/content/site.ts` | `site.nav[5].label` | Contacto | (igual) | Interfaz: ancla `/#contacto`. | propuesta |
-| * | `src/content/site.ts` | `site.cta` | Solicitar diagnóstico | Pedir una propuesta | Nombre de la puerta 1 (P-11, recomendado). «Diagnóstico» queda solo para el diagnóstico rápido (CA-17). A30, A56. | propuesta |
-| * | `src/app/layout.tsx` | `metadata.title` | {n} — IA, automatización y software a medida para pymes | {n} — Web, tienda online y automatización a medida | A45 (misma familia que la descripción). A06, A01 (A); A22 (B, «a medida»). Filtro 1: sin «pymes». `{n}` = `site.nombre`. | propuesta |
-| * | `src/app/layout.tsx` | `metadata.description` | site.descripcion | (igual) | Sale de `site.descripcion` (fila de arriba): no se escribe aparte (A45). | propuesta |
-| * | `src/app/layout.tsx` | `metadata.openGraph.title` | title: site.nombre | (igual) | Marca. | propuesta |
-| * | `src/app/layout.tsx` | `metadata.openGraph.description` | site.descripcion | (igual) | Sale de `site.descripcion` (A45). | propuesta |
-| * | `src/app/layout.tsx` | `metadata.openGraph.images[0].alt` | Logo de Undertactics: un iceberg con la línea de superficie en lima | (igual) | Accesibilidad: describe la imagen; `og.png` se regenera en P-07, fuera de esta spec. | propuesta |
-| * | `src/app/layout.tsx` | `jsx · enlace para saltar` | Saltar al contenido | (igual) | Accesibilidad; no afirma nada. | propuesta |
-| * | `src/components/layout/Nav.tsx` | `aria-label` del logo | {n}, inicio | (igual) | Accesibilidad. `{n}` = `site.nombre`. | propuesta |
-| * | `src/components/layout/Nav.tsx` | `aria-label` del menú | Navegación principal | (igual) | Accesibilidad. | propuesta |
-| * | `src/components/layout/Nav.tsx` | `jsx · botón del menú móvil` | Menú | (igual) | Interfaz. | propuesta |
-| * | `src/components/layout/Nav.tsx` | `aria-label` del panel móvil | Menú de navegación | (igual) | Accesibilidad. | propuesta |
-| * | `src/components/layout/Nav.tsx` | `jsx · cerrar el menú` | Cerrar | (igual) | Interfaz. | propuesta |
-| * | `src/components/layout/Nav.tsx` | `aria-label` del menú móvil | Navegación móvil | (igual) | Accesibilidad. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · botón bajo el logo` | Solicitar diagnóstico | Pedir una propuesta | El mismo botón que el menú (`site.cta`): nombre de la puerta 1 (P-11). CA-17. Mejor que lo lea de `site.cta` y no lo repita. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · título de columna` | Contacto | (igual) | Interfaz. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · título de columna` | Secciones | (igual) | Interfaz. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /plantillas/` | Las {n} plantillas | (igual) | A05: el número sale de `plantillas.length`. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /estudio/` | Quién hace esto | (igual) | A40. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /auditoria/` | Auditoría gratuita | Auditoría de tu negocio | Nombre de la puerta 3 (P-11). A34 corregida (D-035): sin «gratuita»; el precio se dice «no se cobra» donde se explica la auditoría. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /privacidad/` | Privacidad | (igual) | Obligatorio (A44). | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · título de columna` | Hora local | (igual) | A77: la hora sale del reloj. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · derechos` | © {n} {n}. Todos los derechos reservados. | (igual) | A77: el año sale del reloj. | propuesta |
-| * | `src/components/layout/Footer.tsx` | `jsx · aviso de ficticios` | Los negocios de las plantillas son ficticios. Diseñado y construido por {n}. | (igual) | A59 (D-007): obligatorio. | propuesta |
-| * | `src/components/layout/AvisoCookies.tsx` | `aria-label` | Aviso sobre el almacenamiento en tu navegador | (igual) | Accesibilidad. | propuesta |
-| * | `src/components/layout/AvisoCookies.tsx` | `jsx · texto del aviso` | Sin cookies de seguimiento: solo tu borrador y este aviso. | Sin cookies: tu navegador solo recuerda este aviso, la animación de entrada y, si abres la auditoría, tu borrador. | A93 corregida: el aviso contaba dos cosas y `/privacidad/` tres (borrador y aviso en `localStorage`, la cortina en `sessionStorage`). A94: no hay cookies de ningún tipo, así que sobra «de seguimiento». El borrador solo existe si se abre el formulario de la auditoría (filtro 4); se guarda al cargarlo, aunque no se escriba nada (`FormularioAuditoria.tsx:158-162`, D-037), de ahí «abres» y no «empiezas». | propuesta |
-| * | `src/components/layout/AvisoCookies.tsx` | `jsx · enlace` | Detalle | (igual) | Lleva a `/privacidad/`. | propuesta |
-| * | `src/components/layout/AvisoCookies.tsx` | `jsx · botón` | Entendido | (igual) | Interfaz. | propuesta |
-| * | `src/components/ui/WorkImage.tsx` | `jsx · imagen que no carga` | Imagen no disponible | (igual) | Interfaz. | propuesta |
-| * | `src/components/layout/Mando.tsx` | `aria-label` | Dos versiones de la misma web | (igual) | Solo sale con `?revision` (spec 002 §3.16): no llega al cliente. | propuesta |
-| * | `src/components/layout/Mando.tsx` | `jsx · rótulo` | Versión | (igual) | Ídem. | propuesta |
-| * | `src/components/layout/Mando.tsx` | `jsx · botón` | Por debajo | (igual) | Ídem. | propuesta |
-| * | `src/components/layout/Mando.tsx` | `jsx · botón` | Sobria | (igual) | Ídem. | propuesta |
+| * | `src/content/site.ts` | `site.nombre` | Undertactics | (igual) | Marca. | aprobada |
+| * | `src/content/site.ts` | `site.tagline` | Lo de arriba vende. Lo de abajo trabaja. | (igual) | Frase de D-014; no se toca (C-23). | aprobada |
+| * | `src/content/site.ts` | `site.descripcion` | Consultora tecnológica para pymes y autónomos: inteligencia artificial, automatización de procesos, software a medida y desarrollo web. | Hacemos la web, la tienda online y la ficha de Google de tu negocio, y montamos a tu medida lo que va por debajo: automatizaciones, asistentes con IA y programas de gestión. | A45: una sola descripción en todo el sitio, la de la promesa (§3.1). A06, A01, A08 (A, presente); A22, A11, A28, A23 (B, «a tu medida»). Filtro 1: «pymes» y «consultora tecnológica» son jerga para un dueño de negocio. La pintan `description` y OG de todas las rutas sin metadatos propios, y el pie. | aprobada |
+| * | `src/content/site.ts` | `site.ubicacion` | Carballo, A Coruña | (igual) | Dato del estudio (A40). | aprobada |
+| * | `src/content/site.ts` | `site.email` | alvarot2601@gmail.com | (igual) | Correo de contacto (A44, correo directo). | aprobada |
+| * | `src/content/site.ts` | `site.nav[0].label` | Servicios | (igual) | Interfaz: ancla `/#servicios`. | aprobada |
+| * | `src/content/site.ts` | `site.nav[1].label` | Soluciones | (igual) | Ancla `/#soluciones`; la sección dice que son ejemplos (A15). | aprobada |
+| * | `src/content/site.ts` | `site.nav[2].label` | Proyectos | Webs de ejemplo | Decisión 4: «Proyectos» sugiere trabajos de cliente (§3.2 regla 3, §3.5). A59. | aprobada |
+| * | `src/content/site.ts` | `site.nav[3].label` | Herramientas | Productos | Decisión 6: el cliente compra el resultado (§3.4). Lo que queda en `/herramientas/` es nivel A (A01, A03, A29, A50). | aprobada |
+| * | `src/content/site.ts` | `site.nav[4].label` | Proceso | (igual) | Interfaz: ancla `/#proceso`. | aprobada |
+| * | `src/content/site.ts` | `site.nav[5].label` | Contacto | (igual) | Interfaz: ancla `/#contacto`. | aprobada |
+| * | `src/content/site.ts` | `site.cta` | Solicitar diagnóstico | Pedir una propuesta | Nombre de la puerta 1 (P-11, recomendado). «Diagnóstico» queda solo para el diagnóstico rápido (CA-17). A30, A56. | aprobada |
+| * | `src/app/layout.tsx` | `metadata.title` | {n} — IA, automatización y software a medida para pymes | {n} — Web, tienda online y automatización a medida | A45 (misma familia que la descripción). A06, A01 (A); A22 (B, «a medida»). Filtro 1: sin «pymes». `{n}` = `site.nombre`. | aprobada |
+| * | `src/app/layout.tsx` | `metadata.description` | site.descripcion | (igual) | Sale de `site.descripcion` (fila de arriba): no se escribe aparte (A45). | aprobada |
+| * | `src/app/layout.tsx` | `metadata.openGraph.title` | title: site.nombre | (igual) | Marca. | aprobada |
+| * | `src/app/layout.tsx` | `metadata.openGraph.description` | site.descripcion | (igual) | Sale de `site.descripcion` (A45). | aprobada |
+| * | `src/app/layout.tsx` | `metadata.openGraph.images[0].alt` | Logo de Undertactics: un iceberg con la línea de superficie en lima | (igual) | Accesibilidad: describe la imagen; `og.png` se regenera en P-07, fuera de esta spec. | aprobada |
+| * | `src/app/layout.tsx` | `jsx · enlace para saltar` | Saltar al contenido | (igual) | Accesibilidad; no afirma nada. | aprobada |
+| * | `src/components/layout/Nav.tsx` | `aria-label` del logo | {n}, inicio | (igual) | Accesibilidad. `{n}` = `site.nombre`. | aprobada |
+| * | `src/components/layout/Nav.tsx` | `aria-label` del menú | Navegación principal | (igual) | Accesibilidad. | aprobada |
+| * | `src/components/layout/Nav.tsx` | `jsx · botón del menú móvil` | Menú | (igual) | Interfaz. | aprobada |
+| * | `src/components/layout/Nav.tsx` | `aria-label` del panel móvil | Menú de navegación | (igual) | Accesibilidad. | aprobada |
+| * | `src/components/layout/Nav.tsx` | `jsx · cerrar el menú` | Cerrar | (igual) | Interfaz. | aprobada |
+| * | `src/components/layout/Nav.tsx` | `aria-label` del menú móvil | Navegación móvil | (igual) | Accesibilidad. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · botón bajo el logo` | Solicitar diagnóstico | Pedir una propuesta | El mismo botón que el menú (`site.cta`): nombre de la puerta 1 (P-11). CA-17. Mejor que lo lea de `site.cta` y no lo repita. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · título de columna` | Contacto | (igual) | Interfaz. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · título de columna` | Secciones | (igual) | Interfaz. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /plantillas/` | Las {n} plantillas | (igual) | A05: el número sale de `plantillas.length`. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /estudio/` | Quién hace esto | (igual) | A40. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /auditoria/` | Auditoría gratuita | Auditoría de tu negocio | Nombre de la puerta 3 (P-11). A34 corregida (D-035): sin «gratuita»; el precio se dice «no se cobra» donde se explica la auditoría. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · enlace a /privacidad/` | Privacidad | (igual) | Obligatorio (A44). | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · título de columna` | Hora local | (igual) | A77: la hora sale del reloj. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · derechos` | © {n} {n}. Todos los derechos reservados. | (igual) | A77: el año sale del reloj. | aprobada |
+| * | `src/components/layout/Footer.tsx` | `jsx · aviso de ficticios` | Los negocios de las plantillas son ficticios. Diseñado y construido por {n}. | (igual) | A59 (D-007): obligatorio. | aprobada |
+| * | `src/components/layout/AvisoCookies.tsx` | `aria-label` | Aviso sobre el almacenamiento en tu navegador | (igual) | Accesibilidad. | aprobada |
+| * | `src/components/layout/AvisoCookies.tsx` | `jsx · texto del aviso` | Sin cookies de seguimiento: solo tu borrador y este aviso. | Sin cookies: tu navegador solo recuerda este aviso, la animación de entrada y, si abres la auditoría, tu borrador. | A93 corregida: el aviso contaba dos cosas y `/privacidad/` tres (borrador y aviso en `localStorage`, la cortina en `sessionStorage`). A94: no hay cookies de ningún tipo, así que sobra «de seguimiento». El borrador solo existe si se abre el formulario de la auditoría (filtro 4); se guarda al cargarlo, aunque no se escriba nada (`FormularioAuditoria.tsx:158-162`, D-037), de ahí «abres» y no «empiezas». | aprobada |
+| * | `src/components/layout/AvisoCookies.tsx` | `jsx · enlace` | Detalle | (igual) | Lleva a `/privacidad/`. | aprobada |
+| * | `src/components/layout/AvisoCookies.tsx` | `jsx · botón` | Entendido | (igual) | Interfaz. | aprobada |
+| * | `src/components/ui/WorkImage.tsx` | `jsx · imagen que no carga` | Imagen no disponible | (igual) | Interfaz. | aprobada |
+| * | `src/components/layout/Mando.tsx` | `aria-label` | Dos versiones de la misma web | (igual) | Solo sale con `?revision` (spec 002 §3.16): no llega al cliente. | aprobada |
+| * | `src/components/layout/Mando.tsx` | `jsx · rótulo` | Versión | (igual) | Ídem. | aprobada |
+| * | `src/components/layout/Mando.tsx` | `jsx · botón` | Por debajo | (igual) | Ídem. | aprobada |
+| * | `src/components/layout/Mando.tsx` | `jsx · botón` | Sobria | (igual) | Ídem. | aprobada |
 
 ## /
 
