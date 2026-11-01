@@ -1227,4 +1227,40 @@ Lo común a las tres páginas de sector va en `## /sectores/clinicas-dentales/`.
 | /404 | `src/app/not-found.tsx` | `jsx · botón` | Ir al inicio | (igual) | Interfaz. | propuesta |
 | /404 | `src/app/not-found.tsx` | `jsx · botón` | Ver plantillas | (igual) | A57. | propuesta |
 
-pendiente: parte 2 — faltan la tabla `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
+## README
+
+Solo lo que repite lo que dice la web (spec §2), no la documentación técnica.
+El README describe aún la portada vigente (la de `main`): llevarlo a la de la
+consultora es de P-08, no de esta spec. Aquí se corrigen las afirmaciones, los
+nombres y los recuentos.
+
+**La nota de anclas** (spec §6) va entre `<!-- 003-anclas -->` y
+`<!-- /003-anclas -->`, justo después del párrafo «Páginas: …» de «Qué hay en la
+web». No lleva fila porque `comprobar-textos.mjs` ignora ese bloque (también
+CA-4, que no la encontraría). Estado: `propuesta`. Texto:
+
+```markdown
+<!-- 003-anclas -->
+**Anclas que ya no existen.** Hasta la spec 003, `/herramientas/` tenía las
+secciones `#vigilancia` y `#ficha-google`, y algún enlace ya mandado puede
+llevarlas. La 003 las quitó: la vigilancia diaria y la auditoría de la ficha de
+Google no existen todavía (A19 y A20, nivel C) y se nombrarán en la spec 004,
+cuando estén hechas. La ruta sigue: el ancla no encuentra nada y la página se
+abre arriba. Se acepta así (spec 003 §6).
+<!-- /003-anclas -->
+```
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| README | `README.md` | entradilla (líneas 3-4) | diseño y desarrollo web, automatización y IA para negocios pequeños de Galicia. | hacemos la web, la tienda online y la ficha de Google de tu negocio, y montamos a tu medida lo que va por debajo: automatizaciones, asistentes con IA y programas de gestión. | A45: una sola descripción en todo el sitio, README incluido; es `site.descripcion` (`## *`). Va tras «Web del estudio **Undertactics** (antes Subcon Works):». | propuesta |
+| README | `README.md` | «Qué hay en la web», fila `0 · Lo que montamos` | Los diez servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas | Los siete servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas | A76 (fuente: `servicios.ts`, 7). «Diez» era falso desde la PR #50. | propuesta |
+| README | `README.md` | «Qué hay en la web», fila `−4 · Diagnóstico` | El diagnóstico de un minuto de la spec 001 | El diagnóstico rápido de la spec 001 | A70 (C hasta cronometrarlo): sale «un minuto». Nombre de la puerta 2 (P-11). | propuesta |
+| README | `README.md` | «Qué hay en la web», fila `Fondo · Auditoría` | Lo que recibes con la auditoría gratuita, «36 preguntas» y «0 €», y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo | La auditoría de tu negocio: lo que no se pide, «36 preguntas» y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo | Nombre de la puerta 3 (P-11). A34 corregida (sin «gratuita» ni «0 €»), A38. «Lo que recibes» sale con `loQueRecibes` (A52, `por confirmar`). | propuesta |
+| README | `README.md` | «No hay clientes» | Lo que se enseña son las **30 plantillas** del taller | (igual) | A05, A59. | propuesta |
+| README | `README.md` | tabla de `src/content/`, fila `servicios.ts` | Los diez servicios y lo que incluye cada uno | Los siete servicios y lo que incluye cada uno | A76. | propuesta |
+| README | `README.md` | tabla de `src/content/`, fila `herramientas.ts` | El software propio de `/herramientas/`, con sus capturas | Los productos de `/herramientas/` (tienda online, informe de mejoras de tu web y formulario de contacto), con sus capturas | CA-1: sin «software propio» (spec §1 cita `README.md:185`). Decisión 6 y nombres recomendados (P-11). A01, A03, A29. | propuesta |
+| README | `README.md` | tabla de `src/content/`, fila `cifras.ts` | Las cuatro cifras, repartidas por la portada (sin contador) | Las cifras que quedan (plantillas publicadas y preguntas de la auditoría), sin contador | A76: tras quitar el plazo (A32) y el «0 €» (A34) quedan dos. | propuesta |
+| README | `README.md` | título de apartado | La auditoría gratuita | La auditoría de tu negocio | Nombre de la puerta 3 (P-11). A34 corregida. | propuesta |
+| README | `README.md` | «La auditoría…», primer párrafo | las mismas 36 preguntas con la misma numeración, en ocho pasos, con borrador guardado en el navegador y con la posibilidad de mandarlo a medias. | las mismas 36 preguntas con la misma numeración, en ocho pasos, con borrador guardado en el navegador durante 30 días y con la posibilidad de mandarlo a medias. | A38, A76 (ocho pasos), A93 corregida (el borrador caduca a los 30 días; lo hace T08). | propuesta |
+| README | `README.md` | «Pendiente antes de recibir una solicitud de verdad» | Completar el nombre fiscal, el NIF y el domicilio en `src/app/privacidad/page.tsx` | (igual) | A99 (P-15). | propuesta |
+| README | `README.md` | «Pendiente…», punto nuevo | (no hay) | Hacer que se cumpla el plazo de `/privacidad/`: borrar las solicitudes (en Supabase y en los `.md` de `entrada/`) un año después del último mensaje (P-14). | A75 corregida: la página lo promete y hoy nada lo borra (A44). | propuesta |
