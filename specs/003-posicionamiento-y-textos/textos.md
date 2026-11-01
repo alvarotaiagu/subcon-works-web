@@ -872,4 +872,52 @@ tres columnas tendrá un hueco: es maquetación (T06), no texto.
 | /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · botón del cierre` | Pedir la auditoría gratuita | Pedir una propuesta | Nombre de la puerta 1 (P-11), CA-17. Su `href` pasa de `/auditoria/` a `/#contacto` (el formulario corto), para que titular, entradilla y botón prometan lo mismo (CA-11). | propuesta |
 | /herramientas/ | `src/app/herramientas/page.tsx` | `jsx · botón de correo` | Escribir un correo | (igual) | A44 (correo directo). | propuesta |
 
-pendiente: parte 2 — faltan las tablas `## /plantillas/`, `## /privacidad/`, `## /sectores/`, las tres `## /sectores/<slug>/`, `## /404` y `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
+## /plantillas/
+
+El catálogo se nombra por §3.5: **«Webs de ejemplo por sector»** (el
+recomendado) en el título de la página, como el bloque de la portada; dentro,
+«plantillas» sigue siendo la palabra común (como en `## *` y `## /`). El aviso
+de negocios inventados tiene que ir **dentro de la misma `<section>`** que el
+catálogo y sin letra menor (§3.5, CA-6): hoy va en la cabecera y en `text-sm`.
+Moverlo, con `data-aviso-inventadas`, es trabajo de T08; el texto es el de
+abajo.
+
+**Los datos de cada plantilla** (`plantillas.ts`: `negocio`, `ciudad`,
+`sector`, `concepto`, `movimiento` y `etiquetas`, 30 × 8 textos) describen
+negocios inventados (A59) y lo que hace cada demo (A57, A58; sus cifras, A79).
+Se han leído todos con los seis filtros y **solo cambian los cuatro de
+abajo**; el resto queda tal cual y no lleva fila, como el texto de dentro de un
+ejemplo (spec §3.3, «No tienen fila»). Si Álvaro quiere una fila por cada uno,
+se añaden en T05 sin cambiar nada. Sus cifras («20/90/180/400 días», «46
+lomos», «12°»…) las pone T05 en `CIFRAS` con A79. Las tarjetas (`TarjetaPlantilla`)
+las pintan también la portada (banda A) y `/sectores/<slug>/`: sus filas van
+solo aquí.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /plantillas/ | `src/app/plantillas/page.tsx` | `metadata.title` | Plantillas — {n} | Webs de ejemplo por sector — {n} | §3.5: el catálogo se nombra «Webs de ejemplo por sector» (recomendado), como el bloque de la portada y el menú («Webs de ejemplo», `## *`). `{n}` = `site.nombre`. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `metadata.description` | Las {n} bases por sector del taller, publicadas y abiertas. Negocios ficticios: son escaparates de lo que se construye, no clientes. | Las {n} plantillas por sector que hemos publicado, cada una con su demo entera visitable. Los negocios son inventados: enseñan lo que construimos y no son clientes. | A05 (`{n}` = `plantillas.length`), A57 corregida («abiertas» pasa a «visitables»: no es código abierto), A59. Filtro 1: «bases del taller» es jerga. | propuesta |
+| /plantillas/ | `src/content/interiores.ts` | `cotasInterior.plantillas.cota` | −1 · Catálogo | (igual) | Cota (D-014). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `CabeceraInterior` · `arriba` | {n} plantillas, | (igual) | A05: el número sale de `plantillas.length`. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `CabeceraInterior` · `em` | cada una con una idea distinta. | (igual) | A57. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · entradilla` | Ninguna es la anterior con otro color: cambian la estructura, la paleta, la tipografía y lo que se mueve. Pincha en cualquiera y se abre la demo entera, con su scroll y sus animaciones. | (igual) | A57 (se comprueba abriendo las demos). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · rótulo del aviso` | Aviso | (igual) | Interfaz. Va con el aviso dentro de la `<section>` del catálogo (CA-6, T08). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · aviso` | Todos los negocios que aparecen son inventados: nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar cómo queda una web terminada, con contenido de verdad en vez de «Lorem ipsum». | Todos los negocios que aparecen son inventados: nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar cómo queda una web terminada, con todo su contenido en vez de «Lorem ipsum». | A59 (D-007, §3.5). «Contenido de verdad» al lado de negocios inventados se lee como si fueran reales (como en `proyectos.categorias[webs].intro`, `## /`). «Inventados» sigue en su `<strong>`. Sin letra menor: hoy lleva `text-sm` (CA-6, lo cambia T08). | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `aria` · `legend` | Filtrar plantillas por sector | (igual) | Accesibilidad. | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `TODOS` | Todos | (igual) | Interfaz. El botón lleva detrás el recuento `({n})` (A05). | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `jsx · recuento, todas` | {n} plantillas | (igual) | A05 (`plantillas.length`). | propuesta |
+| /plantillas/ | `src/components/plantillas/CatalogoPlantillas.tsx` | `jsx · recuento, filtradas` | {n} de {n} | (igual) | A05. Recuento de la interfaz. | propuesta |
+| /plantillas/ | `src/components/ui/TarjetaPlantilla.tsx` | `alt` de la portada | Portada de la plantilla {n}, del sector {n} | (igual) | A59. `{n}` = `negocio` y `sector` de la plantilla. Lo pintan también la portada y `/sectores/<slug>/`. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[queseria].etiquetas[1]` | SVG propio | SVG a medida | Decisión 3: «propio» sale de lo que se enseña, aquí y donde aparezca (§3.4 regla 1). A57. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[floristeria].etiquetas[0]` | Ilustración propia | Ilustración a medida | Ídem. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[viajes].etiquetas[1]` | Ilustración propia | Ilustración a medida | Ídem. | propuesta |
+| /plantillas/ | `src/content/plantillas.ts` | `plantillas[ceramica].etiquetas[1]` | Ilustración propia | Ilustración a medida | Ídem. | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `Titular` · `arriba` del cierre | ¿Alguna se parece a lo tuyo? | (igual) | Titular (CA-11: casa con la entradilla y el botón nuevos). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · entradilla del cierre` | Se adapta con tus datos, tus fotos y tu marca, y está en línea en dos semanas. Y si lo tuyo no está en la lista, se construye una nueva: el catálogo empezó igual. | Se adapta con tus datos, tus fotos y tu marca. Y si lo tuyo no está en la lista, te enseñamos la que más se acerca o preparamos una nueva para tu sector. | A57 corregida (si tu sector no está, la más cercana o una nueva). Sale «en dos semanas» (A32, C: la FAQ dice que no se da plazo cerrado). Sale «el catálogo empezó igual»: sin fila en el Anexo (§3.2 regla 6). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · botón del cierre` | Pedir la auditoría gratuita | Pedir una propuesta | Nombre de la puerta 1 (P-11), CA-17; A34 corregida (sin «gratuita»). Adaptar una plantilla es lo que ve tu cliente (puerta 1), así que su `href` pasa de `/auditoria/` a `/#contacto` (CA-11). | propuesta |
+| /plantillas/ | `src/app/plantillas/page.tsx` | `jsx · botón de correo` | Pedir la de mi sector | (igual) | A57. Abre el correo (`correoSector`); la web no guarda nada (A44, correo directo). | propuesta |
+| /plantillas/ | `src/components/plantillas/PideTuSector.tsx` | `correoSector` · asunto | Plantilla para mi sector | (igual) | Lo lee quien abre el correo. A44 (correo directo). El resto de `PideTuSector` solo lo pinta la portada vigente: no lleva fila. | propuesta |
+| /plantillas/ | `src/components/plantillas/PideTuSector.tsx` | `correoSector` · cuerpo | Hola. Mi negocio es de este sector: | (igual) | Ídem. Sigue, tras dos saltos de línea, «Y está en:». | propuesta |
+| /plantillas/ | `src/components/plantillas/PideTuSector.tsx` | `correoSector` · cuerpo, final | Y está en: | (igual) | Ídem. | propuesta |
+
+pendiente: parte 2 — faltan las tablas `## /privacidad/`, `## /sectores/`, las tres `## /sectores/<slug>/`, `## /404` y `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
