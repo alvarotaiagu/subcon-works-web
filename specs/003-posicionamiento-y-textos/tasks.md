@@ -172,7 +172,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     fila; ninguna fila sin nivel ni estado; la PR lleva la lista de
     preguntas.
 
-- [ ] **T03 · Álvaro confirma el Anexo A.** *Manual, con Álvaro; el chat que
+- [x] **T03 · Álvaro confirma el Anexo A.** *Manual, con Álvaro; el chat que
   lo apunta, Sonnet 5.5 medium.*
   - *Cubre*: P-09, P-10, P-13.
   - *Depende de*: T02.
