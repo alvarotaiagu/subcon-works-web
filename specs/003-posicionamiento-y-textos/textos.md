@@ -977,4 +977,21 @@ nada borra las solicitudes al año (A75 corregida, P-14). Ver «Pendiente» en l
 | /privacidad/ | `src/app/privacidad/page.tsx` | `Apartado` · título | Cookies | (igual) | A93, A94. | propuesta |
 | /privacidad/ | `src/app/privacidad/page.tsx` | `Cookies` · párrafo | Esta web no usa cookies de seguimiento ni analítica. Lo único que se guarda en tu navegador es el borrador del formulario, el hecho de que ya has visto el aviso y, solo mientras tengas la pestaña abierta, que ya has visto la animación de entrada, para no repetírtela. Ninguna de las tres cosas sale de tu ordenador. | Esta web no usa cookies ni analítica. Lo único que se guarda en tu navegador es el borrador de la auditoría, si la empiezas (hasta que la envíes, y como mucho 30 días), el hecho de que ya has visto el aviso y, solo mientras tengas la pestaña abierta, que ya has visto la animación de entrada, para no repetírtela. Nada de eso se nos manda solo: el borrador sale de tu ordenador cuando envías el formulario, y no antes. | A93 corregida (borrador de la auditoría y aviso en `localStorage`, la cortina en `sessionStorage`; el borrador caduca a los 30 días). A94. «Ninguna sale de tu ordenador» no era exacto: el borrador es lo que se envía. Casa con el aviso de cookies (`## *`). | propuesta |
 
-pendiente: parte 2 — faltan las tablas `## /sectores/`, las tres `## /sectores/<slug>/`, `## /404` y `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
+## /sectores/
+
+El índice de las tres páginas de sector. Las tarjetas (`TarjetaSector`) pintan
+`etiqueta`, `nombre` y `titular` de cada sector: sus filas van en la tabla de
+cada `/sectores/<slug>/`. `sections/DiagnosticoRapido.tsx` no lo pinta ninguna
+ruta de esta rama (no lo importa nadie): no lleva fila.
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /sectores/ | `src/app/sectores/page.tsx` | `metadata.title` | Por sector — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `metadata.description` | Clínicas dentales, alojamientos rurales, y asesorías y despachos: lo que se puede automatizar en cada uno, con su diagnóstico rápido y un ejemplo del asistente. | (igual) | A22 (B, «se puede»), A11 (el asistente, como ejemplo). Nombre de la puerta 2 (P-11): CA-17 lo admite aquí (T05 pone `/sectores/` en `DIAGNOSTICO_PERMITIDO`). | propuesta |
+| /sectores/ | `src/content/interiores.ts` | `cotasInterior.sectores.cota` | −4 · Sectores | (igual) | Cota (D-014). | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `arriba` | Lo que se puede automatizar | (igual) | A22 (B, «se puede»). | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `em` | en tu sector. | (igual) | Ídem. | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `jsx · entradilla` | Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña cómo contestaría su asistente. | Cada página cuenta situaciones habituales en ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña, con un ejemplo, cómo contestaría su asistente. | P-13 y §3.1 (filtro 4): situaciones habituales, no hechos sobre quien lee. A11: el asistente sale como ejemplo rotulado (D-019). | propuesta |
+| /sectores/ | `src/components/sectores/TarjetaSector.tsx` | `jsx · enlace` | Ver la página | (igual) | Interfaz. | propuesta |
+
+pendiente: parte 2 — faltan las tres tablas `## /sectores/<slug>/`, `## /404` y `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
