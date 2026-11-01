@@ -1005,13 +1005,13 @@ ruta de esta rama (no lo importa nadie): no lleva fila.
 
 | ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
 |---|---|---|---|---|---|---|
-| /sectores/ | `src/app/sectores/page.tsx` | `metadata.title` | Por sector — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
-| /sectores/ | `src/app/sectores/page.tsx` | `metadata.description` | Clínicas dentales, alojamientos rurales, y asesorías y despachos: lo que se puede automatizar en cada uno, con su diagnóstico rápido y un ejemplo del asistente. | (igual) | A22 (B, «se puede»), A11 (el asistente, como ejemplo). Nombre de la puerta 2 (P-11): CA-17 lo admite aquí (T05 pone `/sectores/` en `DIAGNOSTICO_PERMITIDO`). | propuesta |
-| /sectores/ | `src/content/interiores.ts` | `cotasInterior.sectores.cota` | −4 · Sectores | (igual) | Cota (D-014). | propuesta |
-| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `arriba` | Lo que se puede automatizar | (igual) | A22 (B, «se puede»). | propuesta |
-| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `em` | en tu sector. | (igual) | Ídem. | propuesta |
-| /sectores/ | `src/app/sectores/page.tsx` | `jsx · entradilla` | Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña cómo contestaría su asistente. | Cada página cuenta situaciones habituales en ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña, con un ejemplo, cómo contestaría su asistente. | P-13 y §3.1 (filtro 4): situaciones habituales, no hechos sobre quien lee. A11: el asistente sale como ejemplo rotulado (D-019). | propuesta |
-| /sectores/ | `src/components/sectores/TarjetaSector.tsx` | `jsx · enlace` | Ver la página | (igual) | Interfaz. | propuesta |
+| /sectores/ | `src/app/sectores/page.tsx` | `metadata.title` | Por sector — {n} | (igual) | `{n}` = `site.nombre`. | aprobada |
+| /sectores/ | `src/app/sectores/page.tsx` | `metadata.description` | Clínicas dentales, alojamientos rurales, y asesorías y despachos: lo que se puede automatizar en cada uno, con su diagnóstico rápido y un ejemplo del asistente. | (igual) | A22 (B, «se puede»), A11 (el asistente, como ejemplo). Nombre de la puerta 2 (P-11): CA-17 lo admite aquí (T05 pone `/sectores/` en `DIAGNOSTICO_PERMITIDO`). | aprobada |
+| /sectores/ | `src/content/interiores.ts` | `cotasInterior.sectores.cota` | −4 · Sectores | (igual) | Cota (D-014). | aprobada |
+| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `arriba` | Lo que se puede automatizar | (igual) | A22 (B, «se puede»). | aprobada |
+| /sectores/ | `src/app/sectores/page.tsx` | `CabeceraInterior` · `em` | en tu sector. | (igual) | Ídem. | aprobada |
+| /sectores/ | `src/app/sectores/page.tsx` | `jsx · entradilla` | Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña cómo contestaría su asistente. | Cada página cuenta situaciones habituales en ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña, con un ejemplo, cómo contestaría su asistente. | P-13 y §3.1 (filtro 4): situaciones habituales, no hechos sobre quien lee. A11: el asistente sale como ejemplo rotulado (D-019). | aprobada |
+| /sectores/ | `src/components/sectores/TarjetaSector.tsx` | `jsx · enlace` | Ver la página | (igual) | Interfaz. | aprobada |
 
 ## /sectores/clinicas-dentales/
 
