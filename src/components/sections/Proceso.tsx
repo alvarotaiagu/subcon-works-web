@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { cargarGsap, type Movimiento } from "@/lib/gsap";
 import { proceso } from "@/content/proceso";
-import { palabraSemanas, plazo } from "@/content/cifras";
 import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
@@ -15,22 +14,6 @@ const RECORRIDO = `+=${PANTALLAS * 100}%`;
 const BROCA = 3;
 /** El paso que lleva el pulso (§3.9: el 05). */
 const PASO_PULSO = 4;
-/** El paso que lleva «2 semanas» debajo (§3.5: el 04). */
-const PASO_PLAZO = 3;
-
-/** «2 semanas» y su etiqueta: bajo el paso 04 del testigo y en su fila de la tabla. */
-function Plazo({ como: Etiqueta }: { como: "p" | "span" }) {
-  if (!plazo) return null;
-  return (
-    <Etiqueta className="proceso-plazo">
-      <span className="proceso-plazo-valor">
-        {plazo.valor} {palabraSemanas(plazo.valor)}
-      </span>
-      <span className="proceso-plazo-etiqueta">{plazo.etiqueta}</span>
-    </Etiqueta>
-  );
-}
-
 /** GSAP ha fallado al crear el pin: el proceso se queda como tabla (§6). */
 let gsapRoto = false;
 const avisos = new Set<() => void>();
@@ -75,7 +58,8 @@ const testigoStore = {
  * - **El testigo se monta encima solo con JS** y movimiento permitido: una columna de
  *   seis estratos (`--estrato-1…6`) por la que baja una broca con el scroll, anclada con
  *   un pin de GSAP de unas 4,4 pantallas (también en móvil). Cada estrato que pasa
- *   enciende su paso; en el 05 baja un pulso; bajo el 04, «2 semanas».
+ *   enciende su paso; en el 05 baja un pulso. En la versión «consultora» no va el «2 semanas»
+ *   bajo el 04: se trabaja por fases y el plazo no se promete (decidido el 2026-10-31).
  * - Lo anclado es la escena (el testigo y el paso), no la sección: la cota y el titular
  *   pasan de largo y el pin ocupa la pantalla entera. Ningún ancestro lleva `transform`,
  *   `filter`, `will-change` ni `clip-path` mientras dura (la máscara de entrada de
@@ -223,7 +207,6 @@ export function Proceso() {
                 <h3 className="proceso-paso-titulo">{paso.titulo}</h3>
                 <p className="proceso-paso-texto">{paso.descripcion}</p>
                 <p className="proceso-paso-dato">{paso.dato}</p>
-                {i === PASO_PLAZO && <Plazo como="p" />}
               </li>
             ))}
           </ol>
@@ -244,7 +227,7 @@ export function Proceso() {
             </tr>
           </thead>
           <tbody role="rowgroup">
-            {proceso.map((paso, i) => (
+            {proceso.map((paso) => (
               <tr key={paso.numero} role="row">
                 <th scope="row" role="rowheader">
                   <span>
@@ -259,7 +242,6 @@ export function Proceso() {
                 </td>
                 <td role="cell" className="proceso-tabla-dato">
                   <span>{paso.dato}</span>
-                  {i === PASO_PLAZO && <Plazo como="span" />}
                 </td>
               </tr>
             ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type CSSProperties, type ReactNode, type RefObject } from "react";
-import { cortePortada, type FondoCorte } from "@/content/portada";
+import { cortePortada, seccionesFueraDeLaPortada, type FondoCorte } from "@/content/portada";
 import { useDescubrir } from "@/hooks/useDescubrir";
 import { cn } from "@/lib/utils";
 import { Cota } from "./Cota";
@@ -34,7 +34,7 @@ type PropsSeccion = Omit<React.ComponentPropsWithoutRef<"section">, "id" | "chil
  * `container-max` y su relleno.
  */
 export function Seccion({ id, etiqueta, ref, className, style, children, ...resto }: PropsSeccion) {
-  const entrada = cortePortada.find((e) => e.id === id);
+  const entrada = [...cortePortada, ...seccionesFueraDeLaPortada].find((e) => e.id === id);
   if (!entrada) throw new Error(`Seccion: «${id}» no está en cortePortada`);
 
   const propio = useRef<HTMLElement | null>(null);

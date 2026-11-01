@@ -18,7 +18,7 @@ export default function AuditoriaPage() {
         pagina="auditoria"
         arriba="Cómo trabajáis"
         em="por dentro"
-        volver={{ href: "/#auditoria" }}
+        volver={{ href: "/#contacto" }}
         className="mb-16 md:mb-24"
       >
         <p className="mt-8 max-w-xl text-lg text-apagado-abajo">

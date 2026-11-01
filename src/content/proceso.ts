@@ -11,9 +11,10 @@ export interface PasoProceso {
 }
 
 /**
- * Los seis pasos del proceso. `vesTu` y `debajo` parten del boceto
- * (`undertactics-bocetos/js/a.js:213-214`); los que faltaban (`vesTu` de 02 y 04,
- * `debajo` de 01, 03 y 05) son borradores que revisa Álvaro en P-04.
+ * Los seis pasos del proceso, versión «consultora» (rama exp/consultora): el contacto es el
+ * formulario corto de la portada, se trabaja por fases (lo primero que funciona, en
+ * semanas) y cada fase se paga cuando se ve funcionando. Decidido por Álvaro el
+ * 2026-10-31; en la portada anterior eran «semanas, no meses» y «antes de pagar».
  *
  * Sin imports, para que los tests de Node lo carguen tal cual.
  */
@@ -22,46 +23,46 @@ export const proceso: PasoProceso[] = [
     numero: "01",
     titulo: "Nos cuentas",
     descripcion:
-      "Diez minutos de formulario, con tus palabras. Lo que no sepas lo dejas en blanco: se nota menos un hueco que un dato inventado.",
-    dato: "10 min",
-    vesTu: "Un formulario de diez minutos",
-    debajo: "Ordenamos tus respuestas por las horas que te cuestan",
+      "Cinco minutos de formulario, con tus palabras: a qué te dedicas y qué te gustaría quitarte de encima. Lo que no sepas, déjalo en blanco.",
+    dato: "5 min",
+    vesTu: "Un formulario corto",
+    debajo: "Leemos lo que nos cuentas y preparamos las preguntas",
   },
   {
     numero: "02",
     titulo: "Miramos",
     descripcion:
-      "Tu negocio por fuera y por dentro. Sale un informe con las horas que se van cada semana y lo que cuestan, en euros.",
+      "Hablamos contigo y vemos cómo trabajas: qué programas usas, qué se hace a mano y dónde se van las horas cada semana, en horas y en euros.",
     dato: "horas y euros",
-    vesTu: "Sigues con lo tuyo mientras miramos",
-    debajo: "Tu negocio por fuera y por dentro",
+    vesTu: "Una conversación, y sigues con lo tuyo",
+    debajo: "Tus procesos por dentro: programas, datos y tareas a mano",
   },
   {
     numero: "03",
     titulo: "Te lo contamos",
     descripcion:
-      "El informe es tuyo, gratis y sin compromiso. Si con eso te apañas solo, perfecto.",
+      "El diagnóstico es tuyo, gratis y sin compromiso: qué montaríamos, en qué orden y por cuánto, por escrito. Si con eso te apañas solo, perfecto.",
     dato: "gratis",
-    vesTu: "El informe, tuyo",
+    vesTu: "El diagnóstico, tuyo",
     debajo: "Qué montaríamos, en qué orden y por cuánto",
   },
   {
     numero: "04",
     titulo: "Construimos",
     descripcion:
-      "Partimos de una base propia y la adaptamos a lo tuyo. Semanas, no meses, y sabiendo el precio desde el principio.",
-    dato: "semanas, no meses",
-    vesTu: "El diseño, con tu marca y tus textos",
-    debajo: "Una base propia adaptada a lo tuyo",
+      "Por fases, empezando por lo que más horas te quita. Lo primero que funciona llega en semanas y el resto se va sumando, con el precio de cada fase por escrito antes de empezarla.",
+    dato: "por fases",
+    vesTu: "Lo primero, funcionando en semanas",
+    debajo: "Conectamos tus programas y montamos la primera fase",
   },
   {
     numero: "05",
     titulo: "Lo ves funcionando",
     descripcion:
-      "Montado y andando antes de que pagues nada. Si no es lo que esperabas, se cambia o no hay trato.",
-    dato: "antes de pagar",
-    vesTu: "Montado y andando",
-    debajo: "Lo conectamos a lo que ya usas y lo probamos",
+      "Cada fase la pruebas con tus datos de verdad antes de pagarla. Si no hace lo que esperabas, se ajusta antes de seguir.",
+    dato: "antes de cada pago",
+    vesTu: "Lo pruebas con tus datos",
+    debajo: "Pruebas, registro de lo que hace y límites a la IA",
   },
   {
     numero: "06",

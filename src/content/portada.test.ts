@@ -23,12 +23,14 @@ test("§3.5 · Las cotas de la portada", async () => {
     cortePortada.map(({ id, cota, shrp }) => ({ id, cota, shrp })),
     [
       { id: "inicio", cota: "Superficie", shrp: 0 },
-      { id: "servicios", cota: "0 · Lo que montamos", shrp: 20 },
-      { id: "plantillas", cota: "−1 · La plantilla", shrp: 40 },
-      { id: "proceso", cota: "−2 · El proceso", shrp: 75 },
-      { id: "equipo", cota: "−3 · Quién está debajo", shrp: 85 },
-      { id: "diagnostico", cota: "−4 · Diagnóstico", shrp: 95 },
-      { id: "auditoria", cota: "Fondo · Auditoría", shrp: 100 },
+      { id: "problemas", cota: "0 · Lo que pasa", shrp: 12 },
+      { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25 },
+      { id: "soluciones", cota: "−2 · Soluciones en acción", shrp: 40 },
+      { id: "proceso", cota: "−3 · El proceso", shrp: 55 },
+      { id: "plantillas", cota: "−4 · Proyectos y demostraciones", shrp: 70 },
+      { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82 },
+      { id: "faq", cota: "−6 · Dudas", shrp: 92 },
+      { id: "contacto", cota: "Fondo · Contacto", shrp: 100 },
     ],
   );
 });
@@ -43,8 +45,8 @@ test("§3.5 · Recuento", () => {
 });
 
 test("§3.9 · Proceso", () => {
-  // Los datos de la tabla del §3.9, en el orden de los pasos.
-  const datos = ["10 min", "horas y euros", "gratis", "semanas, no meses", "antes de pagar", "a tu nombre"];
+  // Los datos de la tabla del §3.9, en el orden de los pasos (versión «consultora», 2026-10-31).
+  const datos = ["5 min", "horas y euros", "gratis", "por fases", "antes de cada pago", "a tu nombre"];
   assert.equal(proceso.length, 6);
   for (const [i, paso] of proceso.entries()) {
     const p = paso as typeof paso & { dato?: string; vesTu?: string; debajo?: string };

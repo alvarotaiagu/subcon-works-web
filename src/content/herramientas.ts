@@ -118,7 +118,7 @@ export const herramientas: Herramienta[] = [
       "Ordena los fallos por prioridad: alta, media o baja",
     ],
     sostiene: [
-      { nombre: "La auditoría gratuita", href: "/#auditoria" },
+      { nombre: "La auditoría gratuita", href: "/#contacto" },
       { nombre: "Diseño y desarrollo web", href: "/#servicios" },
     ],
     capturas: [

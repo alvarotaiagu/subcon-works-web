@@ -1,5 +1,5 @@
 /**
- * El corte de la portada (spec 002 §3.5, plan PD-7): las siete secciones, en orden,
+ * El corte de la portada (spec 002 §3.5, plan PD-7): las nueve secciones (versión «consultora», rama exp/consultora), en orden,
  * con su ancla, su cota, su nitidez (`SHRP`, fija) y su fondo.
  *
  * Sin imports, para que los tests de Node lo carguen tal cual.
@@ -20,12 +20,23 @@ export interface EntradaCorte {
 
 export const cortePortada: readonly EntradaCorte[] = [
   { id: "inicio", cota: "Superficie", shrp: 0, fondo: "cal-hondo" },
-  { id: "servicios", cota: "0 · Lo que montamos", shrp: 20, fondo: "hondo" },
-  { id: "plantillas", cota: "−1 · La plantilla", shrp: 40, fondo: "hondo" },
-  { id: "proceso", cota: "−2 · El proceso", shrp: 75, fondo: "estrato" },
-  { id: "equipo", cota: "−3 · Quién está debajo", shrp: 85, fondo: "hondo" },
-  { id: "diagnostico", cota: "−4 · Diagnóstico", shrp: 95, fondo: "estrato" },
+  { id: "problemas", cota: "0 · Lo que pasa", shrp: 12, fondo: "hondo" },
+  { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25, fondo: "hondo" },
+  { id: "soluciones", cota: "−2 · Soluciones en acción", shrp: 40, fondo: "estrato" },
+  { id: "proceso", cota: "−3 · El proceso", shrp: 55, fondo: "hondo" },
+  { id: "plantillas", cota: "−4 · Proyectos y demostraciones", shrp: 70, fondo: "estrato" },
+  { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82, fondo: "hondo" },
+  { id: "faq", cota: "−6 · Dudas", shrp: 92, fondo: "estrato" },
+  { id: "contacto", cota: "Fondo · Contacto", shrp: 100, fondo: "roca" },
+];
+
+/**
+ * Secciones que existen fuera de la portada (las páginas de sector usan `Fondo`): `Seccion`
+ * las busca aquí si no están en el corte. No salen en el menú ni en el conducto de la portada.
+ */
+export const seccionesFueraDeLaPortada: readonly EntradaCorte[] = [
   { id: "auditoria", cota: "Fondo · Auditoría", shrp: 100, fondo: "roca" },
+  { id: "diagnostico", cota: "−4 · Diagnóstico", shrp: 95, fondo: "estrato" },
 ];
 
 /**

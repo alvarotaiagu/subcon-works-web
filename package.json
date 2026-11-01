@@ -10,6 +10,7 @@
     "test": "node --test --experimental-strip-types \"src/**/*.test.ts\"",
     "servir": "node scripts/servir.mjs",
     "comprobar": "node scripts/comprobar.mjs",
+    "comprobar-textos": "node scripts/comprobar-textos.mjs",
     "medir": "node scripts/medir.mjs"
   },
   "dependencies": {
