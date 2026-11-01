@@ -3,10 +3,11 @@
 Spec: [spec.md](spec.md) (§3.6) · Plan: [plan.md](plan.md) (PD-3, PD-9) ·
 Tareas: [tasks.md](tasks.md) (T04, T05)
 
-Estado del documento: **propuesta** (T04, 2026-11-01), sobre `exp/consultora` en
-`7718dcf` (parte 1) y `23f5723` (parte 2, desde `## /auditoria/`), con el
-Anexo A confirmado (D-035). Lo aprueba Álvaro fila a fila en
-T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de estado.
+Estado del documento: **aprobado** (T05, 2026-11-01, D-033): las 918 filas,
+todas `aprobada` y ninguna `corregida`. Redactado en T04 (2026-11-01) sobre
+`exp/consultora` en `7718dcf` (parte 1) y `23f5723` (parte 2, desde
+`## /auditoria/`), con el Anexo A confirmado (D-035). Álvaro lo aprobó fila a
+fila en T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de estado.
 
 **Cómo se lee.**
 - Una tabla por ruta del export y una `*` para lo común. Columnas: ruta ·
@@ -60,8 +61,9 @@ Tres propuestas por producto de nivel A y por puerta, con la recomendada en
 negrita. Ninguna lleva «propio» ni «herramienta» (§3.4 regla 1), y solo una
 lleva «diagnóstico» (regla 4, CA-17). Álvaro elige y comprueba en la OEPM las
 que no son descriptivas (regla 6); una descartada se sustituye por la
-descriptiva. **Las tablas de abajo usan ya las recomendadas**: si Álvaro elige
-otra, T05 la cambia en sus filas.
+descriptiva. **Elegidas en T05 (2026-11-01, P-11): las siete recomendadas**,
+que son las que ya usan las tablas. Todas son descriptivas, así que no hace
+falta mirarlas en la OEPM (regla 6).
 
 | Qué es | Anexo | Propuestas | Recomendado y por qué |
 |---|---|---|---|
@@ -80,8 +82,8 @@ se nombra por §3.5 («Webs de ejemplo por sector»).
 ## Decisiones de redacción
 
 Las que la spec deja a este fichero (§3.4, §3.5, §3.7, plan PD-3), más las que
-salen de aplicarlas. Cada una es `propuesta` hasta que Álvaro apruebe sus
-filas.
+salen de aplicarlas. Álvaro las aprobó todas tal cual en T05 (2026-11-01): en
+la 2, retitular la banda; en la 5, el reparto de rótulos de la tabla.
 
 1. **La parada que sustituye a «Vigilada cada día»** (`hero.ts`, flujo «Tu
    web»; spec §3.7, A19).
@@ -1256,7 +1258,7 @@ nombres y los recuentos.
 **La nota de anclas** (spec §6) va entre `<!-- 003-anclas -->` y
 `<!-- /003-anclas -->`, justo después del párrafo «Páginas: …» de «Qué hay en la
 web». No lleva fila porque `comprobar-textos.mjs` ignora ese bloque (también
-CA-4, que no la encontraría). Estado: `propuesta`. Texto:
+CA-4, que no la encontraría). Estado: `aprobada` (T05). Texto:
 
 ```markdown
 <!-- 003-anclas -->
