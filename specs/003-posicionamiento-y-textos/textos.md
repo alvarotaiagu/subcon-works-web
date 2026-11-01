@@ -994,7 +994,7 @@ ruta de esta rama (no lo importa nadie): no lleva fila.
 | /sectores/ | `src/app/sectores/page.tsx` | `jsx · entradilla` | Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña cómo contestaría su asistente. | Cada página cuenta situaciones habituales en ese tipo de negocio, trae el diagnóstico rápido con el sector ya elegido y enseña, con un ejemplo, cómo contestaría su asistente. | P-13 y §3.1 (filtro 4): situaciones habituales, no hechos sobre quien lee. A11: el asistente sale como ejemplo rotulado (D-019). | propuesta |
 | /sectores/ | `src/components/sectores/TarjetaSector.tsx` | `jsx · enlace` | Ver la página | (igual) | Interfaz. | propuesta |
 
-﻿## /sectores/clinicas-dentales/
+## /sectores/clinicas-dentales/
 
 Las tres páginas de sector comparten componentes (`[slug]/page.tsx`,
 `CabeceraSector`, `ProblemasSector`, `MejorasSector`, `ChatEjemplo`,
