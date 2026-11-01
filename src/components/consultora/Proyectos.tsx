@@ -33,10 +33,12 @@ function Filas({ categoria }: { categoria: CategoriaProyectos }) {
 }
 
 /**
- * «−4 · Proyectos y demostraciones»: lo que hay en el repo, en tres bandas. Las plantillas
- * son webs de negocios inventados (hay aviso); las herramientas son software propio con
- * datos de ejemplo. Ni una sola pieza se presenta como trabajo de cliente. Se queda con el
- * `id` `plantillas` para que los enlaces `/#plantillas` de las demás páginas sigan valiendo.
+ * «−4 · Webs de ejemplo»: lo que hay en el repo, en tres bandas. Las plantillas son webs de
+ * negocios inventados; el informe, el formulario y la tienda se enseñan con datos de ejemplo.
+ * El aviso de que nada es trabajo de cliente va dentro de esta misma `<section>`, visible y
+ * en tamaño de texto normal (003 §3.5, CA-6; `data-aviso-inventadas`). Ni una sola pieza se
+ * presenta como trabajo de cliente. Se queda con el `id` `plantillas` para que los enlaces
+ * `/#plantillas` de las demás páginas sigan valiendo.
  */
 export function Proyectos() {
   const titulares = conDorsal(plantillas).filter((x) => x.plantilla.destacada);
@@ -54,9 +56,9 @@ export function Proyectos() {
           em={proyectos.em}
           className="max-w-3xl"
         />
-        <div className="mt-8 border-l-2 border-superficie pl-5 md:max-w-2xl">
+        <div data-aviso-inventadas="" className="mt-8 border-l-2 border-superficie pl-5 md:max-w-2xl">
           <p className="font-mono-label mb-2 text-xs text-superficie">Aviso</p>
-          <p className="text-sm text-apagado-abajo">{proyectos.aviso}</p>
+          <p className="text-base text-apagado-abajo">{proyectos.aviso}</p>
         </div>
 
         <div className="banda">
@@ -73,7 +75,6 @@ export function Proyectos() {
             ))}
           </ol>
           <div className="banda-pie">
-            <Filas categoria={webs} />
             <Boton href="/plantillas/" variante="secundario">
               Ver las {plantillas.length} plantillas
             </Boton>
