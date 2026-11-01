@@ -656,7 +656,7 @@ const comprobaciones = [
   {
     id: "CA-6 · … · /plantillas/",
     tarea: "T08",
-    pendiente: true,
+    pendiente: false,
     fn: avisoDeInventadas("plantillas"),
   },
   {

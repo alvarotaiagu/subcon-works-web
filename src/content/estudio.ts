@@ -31,7 +31,7 @@ export const personas: Persona[] = [
     nombre: "Álvaro",
     rol: "Web, código y automatización",
     texto:
-      "Diseña y programa las webs, las tiendas y las herramientas del estudio, y monta las automatizaciones con IA. Si algo del código no te encaja, se lo dices a él y se cambia.",
+      "Diseña y programa las webs y las tiendas, y monta las automatizaciones con IA que se encargan a medida. Si algo del código no te encaja, se lo dices a él.",
     foto: "/estudio/alvaro.jpg",
     fotoProvisional: true,
   },
@@ -39,14 +39,14 @@ export const personas: Persona[] = [
     nombre: "Yanin",
     rol: "Foto, vídeo y redes",
     texto:
-      "Produce y edita las fotos y los vídeos para redes, que es lo que mejor se le da y lo que más le gusta. También trabaja con IA en el día a día del estudio.",
+      "Hace y edita las fotos y los vídeos del estudio.",
     foto: "/estudio/yanin.jpg",
     fotoProvisional: true,
   },
 ];
 
 export const entradaEstudio =
-  "En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien diseña tu web, escribe el código o monta tu vídeo.";
+  "En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien hace el trabajo.";
 
 /**
  * Lo que el cliente controla, escrito como capacidad (lo que puede hacer) y no
@@ -76,19 +76,19 @@ export const compromisos: Punto[] = [
  * su código no es del cliente, así que la banda lo aclara debajo.
  */
 export const notaCompromisos =
-  "La tienda online va sobre nuestra plataforma, que es compartida: ahí el dominio es tuyo, el código de la plataforma no.";
+  "La tienda online va sobre nuestra plataforma, que es compartida: ahí el dominio es tuyo y el código de la plataforma no, y la plataforma cobra comisión por venta.";
 
 /** Sale de lo que la web ya promete en Proceso, Auditoría y Plantillas. */
 export const comoTrabajamos: Punto[] = [
   {
     titulo: "Primero miramos, luego hablamos de precio.",
     texto:
-      `La auditoría gratuita son ${TOTAL_PREGUNTAS} preguntas y te deja un informe que es tuyo, sigas con nosotros o no.`,
+      `La auditoría de tu negocio son ${TOTAL_PREGUNTAS} preguntas y un informe que te llega por correo. No se cobra.`,
   },
   {
-    titulo: "Partimos de una base propia.",
+    titulo: "No empezamos de cero.",
     texto:
-      `${plantillas.length} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas.`,
+      `Partimos de ${plantillas.length} plantillas publicadas y de la tienda online, el informe de mejoras de tu web y el formulario de contacto, que hemos construido nosotros. Se adapta a lo tuyo, y por eso lo primero funciona en semanas.`,
   },
   {
     titulo: "Lo ves funcionando antes de cada pago.",

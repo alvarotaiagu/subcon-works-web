@@ -1,7 +1,6 @@
 # subcon-works-web
 
-Web del estudio **Undertactics** (antes Subcon Works): diseño y desarrollo web, automatización y IA
-para negocios pequeños de Galicia.
+Web del estudio **Undertactics** (antes Subcon Works): hacemos la web, la tienda online y la ficha de Google de tu negocio, y montamos a tu medida lo que va por debajo: automatizaciones, asistentes con IA y programas de gestión.
 
 Next.js 16 con `output: "export"`, publicada como *project site* de GitHub Pages
 en `alvarotaiagu.github.io/subcon-works-web/`. Movimiento con GSAP + Lenis, sin
@@ -33,12 +32,12 @@ margen izquierdo uniéndolas hasta el botón de la auditoría.
 | Cota | Sección | Qué hay |
 |---|---|---|
 | Superficie | Hero (`#inicio`) | «Lo de arriba vende. Lo de abajo trabaja.» partido por la superficie. Arriba, cuatro cosas que ve el cliente (un WhatsApp, un pago con Bizum, una reseña en Google, un reel); debajo de cada una, su pozo con tres paradas que son servicios reales de `servicios.ts`. Se encienden al tocarlas (y solas, una vuelta, tras 5 s sin tocar nada, con «Pausar ejemplos»). El tirador de la derecha sube la superficie para ver más instalación |
-| 0 · Lo que montamos | Servicios (`#servicios`) | Los diez servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas |
+| 0 · Lo que montamos | Servicios (`#servicios`) | Los siete servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas |
 | −1 · La plantilla | La plantilla (`#plantillas`) | Las destacadas, con dorsal del 1 al 10, en tarjetas de corte (portada arriba, concepto debajo), y «¿Tu sector no está?» con un correo ya escrito. Las 30 están en `/plantillas/` |
 | −2 · El proceso | Proceso (`#proceso`) | Sección anclada con un testigo de sondeo: una broca baja por seis estratos y cada uno enciende su paso. Con movimiento reducido (y en Sobria), la tabla «Lo que ves tú / Lo que hacemos por debajo» |
 | −3 · Quién está debajo | Equipo y compromisos (`#equipo`) | Las personas del estudio, el enlace a `/estudio/` y los compromisos como paradas de un pozo |
-| −4 · Diagnóstico | Diagnóstico rápido (`#diagnostico`) | El diagnóstico de un minuto de la spec 001 |
-| Fondo · Auditoría | Fondo (`#auditoria`) | Lo que recibes con la auditoría gratuita, «36 preguntas» y «0 €», y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo |
+| −4 · Diagnóstico | Diagnóstico rápido (`#diagnostico`) | El diagnóstico rápido de la spec 001 |
+| Fondo · Auditoría | Fondo (`#auditoria`) | La auditoría de tu negocio: lo que no se pide, «36 preguntas» y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo |
 
 También: la cortina de entrada (solo la primera carga de la portada en cada
 sesión; la superficie que traza se queda como la del hero) y el mando de maqueta
@@ -48,6 +47,15 @@ Páginas: `/` · `/plantillas/` · `/herramientas/` · `/estudio/` · `/auditori
 `/sectores/` y las tres de sector (`/sectores/<slug>/`) · `/privacidad/` · la 404.
 Las interiores empiezan «debajo»: fondo oscuro desde arriba, la superficie bajo la
 cabecera y la cota junto al título.
+
+<!-- 003-anclas -->
+**Anclas que ya no existen.** Hasta la spec 003, `/herramientas/` tenía las
+secciones `#vigilancia` y `#ficha-google`, y algún enlace ya mandado puede
+llevarlas. La 003 las quitó: la vigilancia diaria y la auditoría de la ficha de
+Google no existen todavía (A19 y A20, nivel C) y se nombrarán en la spec 004,
+cuando estén hechas. La ruta sigue: el ancla no encuentra nada y la página se
+abre arriba. Se acepta así (spec 003 §6).
+<!-- /003-anclas -->
 
 ## Nivel
 
@@ -181,11 +189,11 @@ trabajos, no antes.
 | `portada.ts` | El corte: orden, cota, nitidez y fondo de las siete secciones |
 | `interiores.ts` | La cota de cada página interior |
 | `hero.ts` | Los cuatro ejemplos del hero y las paradas de cada pozo |
-| `servicios.ts` | Los diez servicios y lo que incluye cada uno |
-| `herramientas.ts` | El software propio de `/herramientas/`, con sus capturas |
+| `servicios.ts` | Los siete servicios y lo que incluye cada uno |
+| `herramientas.ts` | Los productos de `/herramientas/` (tienda online, informe de mejoras de tu web y formulario de contacto), con sus capturas |
 | `plantillas.ts` | El catálogo de 30, con su demo y su captura |
 | `proceso.ts` | Los seis pasos, con su dato y las dos columnas de la tabla |
-| `cifras.ts` | Las cuatro cifras, repartidas por la portada (sin contador) |
+| `cifras.ts` | Las cifras que quedan (plantillas publicadas y preguntas de la auditoría), sin contador |
 | `estudio.ts` | Las personas y los compromisos |
 | `auditoria.ts` | Las 36 preguntas del cuestionario, P1–P36 |
 
@@ -196,11 +204,11 @@ acepte su aviso de cookies.
 Los iconos de `public/servicios/*.svg` se generan con
 `node scripts/generar-iconos-servicios.mjs`.
 
-## La auditoría gratuita
+## La auditoría de tu negocio
 
 `/auditoria/` es el cuestionario del kit **`03-kit-auditoria-negocio`** llevado a
 la web: las mismas 36 preguntas con la misma numeración, en ocho pasos, con
-borrador guardado en el navegador y con la posibilidad de mandarlo a medias.
+borrador guardado en el navegador hasta que se envía (no caduca) y con la posibilidad de mandarlo a medias.
 
 Al enviarse va a una Edge Function de Supabase (`solicitar-auditoria`) que lo
 guarda en una tabla con RLS activo y sin políticas. Después,
@@ -214,5 +222,8 @@ preguntas están en [`kit/LEEME.md`](kit/LEEME.md).
 
 - Completar el nombre fiscal, el NIF y el domicilio en `src/app/privacidad/page.tsx`
   (están como `[PENDIENTE]`; no se inventan).
+- Cada tres meses, borrar a mano las solicitudes que lleven más de un año sin mensajes y
+  sin trabajo con ese negocio: la fila de Supabase y su `.md` de `entrada/`. Anotar la fecha
+  en `kit/LEEME.md`. Nada lo hace solo, tampoco el kit (P-14, D-037).
 - Decidir si se publica un teléfono: ahora mismo `site.telefono` es `null` a propósito.
 - Enlazar los perfiles sociales reales en `site.redes`, que está vacío.

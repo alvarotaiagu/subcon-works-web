@@ -263,29 +263,12 @@ export const bloques: BloqueAuditoria[] = [
 
 export const TOTAL_PREGUNTAS = bloques.reduce((n, b) => n + b.preguntas.length, 0);
 
-/** Lo que el informe lleva dentro. Se pinta en la sección de la portada. */
-export const loQueRecibes = [
-  {
-    titulo: "Tu web, puntuada",
-    texto:
-      "Once dimensiones con la prueba delante: qué carga lento, qué no se ve en el móvil, qué te está costando posiciones en Google y qué falla de accesibilidad.",
-  },
-  {
-    titulo: "Las horas que se van",
-    texto:
-      "Lo que tú nos cuentas, convertido en horas a la semana y en euros al año. Con el cálculo a la vista para que puedas discutirlo.",
-  },
-  {
-    titulo: "Qué automatizar primero",
-    texto:
-      "Ocho áreas puntuadas y una lista ordenada por lo que más compensa, no por lo que más nos gustaría vender.",
-  },
-  {
-    titulo: "Lo que no sabemos",
-    texto:
-      "Lo que dejes en blanco sale marcado como «sin datos». Un informe con huecos sinceros vale más que uno relleno de suposiciones.",
-  },
-];
+/**
+ * Lo que el informe lleva dentro: vacío hasta que Álvaro confirme A36, A52 y A81 (003, `textos.md`,
+ * filas `(quitar)`). `Fondo` sigue importándolo y pinta una lista sin entradas; quien edite
+ * `Fondo` (T09) puede quitar la lista y este export.
+ */
+export const loQueRecibes: ReadonlyArray<{ titulo: string; texto: string }> = [];
 
 /** Lo que nunca se pide. Es una promesa, y va escrita en el formulario. */
 export const loQueNoPedimos = [
