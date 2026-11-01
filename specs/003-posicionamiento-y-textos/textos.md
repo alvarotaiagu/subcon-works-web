@@ -1238,13 +1238,13 @@ Lo común a las tres páginas de sector va en `## /sectores/clinicas-dentales/`.
 
 | ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
 |---|---|---|---|---|---|---|
-| /404 | `src/app/not-found.tsx` | `metadata.title` | Página no encontrada — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
-| /404 | `src/content/interiores.ts` | `cotasInterior.error404.cota` | Sin fondo · 404 | (igual) | Cota (D-014). «404» es numeración (`data-numeracion`, PD-5), no una cifra. | propuesta |
-| /404 | `src/app/not-found.tsx` | `CabeceraInterior` · `arriba` | No hay nada | (igual) | Concepto (D-014, spec 002 §3.12). | propuesta |
-| /404 | `src/app/not-found.tsx` | `CabeceraInterior` · `em` | a esta cota. | (igual) | Ídem. | propuesta |
-| /404 | `src/app/not-found.tsx` | `jsx · texto` | La página que buscas no existe o ha cambiado de sitio. Vuelve al principio o mira las plantillas. | (igual) | A57. También es lo que ve quien llegue con un ancla vieja que ya no existe (spec §6): ahí la ruta sí existe y abre arriba, no da 404. | propuesta |
-| /404 | `src/app/not-found.tsx` | `jsx · botón` | Ir al inicio | (igual) | Interfaz. | propuesta |
-| /404 | `src/app/not-found.tsx` | `jsx · botón` | Ver plantillas | (igual) | A57. | propuesta |
+| /404 | `src/app/not-found.tsx` | `metadata.title` | Página no encontrada — {n} | (igual) | `{n}` = `site.nombre`. | aprobada |
+| /404 | `src/content/interiores.ts` | `cotasInterior.error404.cota` | Sin fondo · 404 | (igual) | Cota (D-014). «404» es numeración (`data-numeracion`, PD-5), no una cifra. | aprobada |
+| /404 | `src/app/not-found.tsx` | `CabeceraInterior` · `arriba` | No hay nada | (igual) | Concepto (D-014, spec 002 §3.12). | aprobada |
+| /404 | `src/app/not-found.tsx` | `CabeceraInterior` · `em` | a esta cota. | (igual) | Ídem. | aprobada |
+| /404 | `src/app/not-found.tsx` | `jsx · texto` | La página que buscas no existe o ha cambiado de sitio. Vuelve al principio o mira las plantillas. | (igual) | A57. También es lo que ve quien llegue con un ancla vieja que ya no existe (spec §6): ahí la ruta sí existe y abre arriba, no da 404. | aprobada |
+| /404 | `src/app/not-found.tsx` | `jsx · botón` | Ir al inicio | (igual) | Interfaz. | aprobada |
+| /404 | `src/app/not-found.tsx` | `jsx · botón` | Ver plantillas | (igual) | A57. | aprobada |
 
 ## README
 
