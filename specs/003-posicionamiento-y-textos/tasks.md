@@ -59,7 +59,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Base
 
-- [ ] **T01 · Rama de integración, línea base y pruebas pendientes.**
+- [x] **T01 · Rama de integración, línea base y pruebas pendientes.**
   *Modelo: Sonnet 5.5 high.*
   - *Cubre*: PD-1, PD-4, PD-5, PD-8, spec §4 y §7 (forma), CA-10.
   - *Hacer*:
