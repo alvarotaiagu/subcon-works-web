@@ -12,9 +12,9 @@ const CLAVE = "undertactics:aviso-cookies:v1";
  *
  * Esta web no pone cookies de ningún tipo: lo único que guarda es el borrador
  * del formulario de auditoría, el hecho de haber visto este aviso y el de haber
- * visto la animación de entrada, y las tres cosas se quedan en el navegador. El aviso está igualmente porque es
- * la norma de la casa en todos los sitios, y porque el visitante tiene derecho
- * a saber que se le está escribiendo algo en su navegador.
+ * visto la animación de entrada, y las tres cosas se quedan en el navegador.
+ * El aviso está igualmente porque es la norma de la casa en todos los sitios,
+ * y porque el visitante tiene derecho a saber que se le está escribiendo algo en su navegador.
  *
  * Ojo con el CSS: aquí la visibilidad se decide en JavaScript (no se monta el
  * nodo hasta que hace falta) en vez de con `[hidden]`, precisamente para no

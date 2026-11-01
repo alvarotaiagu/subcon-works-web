@@ -103,7 +103,7 @@ export function FormularioAuditoria() {
   const trampaRef = useRef<HTMLInputElement>(null);
   const cabeceraRef = useRef<HTMLDivElement>(null);
 
-  // Recuperar el borrador. Es un formulario de diez minutos: si se cierra la
+  // Recuperar el borrador. Es un formulario largo: si se cierra la
   // pestaña a mitad, lo que se ha escrito tiene que seguir ahí. Vive solo en
   // este navegador — no se manda nada hasta que se pulsa enviar.
   //
