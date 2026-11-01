@@ -264,7 +264,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
   - *Hecho*: activa y pasan CA-4 · T06 y CA-7 · hero y `/herramientas/`;
     `npm test` en verde.
 
-- [ ] **T07 · Portada de la consultora.** *Modelo: Sonnet 5.5 high.*
+- [x] **T07 · Portada de la consultora.** *Modelo: Sonnet 5.5 high.*
   - *Cubre*: spec §3.1 (rótulos de puerta), §3.5, §3.7 (`consultora.ts`,
     `proceso.ts:74`), §3.8 (aviso sin «software propio»), CA-4, CA-6 y CA-7
     de T07; deltas 002 §3.9 y §7.
@@ -283,6 +283,12 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
   - *Hecho*: activa y pasan CA-4 · T07, CA-6 · portada y CA-7 · «Tecnología
     aplicada»; `npm test` en verde; `comprobar-consultora.mjs` no peor que
     la línea base.
+  - hecha (2026-11-01): 271 filas aprobadas copiadas tal cual; CA-4 · T07,
+    CA-6 · portada y CA-7 · «Tecnología aplicada» activas y en `OK`. Cambios
+    fuera de la lista de ficheros, a revisar en la PR: `ui/Seccion.tsx`
+    (pinta el rótulo de puerta de `cortePortada`), `sections/Fondo.tsx` (ya no
+    exige la cifra «0 €») y `{n}` de `comprobar-textos.mjs` (admite la
+    expresión del código).
 
 - [ ] **T08 · Interiores, metadatos, privacidad y README.** *Modelo: Opus
   5.5 medium* — toca `/privacidad/` (datos personales, §5).
