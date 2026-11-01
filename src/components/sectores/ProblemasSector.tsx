@@ -11,12 +11,12 @@ export function ProblemasSector({
   return (
     <section aria-labelledby="problemas-titulo" className={className}>
       <div className="border-t border-conducto pt-14">
-        <p className="font-mono-label mb-4">Lo que pasa hoy</p>
+        <p className="font-mono-label mb-4">Lo que suele pasar</p>
         <h2
           id="problemas-titulo"
           className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
         >
-          Dónde se va el tiempo.
+          Situaciones que se repiten.
         </h2>
         <ol className="mt-12 grid gap-x-12 md:grid-cols-2">
           {problemas.map((problema, i) => (

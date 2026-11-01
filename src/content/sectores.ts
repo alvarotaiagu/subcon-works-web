@@ -92,22 +92,22 @@ const paginas: Omit<PaginaSector, "slug">[] = [
       {
         titulo: "El teléfono suena en mitad de un tratamiento",
         texto:
-          "Quien coge el teléfono también ayuda en el gabinete o esteriliza instrumental. Si suena en ese momento, la llamada se pierde, y el paciente que no vuelve a llamar pide cita en otra clínica.",
+          "Si quien coge el teléfono también ayuda en el gabinete o esteriliza instrumental, la llamada que entra en ese momento se pierde, y puede que ese paciente no vuelva a llamar.",
       },
       {
         titulo: "Una hora de sillón que se queda vacía",
         texto:
-          "Un paciente que cancela la víspera deja el gabinete parado. Si las horas libres solo se saben llamando a la clínica, ese hueco no lo coge nadie, aunque haya quien lo quisiera.",
+          "Si un paciente cancela la víspera, el gabinete se queda parado. Y si las horas libres solo se saben llamando a la clínica, ese hueco no lo coge nadie, aunque haya quien lo quisiera.",
       },
       {
         titulo: "Las mismas preguntas, todos los días",
         texto:
-          "Si trabajáis con tal seguro, si la primera visita se paga, si la ortodoncia se puede pagar a plazos. Son siempre las mismas, y cada una corta lo que se estaba haciendo.",
+          "Si trabajáis con tal seguro, si la primera visita se paga, si la ortodoncia se puede pagar a plazos. Suelen ser las mismas, y cada una corta lo que se estaba haciendo.",
       },
       {
         titulo: "Un dolor de muela un domingo por la noche",
         texto:
-          "Llega por el formulario de la web o por un mensaje en redes, nadie lo lee hasta el lunes y el paciente no sabe a quién llamar. Una urgencia tiene que llegar a una persona, y rápido.",
+          "Si llega por la web o por un mensaje en redes y nadie lo lee hasta el lunes, el paciente no sabe a quién llamar. Una urgencia tiene que llegar a una persona, y rápido.",
       },
     ],
     mejoras: ["reservas-online", "asistente", "documentacion", "resenas", "ficha-google"],
@@ -153,7 +153,7 @@ const paginas: Omit<PaginaSector, "slug">[] = [
     etiqueta: "Alojamientos rurales",
     titular: "Que no todas las reservas tengan que pasar por Booking",
     entradilla:
-      "Una web con reservas propias, las respuestas de siempre a cualquier hora y los datos del huésped antes de que llegue, para que las plataformas sean una vía más y no la única.",
+      "Una web donde te puedan reservar directamente, las respuestas de siempre a cualquier hora y los datos del huésped antes de que llegue: lo que podemos montar para que las plataformas sean una vía más y no la única.",
     metadatos: {
       title: `Webs y automatización para alojamientos rurales — ${site.nombre}`,
       description:
@@ -163,22 +163,22 @@ const paginas: Omit<PaginaSector, "slug">[] = [
       {
         titulo: "La comisión, también del huésped que repite",
         texto:
-          "Quien ya estuvo en la casa y quiere volver la busca en Booking, porque es donde la encontró, y esa noche vuelve a pagar comisión. Sin una web donde reservar contigo, la plataforma se queda también con los que ya te conocen.",
+          "Según sus condiciones, Booking y Airbnb cobran comisión por cada reserva, también por la de quien ya estuvo en la casa. Si quien quiere volver la busca en la plataforma donde la encontró, esa noche vuelve a pagar comisión.",
       },
       {
         titulo: "Calendarios que no se hablan",
         texto:
-          "Las reservas por teléfono en una libreta o en el móvil; las de Booking y Airbnb, cada una en su panel. Cada reserva nueva obliga a cerrar a mano las mismas fechas en los demás sitios, y un descuido vende dos veces la misma noche.",
+          "Si las reservas por teléfono van en una libreta o en el móvil, y las de Booking y Airbnb cada una en su panel, cada reserva nueva obliga a cerrar a mano las mismas fechas en los demás sitios, y un descuido vende dos veces la misma noche.",
       },
       {
-        titulo: "Las preguntas llegan cuando estás limpiando",
+        titulo: "Las preguntas llegan cuando hay más trabajo",
         texto:
-          "Cómo se llega por la pista, si hay cobertura, si se admiten perros, a qué hora se entrega la llave. Llegan de noche y en fin de semana, que es justo cuando hay huéspedes entrando y saliendo.",
+          "Cómo se llega por la pista, si hay cobertura, si se admiten perros, a qué hora se entrega la llave. Suelen llegar de noche y en fin de semana, que es justo cuando hay huéspedes entrando y saliendo.",
       },
       {
         titulo: "El registro de viajeros, uno a uno en la entrada",
         texto:
-          "Cada huésped tiene que dar sus datos para el registro, y pedírselos a la llegada, con las maletas en la puerta, es lento para los dos. Con un grupo, más.",
+          "Cada huésped tiene que dar sus datos para el registro de viajeros (lo exige el Real Decreto 933/2021). Si se piden a la llegada, con las maletas en la puerta, es lento para los dos, y con un grupo, más.",
       },
     ],
     mejoras: ["reservas-directas", "asistente", "documentacion", "resenas", "web-nueva", "ficha-google"],
@@ -220,7 +220,7 @@ const paginas: Omit<PaginaSector, "slug">[] = [
     codigo: "despachos",
     nombre: "Asesorías y despachos",
     etiqueta: "Asesorías y despachos",
-    titular: "Menos llamadas de «¿lleváis esto?» y menos papeles por WhatsApp",
+    titular: "Menos llamadas de «¿lleváis esto?» y menos papeles sueltos",
     entradilla:
       "Las primeras preguntas, la documentación de cada cliente y las citas pueden ir solas, para que el tiempo del despacho se vaya en los asuntos y no en lo que los rodea.",
     metadatos: {
@@ -232,22 +232,22 @@ const paginas: Omit<PaginaSector, "slug">[] = [
       {
         titulo: "Llamadas para saber si lleváis su asunto",
         texto:
-          "Antes de ser cliente, la gente llama para preguntar si lleváis herencias, despidos o la renta de un autónomo, y cuánto cuesta la primera consulta. Cada llamada saca a alguien de un expediente.",
+          "Antes de ser cliente, es habitual llamar para preguntar si lleváis herencias, despidos o la renta de un autónomo, y cuánto cuesta la primera consulta. Cada llamada saca a alguien de un expediente.",
       },
       {
-        titulo: "La documentación llega en fotos por WhatsApp",
+        titulo: "La documentación llega por todas partes",
         texto:
-          "Nóminas, escrituras, facturas del trimestre: llegan en fotos torcidas por WhatsApp, en correos sueltos y en mano. Juntarlas en cada expediente y ver qué falta es trabajo que no se factura.",
+          "Nóminas, escrituras, facturas del trimestre: si llegan en fotos por WhatsApp, en correos sueltos y en mano, juntarlas en cada expediente y ver qué falta es trabajo que no se factura.",
       },
       {
         titulo: "Todo el mundo, el último día",
         texto:
-          "En la campaña de la renta y en cada cierre de trimestre, los papeles llegan a la vez y a última hora. Ir avisando cliente por cliente de lo que le falta se come los días que más trabajo hay.",
+          "En la campaña de la renta y en cada cierre de trimestre, los papeles suelen llegar a la vez y a última hora. Ir avisando cliente por cliente de lo que le falta se come los días que más trabajo hay.",
       },
       {
         titulo: "La carta de Hacienda se lee de noche",
         texto:
-          "Quien recibe un requerimiento o una carta de despido busca ayuda esa misma noche. Si la web solo tiene un teléfono, espera a la mañana siguiente, y puede que llame antes a otro despacho.",
+          "Quien recibe un requerimiento o una carta de despido suele buscar ayuda esa misma noche. Si la web solo tiene un teléfono, espera a la mañana siguiente, y puede que llame antes a otro despacho.",
       },
     ],
     mejoras: ["documentacion", "formularios", "asistente", "reservas-online", "cobros", "resenas"],

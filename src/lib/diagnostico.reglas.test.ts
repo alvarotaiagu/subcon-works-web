@@ -378,3 +378,46 @@ test("título del resultado con el nombre del sector", () => {
   assert.equal(tituloResultado("dental"), "Lo que haríamos en tu clínica dental");
   assert.equal(tituloResultado("otro"), "Lo que haríamos en tu negocio");
 });
+
+// ── 003 · T09 · textos aprobados (textos.md, D-033) ────────────────────────
+
+test("003 · ficha-google se queda con enlace a /#servicios en los dos sitios (§3.7, D-003)", () => {
+  const ficha = mejoras.find((m) => m.id === "ficha-google");
+  assert.ok(ficha?.enlace, "D-003: toda mejora con enlace");
+  assert.equal(ficha.enlace.portada, "/#servicios");
+  assert.equal(ficha.enlace.sector, "/#servicios");
+  for (const contexto of ["portada", "sector"] as const) {
+    assert.equal(resolverEnlace(ficha.enlace, contexto, false), "/#servicios");
+  }
+});
+
+test("003 · los textos del diagnóstico no llevan «propio», «gratis», juicios sobre Google ni cifras de terceros", () => {
+  const variantes = (t: Texto) =>
+    [t.base, t.dental, t.rural, t.despachos].filter((x): x is string => typeof x === "string");
+  const textos = [
+    ...mejoras.flatMap((m) => [...variantes(m.titulo), ...variantes(m.queResuelve)]),
+    ...reglas.flatMap((r) => variantes(r.porque)),
+    ...relleno.map((r) => r.porque),
+  ];
+  for (const t of textos) {
+    assert.doesNotMatch(t, /(?<!tu )\bpropi[oa]s?\b|gratis|gratuit/i, t);
+    assert.doesNotMatch(t, /lo primero que sale|se suele quedar igual|de lo que m[aá]s compensa/i, `A48: «${t}»`);
+    assert.doesNotMatch(t, /no depende de nadie|aviso a tu correo|te deja cada mensaje en tu correo/i, `A55/A04: «${t}»`);
+  }
+});
+
+test("003 · la mejora «web-nueva» no promete que el cliente cambie la web (A55)", () => {
+  const web = mejoras.find((m) => m.id === "web-nueva");
+  assert.ok(web);
+  assert.equal(web.titulo.base, "Una web rápida y al día");
+  for (const s of ["dental", "rural", "despachos"] as const) {
+    assert.match(web.queResuelve[s] ?? web.queResuelve.base ?? "", /que cambiamos cuando nos lo pidas|y que cambiamos cuando nos lo pidas/);
+  }
+});
+
+test("003 · la documentación del despacho no da por hecho WhatsApp ni correo (CA-9)", () => {
+  const doc = mejoras.find((m) => m.id === "documentacion");
+  assert.ok(doc);
+  assert.equal(doc.titulo.despachos, "La documentación, ordenada en un solo sitio");
+  assert.doesNotMatch(doc.queResuelve.despachos ?? "", /whatsapp|correo/i);
+});

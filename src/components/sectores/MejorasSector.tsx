@@ -35,7 +35,7 @@ export function MejorasSector({
           Lo que puede quedar funcionando solo.
         </h2>
         <p className="mt-6 max-w-xl text-apagado-abajo">
-          Son las mismas que puede darte el diagnóstico de más abajo. Cuáles van primero depende
+          Son las mismas que puede darte el diagnóstico rápido de más abajo. Cuáles van primero depende
           de cómo trabajéis.
         </p>
         <ul className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">

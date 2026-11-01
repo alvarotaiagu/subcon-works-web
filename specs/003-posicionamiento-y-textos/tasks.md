@@ -305,7 +305,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
   - *Hecho*: activa y pasan CA-4 · T08 y CA-6 · `/plantillas/`; la PR dice,
     frase a frase, de dónde sale cada dato de `/privacidad/` en el código.
 
-- [ ] **T09 · Sectores y diagnóstico.** *Modelo: Sonnet 5.5 high.*
+- [x] **T09 · Sectores y diagnóstico.** *Modelo: Sonnet 5.5 high.*
   - *Cubre*: spec §3.1 (situaciones habituales, P-13), §3.7
     (`diagnostico.ts:496`), §6 (`diagnostico.ts` no se reescribe), CA-4,
     CA-6 y CA-7 de T09; deltas 001 §3.4 y §3.8.

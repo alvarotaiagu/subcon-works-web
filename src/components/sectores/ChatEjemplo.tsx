@@ -61,7 +61,7 @@ export function ChatEjemplo({
   }, []);
 
   return (
-    <div className={className}>
+    <div className={className} data-ejemplo>
       <Etiqueta>Ejemplo · negocio inventado</Etiqueta>
       <h2 className="mt-6 max-w-2xl text-3xl font-medium text-hueso md:text-5xl">
         Así contestaría el asistente de {ejemploDe}
