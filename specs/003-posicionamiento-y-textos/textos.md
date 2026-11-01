@@ -749,4 +749,40 @@ preguntas P1-P36 llevan fila aunque casi no cambien: son el formulario del kit
 | /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[4].etiqueta` | Si pudieras arreglar una sola cosa del día a día, ¿cuál sería? | (igual) | P35. | propuesta |
 | /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[5].etiqueta` | ¿Qué presupuesto tienes en mente para montarlo? ¿Y para el mantenimiento mensual? | (igual) | P36. | propuesta |
 
-pendiente: parte 2 — faltan las tablas `## /estudio/`, `## /herramientas/`, `## /plantillas/`, `## /privacidad/`, `## /sectores/`, las tres `## /sectores/<slug>/`, `## /404` y `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
+## /estudio/
+
+Los compromisos, su nota y la tarjeta de persona (`Compromisos.tsx`,
+`estudio.ts` `compromisos`/`notaCompromisos`, `TarjetaPersona.tsx`) van en
+`## /`. `comoTrabajamos[2].texto` es `proceso[4].descripcion` (en `## /`). Los
+textos de persona repiten los de la portada (decisión 8): uno por persona, que
+leen Álvaro y Yanin antes de publicarlo (A40).
+
+| ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
+|---|---|---|---|---|---|---|
+| /estudio/ | `src/app/estudio/page.tsx` | `metadata.title` | Estudio — {n} | (igual) | `{n}` = `site.nombre`. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `metadata.description` | Quién hace Undertactics, cómo trabajamos y qué queda a nombre de cada negocio: el código, el dominio y las claves. | (igual) | A40, A31 (la excepción de la tienda la dice la nota de los compromisos, A60). | propuesta |
+| /estudio/ | `src/content/interiores.ts` | `cotasInterior.estudio.cota` | −3 · Estudio | (igual) | Cota (D-014). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `CabeceraInterior` · `arriba` | Quién hace | (igual) | A40. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `CabeceraInterior` · `em` | esto. | (igual) | Ídem. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `entradaEstudio` | En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien diseña tu web, escribe el código o monta tu vídeo. | En Undertactics somos Álvaro y Yanin, primos. No hay comerciales ni un equipo que no conozcas: quien te contesta el correo es quien hace el trabajo. | A40. Sale «monta tu vídeo» (A21, C: el vídeo no es un servicio). El mismo final que `quien.texto` de la portada (decisión 8). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · segundo párrafo` | Somos un estudio pequeño a propósito: cada encargo lo llevan las mismas dos personas de principio a fin. | (igual) | A40, A76 (fuente: `estudio.ts`, 2 personas). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[0].nombre` | Álvaro | (igual) | A40. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[0].rol` | Web, código y automatización | (igual) | A40. Decisión 8: la portada pasa a este mismo rol. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[0].texto` | Diseña y programa las webs, las tiendas y las herramientas del estudio, y monta las automatizaciones con IA. Si algo del código no te encaja, se lo dices a él y se cambia. | Diseña y programa las webs y las tiendas, y monta las automatizaciones con IA que se encargan a medida. Si algo del código no te encaja, se lo dices a él. | Decisión 8: el mismo texto que `quien.personas.Álvaro.texto` (`## /`). A40, A06, A01, A22 (B, por encargo). Sale «y se cambia» (A51, B: en la tienda el código no es del cliente) y «las herramientas del estudio» (decisión 6). Lo lee Álvaro antes de publicarlo. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[1].nombre` | Yanin | (igual) | A40. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[1].rol` | Foto, vídeo y redes | (igual) | A40 corregida (D-035). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `personas[1].texto` | Produce y edita las fotos y los vídeos para redes, que es lo que mejor se le da y lo que más le gusta. También trabaja con IA en el día a día del estudio. | Hace y edita las fotos y los vídeos del estudio. | Decisión 8: el mismo texto que `quien.personas.Yanin.texto` (`## /`). «Para redes» al lado de los servicios se lee como servicio de vídeo (A21, C). Salen «lo que mejor se le da» y «trabaja con IA»: sin fila en el Anexo (§3.2 regla 6). Lo lee Yanin antes de publicarlo (A40). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `Titular` · `arriba` | Cómo trabajamos. | (igual) | Titular. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].titulo` | Primero miramos, luego hablamos de precio. | (igual) | A56, A30 (procedimiento, D-035). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].texto` | La auditoría gratuita son {n} preguntas y te deja un informe que es tuyo, sigas con nosotros o no. | La auditoría de tu negocio son {n} preguntas y un informe que te llega por correo. No se cobra. | Nombre de la puerta 3 (P-11). A38 (`{n}` = `TOTAL_PREGUNTAS`), A72, A34 corregida (sin «gratuita»). Sale «un informe que es tuyo, sigas con nosotros o no»: A52 sigue `por confirmar`. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[1].titulo` | Partimos de una base propia. | No empezamos de cero. | Decisión 3: sin «propia» (§3.4 regla 1). El texto dice de qué se parte. | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[1].texto` | {n} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas. | Partimos de {n} plantillas publicadas y de la tienda online, el informe de mejoras de tu web y el formulario de contacto, que hemos construido nosotros. Se adapta a lo tuyo, y por eso lo primero funciona en semanas. | A05 (`{n}` = `plantillas.length`), A50 corregida («lo construimos nosotros», solo para las piezas A: A01, A03, A29), A37 (procedimiento). Nombres recomendados (P-11). Sale «herramientas» (decisión 6). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[2].titulo` | Lo ves funcionando antes de cada pago. | (igual) | A30 (procedimiento, D-035). El texto es `proceso[4].descripcion` (`## /`). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[3].titulo` | Una conversación, no un ticket. | (igual) | A39 (procedimiento, D-035). | propuesta |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[3].texto` | Escribes a quien lo hace y te contesta esa misma persona. | (igual) | A40, A39. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `Titular` · `arriba` del cierre | ¿Hablamos de tu negocio? | (igual) | Titular (CA-11: casa con la entradilla y los botones). | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · entradilla del cierre` | Empieza por la auditoría gratuita: diez minutos de formulario y te decimos qué falta antes de hablar de precio. | Empieza por la auditoría de tu negocio: contestas unas preguntas sobre cómo trabajáis y te mandamos un informe por correo, antes de hablar de precio. La auditoría no se cobra. | Nombre de la puerta 3 (P-11). A34 corregida, A72, A56. Sale «diez minutos» (A35, C). Sale «te decimos qué falta»: lo que lleva el informe es A52, `por confirmar`. | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · botón a /auditoria/` | Pedir la auditoría gratuita | Empezar la auditoría | Forma corta de la puerta 3 («Auditoría»). A34 corregida: sin «gratuita». | propuesta |
+| /estudio/ | `src/app/estudio/page.tsx` | `jsx · botón de correo` | Escribir un correo | (igual) | A44 (correo directo). | propuesta |
+
+pendiente: parte 2 — faltan las tablas `## /herramientas/`, `## /plantillas/`, `## /privacidad/`, `## /sectores/`, las tres `## /sectores/<slug>/`, `## /404` y `## README`. Lo sigue el mismo chat (o el que reciba su prompt de continuación).
