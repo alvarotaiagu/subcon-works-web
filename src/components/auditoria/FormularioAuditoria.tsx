@@ -458,7 +458,7 @@ function PasoContacto({
         <Campo
           id="web"
           etiqueta="Vuestra web, si tenéis"
-          ayuda="Con ella se puede auditar también la mitad de fuera. Si no tenéis, déjalo vacío."
+          ayuda="Si no tenéis, déjalo vacío."
           valor={contacto.web}
           onChange={set("web")}
           tipo="url"
@@ -507,7 +507,8 @@ function PasoContacto({
           />
           <span className="text-sm text-apagado-abajo">
             Acepto que {site.nombre} guarde estos datos para preparar el informe y responderme.
-            No se ceden a nadie y puedes pedir que se borren cuando quieras escribiendo a{" "}
+            Los guardamos en Supabase y el informe lo redactamos con la IA de Anthropic; no se
+            ceden a nadie más. Puedes pedir que se borren cuando quieras escribiendo a{" "}
             <a href={`mailto:${site.email}`} className="link-underline text-hueso">
               {site.email}
             </a>
@@ -698,16 +699,16 @@ function Error({ resultado }: { resultado: Extract<ResultadoEnvio, { ok: false }
 }
 
 function Enviado({ nombre, respondidas }: { nombre: string; respondidas: number }) {
+  const saludo = nombre ? `, ${nombre.split(" ")[0]}` : "";
   return (
     <div className="max-w-xl" role="status">
       <p className="font-mono-label mb-4 text-[10px] text-superficie">Recibido</p>
       <h2 className="text-4xl font-medium text-hueso md:text-6xl">
-        Gracias{nombre ? `, ${nombre.split(" ")[0]}` : ""}.
+        Gracias{saludo}.
       </h2>
       <p className="mt-6 text-lg text-apagado-abajo">
-        Nos han llegado {respondidas} de las {TOTAL_PREGUNTAS} respuestas. Lo primero que hacemos es
-        leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de
-        ponernos.
+        Nos han llegado {respondidas} de las {TOTAL_PREGUNTAS} respuestas. Lo leemos entero y, si
+        falta algo importante, te escribimos antes de ponernos.
       </p>
       <p className="mt-4 text-apagado-abajo">
         El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte.

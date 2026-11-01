@@ -4,7 +4,7 @@ export const site = {
   tagline: "Lo de arriba vende. Lo de abajo trabaja.",
   // Descripción del hero y `description` de la portada (§3.13; P-04).
   descripcion:
-    "Consultora tecnológica para pymes y autónomos: inteligencia artificial, automatización de procesos, software a medida y desarrollo web.",
+    "Hacemos la web, la tienda online y la ficha de Google de tu negocio, y montamos a tu medida lo que va por debajo: automatizaciones, asistentes con IA y programas de gestión.",
   email: "alvarot2601@gmail.com",
   // Teléfono: no se publica ninguno hasta que haya una línea de estudio.
   // No se inventa: el contacto entra por correo y por el formulario.
@@ -14,12 +14,12 @@ export const site = {
   nav: [
     { label: "Servicios", href: "/#servicios" },
     { label: "Soluciones", href: "/#soluciones" },
-    { label: "Proyectos", href: "/#plantillas" },
-    { label: "Herramientas", href: "/herramientas/" },
+    { label: "Webs de ejemplo", href: "/#plantillas" },
+    { label: "Productos", href: "/herramientas/" },
     { label: "Proceso", href: "/#proceso" },
     { label: "Contacto", href: "/#contacto" },
   ],
-  cta: "Solicitar diagnóstico",
+  cta: "Pedir una propuesta",
   ctaHref: "/#contacto",
   redes: [
     // [PENDIENTE] perfiles reales del estudio — hasta entonces no se enlaza a "#".

@@ -47,7 +47,7 @@ export function Footer() {
           <Logo className="mb-5 text-2xl" />
           <p className="max-w-sm text-apagado-abajo">{site.descripcion}</p>
           <Boton href="/#contacto" className="mt-7 px-6 py-3">
-            Solicitar diagnóstico
+            Pedir una propuesta
           </Boton>
         </div>
 
@@ -76,7 +76,7 @@ export function Footer() {
             </li>
             <li>
               <Link href="/auditoria/" className="link-underline">
-                Auditoría gratuita
+                Auditoría de tu negocio
               </Link>
             </li>
             <li>

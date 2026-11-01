@@ -610,7 +610,7 @@ const comprobaciones = [
   ...["T06", "T07", "T08", "T09"].map((tarea) => ({
     id: `CA-4 · Filas aprobadas en su fichero · ficheros de ${tarea}`,
     tarea,
-    pendiente: tarea !== "T07", // T07 hecha; T06, T08 y T09 ponen la suya al terminar
+    pendiente: tarea !== "T07" && tarea !== "T08", // T07 y T08 hechas; T06 y T09 ponen la suya al terminar
     fn: async () => filasEnFichero(tarea),
   })),
   {

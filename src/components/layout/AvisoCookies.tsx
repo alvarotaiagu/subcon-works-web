@@ -10,9 +10,9 @@ const CLAVE = "undertactics:aviso-cookies:v1";
 /**
  * Aviso de almacenamiento local.
  *
- * Esta web no pone cookies de seguimiento ni analítica: lo único que guarda es
- * el borrador del formulario de auditoría y el hecho de haber visto este aviso,
- * y las dos cosas se quedan en el navegador. El aviso está igualmente porque es
+ * Esta web no pone cookies de ningún tipo: lo único que guarda es el borrador
+ * del formulario de auditoría, el hecho de haber visto este aviso y el de haber
+ * visto la animación de entrada, y las tres cosas se quedan en el navegador. El aviso está igualmente porque es
  * la norma de la casa en todos los sitios, y porque el visitante tiene derecho
  * a saber que se le está escribiendo algo en su navegador.
  *
@@ -59,7 +59,7 @@ export function AvisoCookies() {
           tiene que estar, pero no puede comerse un cuarto de pantalla. */}
       <div className="flex items-center gap-3 md:gap-4">
         <p className="text-xs leading-snug text-hueso md:text-sm">
-          Sin cookies de seguimiento: solo tu borrador y este aviso.{" "}
+          Sin cookies: tu navegador solo recuerda este aviso, la animación de entrada y, si abres la auditoría, tu borrador.{" "}
           <Link href="/privacidad/" className="text-hueso underline underline-offset-2">
             Detalle
           </Link>

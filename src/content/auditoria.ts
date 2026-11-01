@@ -60,7 +60,7 @@ export const bloques: BloqueAuditoria[] = [
         id: "P7",
         etiqueta: "¿Por dónde os contactan?",
         ayuda:
-          "Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, email, gente que entra por la puerta, otros.",
+          "Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, correo, gente que entra por la puerta, otros.",
         tipo: "larga",
       },
       {
@@ -177,14 +177,14 @@ export const bloques: BloqueAuditoria[] = [
         id: "P25",
         etiqueta:
           "¿Mandáis alguna comunicación cada cierto tiempo (novedades, ofertas, recordatorios)?",
-        ayuda: "¿Con qué herramienta?",
+        ayuda: "¿Con qué programa?",
         tipo: "larga",
       },
     ],
   },
   {
     numero: 6,
-    titulo: "Herramientas y datos",
+    titulo: "Programas y datos",
     preguntas: [
       {
         id: "P26",
@@ -224,7 +224,7 @@ export const bloques: BloqueAuditoria[] = [
     preguntas: [
       {
         id: "P31",
-        etiqueta: "Las 3 tareas repetitivas que más tiempo os comen",
+        etiqueta: "Las tareas repetitivas que más tiempo os comen",
         ayuda: "De cada una, dime cuánto tiempo a la semana, aunque sea a ojo.",
         tipo: "larga",
       },
@@ -238,7 +238,7 @@ export const bloques: BloqueAuditoria[] = [
       },
       {
         id: "P33",
-        etiqueta: "¿Habéis probado alguna herramienta de inteligencia artificial o de automatización?",
+        etiqueta: "¿Habéis probado algún programa de inteligencia artificial o de automatización?",
         ayuda: "¿Qué pasó?",
         tipo: "larga",
       },
