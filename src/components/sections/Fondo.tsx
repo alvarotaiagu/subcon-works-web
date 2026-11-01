@@ -12,7 +12,7 @@ const cifrasFondo = [preguntas];
 
 /**
  * «Fondo · Auditoría» (spec 002 §3.11, plan PD-12): el final del corte y del objeto. La
- * oferta, lo que lleva el informe, lo que no se pide, las dos cifras de la auditoría y el
+ * oferta, lo que lleva el informe, lo que no se pide, la cifra de la auditoría y el
  * objeto que se completa (`FondoObjeto`). Debajo va el pie, en roca.
  *
  * `hilo`: en la portada, el botón es donde acaba el conducto (`data-hilo-fin`). En
@@ -79,7 +79,7 @@ export function Fondo({ hilo = false }: { hilo?: boolean }) {
           </div>
         </div>
 
-        {/* El final: las dos cifras y el objeto (donde acaba el conducto). Debajo, el pie. */}
+        {/* El final: la cifra y el objeto (donde acaba el conducto). Debajo, el pie. */}
         <div className="mt-20 grid gap-12 border-t border-conducto pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-24">
           <ul className="fondo-cifras">
             {cifrasFondo.map((c) => (
