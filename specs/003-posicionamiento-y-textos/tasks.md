@@ -215,6 +215,8 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       `##` terminado y deja el prompt para seguir (plan §6).
   - *Hecho*: `npm run comprobar-textos -- --solo CA-12` en `OK` (actívala
     solo para mirarla; la deja activa T05); cada fila con motivo.
+  - parte 1 hecha (PR #57): cabecera, `## *` y `## /`. Falta la parte 2
+    (resto de rutas y `README`).
 
 - [ ] **T05 · Aprobación de `textos.md` y listas del script.** *Manual, con
   Álvaro; el chat que lo aplica, Sonnet 5.5 medium.*
