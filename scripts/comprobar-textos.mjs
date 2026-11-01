@@ -414,11 +414,7 @@ function regExpDeTexto(t) {
     norm(t)
       .split(/\{n\}/)
       .map(esc)
-<<<<<<< HEAD
-      .join("(?:[\\d.,]+|\\$?\\{[^}]*\\})"),
-=======
       .join("(?:[\\d.,]+|\\$?\\{[^{}]+\\})"),
->>>>>>> origin/exp/consultora
   );
 }
 
