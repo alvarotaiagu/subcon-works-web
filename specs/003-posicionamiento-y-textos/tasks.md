@@ -188,7 +188,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
   - *Hecho*: ninguna fila `por confirmar`; P-09, P-10 y P-13 cerradas con
     fecha.
 
-- [ ] **T04 · `textos.md`.** *Modelo: Opus 5.5 high* — redacción delicada
+- [x] **T04 · `textos.md`.** *Modelo: Opus 5.5 high* — redacción delicada
   (spec §5 y §10); **un solo chat** escribe este fichero.
   - *Cubre*: spec §3.1, §3.4, §3.5, §3.6, §3.7, §6 (formas cortas), PD-3.
   - *Depende de*: T03.
@@ -215,8 +215,10 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       `##` terminado y deja el prompt para seguir (plan §6).
   - *Hecho*: `npm run comprobar-textos -- --solo CA-12` en `OK` (actívala
     solo para mirarla; la deja activa T05); cada fila con motivo.
-  - parte 1 hecha (PR #57): cabecera, `## *` y `## /`. Falta la parte 2
-    (resto de rutas y `README`).
+  - parte 1 hecha (PR #57): cabecera, `## *` y `## /`.
+  - parte 2 hecha (PR #58): resto de rutas, `## /404` y `## README`.
+    CA-12 en `OK` (mirada con la comprobación activada y devuelta a
+    pendiente). Lo que queda para T05-T10 está en «Pendiente» de la PR.
 
 - [ ] **T05 · Aprobación de `textos.md` y listas del script.** *Manual, con
   Álvaro; el chat que lo aplica, Sonnet 5.5 medium.*
