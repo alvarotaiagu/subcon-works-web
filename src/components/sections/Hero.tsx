@@ -565,7 +565,7 @@ export function Hero() {
           </span>
         </p>
 
-        <div className="hero-instrumento" data-sigue-superficie="">
+        <div className="hero-instrumento" data-sigue-superficie="" data-ejemplo="">
           <ul className="hero-objetos" aria-label="Lo que ve tu cliente" data-capa="arriba" data-fondo="claro" data-foco-dentro="">
             {flujos.map((f, i) => (
               <li key={f.rotulo}>
@@ -635,7 +635,7 @@ export function Hero() {
                       className={cn(activo === i && k < encendidas && "es-encendida")}
                       style={{ "--y": `${ALTURAS_PARADA[k] * 100}%` } as React.CSSProperties}
                     >
-                      <span className="hero-parada-num">{p.servicio}</span>
+                      <span className="hero-parada-num" data-numeracion="">{p.servicio}</span>
                       <span className="hero-parada-txt">{p.texto}</span>
                     </li>
                   ))}
@@ -649,7 +649,7 @@ export function Hero() {
           {/* Solo baja con la superficie (el tirador en escritorio, hasta 60 px): así la línea de
               abajo del titular no se le mete encima. Al subir se queda, y se abre el hondo. */}
           <div className="hero-bajo-mov" data-sigue-bajada="">
-            <div className="hero-ejemplos">
+            <div className="hero-ejemplos" data-ejemplo="">
               {/* «Ejemplo» (D-019) y, a su lado, el control de la secuencia automática (WCAG
                   2.2.2). El botón se ve solo cuando hay secuencia que pausar: con JS, con
                   movimiento. Su sitio está reservado desde el HTML. */}

@@ -493,7 +493,7 @@ export const mejoras: Mejora[] = [
     queResuelve: {
       base: "Horario, teléfono, dirección y enlace a la web revisados y coherentes con lo que dice tu web, para que quien te busca en el mapa sepa a qué atenerse antes de llamarte.",
     },
-    enlace: { portada: "/herramientas/#ficha-google", sector: "/herramientas/#ficha-google" },
+    enlace: { portada: "/#servicios", sector: "/#servicios" },
     sectores: TODOS,
   },
   {
