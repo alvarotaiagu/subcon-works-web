@@ -4,7 +4,8 @@ Spec: [spec.md](spec.md) (§3.6) · Plan: [plan.md](plan.md) (PD-3, PD-9) ·
 Tareas: [tasks.md](tasks.md) (T04, T05)
 
 Estado del documento: **propuesta** (T04, 2026-11-01), sobre `exp/consultora` en
-`7718dcf` y con el Anexo A confirmado (D-035). Lo aprueba Álvaro fila a fila en
+`7718dcf` (parte 1) y `23f5723` (parte 2, desde `## /auditoria/`), con el
+Anexo A confirmado (D-035). Lo aprueba Álvaro fila a fila en
 T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de estado.
 
 **Cómo se lee.**
@@ -21,7 +22,13 @@ T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de estado.
   clave: se busca por el texto actual.
 - No llevan fila: la numeración de estructura (01-07, A-C de las bandas,
   «Paso n de 8», P1-P36), los comentarios del código y los componentes que no
-  pinta ninguna ruta de esta rama (la portada vigente, spec §2).
+  pinta ninguna ruta de esta rama (la portada vigente, spec §2). Tampoco, y
+  cada tabla dice por qué: los datos de las plantillas que no cambian
+  (`## /plantillas/`), lo de `diagnostico.ts` que no afirma nada
+  (`## /sectores/clinicas-dentales/`) y la nota de anclas del README, que el
+  script no lee (`## README`).
+- Un texto que en el código va partido por una etiqueta (`<strong>`) lleva una
+  fila por trozo: CA-4 busca cada texto seguido.
 - Las filas `por confirmar` del Anexo (A10, A26, A36, A52, A54, A81, A99) no
   sirven para escribir (spec §3.3): donde un texto de hoy se apoya en una de
   ellas, el texto nuevo la quita.
@@ -111,9 +118,10 @@ filas.
      «propio» en lo que se enseña, y «propias» no añade nada que el cliente
      compre. La etiqueta pasa a «Plantillas publicadas, con su demo entera»
      (A05, A57).
-   - La pinta `Fondo` en las páginas de sector, así que su fila va en
-     `## /sectores/<slug>/` (parte 2), y `portada.test.ts` la busca por esa
-     etiqueta (lo actualiza T07).
+   - No la pinta ninguna ruta de esta rama (solo `Plantillas.tsx`, de la
+     portada vigente; `Fondo` pinta otras dos cifras), pero `portada.test.ts`
+     la busca por esa etiqueta (lo actualiza T07). Su fila va con las demás de
+     `cifras.ts`, en `## /sectores/clinicas-dentales/`.
    - «Una plantilla de 30.» no se toca (D-014, C-23): solo la pinta la portada
      vigente.
 4. **«Proyectos»** (`site.ts:17`, `portada.ts:27`, titular del bloque; §3.5).
