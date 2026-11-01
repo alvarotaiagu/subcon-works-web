@@ -146,7 +146,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Redacción
 
-- [ ] **T02 · Anexo A completo.** *Modelo: Opus 5.5 high* — es la base legal
+- [x] **T02 · Anexo A completo.** *Modelo: Opus 5.5 high* — es la base legal
   de la spec (§5, Ley 3/1991).
   - *Cubre*: spec §3.2, §3.3, §5 (datos personales), PD-2.
   - *Depende de*: T01.

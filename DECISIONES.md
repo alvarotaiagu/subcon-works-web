@@ -57,6 +57,8 @@ que Álvaro lo resuelva; no se resuelve en silencio.
 | P-11 | (003) Elegir nombres (producto y las tres puertas de entrada: formulario corto, diagnóstico rápido, auditoría) y comprobar que no chocan con marcas ajenas (OEPM). | Álvaro | Aprobar `textos.md` |
 | P-12 | (003) Spec 004 «Vigilancia diaria y auditoría de la ficha de Google»: cómo se construirían y dónde se ejecutan (la web es estática en GitHub Pages). La escribe Claude tras aprobar la 003. | Claude / Álvaro | No |
 | P-13 | (003) ¿La regla «no presuponer cómo trabaja el lector» vale también para las páginas de sector? Recomendado: sí, escritos como situaciones habituales. | Álvaro | Textos de sector |
+| P-14 | (003, Anexo A44/A75) Plazo de conservación y borrado de las solicitudes de los dos formularios (formulario corto de la portada y auditoría), en Supabase (`solicitudes_auditoria`), en los `.md` que baja el kit y en el correo. `/privacidad/` dice «un año si no acabamos trabajando juntos», no nombra el formulario corto y nada borra las solicitudes. Hay que decidir el plazo, quién borra y cómo. Recomendado: un año desde el último mensaje para los dos formularios, borrado a mano cada trimestre con el kit (fila y `.md`) y la fecha anotada en `kit/LEEME.md`. | Álvaro | CA-14 (texto de `/privacidad/`) |
+| P-15 | (003, Anexo A99) Responsable del tratamiento: `/privacidad/` pinta «[PENDIENTE]» en nombre fiscal, NIF y domicilio, y los formularios ya envían a una función real. ¿Quién figura: Álvaro como autónomo, los dos o una sociedad? | Álvaro | CA-14 y recibir solicitudes reales |
 
 ## Conflictos
 
