@@ -631,132 +631,132 @@ preguntas P1-P36 llevan fila aunque casi no cambien: son el formulario del kit
 
 | ruta | fichero | identificador | texto actual | texto nuevo | motivo | estado |
 |---|---|---|---|---|---|---|
-| /auditoria/ | `src/app/auditoria/page.tsx` | `metadata.title` | Auditoría gratuita — {n} | Auditoría de tu negocio — {n} | Nombre de la puerta 3 (P-11). A34 corregida (D-035): sin «gratuita». `{n}` = `site.nombre`. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `metadata.description` | Cuéntanos cómo trabajáis en diez minutos y te devolvemos un informe con las horas que se van cada semana, lo que cuestan y qué se arregla primero. | Cuéntanos cómo trabajáis, con tus palabras, y te mandamos por correo un informe de tu negocio. La auditoría no se cobra. | A72 (informe por correo), A34 corregida («no se cobra»). Sale «diez minutos» (A35, C hasta cronometrar). Salen «las horas que se van», «lo que cuestan» y «qué se arregla primero»: A36 y A52 siguen `por confirmar`. | propuesta |
-| /auditoria/ | `src/content/interiores.ts` | `cotasInterior.auditoria.cota` | Fondo · Auditoría | (igual) | Cota (D-014). | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `CabeceraInterior` · `arriba` | Cómo trabajáis | (igual) | Título del cuestionario del kit 03. No afirma nada. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `CabeceraInterior` · `em` | por dentro | (igual) | Ídem. | propuesta |
-| /auditoria/ | `src/components/ui/CabeceraInterior.tsx` | `jsx · enlace de vuelta` | Volver | (igual) | Interfaz. Lo pintan todas las interiores; la fila va solo aquí. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · entradilla` | {n} preguntas sobre el día a día del negocio. Se contesta en unos diez minutos, con tus palabras, y no hace falta que sepas nada de tecnología. | {n} preguntas sobre el día a día del negocio. Se contestan con tus palabras, y no hace falta que sepas nada de tecnología. La auditoría no se cobra. | A38 (`{n}` = `TOTAL_PREGUNTAS`), A56, A34 corregida. Sale «unos diez minutos» (A35, C hasta cronometrar). | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[0].titulo` | No contestes lo que no sepas | (igual) | A98: solo es obligatorio el primer paso. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[0].texto` | Déjalo en blanco. El informe marca los huecos en vez de inventárselos. | Déjalo en blanco. Solo hacen falta el nombre del negocio, el tuyo y tu correo. | A98. Sale «el informe marca los huecos»: A52 sigue `por confirmar`. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[1].titulo` | Los números a ojo valen | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[1].texto` | «Unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio. | Por ejemplo, «unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio. | A78: una cifra de ejemplo fuera de una maqueta va rotulada como ejemplo (o dentro de `[data-ejemplo]`; T05 la pone en `CIFRAS` con A78). | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[2].titulo` | Puedes parar y seguir | (igual) | A93. | propuesta |
-| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[2].texto` | Lo que escribas se guarda en este navegador. Cierra la pestaña y vuelve cuando quieras. | Lo que escribas se guarda en este navegador hasta que lo envías. Cierra la pestaña y vuelve cuando quieras. | A93 ajustada por D-037: el borrador no caduca (`FormularioAuditoria.tsx:158-162`), así que «cuando quieras» es verdad y sale el «durante 30 días» de la versión anterior. A44: se borra solo si el envío sale bien (`:216-221`). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · borrador recuperado` | Recuperado lo que habías escrito en este navegador | (igual) | A93. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · inicio | Hemos puesto {n} | (igual) | Interfaz. `{n}` = nº de respuestas prerrellenadas; sigue «respuesta» o «respuestas» según sea una o varias. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · texto | de tu diagnóstico rápido. | (igual) | Va tras «Hemos puesto {n} respuesta(s)». Nombre de la puerta 2 (P-11): es el diagnóstico rápido, así que CA-17 lo admite (T05 lo pone en `DIAGNOSTICO_PERMITIDO`). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · una | Revísala y cámbiala si no cuadra. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · varias | Revísalas y cámbialas si no cuadran. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · saltadas | Las que ya habías escrito no las hemos tocado. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · campo trampa` | No rellenes este campo | (igual) | Oculto (`aria-hidden`); solo lo ven los robots. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · rótulo | Antes de empezar | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · titular y `legend` | Tus datos | (igual) | Interfaz. También es la primera etiqueta del índice (`Progreso`). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · entradilla | Lo único obligatorio de todo el formulario. El resto puedes dejarlo a medias y mandarlo igual. | (igual) | A98 (la casilla de consentimiento va en este mismo paso). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo negocio` · `etiqueta` | Nombre del negocio | (igual) | A44 (datos de la auditoría). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `etiqueta` | A qué os dedicáis | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `ayuda` | Peluquería, taller, clínica, tienda… | (igual) | Ejemplos de sector; no afirman nada. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo ciudad` · `etiqueta` | Ciudad | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `etiqueta` | Vuestra web, si tenéis | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `ayuda` | Con ella se puede auditar también la mitad de fuera. Si no tenéis, déjalo vacío. | Si no tenéis, déjalo vacío. | Sale «se puede auditar también la mitad de fuera»: «miramos tu web por fuera» es A52, que sigue `por confirmar`. Filtro 1: «la mitad de fuera» no se entendía. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_nombre` · `etiqueta` | Tu nombre | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `etiqueta` | Tu correo | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `ayuda` | Es por donde te llega el informe. | (igual) | A72. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_telefono` · `etiqueta` | Teléfono | (igual) | A44 (opcional). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_telefono` · `ayuda` | Opcional. Solo si prefieres que te llamemos. | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · consentimiento` | Acepto que {n} guarde estos datos para preparar el informe y responderme. No se ceden a nadie y puedes pedir que se borren cuando quieras escribiendo a | Acepto que {n} guarde estos datos para preparar el informe y responderme. Los guardamos en Supabase y el informe lo redactamos con la IA de Anthropic; no se ceden a nadie más. Puedes pedir que se borren cuando quieras escribiendo a | A91: la casilla nombra a los dos encargados igual que `/privacidad/` (antes decía «no se ceden a nadie» sin ellos). A90 (Supabase), A96 (para qué), A44. «Cuando quieras» es un derecho (RGPD art. 17), no un reclamo de condición. `{n}` = `site.nombre`. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · consentimiento, final` | . Más detalle en la | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · enlace del consentimiento` | política de privacidad | (igual) | A44: `/privacidad/` nombra este formulario (CA-14). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · rótulo de lo que no se pide | Y lo que no te vamos a pedir | (igual) | A97. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[0]` | Datos de tus clientes: listados, fichas, historiales, nombres con teléfonos. | (igual) | A97. También lo pinta `Fondo` (`/sectores/<slug>/`). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[1]` | Contraseñas, claves ni accesos a tus programas. | (igual) | A97. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[2]` | Facturas, contabilidad ni exportaciones de tus bases de datos. | (igual) | A97. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · negocio | Dinos cómo se llama el negocio. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · nombre | Necesitamos tu nombre. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · correo | Revisa el correo: es por donde te llega el informe. | (igual) | A72. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · consentimiento | Hace falta que lo aceptes para poder escribirte. | (igual) | A98 (la casilla también es obligatoria). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Atrás | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón, paso 0 | Empezar el cuestionario | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Siguiente bloque | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón enviando | Enviando… | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón, último paso | Enviar la solicitud | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Enviar tal como está | (igual) | Interfaz (A98: se puede mandar a medias). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · a medias | Puedes mandarlo a medias: {n} contestadas | (igual) | A98. `{n}` = respuestas contestadas (recuento de la interfaz, no una cifra que afirme algo). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.validacion` | Faltan datos obligatorios. Vuelve al primer paso y revísalos. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.ritmo` | Has mandado ya varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo. | (igual) | A73: «unos minutos» casa con el límite de la función (3 envíos por correo cada 10 min). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.red` | No hemos podido conectar. Comprueba la conexión y vuelve a darle a enviar. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.servidor` | Algo ha fallado por nuestro lado. Inténtalo en un rato. | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · antes del correo | Si sigue sin funcionar, escríbenos a | (igual) | A44 (correo directo). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · después del correo | y lo resolvemos por correo. | (igual) | A44. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · rótulo | Recibido | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · titular | Gracias{n}. | (igual) | Interfaz. `{n}` = «, » y el nombre de pila. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · texto | Nos han llegado {n} de las {n} respuestas. Lo primero que hacemos es leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de ponernos. | Nos han llegado {n} de las {n} respuestas. Lo leemos entero y, si falta algo importante, te escribimos antes de ponernos. | A56 (lo leemos nosotros). Sale «mirar tu web por fuera»: A52 sigue `por confirmar`. `{n}` = contestadas y `TOTAL_PREGUNTAS` (A38). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · plazo | El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte. | (igual) | A72 (procedimiento, D-035). | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Mientras, mira las plantillas | (igual) | A57. | propuesta |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Volver al inicio | (igual) | Interfaz. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].titulo` | El negocio | (igual) | Cuestionario del kit 03 (A38). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[0].etiqueta` | Nombre del negocio | (igual) | P1. Pregunta: no afirma ni presupone (§3.1). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[1].etiqueta` | A qué os dedicáis, en una frase | (igual) | P2. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[2].etiqueta` | Ciudad | (igual) | P3. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[3].etiqueta` | ¿Cuántas personas trabajáis y qué hace cada una? | (igual) | P4. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[3].ayuda` | Por ejemplo: «3: yo atiendo y hago presupuestos, mi socio produce, y una persona a media jornada en recepción». | (igual) | A78: cifra de ejemplo, ya rotulada «Por ejemplo» (T05 la pone en `CIFRAS` con A78). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[4].etiqueta` | Horario de atención al público | (igual) | P5. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[5].etiqueta` | ¿A cuántos clientes atendéis a la semana, más o menos? | (igual) | P6. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].titulo` | Cómo os llegan los clientes | (igual) | Kit 03. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[0].etiqueta` | ¿Por dónde os contactan? | (igual) | P7. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[0].ayuda` | Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, email, gente que entra por la puerta, otros. | Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, correo, gente que entra por la puerta, otros. | Filtro 6: «correo», como en el resto de la web (y en el formulario corto, `## /`). Ofrece opciones, no presupone ninguna (§3.1). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[1].etiqueta` | ¿Quién responde a esas llamadas y mensajes, y desde qué dispositivo? | (igual) | P8. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[1].ayuda` | Por ejemplo: «la recepcionista, desde su móvil personal» o «un móvil de empresa que está en el mostrador». | (igual) | Ejemplo rotulado. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[2].etiqueta` | ¿Cuánto se tarda normalmente en contestar un mensaje? | (igual) | P9. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[3].etiqueta` | ¿Qué pasa con las llamadas y mensajes que llegan fuera de horario o cuando estáis ocupados? | (igual) | P10. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[3].ayuda` | ¿Sabéis cuántos se quedan sin contestar? | (igual) | P10. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[4].etiqueta` | ¿Cuántas consultas de clientes nuevos entran a la semana, más o menos? | (igual) | P11. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].titulo` | Agenda y citas | (igual) | Kit 03. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].entradilla` | Si en tu negocio no se trabaja con cita previa, salta este bloque entero: escribe «no trabajamos con cita» en la primera y sigue. | (igual) | Ya va con «si» (§3.1). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[0].etiqueta` | ¿Dónde apuntáis las citas? | (igual) | P12. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[0].ayuda` | Agenda de papel, Excel, Google Calendar, un programa concreto: dime cuál. | (igual) | P12. Opciones, no supuestos. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[1].etiqueta` | ¿Quién las apunta, y desde dónde se puede consultar la agenda? | (igual) | P13. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[2].etiqueta` | ¿Puede el cliente reservar él solo por internet, sin llamar? | (igual) | P14. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[3].etiqueta` | ¿Cómo le recordáis la cita al cliente? | (igual) | P15. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[3].ayuda` | ¿Quién lo hace, y cuánto tiempo se le va a la semana en eso? | (igual) | P15. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[4].etiqueta` | ¿Cuántas citas se pierden porque el cliente no aparece o cancela a última hora? | (igual) | P16. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[4].ayuda` | ¿Cuánto factura de media una cita? | (igual) | P16. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].titulo` | Presupuestos, cobro y facturación | (igual) | Kit 03. Pregunta por cómo factura el negocio; no dice que nosotros facturemos (A16). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[0].etiqueta` | ¿Cómo preparáis un presupuesto y cómo se lo hacéis llegar al cliente? | (igual) | P17. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[1].etiqueta` | ¿Cuántos presupuestos mandáis al mes, y cuántos acaban en trabajo? | (igual) | P18. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[2].etiqueta` | ¿Cómo cobráis? | (igual) | P19. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[2].ayuda` | Efectivo, tarjeta, transferencia, pago por internet, financiación… | (igual) | P19. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[3].etiqueta` | ¿Quién hace las facturas y con qué programa? | (igual) | P20. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[3].ayuda` | ¿Cuánto tiempo al mes os lleva? | (igual) | P20. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[4].etiqueta` | ¿Tenéis impagos, o pagos pendientes que se os olvida reclamar? | (igual) | P21. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].titulo` | Después de la venta | (igual) | Kit 03. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[0].etiqueta` | Cuando un cliente termina, ¿qué pasa? ¿Volvéis a hablar con él? | (igual) | P22. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[1].etiqueta` | ¿Pedís reseñas? Si sí, ¿cómo? | (igual) | P23. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[1].ayuda` | ¿Cuántas tenéis ahora mismo y con qué nota? | (igual) | P23. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[2].etiqueta` | ¿Vuestros clientes deberían volver cada cierto tiempo (revisión, mantenimiento, retoque, renovación)? | (igual) | P24. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[2].ayuda` | ¿Cómo les avisáis de que les toca? | (igual) | P24. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[3].etiqueta` | ¿Mandáis alguna comunicación cada cierto tiempo (novedades, ofertas, recordatorios)? | (igual) | P25. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[3].ayuda` | ¿Con qué herramienta? | ¿Con qué programa? | Decisión 6: «herramienta» queda fuera de lo que se enseña, y el resto del formulario dice «programa» (P20, P26). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].titulo` | Herramientas y datos | Programas y datos | Ídem: casa con P26 («programas y aplicaciones»). | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[0].etiqueta` | Lista de programas y aplicaciones que pagáis | (igual) | P26. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[0].ayuda` | De cada uno: nombre, para qué lo usáis y cuánto cuesta al mes, si lo sabes. | (igual) | P26. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[1].etiqueta` | ¿Dónde está la información de vuestros clientes? | (igual) | P27. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[1].ayuda` | Un programa, un Excel, la agenda de papel, el móvil de alguien, varias cosas a la vez. | (igual) | P27. Opciones, no supuestos. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[2].etiqueta` | ¿Hay copia de seguridad de eso? ¿Quién la hace y cada cuánto? | (igual) | P28. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[3].etiqueta` | ¿Quién tiene acceso a esa información? | (igual) | P29. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[3].ayuda` | Y una pregunta incómoda: si mañana esa persona no viene, ¿el negocio puede seguir funcionando? | (igual) | P29. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[4].etiqueta` | ¿Qué números miráis cada mes para saber si el negocio va bien? | (igual) | P30. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].titulo` | Tiempo, IA y objetivos | (igual) | Kit 03. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[0].etiqueta` | Las 3 tareas repetitivas que más tiempo os comen | Las tareas repetitivas que más tiempo os comen | Filtro 5 y PD-6: «3» cuenta como cifra y no tiene fila en el Anexo. La ayuda ya dice «de cada una». Si Álvaro prefiere dejar el número (es el formulario del kit 03), T05 la deja `(igual)` y la pone como excepción con motivo. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[0].ayuda` | De cada una, dime cuánto tiempo a la semana, aunque sea a ojo. | (igual) | P31. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[1].etiqueta` | ¿Cuánto cuesta más o menos una hora de trabajo de la persona que hace esas tareas? | (igual) | P32. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[1].ayuda` | Con lo que le cuesta a la empresa, aproximado. Si prefieres no decirlo, no pasa nada. | (igual) | P32. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[2].etiqueta` | ¿Habéis probado alguna herramienta de inteligencia artificial o de automatización? | ¿Habéis probado algún programa de inteligencia artificial o de automatización? | Decisión 6, como P25. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[2].ayuda` | ¿Qué pasó? | (igual) | P33. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[3].etiqueta` | ¿Qué os preocuparía de usar inteligencia artificial con vuestros clientes? | (igual) | P34. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[4].etiqueta` | Si pudieras arreglar una sola cosa del día a día, ¿cuál sería? | (igual) | P35. | propuesta |
-| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[5].etiqueta` | ¿Qué presupuesto tienes en mente para montarlo? ¿Y para el mantenimiento mensual? | (igual) | P36. | propuesta |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `metadata.title` | Auditoría gratuita — {n} | Auditoría de tu negocio — {n} | Nombre de la puerta 3 (P-11). A34 corregida (D-035): sin «gratuita». `{n}` = `site.nombre`. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `metadata.description` | Cuéntanos cómo trabajáis en diez minutos y te devolvemos un informe con las horas que se van cada semana, lo que cuestan y qué se arregla primero. | Cuéntanos cómo trabajáis, con tus palabras, y te mandamos por correo un informe de tu negocio. La auditoría no se cobra. | A72 (informe por correo), A34 corregida («no se cobra»). Sale «diez minutos» (A35, C hasta cronometrar). Salen «las horas que se van», «lo que cuestan» y «qué se arregla primero»: A36 y A52 siguen `por confirmar`. | aprobada |
+| /auditoria/ | `src/content/interiores.ts` | `cotasInterior.auditoria.cota` | Fondo · Auditoría | (igual) | Cota (D-014). | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `CabeceraInterior` · `arriba` | Cómo trabajáis | (igual) | Título del cuestionario del kit 03. No afirma nada. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `CabeceraInterior` · `em` | por dentro | (igual) | Ídem. | aprobada |
+| /auditoria/ | `src/components/ui/CabeceraInterior.tsx` | `jsx · enlace de vuelta` | Volver | (igual) | Interfaz. Lo pintan todas las interiores; la fila va solo aquí. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · entradilla` | {n} preguntas sobre el día a día del negocio. Se contesta en unos diez minutos, con tus palabras, y no hace falta que sepas nada de tecnología. | {n} preguntas sobre el día a día del negocio. Se contestan con tus palabras, y no hace falta que sepas nada de tecnología. La auditoría no se cobra. | A38 (`{n}` = `TOTAL_PREGUNTAS`), A56, A34 corregida. Sale «unos diez minutos» (A35, C hasta cronometrar). | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[0].titulo` | No contestes lo que no sepas | (igual) | A98: solo es obligatorio el primer paso. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[0].texto` | Déjalo en blanco. El informe marca los huecos en vez de inventárselos. | Déjalo en blanco. Solo hacen falta el nombre del negocio, el tuyo y tu correo. | A98. Sale «el informe marca los huecos»: A52 sigue `por confirmar`. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[1].titulo` | Los números a ojo valen | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[1].texto` | «Unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio. | Por ejemplo, «unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio. | A78: una cifra de ejemplo fuera de una maqueta va rotulada como ejemplo (o dentro de `[data-ejemplo]`; T05 la pone en `CIFRAS` con A78). | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[2].titulo` | Puedes parar y seguir | (igual) | A93. | aprobada |
+| /auditoria/ | `src/app/auditoria/page.tsx` | `jsx · notas[2].texto` | Lo que escribas se guarda en este navegador. Cierra la pestaña y vuelve cuando quieras. | Lo que escribas se guarda en este navegador hasta que lo envías. Cierra la pestaña y vuelve cuando quieras. | A93 ajustada por D-037: el borrador no caduca (`FormularioAuditoria.tsx:158-162`), así que «cuando quieras» es verdad y sale el «durante 30 días» de la versión anterior. A44: se borra solo si el envío sale bien (`:216-221`). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · borrador recuperado` | Recuperado lo que habías escrito en este navegador | (igual) | A93. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · inicio | Hemos puesto {n} | (igual) | Interfaz. `{n}` = nº de respuestas prerrellenadas; sigue «respuesta» o «respuestas» según sea una o varias. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · texto | de tu diagnóstico rápido. | (igual) | Va tras «Hemos puesto {n} respuesta(s)». Nombre de la puerta 2 (P-11): es el diagnóstico rápido, así que CA-17 lo admite (T05 lo pone en `DIAGNOSTICO_PERMITIDO`). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · una | Revísala y cámbiala si no cuadra. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · varias | Revísalas y cámbialas si no cuadran. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `AvisoPrerrelleno` · saltadas | Las que ya habías escrito no las hemos tocado. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · campo trampa` | No rellenes este campo | (igual) | Oculto (`aria-hidden`); solo lo ven los robots. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · rótulo | Antes de empezar | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · titular y `legend` | Tus datos | (igual) | Interfaz. También es la primera etiqueta del índice (`Progreso`). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · entradilla | Lo único obligatorio de todo el formulario. El resto puedes dejarlo a medias y mandarlo igual. | (igual) | A98 (la casilla de consentimiento va en este mismo paso). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo negocio` · `etiqueta` | Nombre del negocio | (igual) | A44 (datos de la auditoría). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `etiqueta` | A qué os dedicáis | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `ayuda` | Peluquería, taller, clínica, tienda… | (igual) | Ejemplos de sector; no afirman nada. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo ciudad` · `etiqueta` | Ciudad | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `etiqueta` | Vuestra web, si tenéis | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `ayuda` | Con ella se puede auditar también la mitad de fuera. Si no tenéis, déjalo vacío. | Si no tenéis, déjalo vacío. | Sale «se puede auditar también la mitad de fuera»: «miramos tu web por fuera» es A52, que sigue `por confirmar`. Filtro 1: «la mitad de fuera» no se entendía. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_nombre` · `etiqueta` | Tu nombre | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `etiqueta` | Tu correo | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `ayuda` | Es por donde te llega el informe. | (igual) | A72. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_telefono` · `etiqueta` | Teléfono | (igual) | A44 (opcional). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_telefono` · `ayuda` | Opcional. Solo si prefieres que te llamemos. | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · consentimiento` | Acepto que {n} guarde estos datos para preparar el informe y responderme. No se ceden a nadie y puedes pedir que se borren cuando quieras escribiendo a | Acepto que {n} guarde estos datos para preparar el informe y responderme. Los guardamos en Supabase y el informe lo redactamos con la IA de Anthropic; no se ceden a nadie más. Puedes pedir que se borren cuando quieras escribiendo a | A91: la casilla nombra a los dos encargados igual que `/privacidad/` (antes decía «no se ceden a nadie» sin ellos). A90 (Supabase), A96 (para qué), A44. «Cuando quieras» es un derecho (RGPD art. 17), no un reclamo de condición. `{n}` = `site.nombre`. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · consentimiento, final` | . Más detalle en la | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `jsx · enlace del consentimiento` | política de privacidad | (igual) | A44: `/privacidad/` nombra este formulario (CA-14). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `PasoContacto` · rótulo de lo que no se pide | Y lo que no te vamos a pedir | (igual) | A97. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[0]` | Datos de tus clientes: listados, fichas, historiales, nombres con teléfonos. | (igual) | A97. También lo pinta `Fondo` (`/sectores/<slug>/`). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[1]` | Contraseñas, claves ni accesos a tus programas. | (igual) | A97. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `loQueNoPedimos[2]` | Facturas, contabilidad ni exportaciones de tus bases de datos. | (igual) | A97. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · negocio | Dinos cómo se llama el negocio. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · nombre | Necesitamos tu nombre. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · correo | Revisa el correo: es por donde te llega el informe. | (igual) | A72. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `validar` · consentimiento | Hace falta que lo aceptes para poder escribirte. | (igual) | A98 (la casilla también es obligatoria). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Atrás | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón, paso 0 | Empezar el cuestionario | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Siguiente bloque | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón enviando | Enviando… | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón, último paso | Enviar la solicitud | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · botón | Enviar tal como está | (igual) | Interfaz (A98: se puede mandar a medias). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Navegacion` · a medias | Puedes mandarlo a medias: {n} contestadas | (igual) | A98. `{n}` = respuestas contestadas (recuento de la interfaz, no una cifra que afirme algo). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.validacion` | Faltan datos obligatorios. Vuelve al primer paso y revísalos. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.ritmo` | Has mandado ya varias solicitudes seguidas. Espera unos minutos y vuelve a intentarlo. | (igual) | A73: «unos minutos» casa con el límite de la función (3 envíos por correo cada 10 min). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.red` | No hemos podido conectar. Comprueba la conexión y vuelve a darle a enviar. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `mensajes.servidor` | Algo ha fallado por nuestro lado. Inténtalo en un rato. | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · antes del correo | Si sigue sin funcionar, escríbenos a | (igual) | A44 (correo directo). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · después del correo | y lo resolvemos por correo. | (igual) | A44. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · rótulo | Recibido | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · titular | Gracias{n}. | (igual) | Interfaz. `{n}` = «, » y el nombre de pila. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · texto | Nos han llegado {n} de las {n} respuestas. Lo primero que hacemos es leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de ponernos. | Nos han llegado {n} de las {n} respuestas. Lo leemos entero y, si falta algo importante, te escribimos antes de ponernos. | A56 (lo leemos nosotros). Sale «mirar tu web por fuera»: A52 sigue `por confirmar`. `{n}` = contestadas y `TOTAL_PREGUNTAS` (A38). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · plazo | El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte. | (igual) | A72 (procedimiento, D-035). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Mientras, mira las plantillas | (igual) | A57. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Volver al inicio | (igual) | Interfaz. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].titulo` | El negocio | (igual) | Cuestionario del kit 03 (A38). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[0].etiqueta` | Nombre del negocio | (igual) | P1. Pregunta: no afirma ni presupone (§3.1). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[1].etiqueta` | A qué os dedicáis, en una frase | (igual) | P2. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[2].etiqueta` | Ciudad | (igual) | P3. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[3].etiqueta` | ¿Cuántas personas trabajáis y qué hace cada una? | (igual) | P4. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[3].ayuda` | Por ejemplo: «3: yo atiendo y hago presupuestos, mi socio produce, y una persona a media jornada en recepción». | (igual) | A78: cifra de ejemplo, ya rotulada «Por ejemplo» (T05 la pone en `CIFRAS` con A78). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[4].etiqueta` | Horario de atención al público | (igual) | P5. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[0].preguntas[5].etiqueta` | ¿A cuántos clientes atendéis a la semana, más o menos? | (igual) | P6. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].titulo` | Cómo os llegan los clientes | (igual) | Kit 03. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[0].etiqueta` | ¿Por dónde os contactan? | (igual) | P7. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[0].ayuda` | Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, email, gente que entra por la puerta, otros. | Ordénalo de más a menos: teléfono, WhatsApp, Instagram, formulario de la web, correo, gente que entra por la puerta, otros. | Filtro 6: «correo», como en el resto de la web (y en el formulario corto, `## /`). Ofrece opciones, no presupone ninguna (§3.1). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[1].etiqueta` | ¿Quién responde a esas llamadas y mensajes, y desde qué dispositivo? | (igual) | P8. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[1].ayuda` | Por ejemplo: «la recepcionista, desde su móvil personal» o «un móvil de empresa que está en el mostrador». | (igual) | Ejemplo rotulado. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[2].etiqueta` | ¿Cuánto se tarda normalmente en contestar un mensaje? | (igual) | P9. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[3].etiqueta` | ¿Qué pasa con las llamadas y mensajes que llegan fuera de horario o cuando estáis ocupados? | (igual) | P10. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[3].ayuda` | ¿Sabéis cuántos se quedan sin contestar? | (igual) | P10. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[1].preguntas[4].etiqueta` | ¿Cuántas consultas de clientes nuevos entran a la semana, más o menos? | (igual) | P11. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].titulo` | Agenda y citas | (igual) | Kit 03. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].entradilla` | Si en tu negocio no se trabaja con cita previa, salta este bloque entero: escribe «no trabajamos con cita» en la primera y sigue. | (igual) | Ya va con «si» (§3.1). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[0].etiqueta` | ¿Dónde apuntáis las citas? | (igual) | P12. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[0].ayuda` | Agenda de papel, Excel, Google Calendar, un programa concreto: dime cuál. | (igual) | P12. Opciones, no supuestos. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[1].etiqueta` | ¿Quién las apunta, y desde dónde se puede consultar la agenda? | (igual) | P13. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[2].etiqueta` | ¿Puede el cliente reservar él solo por internet, sin llamar? | (igual) | P14. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[3].etiqueta` | ¿Cómo le recordáis la cita al cliente? | (igual) | P15. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[3].ayuda` | ¿Quién lo hace, y cuánto tiempo se le va a la semana en eso? | (igual) | P15. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[4].etiqueta` | ¿Cuántas citas se pierden porque el cliente no aparece o cancela a última hora? | (igual) | P16. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[2].preguntas[4].ayuda` | ¿Cuánto factura de media una cita? | (igual) | P16. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].titulo` | Presupuestos, cobro y facturación | (igual) | Kit 03. Pregunta por cómo factura el negocio; no dice que nosotros facturemos (A16). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[0].etiqueta` | ¿Cómo preparáis un presupuesto y cómo se lo hacéis llegar al cliente? | (igual) | P17. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[1].etiqueta` | ¿Cuántos presupuestos mandáis al mes, y cuántos acaban en trabajo? | (igual) | P18. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[2].etiqueta` | ¿Cómo cobráis? | (igual) | P19. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[2].ayuda` | Efectivo, tarjeta, transferencia, pago por internet, financiación… | (igual) | P19. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[3].etiqueta` | ¿Quién hace las facturas y con qué programa? | (igual) | P20. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[3].ayuda` | ¿Cuánto tiempo al mes os lleva? | (igual) | P20. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[3].preguntas[4].etiqueta` | ¿Tenéis impagos, o pagos pendientes que se os olvida reclamar? | (igual) | P21. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].titulo` | Después de la venta | (igual) | Kit 03. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[0].etiqueta` | Cuando un cliente termina, ¿qué pasa? ¿Volvéis a hablar con él? | (igual) | P22. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[1].etiqueta` | ¿Pedís reseñas? Si sí, ¿cómo? | (igual) | P23. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[1].ayuda` | ¿Cuántas tenéis ahora mismo y con qué nota? | (igual) | P23. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[2].etiqueta` | ¿Vuestros clientes deberían volver cada cierto tiempo (revisión, mantenimiento, retoque, renovación)? | (igual) | P24. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[2].ayuda` | ¿Cómo les avisáis de que les toca? | (igual) | P24. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[3].etiqueta` | ¿Mandáis alguna comunicación cada cierto tiempo (novedades, ofertas, recordatorios)? | (igual) | P25. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[4].preguntas[3].ayuda` | ¿Con qué herramienta? | ¿Con qué programa? | Decisión 6: «herramienta» queda fuera de lo que se enseña, y el resto del formulario dice «programa» (P20, P26). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].titulo` | Herramientas y datos | Programas y datos | Ídem: casa con P26 («programas y aplicaciones»). | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[0].etiqueta` | Lista de programas y aplicaciones que pagáis | (igual) | P26. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[0].ayuda` | De cada uno: nombre, para qué lo usáis y cuánto cuesta al mes, si lo sabes. | (igual) | P26. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[1].etiqueta` | ¿Dónde está la información de vuestros clientes? | (igual) | P27. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[1].ayuda` | Un programa, un Excel, la agenda de papel, el móvil de alguien, varias cosas a la vez. | (igual) | P27. Opciones, no supuestos. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[2].etiqueta` | ¿Hay copia de seguridad de eso? ¿Quién la hace y cada cuánto? | (igual) | P28. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[3].etiqueta` | ¿Quién tiene acceso a esa información? | (igual) | P29. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[3].ayuda` | Y una pregunta incómoda: si mañana esa persona no viene, ¿el negocio puede seguir funcionando? | (igual) | P29. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[5].preguntas[4].etiqueta` | ¿Qué números miráis cada mes para saber si el negocio va bien? | (igual) | P30. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].titulo` | Tiempo, IA y objetivos | (igual) | Kit 03. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[0].etiqueta` | Las 3 tareas repetitivas que más tiempo os comen | Las tareas repetitivas que más tiempo os comen | Filtro 5 y PD-6: «3» cuenta como cifra y no tiene fila en el Anexo. La ayuda ya dice «de cada una». Si Álvaro prefiere dejar el número (es el formulario del kit 03), T05 la deja `(igual)` y la pone como excepción con motivo. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[0].ayuda` | De cada una, dime cuánto tiempo a la semana, aunque sea a ojo. | (igual) | P31. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[1].etiqueta` | ¿Cuánto cuesta más o menos una hora de trabajo de la persona que hace esas tareas? | (igual) | P32. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[1].ayuda` | Con lo que le cuesta a la empresa, aproximado. Si prefieres no decirlo, no pasa nada. | (igual) | P32. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[2].etiqueta` | ¿Habéis probado alguna herramienta de inteligencia artificial o de automatización? | ¿Habéis probado algún programa de inteligencia artificial o de automatización? | Decisión 6, como P25. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[2].ayuda` | ¿Qué pasó? | (igual) | P33. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[3].etiqueta` | ¿Qué os preocuparía de usar inteligencia artificial con vuestros clientes? | (igual) | P34. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[4].etiqueta` | Si pudieras arreglar una sola cosa del día a día, ¿cuál sería? | (igual) | P35. | aprobada |
+| /auditoria/ | `src/content/auditoria.ts` | `bloques[6].preguntas[5].etiqueta` | ¿Qué presupuesto tienes en mente para montarlo? ¿Y para el mantenimiento mensual? | (igual) | P36. | aprobada |
 
 ## /estudio/
 
