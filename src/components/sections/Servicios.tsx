@@ -96,7 +96,9 @@ export function Servicios({ contenido = contenidoPortada }: { contenido?: Conten
             // lo pinta `foco.css`; el pozo encendido, `portada.css`.
             <li key={servicio.numero} className="servicio-pozo" tabIndex={0}>
               <div className="servicio-pozo-cabecera">
-                <span className="servicio-pozo-numero font-mono-label">{servicio.numero}</span>
+                <span className="servicio-pozo-numero font-mono-label" data-numeracion="">
+                  {servicio.numero}
+                </span>
                 <h3 className="servicio-pozo-nombre">{servicio.nombre}</h3>
                 <p className="servicio-pozo-descripcion">{servicio.descripcion}</p>
               </div>

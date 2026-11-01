@@ -664,7 +664,7 @@ const comprobaciones = [
   {
     id: "CA-7 · Rótulo «Ejemplo» · hero y /herramientas/",
     tarea: "T06",
-    pendiente: true,
+    pendiente: false,
     fn: rotuloEjemplo("T06"),
   },
   {
