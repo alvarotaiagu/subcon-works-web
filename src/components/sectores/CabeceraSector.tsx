@@ -20,9 +20,9 @@ export function CabeceraSector({ pagina }: { pagina: PaginaSector }) {
     >
       <p className="mt-8 max-w-xl text-lg text-apagado-abajo">{pagina.entradilla}</p>
       <div className="mt-10 flex flex-wrap gap-4">
-        <Boton href="#diagnostico">Haz el diagnóstico</Boton>
+        <Boton href="#diagnostico">Haz el diagnóstico rápido</Boton>
         <Boton href="/auditoria/" variante="secundario">
-          Auditoría gratis
+          Auditoría de tu negocio
         </Boton>
       </div>
     </CabeceraInterior>

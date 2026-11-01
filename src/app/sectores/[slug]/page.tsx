@@ -64,7 +64,7 @@ export default async function SectorPage({ params }: Props) {
         className="scroll-mt-28 border-y border-conducto bg-roca"
       >
         <div className="container-max py-[var(--space-section)]">
-          <p className="font-mono-label mb-4">Diagnóstico rápido · un minuto</p>
+          <p className="font-mono-label mb-4">Diagnóstico rápido</p>
           <h2
             id="diagnostico-titulo"
             className="max-w-2xl text-3xl font-medium text-hueso md:text-5xl"
@@ -73,7 +73,7 @@ export default async function SectorPage({ params }: Props) {
           </h2>
           <p className="mt-6 max-w-xl text-apagado-abajo">
             Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más
-            sentido tienen para vosotros. No se envía ni se guarda nada.
+            sentido tienen para vosotros. No se envía ni se guarda nada: las respuestas van en la dirección de la página.
           </p>
           <div className="mt-12">
             <Diagnostico contexto="sector" sector={pagina.codigo} hayPlantillas={hayPlantillas} />
@@ -82,7 +82,7 @@ export default async function SectorPage({ params }: Props) {
       </section>
 
       {/* 5 · Asistente: ejemplo fijo de un negocio inventado */}
-      <section id="asistente" aria-label="Ejemplo del asistente" className="container-max scroll-mt-28 py-[var(--space-section)]">
+      <section id="asistente" data-ejemplo aria-label="Ejemplo del asistente" className="container-max scroll-mt-28 py-[var(--space-section)]">
         <ChatEjemplo
           conversacion={pagina.conversacion}
           ejemploDe={pagina.ejemplo.de}
