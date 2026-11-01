@@ -220,7 +220,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     CA-12 en `OK` (mirada con la comprobación activada y devuelta a
     pendiente). Lo que queda para T05-T10 está en «Pendiente» de la PR.
 
-- [ ] **T05 · Aprobación de `textos.md` y listas del script.** *Manual, con
+- [x] **T05 · Aprobación de `textos.md` y listas del script.** *Manual, con
   Álvaro; el chat que lo aplica, Sonnet 5.5 medium.*
   - *Cubre*: P-11, D-033, CA-4 (filas), CA-12.
   - *Depende de*: T04.
@@ -238,6 +238,9 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
       P-03 de la 001 y P-11, sustituye a D-027 en lo que figura en él»).
   - *Hecho*: D-033 en `DECISIONES.md`; P-11 cerrada; ninguna fila
     `propuesta`; CA-4 (filas) y CA-12 en `OK`.
+  - hecha (2026-11-01): las 918 filas aprobadas tal cual, con los siete
+    nombres recomendados. Listas de `comprobar-textos.mjs` llenas; CA-4
+    (filas) y CA-12 activas y en `OK`. Lo que queda, en «Pendiente» de la PR.
 
 ## Código (en paralelo: T06, T07, T08 y T09)
 

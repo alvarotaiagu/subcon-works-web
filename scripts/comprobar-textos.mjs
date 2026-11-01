@@ -83,20 +83,103 @@ const VIGILANCIA_EXISTE = false;
  * CA-5 · Un nombre por producto: `{ producto, nombre, viejos: [..], anexo }`. Lo llena T05 con
  * lo aprobado (D-033, P-11). `viejos` = nombres que no pueden salir (los descriptivos no entran).
  */
-const NOMBRES = [];
+const NOMBRES = [
+  { producto: "Plataforma de tiendas", nombre: "Tienda online", viejos: ["Plataforma de tiendas"], anexo: "A01" },
+  { producto: "Informe de mejoras", nombre: "Informe de mejoras de tu web", viejos: [], anexo: "A03" },
+  { producto: "Formulario de contacto", nombre: "Formulario de contacto", viejos: ["Formularios de contacto propios"], anexo: "A29" },
+  { producto: "Asistente de la web", nombre: "Asistente en tu web", viejos: [], anexo: "A11" },
+  // Puerta 1 · «Propuesta para tu negocio»: en la web sale como botón, «Pedir una propuesta».
+  {
+    producto: "Puerta 1 · formulario corto",
+    nombre: "Pedir una propuesta",
+    viejos: ["Solicitar diagnóstico", "diagnóstico gratuito"],
+    anexo: "A30",
+  },
+  { producto: "Puerta 2 · diagnóstico rápido", nombre: "Diagnóstico rápido", viejos: ["Diagnóstico rápido · un minuto"], anexo: "A95" },
+  {
+    producto: "Puerta 3 · auditoría",
+    nombre: "Auditoría de tu negocio",
+    viejos: ["Auditoría gratuita", "Auditoría gratis", "Auditoría completa"],
+    anexo: "A34",
+  },
+];
 
 /**
  * CA-8 · Cifras permitidas: `{ texto, anexo, magnitud? }`. `{n}` = cualquier número. Una entrada
  * sin `anexo` no vale. Una misma `magnitud` (p. ej. «tiempo-formulario») tiene un solo valor en
  * todo el sitio. Las fechas legales (A10) también son entradas. Lo llena T05.
  */
-const CIFRAS = [];
+const CIFRAS = [
+  // Recuentos que salen de los datos
+  { texto: "{n} plantillas", anexo: "A05", magnitud: "plantillas" },
+  { texto: "{n} de {n}", anexo: "A05" }, // recuento filtrado de /plantillas/
+  { texto: "{n} preguntas", anexo: "A38", magnitud: "preguntas-auditoria" },
+  { texto: "{n} contestadas", anexo: "A38" },
+  { texto: "nos han llegado {n} de las {n} respuestas", anexo: "A38" },
+  // Interfaz y contacto
+  { texto: "© {n}", anexo: "A77" },
+  { texto: "dos versiones de la misma web", anexo: "A77" }, // `Mando`, solo con ?revision
+  { texto: "alvarot2601@gmail.com", anexo: "A44" },
+  // Legales y procedimiento
+  { texto: "articulo 6.1.b del rgpd", anexo: "A74" },
+  { texto: "cada tres meses", anexo: "A75", magnitud: "repaso-datos" },
+  { texto: "real decreto 933/2021", anexo: "A47" },
+  { texto: "redirecciones 301", anexo: "A06" },
+  // Recuentos de la propia web
+  { texto: "cuatro lineas de trabajo", anexo: "A76" },
+  { texto: "dos personas", anexo: "A76" },
+  { texto: "dos sitios", anexo: "A44" },
+  { texto: "dos formularios", anexo: "A44" },
+  // Ejemplos fuera de maqueta
+  { texto: "unas {n} llamadas a la semana", anexo: "A78" },
+  { texto: "{n}: yo atiendo", anexo: "A78" },
+  // «Uno», «dos» y «mitad» que no cuentan nada
+  { texto: "en uno llegue al otro", anexo: "A22" },
+  { texto: "el cliente elige uno", anexo: "A61" },
+  { texto: "uno a uno", anexo: "A63" },
+  { texto: "de cada uno", anexo: "A38" },
+  { texto: "en cada uno", anexo: "A70" },
+  { texto: "dos veces la misma noche", anexo: "A62" },
+  { texto: "para los dos", anexo: "A47" },
+  { texto: "en mitad de un tratamiento", anexo: "A11" },
+  // Descripciones de las plantillas ficticias (`plantillas.ts`)
+  { texto: "{n}/{n}/{n}/{n} dias", anexo: "A79" },
+  { texto: "es la mitad, la otra mitad", anexo: "A79" },
+  { texto: "3d", anexo: "A79" },
+  { texto: "de los {n}° gris verdoso a los {n}° melocoton", anexo: "A79" },
+  { texto: "{n} lomos", anexo: "A79" },
+  { texto: "siete piezas", anexo: "A79" },
+  { texto: "cinco pasos", anexo: "A79" },
+  { texto: "cada viaje es uno", anexo: "A79" },
+  { texto: "seis sellos", anexo: "A79" },
+  { texto: "tres quilometros", anexo: "A79" },
+  { texto: "cuatro colmenares", anexo: "A79" },
+  { texto: "cuatro tarros", anexo: "A79" },
+  { texto: "seis tramos", anexo: "A79" },
+  { texto: "dos piezas", anexo: "A79" },
+  { texto: "tres tamaños", anexo: "A79" },
+  { texto: "cinco veces", anexo: "A79" },
+  { texto: "doce simbolos", anexo: "A79" },
+  { texto: "seis cortes", anexo: "A79" },
+  { texto: "dos minutos", anexo: "A79" },
+  { texto: "de {n}:{n} a {n}:{n}", anexo: "A79" },
+  { texto: "ocho pasos", anexo: "A79" },
+];
 
 /**
  * CA-17 · Dónde «diagnóstico» sí puede salir (el diagnóstico rápido, D-001):
  * `{ ruta, selector?, motivo }`. Sin `selector`, vale toda la página. Lo llena T05.
  */
-const DIAGNOSTICO_PERMITIDO = [];
+const DIAGNOSTICO_PERMITIDO = [
+  { ruta: "", selector: '#contacto a[href$="/sectores/"]', motivo: "Puerta 2: el enlace «Diagnóstico rápido» del contacto" },
+  { ruta: "sectores/", motivo: "Índice de sectores: cada página trae el diagnóstico rápido" },
+  ...["sectores/clinicas-dentales/", "sectores/alojamientos-rurales/", "sectores/asesorias-y-despachos/"].map((ruta) => ({
+    ruta,
+    motivo: "Página de sector: el diagnóstico rápido, sus botones y su resultado (D-001)",
+  })),
+  { ruta: "auditoria/", motivo: "Aviso de respuestas que llegan «de tu diagnóstico rápido»" },
+  { ruta: "privacidad/", motivo: "Explica qué guarda el diagnóstico rápido (A95)" },
+];
 
 /** CA-6 · Palabras de la spec §3.5 que sugieren clientes: 0 apariciones en el bloque de plantillas. */
 const PALABRAS_CLIENTES = [
@@ -529,7 +612,7 @@ const comprobaciones = [
   {
     id: "CA-4 · Ninguna fila de textos.md sin aprobar",
     tarea: "T05",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       const sin = leerTextos().flatMap((t) =>
         t.filas.filter((f) => !APROBADA.has(f.estado)).map((f) => `${t.ruta} · ${f.fichero} · ${f.id}: estado «${f.estado || "vacío"}»`),
@@ -649,7 +732,7 @@ const comprobaciones = [
   {
     id: "CA-12 · Una tabla por ruta del export y filas *; ninguna sin estado",
     tarea: "T05",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       const tablas = leerTextos();
       const nombre = (t) => t.ruta.replace(/^\/+|\/+$/g, "");
