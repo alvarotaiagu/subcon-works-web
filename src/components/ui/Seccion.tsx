@@ -37,6 +37,10 @@ export function Seccion({ id, etiqueta, ref, className, style, children, ...rest
   const entrada = [...cortePortada, ...seccionesFueraDeLaPortada].find((e) => e.id === id);
   if (!entrada) throw new Error(`Seccion: «${id}» no está en cortePortada`);
 
+  // El rótulo de puerta (003 §3.1, CA-15) sale del corte; una etiqueta propia lo sustituye.
+  // Una sola por sección.
+  const rotulo = etiqueta ?? entrada.puerta;
+
   const propio = useRef<HTMLElement | null>(null);
   const seccion = ref ?? propio;
   useDescubrir(seccion);
@@ -52,12 +56,12 @@ export function Seccion({ id, etiqueta, ref, className, style, children, ...rest
       <div className="container-max">
         <p className="seccion-cabecera">
           <Cota>{entrada.cota}</Cota>
-          {etiqueta && (
+          {rotulo && (
             <>
               <span aria-hidden="true" className="seccion-separador">
                 ·
               </span>
-              <span className="font-mono-label seccion-etiqueta">{etiqueta}</span>
+              <span className="font-mono-label seccion-etiqueta">{rotulo}</span>
             </>
           )}
         </p>

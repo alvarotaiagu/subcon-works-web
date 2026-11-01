@@ -4,12 +4,11 @@ import { cifras } from "@/content/cifras";
 import { loQueRecibes, loQueNoPedimos, TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { FondoObjeto } from "./FondoObjeto";
 
-// «36» y «0 €» (spec 002 §3.5): las dos cifras de la auditoría de `cifras.ts`, buscadas
-// por lo que son (no por su posición, que otra tarea puede cambiar).
+// «36» (spec 002 §3.5): la cifra de la auditoría de `cifras.ts`, buscada por lo que es (no por
+// su posición). «0 €» salió en la 003 (A34, A80: el precio se dice «no se cobra»).
 const preguntas = cifras.find((c) => c.etiqueta.startsWith("Preguntas de la auditoría"));
-const coste = cifras.find((c) => c.sufijo.trim() === "€");
-if (!preguntas || !coste) throw new Error("Fondo: faltan las cifras de la auditoría en cifras.ts");
-const cifrasFondo = [preguntas, coste];
+if (!preguntas) throw new Error("Fondo: falta la cifra de la auditoría en cifras.ts");
+const cifrasFondo = [preguntas];
 
 /**
  * «Fondo · Auditoría» (spec 002 §3.11, plan PD-12): el final del corte y del objeto. La
