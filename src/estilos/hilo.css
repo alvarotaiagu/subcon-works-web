@@ -58,4 +58,117 @@
   .es-hilo-quieto .cota {
     transition: none;
   }
+
+  /* El profundímetro (layout/Profundimetro.tsx): fijo al borde derecho, la escala de la
+     Superficie al Fondo con la cota actual y lo recorrido en lima. Solo desde 1280 px: con
+     un gutter de 64 px, la lectura más larga («Fondo») cabe sin pisar el contenido. En la
+     superficie (el hero, claro) no se ve; se enciende al bajar. */
+  .profundimetro {
+    position: fixed;
+    top: 28vh;
+    right: 18px;
+    z-index: 60;
+    display: none;
+    height: 44vh;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  @media (min-width: 1280px) {
+    .profundimetro {
+      display: block;
+    }
+  }
+  .profundimetro.es-en-superficie {
+    opacity: 0;
+  }
+  .prof-escala {
+    position: relative;
+    width: 1px;
+    height: 100%;
+    background: var(--conducto);
+  }
+  .prof-relleno {
+    position: absolute;
+    inset: 0;
+    background: var(--superficie);
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+  }
+  /* Una marca por sección, hacia el contenido. */
+  .prof-marca {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 1px;
+    background: var(--conducto);
+    transition: background-color var(--dur-fast) ease;
+  }
+  .prof-marca.es-pasada {
+    background: var(--superficie);
+  }
+  /* El cursor ocupa la escala entera y baja su propio alto: el rombo va en su borde de arriba. */
+  .prof-cursor {
+    position: absolute;
+    inset: 0;
+  }
+  .prof-cursor::before {
+    content: "";
+    position: absolute;
+    top: -3.5px;
+    left: -3px;
+    width: 7px;
+    height: 7px;
+    background: var(--superficie);
+    transform: rotate(45deg);
+  }
+  .prof-lectura {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    transform: translateY(-50%);
+    font-family: var(--letra-kode);
+    font-size: 0.625rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--hueso);
+  }
+  /* El scroll mueve el cursor y lo recorrido sin JS donde se puede; si no, lo hace el
+     componente. `animation-timeline` va detrás del shorthand, que lo reinicia. */
+  @supports (animation-timeline: scroll()) {
+    .prof-relleno {
+      animation: prof-llena auto linear both;
+      animation-timeline: scroll(root block);
+    }
+    .prof-cursor {
+      animation: prof-baja auto linear both;
+      animation-timeline: scroll(root block);
+    }
+    /* Seguir el scroll no es movimiento añadido: la regla de movimiento reducido de
+       globals.css (sin capa) les pondría 0,01 ms; un !important en capa gana a esa. */
+    @media (prefers-reduced-motion: reduce) {
+      .prof-relleno,
+      .prof-cursor {
+        animation-duration: auto !important;
+      }
+    }
+  }
+  @keyframes prof-llena {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes prof-baja {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
 }
