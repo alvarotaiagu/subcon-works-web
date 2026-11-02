@@ -14,7 +14,7 @@ export function DiagnosticoRapido() {
   return (
     <Seccion
       id="diagnostico"
-      etiqueta="Diagnóstico rápido · un minuto"
+      etiqueta="Diagnóstico rápido"
       aria-labelledby="diagnostico-titulo"
       className="scroll-mt-28 py-[var(--space-section)]"
     >
@@ -27,7 +27,7 @@ export function DiagnosticoRapido() {
         />
         <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
           Unas preguntas de un toque sobre cómo trabajáis y, al acabar, las mejoras que más sentido
-          tienen para vosotros. No se envía ni se guarda nada.
+          tienen para vosotros. No se envía ni se guarda nada: las respuestas van en la dirección de la página.
         </p>
 
         <div className="mt-14">

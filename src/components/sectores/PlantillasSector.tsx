@@ -45,12 +45,12 @@ export function PlantillasSector({
           >
             Así puede quedar la web.
           </h2>
-          <div className="border-l-2 border-superficie/50 pl-5">
+          <div data-aviso-inventadas className="border-l-2 border-superficie/50 pl-5">
             <p className="font-mono-label mb-2 text-[10px] text-superficie">Aviso</p>
             <p className="text-sm text-apagado-abajo">
               Todos los negocios que aparecen son <strong className="font-medium text-hueso">inventados</strong>:
               nombres, direcciones, precios y textos. No son clientes ni existen. Están para enseñar
-              cómo queda una web terminada, con contenido de verdad en vez de «Lorem ipsum».
+              cómo queda una web terminada, con todo su contenido en vez de «Lorem ipsum».
             </p>
           </div>
         </div>

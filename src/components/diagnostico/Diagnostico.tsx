@@ -307,7 +307,7 @@ export function Diagnostico({
           El diagnóstico rápido necesita JavaScript para ir pregunta a pregunta. Si lo tienes
           desactivado, puedes pedirnos directamente la{" "}
           <a href={withBasePath("/auditoria/")} className="link-underline text-hueso">
-            auditoría gratuita
+            auditoría de tu negocio
           </a>
           .
         </p>

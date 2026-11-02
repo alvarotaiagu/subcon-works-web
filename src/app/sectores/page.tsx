@@ -22,8 +22,8 @@ export default function SectoresPage() {
         className="mb-14"
       >
         <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
-          Cada página habla de los problemas de ese tipo de negocio, trae el diagnóstico rápido con
-          el sector ya elegido y enseña cómo contestaría su asistente.
+          Cada página cuenta situaciones habituales en ese tipo de negocio, trae el diagnóstico rápido
+          con el sector ya elegido y enseña, con un ejemplo, cómo contestaría su asistente.
         </p>
       </CabeceraInterior>
 

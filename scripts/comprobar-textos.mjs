@@ -203,7 +203,8 @@ const BLOQUES_PLANTILLAS = [
     tarea: "T09",
     rutas: ["sectores/clinicas-dentales/", "sectores/alojamientos-rurales/", "sectores/asesorias-y-despachos/"],
     seccion: "#plantillas-sector",
-    tarjetas: "[data-foco-dentro]",
+    // `TarjetaPlantilla` en su variante por defecto (la de `PlantillasSector`) no lleva `data-foco-dentro`: cada web es un enlace a su demo.
+    tarjetas: 'a[target="_blank"]',
     // Sin plantillas válidas en el sector, el bloque no sale ni con título (P-01): no es un fallo.
     opcional: true,
   },
@@ -610,7 +611,7 @@ const comprobaciones = [
   ...["T06", "T07", "T08", "T09"].map((tarea) => ({
     id: `CA-4 · Filas aprobadas en su fichero · ficheros de ${tarea}`,
     tarea,
-    pendiente: tarea !== "T07" && tarea !== "T08", // T07 y T08 hechas; T06 y T09 ponen la suya al terminar
+    pendiente: !["T07", "T08", "T09"].includes(tarea), // T07, T08 y T09 hechas; T06 pone la suya al terminar
     fn: async () => filasEnFichero(tarea),
   })),
   {
@@ -662,7 +663,7 @@ const comprobaciones = [
   {
     id: "CA-6 · … · PlantillasSector",
     tarea: "T09",
-    pendiente: true,
+    pendiente: false,
     fn: avisoDeInventadas("sector"),
   },
   {
@@ -680,7 +681,7 @@ const comprobaciones = [
   {
     id: "CA-7 · … · ChatEjemplo y maquetas de sector",
     tarea: "T09",
-    pendiente: true,
+    pendiente: false,
     fn: rotuloEjemplo("T09"),
   },
   {

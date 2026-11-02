@@ -81,3 +81,49 @@ test("metadatos y cabecera rellenos", () => {
     assert.ok(s.ejemplo.de.trim() && s.ejemplo.negocio.includes("Demo"), `${s.codigo}: negocio de ejemplo`);
   }
 });
+
+// ── 003 · T09 · textos aprobados (textos.md, D-033) ────────────────────────
+
+/** Todo el texto que una página de sector pinta desde `sectores.ts`, sin la conversación de ejemplo. */
+const textosDeSector = (s: (typeof sectores)[number]): string[] => [
+  s.nombre,
+  s.etiqueta,
+  s.titular,
+  s.entradilla,
+  s.metadatos.title,
+  s.metadatos.description,
+  ...s.problemas.flatMap((p) => [p.titulo, p.texto]),
+];
+
+test("003 · ni «propio», ni «gratis», ni condiciones en los textos de sector", () => {
+  for (const s of sectores) {
+    for (const t of textosDeSector(s)) {
+      assert.doesNotMatch(t, /(?<!tu )\bpropi[oa]s?\b|gratis|gratuit|sin compromiso|sin coste/i, `${s.codigo}: «${t}»`);
+    }
+  }
+});
+
+test("003 · los sectores no dan por hecho WhatsApp en un titular (P-13, CA-9)", () => {
+  for (const s of sectores) {
+    for (const t of [s.titular, ...s.problemas.map((p) => p.titulo)]) {
+      assert.doesNotMatch(t, /whatsapp/i, `${s.codigo}: «${t}»`);
+    }
+  }
+});
+
+test("003 · cada problema es una situación habitual: sin «siempre» ni «el paciente que no vuelve»", () => {
+  for (const s of sectores) {
+    for (const p of s.problemas) {
+      assert.doesNotMatch(p.texto, /son siempre|pide cita en otra clínica|se queda también con los que ya te conocen/i, `${s.codigo}: «${p.texto}»`);
+    }
+  }
+});
+
+test("003 · el registro de viajeros cita su norma (A47) y Booking y Airbnb van sin cifra (A42)", () => {
+  const rural = sectores.find((s) => s.codigo === "rural");
+  assert.ok(rural);
+  const textos = rural.problemas.map((p) => p.texto).join(" ");
+  assert.match(textos, /Real Decreto 933\/2021/);
+  assert.match(textos, /Según sus condiciones, Booking y Airbnb cobran comisión/);
+  assert.doesNotMatch(textos, /\d+\s?%|€/);
+});

@@ -458,7 +458,7 @@ export const mejoras: Mejora[] = [
     id: "reservas-directas",
     titulo: { base: "Reservas en tu propia web" },
     queResuelve: {
-      base: "Un motor de reservas en tu web, con el calendario enlazado al de Booking y Airbnb para no vender dos veces la misma noche. Quien ya te conoce reserva contigo, y las plataformas quedan para que te encuentren los nuevos.",
+      base: "Un motor de reservas en tu web, con el calendario enlazado al de Booking y Airbnb para no vender dos veces la misma noche. Así, quien ya te conoce puede reservar contigo, y las plataformas quedan para que te encuentren los nuevos.",
     },
     enlace: { portada: "/plantillas/", sector: ENLACE_PLANTILLAS_SECTOR },
     sectores: ["rural"],
@@ -482,7 +482,7 @@ export const mejoras: Mejora[] = [
     id: "formularios",
     titulo: { base: "Mensajes de la web que llegan ordenados" },
     queResuelve: {
-      base: "Un formulario propio en tu web que te deja cada mensaje en tu correo, con los mismos datos siempre, y le confirma a quien escribe que lo has recibido. Sin el formulario de otra empresa incrustado.",
+      base: "Un formulario en tu web que recibe y guarda cada mensaje, con los mismos datos siempre y sin el formulario de otra empresa incrustado.",
     },
     enlace: { portada: "/herramientas/#formularios", sector: "/herramientas/#formularios" },
     sectores: TODOS,
@@ -498,15 +498,15 @@ export const mejoras: Mejora[] = [
   },
   {
     id: "web-nueva",
-    titulo: { base: "Una web que puedas cambiar tú" },
+    titulo: { base: "Una web rápida y al día" },
     queResuelve: {
-      base: "Una web rápida en el móvil, que cuenta lo que haces y cómo contactarte, y en la que cambiar un horario o un texto no depende de nadie.",
+      base: "Una web rápida en el móvil, que cuenta lo que haces y cómo contactarte, y que cambiamos cuando nos lo pidas.",
       dental:
-        "Una web rápida en el móvil, con tus tratamientos, tu equipo y cómo pedir cita, en la que cambiar un horario o un texto no depende de nadie.",
+        "Una web rápida en el móvil, con tus tratamientos, tu equipo y cómo pedir cita, que cambiamos cuando nos lo pidas.",
       rural:
-        "Una web rápida en el móvil, con tus fotos, tus habitaciones y la zona, en la que cambiar una tarifa o un texto no depende de nadie.",
+        "Una web rápida en el móvil, con tus fotos, tus habitaciones y la zona, que cambiamos cuando nos lo pidas.",
       despachos:
-        "Una web rápida en el móvil, que explica qué asuntos llevas y cómo se trabaja contigo, y en la que cambiar un texto no depende de nadie.",
+        "Una web rápida en el móvil, que explica qué asuntos llevas y cómo se trabaja contigo, y que cambiamos cuando nos lo pidas.",
     },
     enlace: { portada: "/plantillas/", sector: ENLACE_PLANTILLAS_SECTOR },
     sectores: TODOS,
@@ -540,7 +540,7 @@ export const mejoras: Mejora[] = [
       base: "Los papeles, en un sitio ordenado",
       dental: "La ficha del paciente, antes de la primera visita",
       rural: "Los datos del huésped, antes de que llegue",
-      despachos: "La documentación, ordenada y no por WhatsApp",
+      despachos: "La documentación, ordenada en un solo sitio",
     },
     queResuelve: {
       base: "Un formulario donde el cliente te manda lo que le pides, con la lista de lo que falta a la vista. Todo llega junto y con su nombre, no repartido entre el correo y el móvil.",
@@ -549,7 +549,7 @@ export const mejoras: Mejora[] = [
       rural:
         "El huésped deja los datos del registro de viajeros en un formulario antes de llegar, y no hay que pedírselos uno a uno en la entrada.",
       despachos:
-        "Cada cliente sube su documentación a un formulario con la lista de lo que falta. Llega junta y con su nombre, no repartida entre el correo y el WhatsApp.",
+        "Cada cliente sube su documentación a un formulario con la lista de lo que falta. Llega junta y con su nombre, en vez de repartida entre varios sitios.",
     },
     sectores: TODOS,
   },
@@ -710,7 +710,7 @@ export const reglas: Regla[] = [
     mejora: "ficha-google",
     si: { pregunta: "web", en: ["nada"] },
     prioridad: 72,
-    porque: { base: "Porque nos dijiste que tampoco tienes ficha de Google, y es lo primero que sale en el mapa." },
+    porque: { base: "Porque nos dijiste que tampoco tienes ficha de Google." },
   },
   {
     mejora: "ficha-google",
@@ -728,7 +728,7 @@ export const reglas: Regla[] = [
     mejora: "ficha-google",
     si: { pregunta: "web", en: ["antigua"] },
     prioridad: 50,
-    porque: { base: "Porque nos dijiste que tu web no la toca nadie, y la ficha de Google se suele quedar igual de atrás." },
+    porque: { base: "Porque nos dijiste que tu web no la toca nadie: conviene revisar también la ficha de Google." },
   },
   {
     mejora: "informe-web",
@@ -800,21 +800,21 @@ export const relleno: RellenoSector[] = [
   {
     sector: "dental",
     mejoras: ["reservas-online", "resenas", "asistente", "ficha-google", "formularios"],
-    porque: "Es de lo que más compensa en una clínica dental.",
+    porque: "La recomendamos en cualquier clínica dental.",
   },
   {
     sector: "rural",
     mejoras: ["reservas-directas", "resenas", "ficha-google", "asistente", "web-nueva"],
-    porque: "Es de lo que más compensa en un alojamiento rural.",
+    porque: "La recomendamos en cualquier alojamiento rural.",
   },
   {
     sector: "despachos",
     mejoras: ["documentacion", "formularios", "asistente", "resenas", "ficha-google"],
-    porque: "Es de lo que más compensa en una asesoría o un despacho.",
+    porque: "La recomendamos en cualquier asesoría o despacho.",
   },
   {
     sector: "otro",
     mejoras: ["ficha-google", "resenas", "asistente", "formularios", "web-nueva"],
-    porque: "Es de lo que más compensa en casi cualquier negocio.",
+    porque: "La recomendamos en casi cualquier negocio.",
   },
 ];
