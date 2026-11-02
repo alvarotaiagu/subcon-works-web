@@ -8,8 +8,8 @@ import { plantillas, sectoresPlantillas } from "@/content/plantillas";
 import { conDorsal } from "@/lib/dorsales";
 
 const etiquetaRecuento =
-  cifras.find((c) => c.etiqueta.startsWith("Plantillas propias"))?.etiqueta ??
-  "Plantillas propias publicadas y en línea";
+  cifras.find((c) => c.etiqueta.startsWith("Plantillas publicadas"))?.etiqueta ??
+  "Plantillas publicadas, con su demo entera";
 
 /**
  * «−1 · La plantilla» (spec 002 §3.8, préstamo de la dirección B). Solo las destacadas,

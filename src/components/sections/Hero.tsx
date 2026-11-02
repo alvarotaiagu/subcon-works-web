@@ -694,12 +694,12 @@ export function Hero() {
             {/* Tras un gesto, la región viva ya dice lo mismo: esta se calla para no leerlo dos veces. */}
             <p
               className="hero-oculto"
-              data-lectura-auto=""
+              data-lectura-auto="" data-ejemplo=""
               aria-hidden={viva === textoLectura(flujos[lectura]) ? true : undefined}
             >
               <span>{textoLectura(flujos[lectura])}</span>
             </p>
-            <p className="hero-oculto" aria-live="polite" aria-atomic="true">
+            <p className="hero-oculto" aria-live="polite" aria-atomic="true" data-ejemplo="">
               <span>{viva}</span>
             </p>
 

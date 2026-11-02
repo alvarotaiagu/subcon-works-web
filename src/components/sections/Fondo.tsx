@@ -29,17 +29,14 @@ export function Fondo({ hilo = false }: { hilo?: boolean }) {
             <Titular
               nivel={2}
               id="fondo-titulo"
-              arriba="Antes de venderte nada, te decimos qué te está costando dinero."
+              arriba="Antes de hablar de precio, miramos cómo trabajáis."
             />
             <p className="mt-8 max-w-md text-lg text-apagado-abajo">
-              Contestas {TOTAL_PREGUNTAS} preguntas sobre cómo trabajáis —diez minutos, con tus
-              palabras— y te devolvemos un informe con las horas que se van cada semana, lo que
-              cuestan al año y qué se arregla primero.
+              Contestas {TOTAL_PREGUNTAS} preguntas sobre cómo trabajáis, con tus palabras, y te
+              mandamos por correo un informe de tu negocio.
             </p>
             <p className="mt-4 max-w-md text-apagado-abajo">
-              Sin coste, sin compromiso y sin que tengas que darnos acceso a nada. Si con el
-              informe te apañas por tu cuenta, nos parece bien: al menos ya sabes por dónde ibas
-              sangrando.
+              La auditoría no se cobra, y no te pedimos acceso a ninguno de tus programas.
             </p>
           </div>
 
@@ -72,8 +69,8 @@ export function Fondo({ hilo = false }: { hilo?: boolean }) {
                 ))}
               </ul>
               <p className="mt-5 text-sm text-apagado-abajo">
-                La auditoría se hace sobre cómo trabajáis, no entrando en vuestros sistemas. Si
-                algo de eso llega igualmente, se devuelve sin abrirlo.
+                La auditoría se hace sobre cómo trabajáis, sin entrar en vuestros programas. Si aun
+                así nos llega algo de eso, lo borramos y te avisamos.
               </p>
             </div>
           </div>

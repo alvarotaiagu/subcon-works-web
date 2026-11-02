@@ -137,7 +137,7 @@ export default function HerramientasPage() {
               <ol className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
                 {principal.ventajas.items.map((v, i) => (
                   <li key={v.titulo} className="border-t border-conducto pt-6">
-                    <span className="font-mono-label text-xs text-superficie" aria-hidden="true">
+                    <span className="font-mono-label text-xs text-superficie" aria-hidden="true" data-numeracion="">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <h4 className="mt-3 text-xl font-medium text-hueso">{v.titulo}</h4>

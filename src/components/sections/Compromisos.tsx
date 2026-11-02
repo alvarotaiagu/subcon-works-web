@@ -21,7 +21,7 @@ export function Compromisos({ className }: { className?: string }) {
         <ol className="pozo">
           {compromisos.map((c, i) => (
             <li key={c.titulo} className="pozo-parada">
-              <span className="pozo-numero" aria-hidden="true">
+              <span className="pozo-numero" aria-hidden="true" data-numeracion="">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="pozo-titulo">{c.titulo}</h3>
