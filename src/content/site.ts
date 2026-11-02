@@ -14,9 +14,9 @@ export const site = {
   nav: [
     { label: "Servicios", href: "/#servicios" },
     { label: "Soluciones", href: "/#soluciones" },
+    { label: "Proceso", href: "/#proceso" },
     { label: "Webs de ejemplo", href: "/#plantillas" },
     { label: "Productos", href: "/herramientas/" },
-    { label: "Proceso", href: "/#proceso" },
     { label: "Contacto", href: "/#contacto" },
   ],
   cta: "Pedir una propuesta",

@@ -78,6 +78,8 @@
 
   /* Espaciado */
   --space-section: clamp(6rem, 16vw, 12rem);
+  /* La portada respira la mitad: ~192 px entre secciones en escritorio, ~112 en móvil. */
+  --space-portada: clamp(3.5rem, 9vw, 6rem);
   --space-xl: 6rem;
   --space-lg: 3rem;
   --space-md: 1.5rem;

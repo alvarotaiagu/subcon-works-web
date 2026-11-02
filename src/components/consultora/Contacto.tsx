@@ -14,7 +14,7 @@ import { FormularioContacto } from "./FormularioContacto";
  */
 export function Contacto() {
   return (
-    <Seccion id="contacto" aria-labelledby="contacto-titulo" className="py-[var(--space-section)]">
+    <Seccion id="contacto" aria-labelledby="contacto-titulo" className="py-[var(--space-portada)]">
       <div className="container-max">
         <div className="grid gap-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-24">
           <div className="lg:sticky lg:top-28 lg:self-start">

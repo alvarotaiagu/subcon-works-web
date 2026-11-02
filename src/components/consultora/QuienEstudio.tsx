@@ -15,7 +15,7 @@ import { personas } from "@/content/estudio";
  */
 export function QuienEstudio() {
   return (
-    <Seccion id="equipo" aria-labelledby="equipo-titulo" className="py-[var(--space-section)]">
+    <Seccion id="equipo" aria-labelledby="equipo-titulo" className="py-[var(--space-portada)]">
       <div className="container-max">
         <div className="grid gap-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-24">
           <div className="lg:sticky lg:top-28 lg:self-start">
@@ -43,7 +43,7 @@ export function QuienEstudio() {
           </div>
         </div>
 
-        <Compromisos className="mt-[var(--space-section)]" />
+        <Compromisos className="mt-[var(--space-portada)]" />
       </div>
     </Seccion>
   );

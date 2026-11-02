@@ -5,7 +5,7 @@
 
 @layer components {
   .proceso {
-    padding-block: var(--space-section);
+    padding-block: var(--space-portada);
   }
   .proceso .titular {
     margin-bottom: 3rem;

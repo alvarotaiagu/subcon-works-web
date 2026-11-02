@@ -85,7 +85,7 @@ export function Servicios({ contenido = contenidoPortada }: { contenido?: Conten
   }, []);
 
   return (
-    <Seccion id="servicios" className="py-[var(--space-section)]">
+    <Seccion id="servicios" className="py-[var(--space-portada)]">
       <div className="container-max">
         <Titular nivel={2} arriba={contenido.arriba} em={contenido.em} className="max-w-3xl" />
         <p className="mt-6 max-w-xl text-apagado-abajo">{contenido.intro}</p>
