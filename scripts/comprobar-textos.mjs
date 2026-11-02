@@ -62,9 +62,34 @@ const FRASES_C = [
   { id: "A19", frase: "resumen cada semana" },
   { id: "A19", frase: "la alerta nos llega" },
   { id: "A20", frase: "auditoria de la ficha" },
-  { id: "A14", frase: "al telefono" },
+  { id: "A14", frase: "al telefono", soloSrc: true }, // soloSrc: en out/ es copia del mismo texto de src/
   { id: "A16", frase: "factura emitida" },
   { id: "A21", frase: "video (como servicio)", patron: /(?<![<\/\w.-])video(?![\w-])/, soloSrc: true },
+];
+
+/**
+ * CA-3 · Excepciones por frase de nivel C: `{ id, fichero, motivo }` (`id` del Anexo de la frase;
+ * `fichero` relativo a la raíz y con «/»). La frase aparece, pero no como lo que el Anexo marca
+ * como C (T10, 2026-11-02). Una excepción nueva lleva motivo y la ve T12.
+ */
+const EXCEPCIONES_NIVEL_C = [
+  {
+    id: "A14",
+    fichero: "src/content/diagnostico.ts",
+    motivo:
+      "Filas aprobadas (A61, B) de `mejoras[reservas-online].queResuelve`: «dejas de cuadrar huecos al teléfono» describe lo que el calendario le quita al cliente; no dice que Undertactics atienda el teléfono ni que lo haga el asistente (A14, C).",
+  },
+  {
+    id: "A21",
+    fichero: "src/content/consultora.ts",
+    motivo:
+      "Fila aprobada `quien.personas.Yanin.rol` «Foto, vídeo y redes» (A40 corregida, D-035): es el oficio de una persona del estudio, no el vídeo como servicio (A21, C), que salió de la web.",
+  },
+  {
+    id: "A21",
+    fichero: "src/content/estudio.ts",
+    motivo: "Fila aprobada `personas[1].rol` «Foto, vídeo y redes» (A40 corregida, D-035): rol de Yanin, no vídeo como servicio (A21, C).",
+  },
 ];
 
 /**
@@ -113,6 +138,7 @@ const CIFRAS = [
   // Recuentos que salen de los datos
   { texto: "{n} plantillas", anexo: "A05", magnitud: "plantillas" },
   { texto: "{n} de {n}", anexo: "A05" }, // recuento filtrado de /plantillas/
+  { texto: "todos ({n})", anexo: "A05" }, // botón «Todos» del filtro de /plantillas/ (recuento de los datos)
   { texto: "{n} preguntas", anexo: "A38", magnitud: "preguntas-auditoria" },
   { texto: "{n} contestadas", anexo: "A38" },
   { texto: "nos han llegado {n} de las {n} respuestas", anexo: "A38" },
@@ -267,7 +293,7 @@ const DUENOS = {
     "src/content/sectores.ts",
     "src/content/diagnostico.ts",
     "src/content/sectores.test.ts",
-    "src/content/diagnostico.reglas.test.ts",
+    "src/lib/diagnostico.reglas.test.ts",
     "src/app/sectores/**",
     "src/components/sectores/*",
     "src/components/diagnostico/*",
@@ -359,7 +385,8 @@ function apariciones(ficheros, re, excepciones = [], { soloSrc = false } = {}) {
   return res;
 }
 
-const lista = (xs) => "\n" + xs.slice(0, 20).map((x) => "  " + x).join("\n") + (xs.length > 20 ? `\n  … y ${xs.length - 20} más` : "");
+const LIMITE_LISTA = process.env.TODAS ? Infinity : 20; // TODAS=1: la lista entera, sin recortar
+const lista = (xs) => "\n" + xs.slice(0, LIMITE_LISTA).map((x) => "  " + x).join("\n") + (xs.length > LIMITE_LISTA ? `\n  … y ${xs.length - LIMITE_LISTA} más` : "");
 
 function exigirVacio(xs, que) {
   if (xs.length) throw new Error(`${que}: ${xs.length} aparición(es)${lista(xs)}`);
@@ -434,7 +461,18 @@ function filasEnFichero(tarea) {
       const texto = norm(comoSeLee(textoDe(fila.fichero)));
       const quitar = fila.nuevo === "(quitar)";
       const buscado = fila.nuevo === "(igual)" || quitar ? fila.actual : fila.nuevo;
-      const esta = regExpDeTexto(buscado).test(texto);
+      let esta = regExpDeTexto(buscado).test(texto);
+      if (quitar && esta) {
+        // Un mismo texto puede quitarse de unas filas y seguir (igual) en otras del fichero (p. ej.
+        // «Ver cómo funciona» en servicios[1] y [2]): solo sobra si hay más apariciones que filas
+        // que lo conservan. Se cuenta por clave, no por texto suelto en todo el fichero.
+        const apariciones = (texto.match(new RegExp(regExpDeTexto(buscado).source, "g")) || []).length;
+        const conservadas = leerTextos().reduce(
+          (n, t) => n + t.filas.filter((g) => g.fichero === fila.fichero && g.actual === fila.actual && g.nuevo === "(igual)" && APROBADA.has(g.estado)).length,
+          0,
+        );
+        if (apariciones <= conservadas) esta = false;
+      }
       if (quitar ? esta : !esta) {
         malas.push(`${tabla.ruta} · ${fila.fichero} · ${fila.id}: ${quitar ? "sigue estando" : "no está"} «${buscado.slice(0, 70)}»`);
       }
@@ -572,7 +610,7 @@ const comprobaciones = [
   {
     id: "CA-1 · Ni «herramienta propia» ni «software propio»",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       const malas = apariciones(corpus(), /herramientas? propias?|software propio/);
       exigirVacio(malas, "Frases de CA-1");
@@ -581,7 +619,7 @@ const comprobaciones = [
   {
     id: "CA-2 · Sin vigilancia ni ficha de Google (salvo excepciones)",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       if (VIGILANCIA_EXISTE) return "VIGILANCIA_EXISTE = true: CA-2 no se aplica (la 004 la dio por hecha)";
       const malas = apariciones(
@@ -596,13 +634,14 @@ const comprobaciones = [
   {
     id: "CA-3 · Frases de nivel C: 0",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       const ficheros = corpus();
       const malas = FRASES_C.flatMap((c) => {
         if (!c.id) throw new Error(`FRASES_C: «${c.frase}» sin id del Anexo`);
         const re = c.patron ?? new RegExp(esc(c.frase));
-        return apariciones(ficheros, re, [], { soloSrc: !!c.soloSrc }).map((x) => `${c.id} «${c.frase}» · ${x}`);
+        const ex = EXCEPCIONES_NIVEL_C.filter((e) => e.id === c.id);
+        return apariciones(ficheros, re, ex, { soloSrc: !!c.soloSrc }).map((x) => `${c.id} «${c.frase}» · ${x}`);
       });
       exigirVacio(malas, "Frases de nivel C");
       return `${FRASES_C.length} frases; las paráfrasis las lee Álvaro (CA-13)`;
@@ -611,7 +650,7 @@ const comprobaciones = [
   ...["T06", "T07", "T08", "T09"].map((tarea) => ({
     id: `CA-4 · Filas aprobadas en su fichero · ficheros de ${tarea}`,
     tarea,
-    pendiente: !["T07", "T08", "T09"].includes(tarea), // T07, T08 y T09 hechas; T06 pone la suya al terminar
+    pendiente: false, // T06-T09 hechas
     fn: async () => filasEnFichero(tarea),
   })),
   {
@@ -628,7 +667,7 @@ const comprobaciones = [
   {
     id: "CA-5 · Un nombre por producto; nombres viejos: 0",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async (h) => {
       exigirLista(NOMBRES, "NOMBRES");
       const textos = [];
@@ -687,7 +726,7 @@ const comprobaciones = [
   {
     id: "CA-8 · Toda cifra en CIFRAS, un valor por magnitud",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async (h) => {
       exigirLista(CIFRAS, "CIFRAS");
       const sinAnexo = CIFRAS.filter((c) => !c.anexo);
@@ -717,7 +756,7 @@ const comprobaciones = [
   {
     id: "CA-10 · Lint, tests y build; nada peor que la línea base",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       // Solo lint, tests y build (los tres estaban en OK en la línea base). `comprobar` y
       // `comprobar-consultora` tardan minutos y T10 las compara a mano con linea-base.md.
@@ -757,7 +796,7 @@ const comprobaciones = [
   {
     id: "CA-16 · Sin reclamos de condición",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async () => {
       const malas = apariciones(
         corpus(),
@@ -771,7 +810,7 @@ const comprobaciones = [
   {
     id: "CA-17 · «Diagnóstico» solo en el diagnóstico rápido",
     tarea: "T10",
-    pendiente: true,
+    pendiente: false,
     fn: async (h) => {
       exigirLista(DIAGNOSTICO_PERMITIDO, "DIAGNOSTICO_PERMITIDO");
       const malas = [];
@@ -886,7 +925,7 @@ try {
       console.log(`OK         ${c.tarea}  ${c.id}  (${((Date.now() - t) / 1000).toFixed(1)} s)${nota ? `\n           ${nota}` : ""}`);
     } catch (e) {
       fallos++;
-      const msg = String(e.message).split("\n").slice(0, 14).join("\n           ");
+      const msg = String(e.message).split("\n").slice(0, LIMITE_LISTA + 2).join("\n           ");
       console.log(`FALLO      ${c.tarea}  ${c.id}\n           ${msg}`);
     }
     if (c.pendiente) pendientes++;

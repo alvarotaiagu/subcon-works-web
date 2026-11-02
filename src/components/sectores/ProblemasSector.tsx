@@ -22,7 +22,7 @@ export function ProblemasSector({
           {problemas.map((problema, i) => (
             <li key={problema.titulo} className="border-t border-conducto py-8">
               <div className="flex gap-6">
-                <span className="font-mono-label w-8 shrink-0 pt-1 text-sm">
+                <span className="font-mono-label w-8 shrink-0 pt-1 text-sm" data-numeracion="">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="min-w-0">

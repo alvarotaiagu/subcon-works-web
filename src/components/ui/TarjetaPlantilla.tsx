@@ -60,7 +60,7 @@ export function TarjetaPlantilla({
           </span>
           {nombre && <span className="tarjeta-corte-concepto">«{nombre}»</span>}
           {dorsal !== undefined && (
-            <span data-dorsal className="tarjeta-corte-dorsal" aria-hidden="true">
+            <span data-dorsal data-numeracion="" className="tarjeta-corte-dorsal" aria-hidden="true">
               {dorsal}
             </span>
           )}

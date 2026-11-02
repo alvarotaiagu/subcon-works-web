@@ -37,7 +37,7 @@ export function Soluciones() {
                 <Maqueta tipo={c.maqueta} />
               </EnVista>
               <div className="caso-texto">
-                <p className="font-mono-label caso-numero">{c.numero}</p>
+                <p className="font-mono-label caso-numero" data-numeracion="">{c.numero}</p>
                 <h3 className="caso-titulo">{c.titulo}</h3>
                 <p className="caso-descripcion">{c.texto}</p>
                 <p className="caso-ideal">{c.ideal}</p>
