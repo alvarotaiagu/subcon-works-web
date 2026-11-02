@@ -91,9 +91,10 @@ html.densidad-sobria .sobria-recuento b {
   line-height: 1;
 }
 
-/* Fuera el conducto principal. Hilo.tsx ya no lo pinta en Sobria; esto cubre el
-   fotograma antes de que lo sepa. */
-html.densidad-sobria .hilo {
+/* Fuera el conducto principal y su profundímetro. Hilo.tsx ya no lo pinta en Sobria;
+   esto cubre el fotograma antes de que lo sepa. */
+html.densidad-sobria .hilo,
+html.densidad-sobria .profundimetro {
   display: none;
 }
 

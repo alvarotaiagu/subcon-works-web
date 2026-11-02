@@ -10,6 +10,7 @@ import { Faq } from "@/components/consultora/Faq";
 import { Contacto } from "@/components/consultora/Contacto";
 import { AnclaPortada } from "@/components/layout/AnclaPortada";
 import { Hilo } from "@/components/layout/Hilo";
+import { Profundimetro } from "@/components/layout/Profundimetro";
 import { servicios } from "@/content/consultora";
 
 // La portada empieza arriba, en claro (spec 002 §3.1): su barra y su esquema son los de
@@ -40,8 +41,9 @@ export default function Home() {
       <QuienEstudio />
       <Faq />
       <Contacto />
-      {/* El conducto principal (§3.10, T14): solo en la portada. */}
+      {/* El conducto principal (§3.10, T14) y su profundímetro: solo en la portada. */}
       <Hilo />
+      <Profundimetro />
       <AnclaPortada />
     </>
   );
