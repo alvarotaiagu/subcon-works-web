@@ -47,7 +47,7 @@ export function Proyectos() {
   const [escaparate, panelMovil] = capturas("tiendas");
 
   return (
-    <Seccion id="plantillas" aria-labelledby="proyectos-titulo" className="py-[var(--space-section)]">
+    <Seccion id="plantillas" aria-labelledby="proyectos-titulo" className="py-[var(--space-portada)]">
       <div className="container-max">
         <Titular
           nivel={2}

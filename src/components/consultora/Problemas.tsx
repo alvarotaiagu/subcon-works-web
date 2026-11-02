@@ -12,7 +12,7 @@ import { problemas } from "@/content/consultora";
  */
 export function Problemas() {
   return (
-    <Seccion id="problemas" aria-labelledby="problemas-titulo" className="py-[var(--space-section)]">
+    <Seccion id="problemas" aria-labelledby="problemas-titulo" className="py-[var(--space-portada)]">
       <div className="container-max">
         <Titular nivel={2} id="problemas-titulo" arriba={problemas.titulo} className="max-w-4xl" />
 

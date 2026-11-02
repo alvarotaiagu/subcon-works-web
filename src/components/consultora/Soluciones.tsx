@@ -13,7 +13,7 @@ import { Maqueta } from "./Maquetas";
  */
 export function Soluciones() {
   return (
-    <Seccion id="soluciones" aria-labelledby="soluciones-titulo" className="py-[var(--space-section)]">
+    <Seccion id="soluciones" aria-labelledby="soluciones-titulo" className="py-[var(--space-portada)]">
       <div className="container-max">
         <Titular
           nivel={2}
