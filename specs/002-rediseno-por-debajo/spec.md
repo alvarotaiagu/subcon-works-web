@@ -2,7 +2,7 @@
 
 Estado: aprobada (D-024, 2026-10-12) · Depende de: 001 (la reestila, no cambia su lógica) · Decisiones: D-014 a D-024, D-026, D-028, D-030 · Conflictos: — · Pendientes: P-04 a P-07 · Cambia: 001 §3.5 §3.7 §3.8 §3.9 §7
 Plan: [plan.md](plan.md) (aprobado, D-025) · Tareas: [tasks.md](tasks.md)
-Cambios pendientes: 003 (§1, §2, §3.6, §3.7, §3.8, §3.9, §3.11, §3.13, §4, §7, §9)
+Cambiada por: 003 (2026-11-02; §1, §2, §3.6, §3.7, §3.8, §3.9, §3.11, §3.13, §4, §7, §9)
 
 ## 1. Objetivo
 
@@ -22,7 +22,8 @@ superficie**.
 
 La portada baja de cota en cota hasta el fondo, donde está la auditoría. El
 posicionamiento no cambia: estudio mixto (web, automatización y vídeo) con los
-diez servicios en su orden actual.
+servicios de `servicios.ts` en su orden (hoy siete; la PR #50 los bajó de diez y
+el vídeo dejó de ser uno de ellos).
 
 **Fuente.** `../undertactics-bocetos/DIRECCION.md` (dirección, tokens, letras,
 recursos y movimiento), `bocetos.html` sección A y `_capturas/a-*`. Esta spec
@@ -71,6 +72,9 @@ punto de partida, no como contrato.
 - El widget del chatbot (rama `feat/chatbot`): ver P-05.
 - El kit de la auditoría (`kit/`) y la numeración P1–P36.
 - Versión en otros idiomas: la web es solo en castellano.
+- Desde la 003 el contenido de `servicios.ts`, `sectores.ts`, `diagnostico.ts`
+  y `herramientas.ts` sí se revisa, solo en afirmaciones, enlaces y lo que
+  presupone del lector (003 §3.7 y §6).
 
 ## 3. Comportamiento
 
@@ -470,13 +474,18 @@ plan con capturas). Los pozos se acortan; la lectura va bajo los pozos, a lo
 ancho. Si los objetos van en fila con desplazamiento horizontal, ese carril no
 ensancha la página (§7: sin scroll horizontal del documento).
 
+Descripción del hero, lecturas, paradas (incluido «Factura emitida» y
+«Vigilada cada día») y botones se rigen por la 003. Se mantienen cuatro
+flujos de tres paradas y que cada parada exista en `servicios.ts` (§7).
+
 ### 3.7 Servicios («0 · Lo que montamos»)
 
 - Titular: «Montamos lo que se ve y lo que va debajo.» (préstamo de C). La
   segunda parte («y lo que va debajo.») en Kode Mono lima, según la escala de H2.
-- Entradilla (P-04): «Diez servicios. Cada uno tiene una parte que ve tu
-  cliente y otra que trabaja por debajo.»
-- Los **diez servicios en el orden de `servicios.ts`**. Cada uno es un
+- Entradilla: la de `specs/003-posicionamiento-y-textos/textos.md` (D-033).
+  El número de servicios sale de `servicios.ts`, no se escribe a mano en
+  ningún texto.
+- Los servicios de `servicios.ts`, en su orden (hoy siete). Cada uno es un
   «pozo»:
   - arriba de su línea: número, `nombre` y `descripcion`;
   - debajo, en Kode Mono: los `incluye` como paradas de un pozo vertical;
@@ -487,6 +496,9 @@ ensancha la página (§7: sin scroll horizontal del documento).
 - Salen de esta sección `NodesScene`, `WorkImage` y el panel que seguía al
   cursor. Los iconos de `/servicios/*.svg` no se usan en la portada (los
   ficheros se quedan).
+- Este apartado describe la portada vigente. La portada de `exp/consultora`
+  pinta `consultora.servicios` (cuatro líneas), no `servicios.ts` (P-08 de
+  la 003).
 
 ### 3.8 La plantilla («−1 · La plantilla»)
 
@@ -521,6 +533,9 @@ Préstamo de B. Título: «Una plantilla de 30.» El número sale de
 - Debajo: «30 plantillas» (de `cifras.ts`) y un enlace a `/plantillas/`.
 - Fuera de B no se trae nada: ni campo, ni fichas, ni Alumni Sans ni Host
   Grotesk.
+- El título «Una plantilla de 30.» se mantiene (D-014). El aviso, «¿Tu sector
+  no está?» y el título del bloque equivalente de la portada de la consultora
+  se rigen por la 003 §3.5.
 
 ### 3.9 Proceso («−2 · El proceso»)
 
@@ -555,6 +570,9 @@ paso de `proceso.ts`.
   «Lo que ves tú» y «Lo que hacemos por debajo», una fila por paso con su
   dato. Los textos de las columnas salen de `vesTu` y `debajo` del boceto
   (`js/a.js`), completados para las seis filas (P-04), en `proceso.ts`.
+- Los datos «10 min», «semanas, no meses», «2 semanas», «36 preguntas» y «0 €»
+  se rigen por la 003 (§3.2 regla 4, CA-8): una sola cifra por magnitud y
+  con fila en el Anexo A.
 
 ### 3.10 Conducto principal (el hilo)
 
@@ -611,6 +629,10 @@ comportamiento no cambia.
   páginas de sector. Con movimiento reducido o sin JS, ya encendido.
 - Debajo, el pie en `--roca`.
 
+Los datos «10 min», «semanas, no meses», «2 semanas», «36 preguntas» y «0 €»
+se rigen por la 003 (§3.2 regla 4, CA-8): una sola cifra por magnitud y con
+fila en el Anexo A.
+
 ### 3.12 Páginas interiores (D-016)
 
 Empiezan «debajo»: fondo `--hondo` desde arriba, cabecera en oscuro, la línea
@@ -665,6 +687,11 @@ antes de publicar.
 
 La `description` de los metadatos de la portada pasa a ser la de
 `site.descripcion`.
+
+Los textos de la tabla anterior, salvo el rótulo de los ejemplos del hero,
+las cotas y las tres frases de D-014, quedan sustituidos por los de
+`specs/003-posicionamiento-y-textos/textos.md` desde que se aprueba (D-033).
+Las reglas de este apartado siguen valiendo y se concretan en la 003 §3.2.
 
 ### 3.14 Cortina
 
@@ -816,7 +843,8 @@ No hay base de datos ni migraciones. Cambios en el contenido:
 - `package.json`: salen `three`, `@types/three` y `motion`; entra
   `playwright` como `devDependency` (solo para medir y comprobar, §3.15).
 - `plantillas.ts`, `servicios.ts`, `estudio.ts`, `auditoria.ts`,
-  `sectores.ts`, `diagnostico.ts`: sin cambios.
+  `sectores.ts`, `diagnostico.ts`: sin cambios. Salvo lo que cambie la 003 en
+  afirmaciones y enlaces.
 
 ## 5. Seguridad, privacidad y legal
 
@@ -970,6 +998,10 @@ página nueva cada vez, con el enganche en `addInitScript`.
 - Pasar un lector de pantalla por el hero (que los ejemplos automáticos no se
   anuncien).
 
+Los tests de §3.6 (paradas), de §3.9 (los `dato` literales de `proceso.ts`)
+y de dorsales de §3.8 se actualizan a los textos aprobados en la 003, sin
+borrarse.
+
 ## 8. Cambios a otras specs
 
 Pendientes hasta que esta spec esté hecha y comprobada (tarea «Comprobar la
@@ -1035,6 +1067,8 @@ spec»). Hasta entonces, quien lea la 001 lee también este apartado.
   hacemos por debajo» del proceso, los ejemplos del hero y la frase nueva de
   `/privacidad/` sobre la cortina (§5). Bloquea: publicar
   (merge de `feat/rediseno-por-debajo` a `main`).
+  Cerrada por D-027. Los textos que figuren en la 003 `textos.md` la
+  sustituyen (C-22).
 - **P-05** · Widget del chatbot (rama `feat/chatbot`). Lo que se mergee
   segundo adapta el widget a los tokens de esta spec (fondo `--estrato`, texto
   `--hueso`, sin lima de relleno). No bloquea.

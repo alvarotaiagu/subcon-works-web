@@ -358,7 +358,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     (spec §6).
   - *Hecho*: la lista «A mano» marcada en la PR de T10, con fecha.
 
-- [ ] **T12 · Comprobar la spec.** *Modelo: Opus 5.5 medium* — la spec toca
+- [x] **T12 · Comprobar la spec.** *Modelo: Opus 5.5 medium* — la spec toca
   datos personales (`/privacidad/`) y legal (publicidad engañosa, §5).
   - *Cubre*: spec entera y sus deltas a la 001 y la 002.
   - *Depende de*: T01-T11 mergeadas en `exp/consultora`. Se hace en un chat

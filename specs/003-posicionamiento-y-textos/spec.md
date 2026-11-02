@@ -1,6 +1,6 @@
 # 003 · Posicionamiento y textos
 
-Estado: aprobada (D-032, 2026-11-01) · Depende de: 001, 002 · Decisiones: D-003, D-005, D-007, D-008, D-009, D-014 (se respeta), D-019, D-026, D-032; sustituye parte de D-027 cuando se apruebe `textos.md` (D-033); concreta, sin cambiarlos, los principios del SDD · Conflictos: C-22 y C-23, resueltos por D-032 · Pendientes: P-08 a P-13 · Cambia: 001 §3.4 §3.8 §7 §8; 002 §1 §2 §3.6 §3.7 §3.8 §3.9 §3.11 §3.13 §4 §7 §9
+Estado: hecha (comprobada 2026-11-02, T12; aprobada D-032, 2026-11-01) · Depende de: 001, 002 · Decisiones: D-003, D-005, D-007, D-008, D-009, D-014 (se respeta), D-019, D-026, D-032; sustituye parte de D-027 desde que se aprobó `textos.md` (D-033); concreta, sin cambiarlos, los principios del SDD · Conflictos: C-22 y C-23, resueltos por D-032 · Pendientes: P-08, P-12 y P-15 abiertos (P-09 a P-11, P-13 y P-14 cerrados) · Excepciones aceptadas al cerrar: D-038 (CA-13 y CA-14) · Cambia: 001 §3.4 §3.8 §7 §8; 002 §1 §2 §3.6 §3.7 §3.8 §3.9 §3.11 §3.13 §4 §7 §9
 Plan: [plan.md](plan.md) (aprobado, D-034; PD-1 a PD-9) · Tareas: [tasks.md](tasks.md) (T01-T12)
 
 ## 1. Objetivo
@@ -506,7 +506,7 @@ tildes.
 Pendientes hasta que esta spec esté hecha y comprobada (tarea «Comprobar la spec»).
 Hasta entonces, quien lea una de estas specs lee también este apartado.
 
-### 002 · Rediseño «Por debajo» — pendiente
+### 002 · Rediseño «Por debajo» — consolidado 2026-11-02
 
 - **MODIFICA §1, «con los diez servicios en su orden actual»** — sustituye por:
   > con los servicios de `servicios.ts` en su orden (hoy siete; la PR #50 los
@@ -556,7 +556,7 @@ Hasta entonces, quien lea una de estas specs lee también este apartado.
   > Cerrada por D-027. Los textos que figuren en la 003 `textos.md` la
   > sustituyen (C-22).
 
-### 001 · Diagnóstico rápido y páginas por sector — pendiente
+### 001 · Diagnóstico rápido y páginas por sector — consolidado 2026-11-02
 
 - **MODIFICA §3.4, tabla de mejoras, fila `ficha-google`, columna de enlaces:**
   sustituye «`/herramientas/#ficha-google` en los dos» por
