@@ -91,7 +91,7 @@ export default function HerramientasPage() {
           </p>
           <div className="border-l-2 border-superficie/50 pl-5">
             <p className="font-mono-label mb-2 text-[10px] text-superficie">Aviso</p>
-            <p className="text-sm text-apagado-abajo">
+            <p className="text-base text-apagado-abajo">
               Las capturas de esta página salen de una tienda de ejemplo y de la demo de una de nuestras
               plantillas: los negocios, los productos, los pedidos y las cifras que aparecen son
               inventados.
