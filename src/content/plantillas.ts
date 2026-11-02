@@ -58,7 +58,7 @@ export const plantillas: Plantilla[] = [
     concepto: "«Corteza»: la corteza es el diario del queso, ahí está escrito el tiempo.",
     movimiento:
       "Un selector de curación (20/90/180/400 días) que transforma la rueda dibujada entera: corteza, pasta, moho, ojos y cristales.",
-    etiquetas: ["Configurador", "SVG propio", "Ficha de producto"],
+    etiquetas: ["Configurador", "SVG a medida", "Ficha de producto"],
     demo: "https://alvarotaiagu.github.io/plantilla-queseria-web/",
     destacada: true,
   },
@@ -131,7 +131,7 @@ export const plantillas: Plantilla[] = [
     concepto: "«Ramo»: el ramo se monta delante de ti, tallo a tallo.",
     movimiento:
       "Sección anclada en la que el ramo dibujado se completa grupo a grupo mientras pasan los cinco pasos, con contador de tallos.",
-    etiquetas: ["Ilustración propia", "Pedidos", "Modo claro"],
+    etiquetas: ["Ilustración a medida", "Pedidos", "Modo claro"],
     demo: "https://alvarotaiagu.github.io/plantilla-floristeria-web/",
     destacada: true,
   },
@@ -177,7 +177,7 @@ export const plantillas: Plantilla[] = [
     sector: "Agencia de viajes",
     concepto: "«Sellos»: lo que queda de un viaje es el sello del pasaporte, y cada viaje es uno.",
     movimiento: "Seis sellos dibujados que se estampan con rebote al llegar a ellos.",
-    etiquetas: ["Catálogo", "Ilustración propia", "Modo claro"],
+    etiquetas: ["Catálogo", "Ilustración a medida", "Modo claro"],
     demo: "https://alvarotaiagu.github.io/plantilla-viajes-web/",
   },
   {
@@ -245,7 +245,7 @@ export const plantillas: Plantilla[] = [
       "«Merma»: todo lo que sale del horno es más pequeño de lo que hiciste, y la plantilla lo mide.",
     movimiento:
       "Una regla graduada que no se mueve y, contra ella, la misma jarra dibujada a sus tres tamaños reales.",
-    etiquetas: ["Cursos", "Ilustración propia", "Modo claro"],
+    etiquetas: ["Cursos", "Ilustración a medida", "Modo claro"],
     demo: "https://alvarotaiagu.github.io/plantilla-ceramica-web/",
   },
   {

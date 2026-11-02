@@ -290,7 +290,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
     exige la cifra «0 €») y `{n}` de `comprobar-textos.mjs` (admite la
     expresión del código).
 
-- [ ] **T08 · Interiores, metadatos, privacidad y README.** *Modelo: Opus
+- [x] **T08 · Interiores, metadatos, privacidad y README.** *Modelo: Opus
   5.5 medium* — toca `/privacidad/` (datos personales, §5).
   - *Cubre*: spec §3.4 (A45, nombres en metadatos), §3.5 (`/plantillas/`),
     §5 (datos personales), §6 (anclas en el README), CA-4 y CA-6 de T08;

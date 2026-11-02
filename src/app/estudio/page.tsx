@@ -62,11 +62,11 @@ export default function EstudioPage() {
         <div className="mt-24 border-t border-conducto pt-14">
           <Titular nivel={2} arriba="¿Hablamos de tu negocio?" className="max-w-xl" />
           <p className="mt-5 max-w-xl text-apagado-abajo">
-            Empieza por la auditoría gratuita: diez minutos de formulario y te decimos qué falta antes
-            de hablar de precio.
+            Empieza por la auditoría de tu negocio: contestas unas preguntas sobre cómo trabajáis y te
+            mandamos un informe por correo, antes de hablar de precio. La auditoría no se cobra.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
-            <Boton href="/auditoria/">Pedir la auditoría gratuita</Boton>
+            <Boton href="/auditoria/">Empezar la auditoría</Boton>
             <Boton href={`mailto:${site.email}`} variante="secundario">
               Escribir un correo
             </Boton>

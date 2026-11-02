@@ -78,7 +78,7 @@ export const viewport: Viewport = {
 // noindex en todas las páginas, y robots.ts bloqueando el rastreo entero.
 export const metadata: Metadata = {
   metadataBase: new URL("https://alvarotaiagu.github.io/subcon-works-web/"),
-  title: `${site.nombre} — IA, automatización y software a medida para pymes`,
+  title: `${site.nombre} — Web, tienda online y automatización a medida`,
   description: site.descripcion,
   robots: {
     index: false,

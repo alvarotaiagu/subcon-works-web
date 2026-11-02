@@ -52,7 +52,7 @@ const CORTE = [
 
 /** §3.12: interiores y su cota. La 404 se pide con una ruta que no existe. */
 const INTERIORES = [
-  { ruta: "herramientas/", cota: "0 · Herramientas" },
+  { ruta: "herramientas/", cota: "0 · Productos" }, // 003 textos.md, decisión 6 (T08)
   { ruta: "plantillas/", cota: "−1 · Catálogo" },
   { ruta: "estudio/", cota: "−3 · Estudio" },
   { ruta: "auditoria/", cota: "Fondo · Auditoría" },

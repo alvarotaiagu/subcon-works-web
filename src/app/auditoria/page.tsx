@@ -5,9 +5,9 @@ import { TOTAL_PREGUNTAS } from "@/content/auditoria";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: `Auditoría gratuita — ${site.nombre}`,
+  title: `Auditoría de tu negocio — ${site.nombre}`,
   description:
-    "Cuéntanos cómo trabajáis en diez minutos y te devolvemos un informe con las horas que se van cada semana, lo que cuestan y qué se arregla primero.",
+    "Cuéntanos cómo trabajáis, con tus palabras, y te mandamos por correo un informe de tu negocio. La auditoría no se cobra.",
   robots: { index: false, follow: false },
 };
 
@@ -22,24 +22,24 @@ export default function AuditoriaPage() {
         className="mb-16 md:mb-24"
       >
         <p className="mt-8 max-w-xl text-lg text-apagado-abajo">
-          {TOTAL_PREGUNTAS} preguntas sobre el día a día del negocio. Se contesta en unos diez
-          minutos, con tus palabras, y no hace falta que sepas nada de tecnología.
+          {TOTAL_PREGUNTAS} preguntas sobre el día a día del negocio. Se contestan con tus
+          palabras, y no hace falta que sepas nada de tecnología. La auditoría no se cobra.
         </p>
 
         <ul className="mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
           {[
             {
               titulo: "No contestes lo que no sepas",
-              texto: "Déjalo en blanco. El informe marca los huecos en vez de inventárselos.",
+              texto: "Déjalo en blanco. Solo hacen falta el nombre del negocio, el tuyo y tu correo.",
             },
             {
               titulo: "Los números a ojo valen",
-              texto: "«Unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio.",
+              texto: "Por ejemplo, «unas 30 llamadas a la semana» sirve. No busques nada en ningún sitio.",
             },
             {
               titulo: "Puedes parar y seguir",
               texto:
-                "Lo que escribas se guarda en este navegador. Cierra la pestaña y vuelve cuando quieras.",
+                "Lo que escribas se guarda en este navegador hasta que lo envías. Cierra la pestaña y vuelve cuando quieras.",
             },
           ].map((nota) => (
             <li key={nota.titulo} className="border-t border-conducto pt-4">
