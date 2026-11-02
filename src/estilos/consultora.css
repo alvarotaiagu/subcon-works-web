@@ -551,18 +551,189 @@
       align-items: start;
     }
   }
-  .banda-capturas {
-    display: grid;
-    align-items: start;
-    gap: 1.5rem;
+  /* Los dibujos de las bandas B y C (DibujosProyectos.tsx, D-041). Línea fina de 1 px pase
+     lo que pase con la proyección (non-scaling-stroke); la lima, solo en el acento. */
+  .dibujo {
+    width: 100%;
+    max-width: 27rem;
+    margin: 0;
   }
-  @media (min-width: 640px) {
-    .banda-capturas {
-      grid-template-columns: minmax(0, 1fr) 9.5rem;
+  @media (min-width: 900px) {
+    .dibujo {
+      justify-self: end;
     }
   }
-  .banda-movil {
-    max-width: 12rem;
+  .dibujo-ejemplo {
+    display: inline-block;
+    margin: 0 0 0.75rem;
+  }
+  .dib-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .dib-svg * {
+    vector-effect: non-scaling-stroke;
+  }
+  /* Lo que se dibuja con `pathLength` (cotas y marcas) no está proyectado: sin el efecto,
+     el guion medido en `pathLength` cuadra con el trazo. */
+  .dib-svg :is(.dib-cota, .dib-marca) {
+    vector-effect: none;
+  }
+  .dibujo-pie {
+    margin-top: 0.75rem;
+    font-family: var(--letra-kode);
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: var(--apagado-abajo);
+  }
+  .dib-plano,
+  .dib-hoja {
+    fill: var(--hondo);
+    stroke: var(--apagado-abajo);
+    stroke-width: 1;
+  }
+  .dib-plano {
+    fill-opacity: 0.94;
+  }
+  .dib-plano-sup {
+    stroke: var(--superficie);
+  }
+  .dib-l,
+  .dib-t,
+  .dib-acento,
+  .dib-cota,
+  .dib-guia,
+  .dib-ruta,
+  .dib-marca,
+  .dib-casilla,
+  .dib-escaner {
+    fill: none;
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .dib-l {
+    stroke: var(--apagado-abajo);
+  }
+  .dib-t,
+  .dib-casilla {
+    stroke: var(--conducto);
+  }
+  .dib-relleno {
+    fill: var(--conducto);
+  }
+  .dib-acento,
+  .dib-marca,
+  .dib-escaner {
+    stroke: var(--superficie);
+  }
+  .dib-cota {
+    stroke: var(--apagado-abajo);
+    stroke-dasharray: 1;
+  }
+  .dib-guia,
+  .dib-ruta {
+    stroke: var(--conducto);
+    stroke-dasharray: 2 3;
+  }
+  .dib-ruta {
+    stroke: var(--apagado-abajo);
+  }
+  .dib-marca {
+    stroke-dasharray: 1;
+  }
+  .dib-casilla {
+    fill: transparent;
+  }
+  .dib-fila .dib-casilla {
+    fill: var(--superficie);
+    stroke: var(--superficie);
+  }
+  .dib-texto {
+    font-family: var(--letra-kode);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: var(--hueso);
+  }
+  .dib-texto-sup {
+    fill: var(--superficie);
+  }
+  .dib-escaner {
+    opacity: 0;
+  }
+
+  /* La entrada, solo si EnVista la armó (con JS y con movimiento): la tienda parte montada
+     (las capas, debajo del escaparate) y el informe, sin leer. Al entrar en pantalla, las
+     capas bajan a su sitio una tras otra y la línea de lectura marca cada hallazgo al
+     pasar. Las capas son una explicación, no un adorno de UI: duraciones de 0,9-1 s. */
+  .es-armada:not(.es-en-vista) .dib-capa {
+    transform: translateY(calc(var(--i) * -64px));
+  }
+  .es-armada:not(.es-en-vista) :is(.dib-capa, .dib-fila) .dib-rotulo {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  .es-armada:not(.es-en-vista) :is(.dib-cota, .dib-marca) {
+    stroke-dashoffset: 1;
+  }
+  .es-armada:not(.es-en-vista) .dib-fila .dib-casilla {
+    fill: transparent;
+    stroke: var(--conducto);
+  }
+  .es-armada .dib-capa {
+    transition: transform 1s var(--ease-out) calc(0.25s + var(--i) * 0.14s);
+  }
+  .es-armada .dib-capa .dib-rotulo {
+    transition:
+      opacity 0.5s var(--ease-out) calc(0.95s + var(--i) * 0.14s),
+      transform 0.5s var(--ease-out) calc(0.95s + var(--i) * 0.14s);
+  }
+  .es-armada .dibujo-tienda .dib-cota {
+    transition: stroke-dashoffset 1.1s var(--ease-out) 0.35s;
+  }
+  /* El informe: la línea baja en 2,4 s (lineal, como una lectura) y cada fila se marca
+     cuando la cruza (0,3 s + 0,6 s por fila). */
+  .es-armada.es-en-vista .dib-escaner {
+    animation: dib-lee 2.4s linear 0.1s both;
+  }
+  .es-armada .dibujo-informe .dib-cota {
+    transition: stroke-dashoffset 2.4s linear 0.1s;
+  }
+  .es-armada .dib-fila .dib-marca {
+    transition: stroke-dashoffset 0.6s var(--ease-out) calc(0.35s + var(--i) * 0.6s);
+  }
+  .es-armada .dib-fila .dib-casilla {
+    transition:
+      fill 0.3s var(--ease-out) calc(0.35s + var(--i) * 0.6s),
+      stroke 0.3s var(--ease-out) calc(0.35s + var(--i) * 0.6s);
+  }
+  .es-armada .dib-fila .dib-rotulo {
+    transition:
+      opacity 0.4s var(--ease-out) calc(0.6s + var(--i) * 0.6s),
+      transform 0.4s var(--ease-out) calc(0.6s + var(--i) * 0.6s);
+  }
+  @keyframes dib-lee {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    6%,
+    92% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(256px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dibujo * {
+      animation: none !important;
+      transition: none !important;
+    }
   }
   .proyecto-filas {
     display: grid;

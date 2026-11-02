@@ -1,17 +1,13 @@
 import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
-import { BrowserMockup } from "@/components/ui/BrowserMockup";
-import { MovilMockup } from "@/components/ui/MovilMockup";
 import { Boton } from "@/components/ui/Boton";
 import { Seccion } from "@/components/ui/Seccion";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
 import { Titular } from "@/components/ui/Titular";
 import { proyectos, type CategoriaProyectos } from "@/content/consultora";
-import { herramientas } from "@/content/herramientas";
 import { plantillas } from "@/content/plantillas";
 import { conDorsal } from "@/lib/dorsales";
-
-const capturas = (id: string) => herramientas.find((h) => h.id === id)?.capturas ?? [];
+import { DibujoInforme, DibujoTienda } from "./DibujosProyectos";
 
 function Filas({ categoria }: { categoria: CategoriaProyectos }) {
   return (
@@ -34,7 +30,8 @@ function Filas({ categoria }: { categoria: CategoriaProyectos }) {
 
 /**
  * «−4 · Webs de ejemplo»: lo que hay en el repo, en tres bandas. Las plantillas son webs de
- * negocios inventados; el informe, el formulario y la tienda se enseñan con datos de ejemplo.
+ * negocios inventados; el informe y la tienda se enseñan con un dibujo rotulado «Ejemplo»
+ * (D-041), sin capturas ni datos.
  * El aviso de que nada es trabajo de cliente va dentro de esta misma `<section>`, visible y
  * en tamaño de texto normal (003 §3.5, CA-6; `data-aviso-inventadas`). Ni una sola pieza se
  * presenta como trabajo de cliente. Se queda con el `id` `plantillas` para que los enlaces
@@ -43,8 +40,6 @@ function Filas({ categoria }: { categoria: CategoriaProyectos }) {
 export function Proyectos() {
   const titulares = conDorsal(plantillas).filter((x) => x.plantilla.destacada);
   const [webs, auto, soft] = proyectos.categorias;
-  const informe = capturas("informe")[0];
-  const [escaparate, panelMovil] = capturas("tiendas");
 
   return (
     <Seccion id="plantillas" aria-labelledby="proyectos-titulo" className="py-[var(--space-portada)]">
@@ -89,12 +84,7 @@ export function Proyectos() {
           </header>
           <div className="banda-doble">
             <Filas categoria={auto} />
-            {informe && (
-              <div className="banda-captura">
-                <BrowserMockup src={informe.src} alt={informe.alt} />
-                <p className="font-mono-label mt-3 text-[10px]">Informe de ejemplo sobre una plantilla</p>
-              </div>
-            )}
+            <DibujoInforme pie="Ilustración de ejemplo: cada fallo, marcado con su prueba y ordenado por prioridad" />
           </div>
         </div>
 
@@ -104,21 +94,9 @@ export function Proyectos() {
             <h3 className="banda-titulo">{soft.titulo}</h3>
             <p className="banda-intro">{soft.intro}</p>
           </header>
-          <div className="banda-doble banda-software">
-            <div>
-              <Filas categoria={soft} />
-              <p className="mt-6 max-w-sm text-sm text-apagado-abajo">
-                Tienda de ejemplo (una papelería inventada) con pedidos y productos de prueba.
-              </p>
-            </div>
-            <div className="banda-capturas">
-              {escaparate && <BrowserMockup src={escaparate.src} alt={escaparate.alt} />}
-              {panelMovil && (
-                <div className="banda-movil">
-                  <MovilMockup src={panelMovil.src} alt={panelMovil.alt} />
-                </div>
-              )}
-            </div>
+          <div className="banda-doble">
+            <Filas categoria={soft} />
+            <DibujoTienda pie="Ilustración de ejemplo: lo que hay debajo del escaparate de una tienda, pieza a pieza." />
           </div>
         </div>
       </div>
