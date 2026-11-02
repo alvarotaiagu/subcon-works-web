@@ -10,10 +10,14 @@ import type { Maqueta } from "@/content/consultora";
  * su interior va oculto: leer una tabla de mentira celda a celda no ayuda a nadie.
  *
  * `--d` es el orden de entrada de cada pieza (lo anima `consultora.css` cuando el bloque
- * pasa a `es-en-vista`).
+ * pasa a `es-en-vista`). Cada ejemplo entra contando lo suyo (la conversación, la lectura de
+ * la factura, la nota que se graba y se transcribe, la semana que se llena) y, al pasar el
+ * ratón por el caso, lo repite en pequeño. Con movimiento reducido, todo quieto.
  */
 
 const d = (n: number) => ({ "--d": n }) as CSSProperties;
+/** Índice de una pieza dentro de una serie (barras de la onda, días de la agenda). */
+const v = (nombre: string, n: number) => ({ [nombre]: n }) as CSSProperties;
 
 function Marco({
   titulo,
@@ -77,6 +81,7 @@ function Factura() {
     >
       <div className="mq-factura">
         <div className="mq-doc">
+          <i className="mq-escaner" />
           <i className="mq-doc-linea mq-doc-fuerte" />
           <i className="mq-doc-linea anim mq-marca" style={d(0)} />
           <i className="mq-doc-linea" />
@@ -124,7 +129,7 @@ function Voz() {
       <div className="mq-voz">
         <div className="mq-onda anim" style={d(0)}>
           {alturas.map((h, i) => (
-            <i key={i} style={{ height: `${h}%` }} />
+            <i key={i} style={{ height: `${h}%`, ...v("--b", i) }} />
           ))}
         </div>
         <p className="mq-trans anim" style={d(1)}>
@@ -229,7 +234,7 @@ function Citas() {
       <div className="mq-citas">
         <div className="mq-semana">
           {dias.map((dia, i) => (
-            <div key={dia} className="mq-dia">
+            <div key={dia} className="mq-dia" style={v("--dd", i)}>
               <p>{dia}</p>
               {huecos[i].map((h, k) => (
                 <i

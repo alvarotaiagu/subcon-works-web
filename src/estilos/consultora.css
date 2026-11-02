@@ -487,11 +487,210 @@
       transform: none;
     }
   }
+
+  /* Cada ejemplo entra contando lo suyo (mismo armado de EnVista). */
+  /* La conversación: cada globo sale de su esquina, al ritmo de una charla. */
+  .mq-cliente {
+    transform-origin: 0 100%;
+  }
+  .mq-agente {
+    transform-origin: 100% 100%;
+  }
+  .es-armada:not(.es-en-vista) .maqueta .mq-msg.anim {
+    transform: translateY(6px) scale(0.96);
+  }
+  .es-armada.es-en-vista .maqueta .mq-msg.anim {
+    animation-name: mq-burbuja;
+  }
+  .es-armada.es-en-vista .maqueta .mq-chat .anim {
+    animation-delay: calc(var(--d, 0) * 0.45s);
+  }
+  @keyframes mq-burbuja {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* La factura: una línea la lee de arriba abajo y después salen los campos. La de la
+     entrada es el ::after; la del ratón, `.mq-escaner` (si fueran la misma, al quitar el
+     ratón se repetiría la entrada). */
+  .mq-doc {
+    position: relative;
+    overflow: hidden;
+  }
+  .mq-doc::after,
+  .mq-escaner {
+    position: absolute;
+    inset: 0;
+    border-top: 1px solid var(--superficie);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .mq-doc::after {
+    content: "";
+  }
+  .es-armada.es-en-vista .mq-doc::after {
+    animation: mq-escanea 1.1s var(--ease-inout) both;
+  }
+  .es-armada.es-en-vista .maqueta .mq-factura .anim {
+    animation-delay: calc(0.4s + var(--d, 0) * 0.28s);
+  }
+  @keyframes mq-escanea {
+    0% {
+      opacity: 0;
+      transform: translateY(-1px);
+    }
+    12%,
+    85% {
+      opacity: 0.85;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+  }
+  /* La nota de voz: la onda se graba de izquierda a derecha y el texto se escribe igual. */
+  .es-armada.es-en-vista .maqueta .mq-voz :is(.mq-onda, .mq-trans).anim {
+    animation-name: mq-graba;
+    animation-duration: 0.9s;
+  }
+  @keyframes mq-graba {
+    from {
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0);
+    }
+  }
+  .mq-onda i {
+    transform-origin: 50% 50%;
+  }
+  /* La agenda: la semana se llena día a día y la solicitud nueva avisa. */
+  .es-armada:not(.es-en-vista) .mq-hueco:not(.anim) {
+    opacity: 0;
+  }
+  .es-armada.es-en-vista .mq-hueco:not(.anim) {
+    animation: mq-celda 0.4s var(--ease-out) both;
+    animation-delay: calc(var(--dd, 0) * 0.07s);
+  }
+  .es-armada.es-en-vista .maqueta .mq-citas .anim {
+    animation-delay: calc(0.45s + var(--d, 0) * 0.3s);
+  }
+  @keyframes mq-celda {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .mq-nueva {
+    position: relative;
+    transition: background-color var(--dur-fast) ease;
+  }
+  .mq-nueva::before,
+  .mq-nueva::after,
+  .mq-msg::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--superficie);
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .es-armada.es-en-vista .mq-nueva::after {
+    animation: mq-aviso 1s var(--ease-out) 1.1s both;
+  }
+  @keyframes mq-aviso {
+    from {
+      opacity: 0.9;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.3, 1.6);
+    }
+  }
+  .mq-msg {
+    position: relative;
+  }
+
+  /* Al pasar el ratón por el caso: el marco se enciende un poco y el ejemplo repite su
+     gesto en pequeño. Solo con ratón y con movimiento. */
+  .maqueta {
+    transition: border-color var(--dur-fast) ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .caso:hover .maqueta {
+      border-color: color-mix(in oklab, var(--superficie) 45%, var(--conducto));
+    }
+    .caso:hover .mq-nueva {
+      background-color: color-mix(in oklab, var(--superficie) 14%, transparent);
+    }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    /* La conversación se repasa globo a globo. */
+    .caso:hover .mq-msg::after {
+      animation: mq-repaso 0.7s var(--ease-out) both;
+      animation-delay: calc(var(--d, 0) * 0.16s);
+    }
+    /* La factura se vuelve a leer. */
+    .caso:hover .mq-escaner {
+      animation: mq-escanea 1.1s var(--ease-inout) both;
+    }
+    /* La nota suena. */
+    .caso:hover .mq-onda i {
+      animation: mq-suena 0.8s var(--ease-inout) infinite alternate;
+      animation-delay: calc(var(--b, 0) * -0.11s);
+    }
+    /* La solicitud vuelve a avisar. */
+    .caso:hover .mq-nueva::before {
+      animation: mq-aviso 1s var(--ease-out) both;
+    }
+  }
+  @keyframes mq-repaso {
+    0% {
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes mq-suena {
+    from {
+      transform: scaleY(1);
+    }
+    to {
+      transform: scaleY(0.35);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .maqueta .anim {
+    .maqueta .anim,
+    .maqueta .mq-hueco {
       animation: none !important;
       opacity: 1 !important;
       transform: none !important;
+      clip-path: none !important;
+    }
+    .maqueta *::before,
+    .maqueta *::after,
+    .mq-escaner {
+      animation: none !important;
     }
   }
 
