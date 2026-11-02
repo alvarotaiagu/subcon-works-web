@@ -1,9 +1,9 @@
 # 001 · Diagnóstico rápido y páginas por sector
 
-Estado: hecha (comprobada 2026-10-12; aprobada D-011, 2026-10-11) · Depende de: — · Decisiones: D-001 a D-011 · Conflictos: — · Pendientes: P-01, P-02, P-03
+Estado: hecha (comprobada 2026-10-12; aprobada D-011, 2026-10-11) · Depende de: — · Decisiones: D-001 a D-011 · Conflictos: — · Pendientes: P-01, P-02 (P-03 cerrada por D-033)
 Plan: [plan.md](plan.md) (aprobado, D-012) · Tareas: [tasks.md](tasks.md)
-Cambiada por: D-012 (2026-10-11, §3.5)
-Cambios pendientes: 002 (§3.5, §3.7, §3.8, §3.9, §7); 003 (§3.4, §3.8, §7, §8)
+Cambiada por: D-012 (2026-10-11, §3.5); 003 (2026-11-02; §3.4, §3.8, §7, §8)
+Cambios pendientes: 002 (§3.5, §3.7, §3.8, §3.9, §7)
 
 ## 1. Objetivo
 
@@ -169,7 +169,7 @@ existe donde tiene sentido y nunca dispara mejoras ni prerrelleno.
 | `reservas-directas`: reservas en tu propia web, sin depender de Booking | `rural` | `reserva=llamando` o `plataformas`; `canales` incluye `plataformas`; `dolor=agenda` | `/plantillas/` / `plantillas-sector` |
 | `asistente`: contesta fuera de horario en tu web | todos | `fuera=sin-contestar` o `dia-siguiente`; `dolor=preguntas` | `/#servicios` / `#asistente` |
 | `formularios`: formularios propios que llegan ordenados | todos | `canales` incluye `web` o `email` | `/herramientas/#formularios` en los dos |
-| `ficha-google`: ficha de Google completa y al día | todos | `web=solo-ficha`, `nada` o `antigua` | `/herramientas/#ficha-google` en los dos |
+| `ficha-google`: ficha de Google completa y al día | todos | `web=solo-ficha`, `nada` o `antigua` | `/#servicios` en los dos (003 §3.7) |
 | `web-nueva`: una web que puedas cambiar tú | todos | `web=nada` o `antigua` | `/plantillas/` / `plantillas-sector` |
 | `informe-web`: saber qué falla en la web que ya tienes | todos | `web=al-dia` | `/herramientas/#informe` en los dos |
 | `resenas`: pedir la reseña sola tras la visita | todos | `resenas=nunca` o `a-veces` | — |
@@ -360,6 +360,10 @@ enlace a cada una.
 dentales — Undertactics», `description` propia y
 `robots: { index: false, follow: false }`, igual que `/auditoria/`.
 
+Los problemas de cada sector se escriben como situaciones habituales, no
+como hechos sobre quien lee (003 §3.1). Sujeto a P-13 (de la 003), que
+D-035 cerró: la regla vale también para las páginas de sector.
+
 ### 3.9 Aspecto
 
 - Se usan los componentes y las fichas de la web: `Boton`, `Etiqueta`,
@@ -518,7 +522,7 @@ Lenis, el scroll se hace con `mouse.wheel`, no con `scrollTo`.
 
 - `npm run lint`, `npm run build` y `npm test` pasan.
 - Todo lo de arriba se cumple.
-- Álvaro ha revisado los textos (P-03).
+- Álvaro ha revisado los textos (P-03, absorbido por la 003, D-033).
 
 ## 8. Pendientes
 
@@ -528,7 +532,8 @@ Lenis, el scroll se hace con `mouse.wheel`, no con `scrollTo`.
 - **P-03** · Revisión de textos por Álvaro. Bloquea la publicación, no la
   implementación. Comprobar en especial que ninguna mejora prometa lo que el
   asistente aún no hace (recordatorios, WhatsApp) y que las marcas « (del
-  diagnóstico rápido)» se lean bien en el informe.
+  diagnóstico rápido)» se lean bien en el informe. Absorbido por la 003: se
+  cierra con D-033.
 
 **Coordinación con otras ramas.** `feat/chatbot` (carpeta principal, con
 cambios sin commitear) y `feat/en-persona` también tocan
