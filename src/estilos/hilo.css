@@ -60,13 +60,22 @@
   }
 
   /* El profundímetro (layout/Profundimetro.tsx): fijo al borde derecho, la escala de la
-     Superficie al Fondo con la cota actual y lo recorrido en lima. Solo desde 1280 px: con
-     un gutter de 64 px, la lectura más larga («Fondo») cabe sin pisar el contenido. En la
-     superficie (el hero, claro) no se ve; se enciende al bajar. */
+     Superficie al Fondo con la cota actual y lo recorrido en lima. Solo desde 1280 px. En la
+     superficie (el hero, claro) no se ve; se enciende al bajar.
+     Medidas en dos escalones. Kode Mono mide 0,6 em por letra: «FONDO» a 12 px y sin
+     espaciado son 36 px, y con el borde (12), la escala (1) y el hueco (10) llega a 59 px
+     del borde, dentro del gutter de 64 que hay de 1280 a 1599 px. Desde 1600 px el margen
+     del contenedor pasa de 140 px y la lectura crece. */
   .profundimetro {
+    --prof-borde: 12px;
+    --prof-marca: 8px;
+    --prof-rombo: 8px;
+    --prof-hueco: 10px;
+    --prof-letra: 0.75rem;
+    --prof-espaciado: 0;
     position: fixed;
     top: 28vh;
-    right: 18px;
+    right: var(--prof-borde);
     z-index: 60;
     display: none;
     height: 44vh;
@@ -76,6 +85,16 @@
   @media (min-width: 1280px) {
     .profundimetro {
       display: block;
+    }
+  }
+  @media (min-width: 1600px) {
+    .profundimetro {
+      --prof-borde: 24px;
+      --prof-marca: 11px;
+      --prof-rombo: 10px;
+      --prof-hueco: 14px;
+      --prof-letra: 0.8125rem;
+      --prof-espaciado: 0.06em;
     }
   }
   .profundimetro.es-en-superficie {
@@ -99,7 +118,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 6px;
+    width: var(--prof-marca);
     height: 1px;
     background: var(--conducto);
     transition: background-color var(--dur-fast) ease;
@@ -115,22 +134,22 @@
   .prof-cursor::before {
     content: "";
     position: absolute;
-    top: -3.5px;
-    left: -3px;
-    width: 7px;
-    height: 7px;
+    top: calc(var(--prof-rombo) / -2);
+    left: calc((1px - var(--prof-rombo)) / 2);
+    width: var(--prof-rombo);
+    height: var(--prof-rombo);
     background: var(--superficie);
     transform: rotate(45deg);
   }
   .prof-lectura {
     position: absolute;
     top: 0;
-    right: 12px;
+    right: calc(var(--prof-hueco) + 1px);
     transform: translateY(-50%);
     font-family: var(--letra-kode);
-    font-size: 0.625rem;
+    font-size: var(--prof-letra);
     line-height: 1;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--prof-espaciado);
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--hueso);
