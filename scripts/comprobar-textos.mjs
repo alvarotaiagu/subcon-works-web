@@ -434,7 +434,18 @@ function filasEnFichero(tarea) {
       const texto = norm(comoSeLee(textoDe(fila.fichero)));
       const quitar = fila.nuevo === "(quitar)";
       const buscado = fila.nuevo === "(igual)" || quitar ? fila.actual : fila.nuevo;
-      const esta = regExpDeTexto(buscado).test(texto);
+      let esta = regExpDeTexto(buscado).test(texto);
+      if (quitar && esta) {
+        // Un mismo texto puede quitarse de unas filas y seguir (igual) en otras del fichero (p. ej.
+        // «Ver cómo funciona» en servicios[1] y [2]): solo sobra si hay más apariciones que filas
+        // que lo conservan. Se cuenta por clave, no por texto suelto en todo el fichero.
+        const apariciones = (texto.match(new RegExp(regExpDeTexto(buscado).source, "g")) || []).length;
+        const conservadas = leerTextos().reduce(
+          (n, t) => n + t.filas.filter((g) => g.fichero === fila.fichero && g.actual === fila.actual && g.nuevo === "(igual)" && APROBADA.has(g.estado)).length,
+          0,
+        );
+        if (apariciones <= conservadas) esta = false;
+      }
       if (quitar ? esta : !esta) {
         malas.push(`${tabla.ruta} · ${fila.fichero} · ${fila.id}: ${quitar ? "sigue estando" : "no está"} «${buscado.slice(0, 70)}»`);
       }
@@ -611,7 +622,7 @@ const comprobaciones = [
   ...["T06", "T07", "T08", "T09"].map((tarea) => ({
     id: `CA-4 · Filas aprobadas en su fichero · ficheros de ${tarea}`,
     tarea,
-    pendiente: !["T07", "T08", "T09"].includes(tarea), // T07, T08 y T09 hechas; T06 pone la suya al terminar
+    pendiente: !["T06", "T07", "T08", "T09"].includes(tarea), // T06-T09 hechas
     fn: async () => filasEnFichero(tarea),
   })),
   {

@@ -244,7 +244,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Código (en paralelo: T06, T07, T08 y T09)
 
-- [ ] **T06 · Servicios, hero y herramientas.** *Modelo: Sonnet 5.5 high.*
+- [x] **T06 · Servicios, hero y herramientas.** *Modelo: Sonnet 5.5 high.*
   - *Cubre*: spec §3.7 (vigilancia, ficha, teléfono, «factura emitida»),
     §3.4 (etiquetas), CA-4 y CA-7 de T06; deltas 002 §3.6 y §7.
   - *Depende de*: T05.
