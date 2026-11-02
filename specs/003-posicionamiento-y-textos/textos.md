@@ -30,7 +30,7 @@ fila en T05 (D-033). Solo T04 escribe este fichero; T05 cambia la columna de est
   script no lee (`## README`).
 - Un texto que en el código va partido por una etiqueta (`<strong>`) lleva una
   fila por trozo: CA-4 busca cada texto seguido.
-- Las filas `por confirmar` del Anexo (A10, A26, A36, A52, A54, A81, A99) no
+- Las filas `por confirmar` del Anexo (A10, A26, A36, A52, A52b, A52c, A54, A81, A99) no
   sirven para escribir (spec §3.3): donde un texto de hoy se apoya en una de
   ellas, el texto nuevo la quita.
 
@@ -160,7 +160,7 @@ la 2, retitular la banda; en la 5, el reparto de rótulos de la tabla.
    contacto, A50). La ruta no cambia (lo enlazan otras páginas). La parte 2 da
    a esa página un H1 y una `description` que casen.
 7. **«Gratis» y «gratuito» salen** (D-035): el precio se dice «no se cobra»
-   (A34 para la auditoría, A80 para la propuesta).
+   (A34 para la auditoría, A80 para la propuesta; «sin coste» es A34b, C).
 8. **Un texto por persona.** `consultora.ts` (`quien.personas`) y
    `estudio.ts` (`personas`) describen a Álvaro y a Yanin de dos maneras. En
    `## /` se propone para la portada un texto que la parte 2 tiene que
@@ -661,7 +661,7 @@ preguntas P1-P36 llevan fila aunque casi no cambien: son el formulario del kit
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo sector` · `ayuda` | Peluquería, taller, clínica, tienda… | (igual) | Ejemplos de sector; no afirman nada. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo ciudad` · `etiqueta` | Ciudad | (igual) | A44. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `etiqueta` | Vuestra web, si tenéis | (igual) | A44. | aprobada |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `ayuda` | Con ella se puede auditar también la mitad de fuera. Si no tenéis, déjalo vacío. | Si no tenéis, déjalo vacío. | Sale «se puede auditar también la mitad de fuera»: «miramos tu web por fuera» es A52, que sigue `por confirmar`. Filtro 1: «la mitad de fuera» no se entendía. | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo web` · `ayuda` | Con ella se puede auditar también la mitad de fuera. Si no tenéis, déjalo vacío. | Si no tenéis, déjalo vacío. | Sale «se puede auditar también la mitad de fuera»: «miramos tu web por fuera» es A52b, que sigue `por confirmar`. Filtro 1: «la mitad de fuera» no se entendía. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_nombre` · `etiqueta` | Tu nombre | (igual) | A44. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `etiqueta` | Tu correo | (igual) | A44. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Campo contacto_email` · `ayuda` | Es por donde te llega el informe. | (igual) | A72. | aprobada |
@@ -693,7 +693,7 @@ preguntas P1-P36 llevan fila aunque casi no cambien: son el formulario del kit
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Error` · después del correo | y lo resolvemos por correo. | (igual) | A44. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · rótulo | Recibido | (igual) | Interfaz. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · titular | Gracias{n}. | (igual) | Interfaz. `{n}` = «, » y el nombre de pila. | aprobada |
-| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · texto | Nos han llegado {n} de las {n} respuestas. Lo primero que hacemos es leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de ponernos. | Nos han llegado {n} de las {n} respuestas. Lo leemos entero y, si falta algo importante, te escribimos antes de ponernos. | A56 (lo leemos nosotros). Sale «mirar tu web por fuera»: A52 sigue `por confirmar`. `{n}` = contestadas y `TOTAL_PREGUNTAS` (A38). | aprobada |
+| /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · texto | Nos han llegado {n} de las {n} respuestas. Lo primero que hacemos es leerlo entero y mirar tu web por fuera; si falta algo importante te escribimos antes de ponernos. | Nos han llegado {n} de las {n} respuestas. Lo leemos entero y, si falta algo importante, te escribimos antes de ponernos. | A56 (lo leemos nosotros). Sale «mirar tu web por fuera»: A52b sigue `por confirmar`. `{n}` = contestadas y `TOTAL_PREGUNTAS` (A38). | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · plazo | El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte. | (igual) | A72 (procedimiento, D-035). | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Mientras, mira las plantillas | (igual) | A57. | aprobada |
 | /auditoria/ | `src/components/auditoria/FormularioAuditoria.tsx` | `Enviado` · botón | Volver al inicio | (igual) | Interfaz. | aprobada |
@@ -785,7 +785,7 @@ leen Álvaro y Yanin antes de publicarlo (A40).
 | /estudio/ | `src/content/estudio.ts` | `personas[1].texto` | Produce y edita las fotos y los vídeos para redes, que es lo que mejor se le da y lo que más le gusta. También trabaja con IA en el día a día del estudio. | Hace y edita las fotos y los vídeos del estudio. | Decisión 8: el mismo texto que `quien.personas.Yanin.texto` (`## /`). «Para redes» al lado de los servicios se lee como servicio de vídeo (A21, C). Salen «lo que mejor se le da» y «trabaja con IA»: sin fila en el Anexo (§3.2 regla 6). Lo lee Yanin antes de publicarlo (A40). | aprobada |
 | /estudio/ | `src/app/estudio/page.tsx` | `Titular` · `arriba` | Cómo trabajamos. | (igual) | Titular. | aprobada |
 | /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].titulo` | Primero miramos, luego hablamos de precio. | (igual) | A56, A30 (procedimiento, D-035). | aprobada |
-| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].texto` | La auditoría gratuita son {n} preguntas y te deja un informe que es tuyo, sigas con nosotros o no. | La auditoría de tu negocio son {n} preguntas y un informe que te llega por correo. No se cobra. | Nombre de la puerta 3 (P-11). A38 (`{n}` = `TOTAL_PREGUNTAS`), A72, A34 corregida (sin «gratuita»). Sale «un informe que es tuyo, sigas con nosotros o no»: A52 sigue `por confirmar`. | aprobada |
+| /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[0].texto` | La auditoría gratuita son {n} preguntas y te deja un informe que es tuyo, sigas con nosotros o no. | La auditoría de tu negocio son {n} preguntas y un informe que te llega por correo. No se cobra. | Nombre de la puerta 3 (P-11). A38 (`{n}` = `TOTAL_PREGUNTAS`), A72, A34 corregida (sin «gratuita»). Sale «un informe que es tuyo, sigas con nosotros o no»: A52c sigue `por confirmar`. | aprobada |
 | /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[1].titulo` | Partimos de una base propia. | No empezamos de cero. | Decisión 3: sin «propia» (§3.4 regla 1). El texto dice de qué se parte. | aprobada |
 | /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[1].texto` | {n} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas. | Partimos de {n} plantillas publicadas y de la tienda online, el informe de mejoras de tu web y el formulario de contacto, que hemos construido nosotros. Se adapta a lo tuyo, y por eso lo primero funciona en semanas. | A05 (`{n}` = `plantillas.length`), A50 corregida («lo construimos nosotros», solo para las piezas A: A01, A03, A29), A37 (procedimiento). Nombres recomendados (P-11). Sale «herramientas» (decisión 6). | aprobada |
 | /estudio/ | `src/content/estudio.ts` | `comoTrabajamos[2].titulo` | Lo ves funcionando antes de cada pago. | (igual) | A30 (procedimiento, D-035). El texto es `proceso[4].descripcion` (`## /`). | aprobada |
@@ -1144,7 +1144,7 @@ las de `sectores.ts` propias de cada sector van en su tabla, con su ruta.
 | /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[0].etiqueta` | Plantillas propias publicadas y en línea | Plantillas publicadas, con su demo entera | Decisión 3: sale «propias». A05, A57. No la pinta ninguna ruta de esta rama (solo `Plantillas.tsx`, de la portada vigente), pero `portada.test.ts` la busca por esta etiqueta: T07 cambia los dos juntos. | aprobada |
 | /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[1].etiqueta` | Desde que dices que sí hasta que está en línea | (quitar) | A32 (C): «2 sem.» no tiene fuente y la FAQ dice que no se da plazo cerrado. Sale la entrada entera (valor 2 y sufijo «sem.»). Ojo: `plazo` y `Plantillas.tsx` (portada vigente) la usan: T07 ve cómo queda el código. | aprobada |
 | /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[2].etiqueta` | Preguntas de la auditoría, y las contestas en 10 minutos | Preguntas de la auditoría | A38 (el valor, 36, sale de la fuente). Sale «10 minutos» (A35, C hasta cronometrar). `Fondo` la sigue encontrando (busca por «Preguntas de la auditoría»). | aprobada |
-| /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[3].etiqueta` | Lo que cuesta la auditoría y el presupuesto | (quitar) | A34 y A80 corregidas (D-035): el precio se dice «no se cobra», sin «0 €». Sale la entrada entera (valor 0 y sufijo «€»). `Fondo` la exige hoy (lanza un error si falta): el cambio de código es de quien copie `Fondo` (la fila de la cifra se queda con una sola). | aprobada |
+| /sectores/<slug>/ | `src/content/cifras.ts` | `cifras[3].etiqueta` | Lo que cuesta la auditoría y el presupuesto | (quitar) | A34, A34b y A80 corregidas (D-035): el precio se dice «no se cobra», sin «0 €» ni «sin coste». Sale la entrada entera (valor 0 y sufijo «€»). `Fondo` la exige hoy (lanza un error si falta): el cambio de código es de quien copie `Fondo` (la fila de la cifra se queda con una sola). | aprobada |
 | /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].nombre` | Clínicas dentales | (igual) | Sector de D-006. También lo pinta la tarjeta de `/sectores/`. | aprobada |
 | /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].etiqueta` | Clínicas dentales | (igual) | Ídem. | aprobada |
 | /sectores/clinicas-dentales/ | `src/content/sectores.ts` | `paginas[dental].titular` | Que el teléfono no saque a nadie del gabinete | (igual) | Es lo que se busca, no un hecho sobre quien lee (P-13). Lo pinta también la tarjeta de `/sectores/`. | aprobada |
