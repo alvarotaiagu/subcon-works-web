@@ -19,7 +19,7 @@ export function Problemas() {
         <ol className="problemas-lista">
           {problemas.items.map((p) => (
             <li key={p.numero} className="problema">
-              <span className="problema-num" aria-hidden="true">
+              <span className="problema-num" aria-hidden="true" data-numeracion="">
                 {p.numero}
               </span>
               <h3 className="problema-titulo">{p.titulo}</h3>

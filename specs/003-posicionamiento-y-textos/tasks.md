@@ -331,7 +331,7 @@ Spec: [spec.md](spec.md) · Plan: [plan.md](plan.md)
 
 ## Cierre
 
-- [ ] **T10 · Barrido y comprobaciones globales.** *Modelo: Sonnet 5.5
+- [x] **T10 · Barrido y comprobaciones globales.** *Modelo: Sonnet 5.5
   medium.*
   - *Cubre*: CA-1, 2, 3, 5, 8, 10, 16, 17.
   - *Depende de*: T06-T09 mergeadas en `exp/consultora`.

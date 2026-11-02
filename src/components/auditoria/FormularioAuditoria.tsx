@@ -282,7 +282,7 @@ export function FormularioAuditoria() {
                 <legend className="sr-only">
                   Bloque {bloque.numero}: {bloque.titulo}
                 </legend>
-                <p className="font-mono-label mb-3 text-[10px]">
+                <p className="font-mono-label mb-3 text-[10px]" data-numeracion="">
                   Bloque {bloque.numero} de {bloques.length}
                 </p>
                 <h2 className="text-3xl font-medium text-hueso md:text-5xl">
@@ -355,10 +355,10 @@ function Progreso({
   return (
     <div>
       <div className="flex items-baseline justify-between gap-4">
-        <p className="font-mono-label text-[10px]">
+        <p className="font-mono-label text-[10px]" data-numeracion="">
           Paso {paso + 1} de {TOTAL_PASOS}
         </p>
-        <p className="font-mono-label text-[10px] tabular-nums">
+        <p className="font-mono-label text-[10px] tabular-nums" data-numeracion="">
           {respondidas} / {TOTAL_PREGUNTAS}
         </p>
       </div>

@@ -141,7 +141,7 @@ function MejoraFila({ mejora, numero }: { mejora: MejoraDiagnosticada; numero: n
   return (
     <li className="border-t border-conducto py-7 last:border-b">
       <div className="flex gap-6">
-        <span className="font-mono-label w-8 shrink-0 pt-1 text-sm">
+        <span className="font-mono-label w-8 shrink-0 pt-1 text-sm" data-numeracion="">
           {String(numero).padStart(2, "0")}
         </span>
         <div className="min-w-0">

@@ -30,7 +30,7 @@ export function Faq() {
               <li key={p.pregunta}>
                 <details className="faq-item" open={i === 0 ? true : undefined} name="faq">
                   <summary>
-                    <span className="font-mono-label faq-num" aria-hidden="true">
+                    <span className="font-mono-label faq-num" aria-hidden="true" data-numeracion="">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="faq-pregunta">{p.pregunta}</span>

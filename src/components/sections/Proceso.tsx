@@ -190,7 +190,7 @@ export function Proceso() {
               {proceso.map((paso, i) => (
                 <li key={paso.numero} data-estrato="" className={cn(i <= activo && "es-pasado")}>
                   <span className="proceso-estrato-dato">{paso.dato}</span>
-                  <span className="proceso-estrato-num">{paso.numero}</span>
+                  <span className="proceso-estrato-num" data-numeracion="">{paso.numero}</span>
                 </li>
               ))}
             </ol>
@@ -203,7 +203,7 @@ export function Proceso() {
           <ol className="proceso-pasos">
             {proceso.map((paso, i) => (
               <li key={paso.numero} data-paso="" className={cn("proceso-paso", i === activo && "es-activo")}>
-                <span className="proceso-paso-num">{paso.numero}</span>
+                <span className="proceso-paso-num" data-numeracion="">{paso.numero}</span>
                 <h3 className="proceso-paso-titulo">{paso.titulo}</h3>
                 <p className="proceso-paso-texto">{paso.descripcion}</p>
                 <p className="proceso-paso-dato">{paso.dato}</p>
@@ -231,7 +231,7 @@ export function Proceso() {
               <tr key={paso.numero} role="row">
                 <th scope="row" role="rowheader">
                   <span>
-                    {paso.numero} · {paso.titulo}
+                    <span data-numeracion="">{paso.numero}</span> · {paso.titulo}
                   </span>
                 </th>
                 <td role="cell" data-col="Lo que ves tú">
