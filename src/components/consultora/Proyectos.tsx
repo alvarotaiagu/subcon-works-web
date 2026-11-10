@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
-import { BrowserMockup } from "@/components/ui/BrowserMockup";
-import { MovilMockup } from "@/components/ui/MovilMockup";
+import { IlustracionInforme, IlustracionTienda } from "@/components/ui/IlustracionHerramienta";
 import { Seccion } from "@/components/ui/Seccion";
 import { TarjetaTrabajo } from "@/components/ui/TarjetaTrabajo";
 import { Titular } from "@/components/ui/Titular";
 import { proyectos, type CategoriaProyectos } from "@/content/consultora";
-import { herramientas } from "@/content/herramientas";
 import { trabajos } from "@/content/trabajos";
-
-const capturas = (id: string) => herramientas.find((h) => h.id === id)?.capturas ?? [];
 
 function Filas({ categoria }: { categoria: CategoriaProyectos }) {
   return (
@@ -38,8 +34,6 @@ function Filas({ categoria }: { categoria: CategoriaProyectos }) {
  */
 export function Proyectos() {
   const [webs, auto, soft] = proyectos.categorias;
-  const informe = capturas("informe")[0];
-  const [escaparate, panelMovil] = capturas("tiendas");
 
   return (
     <Seccion id="trabajos" aria-labelledby="proyectos-titulo" className="py-[var(--space-section)]">
@@ -82,12 +76,9 @@ export function Proyectos() {
           </header>
           <div className="banda-doble">
             <Filas categoria={auto} />
-            {informe && (
-              <div className="banda-captura">
-                <BrowserMockup src={informe.src} alt={informe.alt} />
-                <p className="font-mono-label mt-3 text-[10px]">Informe de ejemplo sobre una web de muestra</p>
-              </div>
-            )}
+            <div className="banda-ilustracion">
+              <IlustracionInforme titulo="Ilustración de un informe: hallazgos ordenados, una nota de conjunto y una lupa sobre las medidas" />
+            </div>
           </div>
         </div>
 
@@ -97,20 +88,10 @@ export function Proyectos() {
             <h3 className="banda-titulo">{soft.titulo}</h3>
             <p className="banda-intro">{soft.intro}</p>
           </header>
-          <div className="banda-doble banda-software">
-            <div>
-              <Filas categoria={soft} />
-              <p className="mt-6 max-w-sm text-sm text-apagado-abajo">
-                Tienda de ejemplo (una papelería inventada) con pedidos y productos de prueba.
-              </p>
-            </div>
-            <div className="banda-capturas">
-              {escaparate && <BrowserMockup src={escaparate.src} alt={escaparate.alt} />}
-              {panelMovil && (
-                <div className="banda-movil">
-                  <MovilMockup src={panelMovil.src} alt={panelMovil.alt} />
-                </div>
-              )}
+          <div className="banda-doble">
+            <Filas categoria={soft} />
+            <div className="banda-ilustracion">
+              <IlustracionTienda titulo="Ilustración de una tienda online: escaparate con productos y el panel del dueño en el móvil" />
             </div>
           </div>
         </div>
