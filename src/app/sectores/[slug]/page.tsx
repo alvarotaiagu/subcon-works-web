@@ -5,7 +5,8 @@ import { nitidezInterior } from "@/components/ui/CabeceraInterior";
 import { CabeceraSector } from "@/components/sectores/CabeceraSector";
 import { ChatEjemplo } from "@/components/sectores/ChatEjemplo";
 import { MejorasSector } from "@/components/sectores/MejorasSector";
-import { PlantillasSector, plantillasValidas } from "@/components/sectores/PlantillasSector";
+import { TrabajosSector } from "@/components/sectores/TrabajosSector";
+import { trabajosPorSlug } from "@/content/trabajos";
 import { ProblemasSector } from "@/components/sectores/ProblemasSector";
 import { Fondo } from "@/components/sections/Fondo";
 import { sectores, sectorPorSlug } from "@/content/sectores";
@@ -37,8 +38,8 @@ export default async function SectorPage({ params }: Props) {
   const pagina = sectorPorSlug(slug);
   if (!pagina) notFound();
 
-  const plantillas = plantillasValidas(pagina.plantillas);
-  const hayPlantillas = plantillas.length > 0;
+  const trabajos = trabajosPorSlug(pagina.trabajos);
+  const hayTrabajos = trabajos.length > 0;
   const bloque = "container-max pb-[var(--space-section)]";
 
   return (
@@ -53,7 +54,7 @@ export default async function SectorPage({ params }: Props) {
       <MejorasSector
         ids={pagina.mejoras}
         sector={pagina.codigo}
-        hayPlantillas={hayPlantillas}
+        hayTrabajos={hayTrabajos}
         className={bloque}
       />
 
@@ -76,7 +77,7 @@ export default async function SectorPage({ params }: Props) {
             sentido tienen para vosotros. No se envía ni se guarda nada.
           </p>
           <div className="mt-12">
-            <Diagnostico contexto="sector" sector={pagina.codigo} hayPlantillas={hayPlantillas} />
+            <Diagnostico contexto="sector" sector={pagina.codigo} hayTrabajos={hayTrabajos} />
           </div>
         </div>
       </section>
@@ -90,8 +91,8 @@ export default async function SectorPage({ params }: Props) {
         />
       </section>
 
-      {/* 6 · Plantillas: no sale si no hay ninguna válida (D-007) */}
-      <PlantillasSector plantillas={plantillas} className={`${bloque} scroll-mt-28`} />
+      {/* 6 · Trabajos: no sale si no hay ninguno (D-007) */}
+      <TrabajosSector trabajos={trabajos} className={`${bloque} scroll-mt-28`} />
 
       {/* 7 · Cierre: el Fondo de la portada, sin el conducto (spec 002 §3.12) */}
       <Fondo />

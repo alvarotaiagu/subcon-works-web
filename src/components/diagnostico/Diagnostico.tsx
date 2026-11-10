@@ -97,12 +97,12 @@ function limpiar(sector: Sector | undefined, respuestas: Respuestas): Respuestas
 export function Diagnostico({
   contexto,
   sector,
-  hayPlantillas = false,
+  hayTrabajos = false,
 }: {
   contexto: Contexto;
   /** Obligatorio con `contexto="sector"`; en la portada se ignora. */
   sector?: Sector;
-  hayPlantillas?: boolean;
+  hayTrabajos?: boolean;
 }) {
   const [elegido, setElegido] = useState<Sector | undefined>(undefined);
   const [respuestas, setRespuestas] = useState<Respuestas>({});
@@ -282,7 +282,7 @@ export function Diagnostico({
           sector={sectorActivo ?? "otro"}
           respuestas={respuestas}
           contexto={contexto}
-          hayPlantillas={hayPlantillas}
+          hayTrabajos={hayTrabajos}
           tituloRef={tituloRef}
           onCambiar={cambiar}
         />

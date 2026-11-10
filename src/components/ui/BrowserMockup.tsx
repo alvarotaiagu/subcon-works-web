@@ -1,12 +1,11 @@
 import { WorkImage } from "@/components/ui/WorkImage";
 
 /**
- * Marco de navegador para las capturas del catálogo.
+ * Marco de navegador para las capturas.
  *
  * Si se le pasa `url` se pinta en la barra, y debe ser **la dirección real** de
- * la demo: los negocios de las plantillas son inventados, pero el sitio existe
- * y se puede abrir, así que no se le inventa además un dominio que parezca de
- * un negocio real.
+ * la web: si es un negocio inventado, el sitio existe y se puede abrir, así que
+ * no se le inventa además un dominio que parezca de un negocio real.
  */
 export function BrowserMockup({
   src,

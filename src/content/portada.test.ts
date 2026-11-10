@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 import { cifras } from "./cifras.ts";
-import { plantillas } from "./plantillas.ts";
+import { trabajos } from "./trabajos.ts";
 import { proceso } from "./proceso.ts";
 
 // Spec 002 §7. `portada.ts` lo crea T05: se carga dentro del test (con la ruta en una
@@ -27,7 +27,7 @@ test("§3.5 · Las cotas de la portada", async () => {
       { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25 },
       { id: "soluciones", cota: "−2 · Soluciones en acción", shrp: 40 },
       { id: "proceso", cota: "−3 · El proceso", shrp: 55 },
-      { id: "plantillas", cota: "−4 · Proyectos y demostraciones", shrp: 70 },
+      { id: "trabajos", cota: "−4 · Proyectos y demostraciones", shrp: 70 },
       { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82 },
       { id: "faq", cota: "−6 · Dudas", shrp: 92 },
       { id: "contacto", cota: "Fondo · Contacto", shrp: 100 },
@@ -36,12 +36,12 @@ test("§3.5 · Las cotas de la portada", async () => {
 });
 
 test("§3.5 · Recuento", () => {
-  const c = cifras.find((x) => x.etiqueta === "Plantillas propias publicadas y en línea");
-  assert.ok(c, "cifras.ts no tiene la cifra de plantillas");
-  assert.equal(c.valor, plantillas.length);
-  // Que salga del catálogo, no de un número escrito a mano que hoy coincide.
+  const c = cifras.find((x) => x.etiqueta === "Webs propias y de clientes, en línea y abiertas");
+  assert.ok(c, "cifras.ts no tiene la cifra de trabajos");
+  assert.equal(c.valor, trabajos.length);
+  // Que salga de la lista, no de un número escrito a mano que hoy coincide.
   const fuente = readFileSync(new URL("./cifras.ts", import.meta.url), "utf8");
-  assert.match(fuente, /plantillas\.length/, "cifras.ts no calcula la cifra con plantillas.length");
+  assert.match(fuente, /trabajos\.length/, "cifras.ts no calcula la cifra con trabajos.length");
 });
 
 test("§3.9 · Proceso", () => {

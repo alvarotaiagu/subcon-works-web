@@ -403,15 +403,15 @@ export type IdMejora =
 
 /**
  * Destino del enlace de una mejora según dónde esté el diagnóstico. El valor
- * especial `"plantillas-sector"` lo resuelve `resolverEnlace`: al bloque de
- * plantillas de la página si lo tiene; si no, a `/plantillas/`.
+ * especial `"trabajos-sector"` lo resuelve `resolverEnlace`: al bloque de
+ * trabajos de la página si lo tiene; si no, a `/#trabajos`.
  */
 export interface EnlaceMejora {
   portada?: string;
   sector?: string;
 }
 
-export const ENLACE_PLANTILLAS_SECTOR = "plantillas-sector";
+export const ENLACE_TRABAJOS_SECTOR = "trabajos-sector";
 
 export interface Mejora {
   id: IdMejora;
@@ -460,7 +460,7 @@ export const mejoras: Mejora[] = [
     queResuelve: {
       base: "Un motor de reservas en tu web, con el calendario enlazado al de Booking y Airbnb para no vender dos veces la misma noche. Quien ya te conoce reserva contigo, y las plataformas quedan para que te encuentren los nuevos.",
     },
-    enlace: { portada: "/plantillas/", sector: ENLACE_PLANTILLAS_SECTOR },
+    enlace: { portada: "/#trabajos", sector: ENLACE_TRABAJOS_SECTOR },
     sectores: ["rural"],
   },
   {
@@ -508,7 +508,7 @@ export const mejoras: Mejora[] = [
       despachos:
         "Una web rápida en el móvil, que explica qué asuntos llevas y cómo se trabaja contigo, y en la que cambiar un texto no depende de nadie.",
     },
-    enlace: { portada: "/plantillas/", sector: ENLACE_PLANTILLAS_SECTOR },
+    enlace: { portada: "/#trabajos", sector: ENLACE_TRABAJOS_SECTOR },
     sectores: TODOS,
   },
   {

@@ -1,5 +1,4 @@
 import { TOTAL_PREGUNTAS } from "@/content/auditoria";
-import { plantillas } from "@/content/plantillas";
 import { proceso } from "@/content/proceso";
 
 export interface Persona {
@@ -78,7 +77,7 @@ export const compromisos: Punto[] = [
 export const notaCompromisos =
   "La tienda online va sobre nuestra plataforma, que es compartida: ahí el dominio es tuyo, el código de la plataforma no.";
 
-/** Sale de lo que la web ya promete en Proceso, Auditoría y Plantillas. */
+/** Sale de lo que la web ya promete en Proceso, Auditoría y Trabajos. */
 export const comoTrabajamos: Punto[] = [
   {
     titulo: "Primero miramos, luego hablamos de precio.",
@@ -88,7 +87,7 @@ export const comoTrabajamos: Punto[] = [
   {
     titulo: "Partimos de una base propia.",
     texto:
-      `${plantillas.length} plantillas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas.`,
+      "Las piezas y las herramientas que hemos escrito nosotros. Se adapta a lo tuyo, no se empieza de cero, y por eso lo primero funciona en semanas.",
   },
   {
     titulo: "Lo ves funcionando antes de cada pago.",

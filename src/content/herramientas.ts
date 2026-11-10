@@ -124,7 +124,7 @@ export const herramientas: Herramienta[] = [
     capturas: [
       {
         src: "/herramientas/informe.jpg",
-        alt: "Informe de mejoras sobre la demo de una de nuestras plantillas, con los fallos y su prueba.",
+        alt: "Informe de mejoras sobre la demo de una web de muestra, con los fallos y su prueba.",
         marco: "navegador",
       },
     ],

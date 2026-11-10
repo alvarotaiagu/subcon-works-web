@@ -713,7 +713,7 @@ function Enviado({ nombre, respondidas }: { nombre: string; respondidas: number 
         El informe tarda unos días y llega por correo. No hay ningún paso siguiente por tu parte.
       </p>
       <div className="mt-10 flex flex-wrap gap-4">
-        <Boton href="/plantillas/">Mientras, mira las plantillas</Boton>
+        <Boton href="/#trabajos">Mientras, mira lo que hemos hecho</Boton>
         <Boton href="/" variante="secundario">
           Volver al inicio
         </Boton>

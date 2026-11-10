@@ -65,8 +65,8 @@ export interface PaginaSector {
   };
   /** De 6 a 10 mensajes. */
   conversacion: MensajeChat[];
-  /** Slugs de `plantillas.ts`. Vacío: el bloque de plantillas no sale (D-007). */
-  plantillas: string[];
+  /** Slugs de `trabajos.ts`. Vacío: el bloque de trabajos no sale (D-007). */
+  trabajos: string[];
 }
 
 function slugDe(codigo: SectorConPagina): string {
@@ -145,7 +145,7 @@ const paginas: Omit<PaginaSector, "slug">[] = [
       },
       { de: "cliente", texto: "Vale, llamo ahora. Gracias." },
     ],
-    plantillas: [],
+    trabajos: [],
   },
   {
     codigo: "rural",
@@ -214,7 +214,7 @@ const paginas: Omit<PaginaSector, "slug">[] = [
           "Apuntado: Marta Ejemplo, 600 000 000, puente de diciembre, cuatro personas y un perro. Te llamarán de Casa Rural Demo para decirte si hay sitio y el precio.",
       },
     ],
-    plantillas: ["hotel-rural"],
+    trabajos: ["pazo-do-souto", "apartamentos-el-sotano", "casa-da-corga", "casa-da-corga-ligera"],
   },
   {
     codigo: "despachos",
@@ -283,7 +283,7 @@ const paginas: Omit<PaginaSector, "slug">[] = [
           "Apuntado: Jorge Ejemplo, jorge@ejemplo.com, por una carta de Hacienda sobre la renta. Te escribirán de Despacho Demo para darte hora.",
       },
     ],
-    plantillas: ["abogados-trinquete", "abogados-portico", "abogados-contraluz"],
+    trabajos: [],
   },
 ];
 

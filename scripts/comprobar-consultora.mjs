@@ -11,7 +11,7 @@ import { chromium } from "playwright";
 const argUrl = process.argv.indexOf("--url");
 const URL_BASE = argUrl > -1 ? process.argv[argUrl + 1] : "http://localhost:3100/";
 const ENDPOINT = "**/functions/v1/solicitar-auditoria";
-const SECCIONES = ["inicio", "problemas", "servicios", "soluciones", "proceso", "plantillas", "equipo", "faq", "contacto"];
+const SECCIONES = ["inicio", "problemas", "servicios", "soluciones", "proceso", "trabajos", "equipo", "faq", "contacto"];
 
 const resultados = [];
 async function prueba(nombre, fn) {

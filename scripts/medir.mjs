@@ -16,7 +16,7 @@
        más larga tras `fonts.ready`, con CPU ×4 (con `--cpu` distinto no se aplica);
      - control de tareas largas: al final se lanza con `setTimeout` una tarea de 300 ms; si
        el observador no la ve, la cifra de tareas largas no vale y la medida falla;
-   - rutas: portada con cortina y sin ella, /plantillas/ y /sectores/alojamientos-rurales/.
+   - rutas: portada con cortina y sin ella, /estudio/ y /sectores/alojamientos-rurales/.
      Las cargas se intercalan (ruta 1, 2, 3, 4, ruta 1, 2…) para que un rato lento de la
      máquina no caiga entero en una sola ruta.
 
@@ -43,7 +43,7 @@ import {
 const RUTAS = [
   { nombre: "Portada · con cortina", ruta: "", cortina: true, portada: true },
   { nombre: "Portada · sin cortina", ruta: "", cortina: false, portada: true },
-  { nombre: "/plantillas/", ruta: "plantillas/", cortina: false },
+  { nombre: "/estudio/", ruta: "estudio/", cortina: false },
   { nombre: "/sectores/alojamientos-rurales/", ruta: "sectores/alojamientos-rurales/", cortina: false },
 ];
 

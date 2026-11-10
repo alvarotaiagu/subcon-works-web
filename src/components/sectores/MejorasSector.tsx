@@ -14,12 +14,12 @@ import { mejorasPorIds, resolverEnlace, textoPara } from "@/lib/diagnostico";
 export function MejorasSector({
   ids,
   sector,
-  hayPlantillas,
+  hayTrabajos,
   className,
 }: {
   ids: IdMejora[];
   sector: Sector;
-  hayPlantillas: boolean;
+  hayTrabajos: boolean;
   className?: string;
 }) {
   const lista = mejorasPorIds(ids);
@@ -40,7 +40,7 @@ export function MejorasSector({
         </p>
         <ul className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {lista.map((mejora) => {
-            const enlace = resolverEnlace(mejora.enlace, "sector", hayPlantillas);
+            const enlace = resolverEnlace(mejora.enlace, "sector", hayTrabajos);
             return (
               <li
                 key={mejora.id}

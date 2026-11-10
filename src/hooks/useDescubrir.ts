@@ -64,7 +64,7 @@ export function useDescubrir<T extends HTMLElement>(ref: RefObject<T | null>) {
     };
 
     // No vale un IntersectionObserver: la sección está recortada del todo y, para él, solo
-    // cuenta una línea de alto 0 en su borde de arriba. Un salto del menú (`/#plantillas`)
+    // cuenta una línea de alto 0 en su borde de arriba. Un salto del menú (`/#trabajos`)
     // que deja ese borde en 0 o por encima de la pantalla no lo dispara nunca y la sección
     // se queda oculta. Se mira la posición en cada scroll (y al cambiar el tamaño).
     const mirar = () => {

@@ -43,7 +43,7 @@ import {
 const CORTE = [
   { id: "inicio", cota: "Superficie" },
   { id: "servicios", cota: "0 · Lo que montamos" },
-  { id: "plantillas", cota: "−1 · La plantilla" },
+  { id: "trabajos", cota: "−1 · Trabajos" },
   { id: "proceso", cota: "−2 · El proceso" },
   { id: "equipo", cota: "−3 · Quién está debajo" },
   { id: "diagnostico", cota: "−4 · Diagnóstico" },
@@ -53,7 +53,6 @@ const CORTE = [
 /** §3.12: interiores y su cota. La 404 se pide con una ruta que no existe. */
 const INTERIORES = [
   { ruta: "herramientas/", cota: "0 · Herramientas" },
-  { ruta: "plantillas/", cota: "−1 · Catálogo" },
   { ruta: "estudio/", cota: "−3 · Estudio" },
   { ruta: "auditoria/", cota: "Fondo · Auditoría" },
   { ruta: "sectores/", cota: "−4 · Sectores" },
@@ -669,22 +668,22 @@ const comprobaciones = [
       // 2. Segunda carga en la misma pestaña: no sale.
       await p1.reload({ waitUntil: "load" });
       assert.ok(!(await h.gancho(p1)).cortinaVista, "segunda carga de la sesión: sale otra vez");
-      // 3. En /plantillas/: no sale, y entrar por una interior no marca la sesión.
-      const p2 = await h.abrir("plantillas/", { cortina: true });
-      assert.ok(!(await h.gancho(p2)).cortinaVista, "/plantillas/: sale");
+      // 3. En /estudio/: no sale, y entrar por una interior no marca la sesión.
+      const p2 = await h.abrir("estudio/", { cortina: true });
+      assert.ok(!(await h.gancho(p2)).cortinaVista, "/estudio/: sale");
       await p2.goto(h.url(""), { waitUntil: "domcontentloaded" });
-      assert.ok((await h.gancho(p2)).cortinaVista, "portada tras entrar por /plantillas/: no sale (la interior marcó la sesión)");
+      assert.ok((await h.gancho(p2)).cortinaVista, "portada tras entrar por /estudio/: no sale (la interior marcó la sesión)");
       // 4. Con movimiento reducido: no sale.
       const p3 = await h.abrir("", { cortina: true, reducedMotion: "reduce" });
       assert.ok(!(await h.gancho(p3)).cortinaVista, "con movimiento reducido: sale");
-      // 5. De /plantillas/ a la portada pulsando el logo (sin recargar): no sale.
-      const p4 = await h.abrir("plantillas/", { cortina: true });
+      // 5. De /estudio/ a la portada pulsando el logo (sin recargar): no sale.
+      const p4 = await h.abrir("estudio/", { cortina: true });
       await p4.evaluate(() => (window.__mismoDocumento = true));
       await p4.click('header a[aria-label="Undertactics, inicio"]');
       await p4.waitForURL((u) => u.pathname === `${h.base}/`, { timeout: 8000 });
       await p4.waitForTimeout(800);
       assert.ok(await p4.evaluate(() => window.__mismoDocumento === true), "el logo recargó la página");
-      assert.ok(!(await h.cortinaPuesta(p4)), "de /plantillas/ a la portada con el logo: sale");
+      assert.ok(!(await h.cortinaPuesta(p4)), "de /estudio/ a la portada con el logo: sale");
     },
   },
   {
@@ -694,7 +693,7 @@ const comprobaciones = [
     async fn(h) {
       const casos = [
         { nombre: "segunda carga", ruta: "", o: { cortina: false } },
-        { nombre: "/plantillas/", ruta: "plantillas/", o: { cortina: true } },
+        { nombre: "/estudio/", ruta: "estudio/", o: { cortina: true } },
         { nombre: "movimiento reducido", ruta: "", o: { cortina: true, reducedMotion: "reduce" } },
       ];
       for (const ancho of [390, 1440]) {
@@ -706,7 +705,7 @@ const comprobaciones = [
           assert.ok(!g.fotogramaConCortina, `${ancho} px, ${c.nombre}: algún fotograma pintó la cortina`);
         }
         // Del logo a la portada, sin recargar.
-        const p = await h.abrir("plantillas/", { ancho, cortina: true });
+        const p = await h.abrir("estudio/", { ancho, cortina: true });
         await p.evaluate(() => {
           window.__conCortina = false;
           const fin = performance.now() + 2500;
@@ -724,7 +723,7 @@ const comprobaciones = [
         // En móvil el logo está en la cabecera igual; el menú no hace falta.
         await p.click('header a[aria-label="Undertactics, inicio"]');
         await p.waitForTimeout(2600);
-        assert.ok(!(await p.evaluate(() => window.__conCortina)), `${ancho} px, logo desde /plantillas/: algún fotograma pintó la cortina`);
+        assert.ok(!(await p.evaluate(() => window.__conCortina)), `${ancho} px, logo desde /estudio/: algún fotograma pintó la cortina`);
       }
     },
   },
@@ -1460,18 +1459,18 @@ const comprobaciones = [
         assert.deepEqual(aud.sinMarca, [], `${ancho} px: campos de la auditoría sin rellenar desde el diagnóstico`);
       }
       // Las tres páginas de sector: sin pregunta de sector, «Ejemplo» en #asistente y el
-      // bloque de plantillas en rural y despachos, no en dental.
+      // bloque de trabajos solo en rural.
       for (const ruta of SECTORES) {
         const page = await h.abrir(ruta, { ancho: 1440 });
         const r = await page.evaluate(() => ({
           total: document.querySelector('#diagnostico [role="progressbar"]')?.getAttribute("aria-valuemax"),
           ejemplo: /Ejemplo/.test(document.getElementById("asistente")?.textContent || ""),
-          plantillas: !!document.getElementById("plantillas-sector"),
+          plantillas: !!document.getElementById("trabajos-sector"),
           noscript: [...document.querySelectorAll("#diagnostico noscript")].some((n) => /auditoria/.test(n.textContent)),
         }));
         assert.equal(r.total, "6", `/${ruta}: el diagnóstico tiene ${r.total} preguntas, no 6`);
         assert.ok(r.ejemplo, `/${ruta}: #asistente sin «Ejemplo»`);
-        assert.equal(r.plantillas, !ruta.includes("dentales"), `/${ruta}: bloque de plantillas ${r.plantillas ? "sí" : "no"}`);
+        assert.equal(r.plantillas, ruta.includes("rurales"), `/${ruta}: bloque de trabajos ${r.plantillas ? "sí" : "no"}`);
       }
       // noindex en toda página.
       for (const ruta of ["", ...INTERIORES.map((i) => i.ruta), ...SECTORES]) {
@@ -1672,14 +1671,14 @@ const comprobaciones = [
         });
         assert.deepEqual(huecos, [], `${ancho} px: sin GSAP el conducto tiene huecos (y en px)`);
         // Navegar sin GSAP: la tapa de la transición no se queda puesta.
-        await page.locator('a[href$="/plantillas/"]:visible').first().click();
-        await page.waitForURL(/\/plantillas\/$/);
+        await page.locator('a[href$="/estudio/"]:visible').first().click();
+        await page.waitForURL(/\/estudio\/$/);
         await page.waitForTimeout(800);
         const tapada = await page.evaluate(() => {
           const t = document.querySelector('div[class~="z-[95]"] > div.bg-hondo');
           return !!t && getComputedStyle(t).visibility === "visible";
         });
-        assert.ok(!tapada, `${ancho} px: sin GSAP, al navegar a /plantillas/ la tapa de la transición se queda puesta`);
+        assert.ok(!tapada, `${ancho} px: sin GSAP, al navegar a /estudio/ la tapa de la transición se queda puesta`);
         assert.deepEqual(page.__errores ?? [], [], `${ancho} px: errores de página sin GSAP`);
         await page.context().close();
       }

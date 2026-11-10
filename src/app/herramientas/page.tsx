@@ -92,8 +92,8 @@ export default function HerramientasPage() {
             <p className="text-sm text-apagado-abajo">
               La plataforma de tiendas se está estrenando con su{" "}
               <strong className="font-medium text-hueso">primera tienda</strong>. Las capturas
-              de esta página salen de una tienda de ejemplo y de la demo de una de nuestras
-              plantillas: los negocios, los productos, los pedidos y las cifras que aparecen son
+              de esta página salen de una tienda de ejemplo y de la demo de una web de
+              muestra: los negocios, los productos, los pedidos y las cifras que aparecen son
               inventados.
             </p>
           </div>

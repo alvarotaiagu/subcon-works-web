@@ -10,8 +10,8 @@ import { cn, withBasePath } from "@/lib/utils";
  *
  * Lo segundo no es opcional aquí: el sitio se publica como project site de
  * GitHub Pages bajo `/subcon-works-web/`, y `next/image` con `unoptimized: true`
- * sirve el `src` tal cual, sin prefijo. Un `/plantillas/x.jpg` escrito en el
- * contenido acaba pidiendo `alvarotaiagu.github.io/plantillas/x.jpg` — 404 — y
+ * sirve el `src` tal cual, sin prefijo. Un `/trabajos/x.jpg` escrito en el
+ * contenido acaba pidiendo `alvarotaiagu.github.io/trabajos/x.jpg` — 404 — y
  * lo único que se ve es el panel de "imagen no disponible" de aquí abajo, que
  * disimula el fallo en vez de cantarlo.
  *

@@ -6,7 +6,7 @@ import { Glifo } from "@/components/ui/Glifo";
  * «Más sobre esto →» de una mejora, en el resultado del diagnóstico y en «Lo
  * que haríamos» de una página de sector. Las rutas (`/…`) van por `Link`, que
  * pone el basePath; las anclas de la misma página (`#asistente`,
- * `#plantillas-sector`) son un `<a>` normal, como el «#plantillas» del Hero.
+ * `#trabajos-sector`) son un `<a>` normal, como el «#trabajos» de la portada.
  */
 export function EnlaceMejora({ href, className }: { href: string; className?: string }) {
   const clases = cn("link-underline text-sm text-hueso", className);

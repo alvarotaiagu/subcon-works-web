@@ -113,13 +113,12 @@ const PALABRAS_CLIENTES = [
  * La tarea dueña ajusta el selector a su marcado.
  */
 const BLOQUES_PLANTILLAS = [
-  { grupo: "portada", tarea: "T07", rutas: [""], seccion: "#plantillas", tarjetas: "[data-foco-dentro]" },
-  { grupo: "plantillas", tarea: "T08", rutas: ["plantillas/"], seccion: "main", tarjetas: "[data-foco-dentro]" },
+  { grupo: "portada", tarea: "T07", rutas: [""], seccion: "#trabajos", tarjetas: "[data-foco-dentro]" },
   {
     grupo: "sector",
     tarea: "T09",
     rutas: ["sectores/clinicas-dentales/", "sectores/alojamientos-rurales/", "sectores/asesorias-y-despachos/"],
-    seccion: "#plantillas-sector",
+    seccion: "#trabajos-sector",
     tarjetas: "[data-foco-dentro]",
     // Sin plantillas válidas en el sector, el bloque no sale ni con título (P-01): no es un fallo.
     opcional: true,
@@ -166,17 +165,13 @@ const DUENOS = {
     "src/content/interiores.ts",
     "src/content/estudio.ts",
     "src/content/auditoria.ts",
-    "src/content/plantillas.ts",
-    "src/content/plantillas.test.ts",
     "src/app/auditoria/page.tsx",
     "src/app/estudio/page.tsx",
-    "src/app/plantillas/page.tsx",
     "src/app/privacidad/page.tsx",
     "src/app/not-found.tsx",
     "src/components/layout/*",
     "src/components/auditoria/*",
-    "src/components/plantillas/*",
-    "src/components/ui/TarjetaPlantilla.tsx",
+    "src/components/ui/TarjetaTrabajo.tsx",
     "README.md",
   ],
   T09: [
@@ -567,13 +562,7 @@ const comprobaciones = [
     fn: avisoDeInventadas("portada"),
   },
   {
-    id: "CA-6 · … · /plantillas/",
-    tarea: "T08",
-    pendiente: true,
-    fn: avisoDeInventadas("plantillas"),
-  },
-  {
-    id: "CA-6 · … · PlantillasSector",
+    id: "CA-6 · … · TrabajosSector",
     tarea: "T09",
     pendiente: true,
     fn: avisoDeInventadas("sector"),

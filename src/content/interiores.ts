@@ -14,7 +14,6 @@ export interface CotaInterior {
 
 export const cotasInterior = {
   herramientas: { cota: "0 · Herramientas", shrp: 20 },
-  plantillas: { cota: "−1 · Catálogo", shrp: 40 },
   estudio: { cota: "−3 · Estudio", shrp: 85 },
   sectores: { cota: "−4 · Sectores", shrp: 95 },
   auditoria: { cota: "Fondo · Auditoría", shrp: 100 },
