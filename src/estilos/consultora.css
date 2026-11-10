@@ -551,18 +551,13 @@
       align-items: start;
     }
   }
-  .banda-capturas {
-    display: grid;
-    align-items: start;
-    gap: 1.5rem;
+  .banda-ilustracion {
+    max-width: 34rem;
   }
-  @media (min-width: 640px) {
-    .banda-capturas {
-      grid-template-columns: minmax(0, 1fr) 9.5rem;
-    }
-  }
-  .banda-movil {
-    max-width: 12rem;
+  .ilustracion-herramienta {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .proyecto-filas {
     display: grid;
