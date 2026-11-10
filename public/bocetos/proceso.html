@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Cómo trabajamos · tres bocetos</title>
+<!--
+  Bocetos de la sección «Cómo trabajamos» de Undertactics (subcon-works-web).
+  Standalone: Three.js 0.160 desde jsDelivr (importmap, como Balda y Norte), letras
+  de la web desde ../public/fuentes. Servir desde la raíz del repo (scripts/servir.mjs
+  no vale: pide un index.html en la raíz):
+
+      python -m http.server 4303   (desde public/)
+      http://127.0.0.1:4303/bocetos/proceso.html  ·  en Pages: /subcon-works-web/bocetos/proceso.html
+
+  Parámetros: ?fps (contador del 3D), ?planb (plan B 2D del boceto A), ?reducido
+  (simula prefers-reduced-motion). Los tres bocetos leen el scroll: nada va en bucle.
+-->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }
+</script>
+<style>
+  @font-face { font-family: "Geologica"; font-style: oblique 0deg 12deg; font-weight: 100 900; font-display: swap; src: url(../fuentes/geologica-oblique.woff2) format("woff2"); }
+  @font-face { font-family: "Kode Mono"; font-style: normal; font-weight: 400 700; font-display: swap; src: url(../fuentes/kode-mono-normal.woff2) format("woff2"); }
+
+  :root {
+    /* Paleta de la web (globals.css, spec 002 §3.1). Lima solo como línea o texto sobre oscuro. */
+    --cal: #f1eee6; --tinta: #15181a; --apagado-arriba: #5c625f; --tarjeta: #fbfaf6;
+    --superficie: #c9f24d; --hondo: #0e1b1e; --estrato: #14272b; --roca: #0a1416;
+    --hueso: #e4ece8; --apagado-abajo: #8fa19e; --conducto: #3a5156; --bloque: #8a9099;
+    --estrato-1: #2a4844; --estrato-2: #233f3b; --estrato-3: #1e3633;
+    --estrato-4: #192e2c; --estrato-5: #152725; --estrato-6: #111f1f;
+    --geo: "Geologica", system-ui, sans-serif;
+    --kode: "Kode Mono", ui-monospace, monospace;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --gutter: clamp(1.5rem, 5vw, 4rem);
+    --paso-tam: clamp(4.5rem, 11vw, 9.5rem);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--hondo); color: var(--hueso); color-scheme: dark; }
+  body { margin: 0; font-family: var(--geo); font-weight: 300; font-size: 1rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--hueso); color: var(--hondo); }
+  a { color: var(--hueso); }
+  .container { max-width: 1440px; margin-inline: auto; padding-inline: var(--gutter); }
+
+  /* ── Cabecera del documento (no es la web) ───────────────────────────── */
+  .cabecera { padding-block: 3rem 2rem; border-bottom: 1px solid var(--conducto); }
+  .cabecera h1 { font-weight: 300; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 0.75rem; }
+  .cabecera p { max-width: 64ch; color: var(--apagado-abajo); margin: 0.4rem 0; }
+  .mando { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+  .mando button, .mando a { font: 500 0.74rem var(--kode); letter-spacing: 0.04em; color: var(--apagado-abajo); background: none; border: 1px solid var(--conducto); padding: 0.45rem 0.8rem; cursor: pointer; text-decoration: none; border-radius: 0; }
+  .mando button[aria-pressed="true"] { color: var(--superficie); border-color: var(--superficie); }
+  .nota { font: 400 0.74rem var(--kode); color: var(--apagado-abajo); }
+
+  /* ── Cada boceto ─────────────────────────────────────────────────────── */
+  .boceto { padding-top: clamp(4rem, 10vw, 7rem); }
+  .boceto-cabeza { margin-bottom: 2rem; }
+  .etiqueta { font: 500 0.74rem var(--kode); letter-spacing: 0.04em; color: var(--superficie); margin: 0 0 1rem; }
+  /* Titular de sección como en la web: Geologica 300 + segunda línea Kode Mono 500 lima. */
+  .titular { font-weight: 300; font-size: clamp(2rem, 4.6vw, 4.1rem); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 1.5rem; max-width: 22ch; }
+  .titular em { display: block; font: 500 0.82em var(--kode); color: var(--superficie); letter-spacing: 0; }
+  .ficha { display: grid; grid-template-columns: max-content 1fr; gap: 0.5rem 1.25rem; max-width: 72ch; margin: 0; font-size: 0.95rem; }
+  .ficha dt { font: 500 0.74rem var(--kode); color: var(--apagado-abajo); padding-top: 0.2rem; }
+  .ficha dd { margin: 0; }
+  @media (max-width: 640px) { .ficha { grid-template-columns: 1fr; gap: 0.1rem 0; } .ficha dt { margin-top: 0.6rem; } }
+
+  /* El recorrido: un bloque alto; dentro, el escenario anclado una pantalla entera. */
+  .recorrido { height: calc(var(--pantallas, 6) * 100svh); position: relative; }
+  .escenario { position: sticky; top: 0; height: 100svh; overflow: clip; background: var(--hondo); }
+  html.reducido .recorrido { height: auto; }
+  html.reducido .escenario { position: relative; height: min(100svh, 760px); }
+
+  /* El paso encendido: los seis en la misma celda. */
+  .pasos { display: grid; list-style: none; margin: 0; padding: 0; max-width: 34rem; }
+  .paso { grid-area: 1 / 1; opacity: 0; transform: translateY(8px); transition: opacity 0.12s linear, transform 0.12s linear; }
+  .paso.es-activo { opacity: 1; transform: none; transition: opacity 0.3s var(--ease-out) 0.12s, transform 0.3s var(--ease-out) 0.12s; }
+  .paso-num { display: block; font-family: var(--geo); font-weight: 200; font-variation-settings: "SHRP" 100; font-size: var(--paso-tam); line-height: 0.85; color: var(--superficie); margin-bottom: 0.6rem; }
+  .paso h3 { font-weight: 300; font-size: clamp(1.4rem, 2.4vw, 2rem); line-height: 1.1; margin: 0 0 0.6rem; letter-spacing: -0.01em; }
+  .paso p { margin: 0; max-width: 44ch; }
+  .paso-dato { font: 500 0.82rem var(--kode); color: var(--superficie); margin-top: 0.9rem !important; }
+  html.reducido .pasos { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); max-width: none; }
+  html.reducido .paso { grid-area: auto; opacity: 1; transform: none; }
+  html.reducido .paso-num { font-size: 3rem; }
+
+  /* Tabla de respaldo (la de la web): solo con movimiento reducido. */
+  .tabla-caja { display: none; padding-block: 3rem; }
+  html.reducido .tabla-caja { display: block; }
+  .tabla { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  .tabla th, .tabla td { text-align: left; vertical-align: top; padding: 0.8rem 1rem 0.8rem 0; border-top: 1px solid var(--conducto); }
+  .tabla thead th { font: 500 0.74rem var(--kode); color: var(--apagado-abajo); border-top: 0; }
+  .tabla td.dato { font: 500 0.82rem var(--kode); color: var(--superficie); white-space: nowrap; }
+
+  /* ── A: El bloque (Three.js) ─────────────────────────────────────────── */
+  .esc-a { display: grid; grid-template-rows: 56svh 1fr; }
+  .esc-a .escena { position: relative; min-height: 0; }
+  .esc-a .escena canvas, .esc-a .escena svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .esc-a .escena svg { display: none; }
+  .esc-a.es-planb .escena canvas { display: none; }
+  .esc-a.es-planb .escena svg { display: block; }
+  .esc-a .texto { padding: 1rem var(--gutter) 1.5rem; align-self: center; }
+  @media (min-width: 768px) {
+    .esc-a { grid-template-rows: none; grid-template-columns: minmax(18rem, 30rem) 1fr; }
+    .esc-a .texto { order: 0; padding: 0 0 0 var(--gutter); }
+    .esc-a .escena { order: 1; }
+  }
+  html.reducido .esc-a { grid-template-rows: 54svh auto; grid-template-columns: none; }
+  html.reducido .esc-a .texto { order: 1; padding: 2rem var(--gutter); }
+  html.reducido .esc-a .escena { order: 0; }
+  .fps { position: absolute; left: 0.75rem; bottom: 0.75rem; font: 500 0.7rem var(--kode); color: var(--superficie); background: var(--roca); padding: 0.3rem 0.5rem; display: none; pointer-events: none; }
+  .fps.es-visible { display: block; }
+  .rotulo { position: absolute; left: 50%; top: 10%; transform: translateX(-50%); font: 500 0.82rem var(--kode); color: var(--superficie); opacity: 0; transition: opacity 0.4s var(--ease-out); white-space: nowrap; }
+  .rotulo.es-visible { opacity: 1; }
+
+  /* ── B: Corte (SVG, panorámica) ──────────────────────────────────────── */
+  .esc-b { background: var(--hondo); }
+  .esc-b svg { position: absolute; left: 0; top: 0; height: 100%; width: auto; display: block; will-change: transform; }
+  .esc-b .estacion { font-family: var(--geo); color: var(--tinta); }
+  .esc-b .estacion .num { font: 500 24px var(--kode); color: var(--apagado-arriba); margin: 0 0 14px; }
+  .esc-b .estacion h3 { font-weight: 300; font-size: 60px; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 18px; }
+  .esc-b .estacion .ves { font: 500 26px var(--kode); margin: 0 0 18px; }
+  .esc-b .estacion p { font-size: 26px; line-height: 1.4; margin: 0; max-width: 620px; }
+  .esc-b text { font-family: var(--kode); font-weight: 500; }
+
+  /* ── C: Tu lado (DOM) ────────────────────────────────────────────────── */
+  .esc-c { display: grid; grid-template-rows: 1fr auto; }
+  .esc-c .escena { position: relative; overflow: clip; }
+  .esc-c .texto { padding: 1rem var(--gutter) 1.5rem; }
+  @media (min-width: 768px) { .esc-c .texto { padding-bottom: 2.5rem; } .esc-c .pasos { max-width: none; display: grid; grid-template-columns: max-content 1fr; column-gap: 2rem; } .esc-c .paso { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: start; } .esc-c .paso-num { margin: 0; } .esc-c .paso h3 { margin-top: 0.4rem; } }
+  .linea { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--superficie); transform: translateX(-50%); }
+  .lado { position: absolute; top: 1.25rem; font: 500 0.74rem var(--kode); color: var(--apagado-abajo); letter-spacing: 0.04em; }
+  .lado.izq { left: var(--gutter); } .lado.der { right: var(--gutter); }
+  .pieza { position: absolute; left: 0; top: 0; will-change: transform; }
+  .pieza.ficha { background: var(--hueso); color: var(--tinta); padding: 10px 12px; display: grid; gap: 6px; }
+  .pieza.ficha i { display: block; height: 2px; background: var(--apagado-arriba); border-radius: 0; }
+  .pieza.ficha b { font: 500 11px var(--kode); }
+  .pieza.hoja { background: var(--tarjeta); color: var(--tinta); padding: 14px; display: grid; align-content: start; gap: 10px; font: 500 11px var(--kode); border-bottom: 3px solid var(--superficie); }
+  .pieza.hoja span { border-bottom: 1px solid var(--apagado-arriba); padding-bottom: 4px; }
+  .pieza.fase { background: var(--bloque); color: var(--hondo); box-shadow: 0 10px 0 #5f666e; font: 500 12px var(--kode); display: flex; align-items: center; padding-left: 14px; }
+  .pieza.pago { border: 2px solid var(--superficie); color: var(--superficie); font: 500 10px var(--kode); display: grid; place-items: center; }
+  .pieza.sonda, .pieza.cable, .pieza.chequeo { height: 2px; background: var(--superficie); transform-origin: left center; }
+  .pieza.chequeo { height: 3px; }
+  .pieza.placa { background: var(--hueso); color: var(--tinta); font: 500 12px var(--kode); display: grid; place-items: center; }
+  .pieza .marca { position: absolute; left: 100%; top: 50%; transform: translate(10px, -50%); font: 500 11px var(--kode); color: var(--superficie); white-space: nowrap; }
+
+  .pie { padding-block: 4rem 6rem; color: var(--apagado-abajo); max-width: 70ch; }
+  .pie h2 { font-weight: 300; font-size: 1.4rem; color: var(--hueso); margin: 0 0 0.75rem; }
+  .pie ul { padding-left: 1.2rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="container">
+    <h1>Cómo trabajamos: tres bocetos</h1>
+    <p>Tres conceptos distintos para la sección del proceso. Los seis pasos y sus datos son los de <code>src/content/proceso.ts</code>, tal cual. El scroll manda en los tres: nada va en bucle. Paleta y letras, las de la web.</p>
+    <p>Mirar en Chrome con la tarjeta gráfica. Cada boceto se ancla una pantalla y avanza con el scroll; debajo de cada uno está lo que se vería con movimiento reducido.</p>
+    <div class="mando" role="group" aria-label="Mando del documento">
+      <button type="button" id="btn-reducido" aria-pressed="false">movimiento reducido: no</button>
+      <button type="button" id="btn-planb" aria-pressed="false">boceto A en plan B 2D: no</button>
+      <a href="?fps">?fps</a>
+    </div>
+    <p class="nota">Script «no repetir» del PLIEGO §3 bis (2026-11-11): dominan letra a letra, cortina y serif editorial. Estos bocetos no añaden ninguna de las seis piezas medidas.</p>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ A · El bloque ═══════════════════════════ -->
+<section class="boceto" id="a">
+  <div class="container boceto-cabeza">
+    <p class="etiqueta">Boceto A · «El bloque» · Three.js</p>
+    <h2 class="titular"><span>Lo montamos por debajo,</span> <em>y te lo llevas entero.</em></h2>
+    <dl class="ficha">
+      <dt>Concepto</dt>
+      <dd>Un corte del terreno con los seis estratos de la marca. Bajo la línea de superficie se abre un pozo y dentro se levanta, pieza a pieza, el bloque gris del símbolo. Al final el bloque sale del pozo entero, se le posa la punta blanca encima y queda el logotipo en 3D: lo que se ve arriba, apoyado en lo que trabaja abajo. El pozo se queda vacío.</dd>
+      <dt>Qué hace el 3D</dt>
+      <dd>01 se excava el pozo. 02 bajan tres sondas (horas y euros). 03 se dibuja en lima el alambre del bloque entero: el diagnóstico, por escrito, antes de poner una pieza. 04 las piezas entran y encajan en tres tandas (por fases). 05 un plano de luz recorre el bloque de abajo arriba y cada curso que pasa queda marcado (antes de cada pago). 06 el bloque se desprende, sale del pozo y recibe la punta. La cámara lo rodea despacio y se aleja al final. Todo scrubbeado al scroll; sin scroll no se pinta.</dd>
+      <dt>Coste en el Next</dt>
+      <dd>Alto. La spec 002 y la D-017 sacaron <code>three</code> («sin canvas ni WebGL»): hay que revertirlo para esta sección (decisión nueva). Volver a añadir la dependencia (~160 KB gz, <code>import()</code> diferido al acercarse, como el GSAP de D-028), un componente cliente que cuelgue del pin <code>proceso</code> ya existente (<code>onUpdate</code> → progreso) para que el hilo siga parándose durante el pin, la tabla y el SVG del plan B que ya están, y el presupuesto de rendimiento de §3.16 (tarea larga ≤ 300 ms) revisado para la compilación de materiales. Unos dos o tres días.</dd>
+      <dt>Riesgo en móvil</dt>
+      <dd>Medio. La escena es ligera (unas 20 cajas, 150 segmentos de línea, una luz con sombra VSM de 512 en móvil) y solo pinta cuando cambia el scroll. Lo caro es la sombra: si los fotogramas pasan de 24 ms, baja nitidez (1 → 0,8) y después apaga la sombra. Sin WebGL, el SVG de abajo hace lo mismo con el mismo reloj. Mirar <code>?fps</code> en un móvil real, no en Playwright.</dd>
+    </dl>
+  </div>
+  <div class="recorrido" data-boceto="a" style="--pantallas: 7">
+    <div class="escenario esc-a" id="esc-a">
+      <div class="texto"><ol class="pasos" data-pasos></ol></div>
+      <div class="escena">
+        <canvas id="lienzo-a" aria-hidden="true"></canvas>
+        <svg id="planb-a" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+        <p class="rotulo" id="rotulo-a" aria-hidden="true">a tu nombre</p>
+        <div class="fps" id="fps-a"></div>
+      </div>
+    </div>
+  </div>
+  <div class="container tabla-caja" data-tabla></div>
+</section>
+
+<!-- ═══════════════════════════ B · Corte ═══════════════════════════════ -->
+<section class="boceto" id="b">
+  <div class="container boceto-cabeza">
+    <p class="etiqueta">Boceto B · «Corte» · SVG, panorámica anclada</p>
+    <h2 class="titular"><span>Lo que ves tú,</span> <em>y lo que hacemos por debajo.</em></h2>
+    <dl class="ficha">
+      <dt>Concepto</dt>
+      <dd>La pantalla se parte por la línea de superficie: arriba, en claro, lo que ves tú; abajo, en oscuro, lo que hacemos. Las dos columnas de la tabla actual pasan a ser las dos mitades de un corte largo que se recorre de lado. Debajo de cada paso crece una red de conductos y cajas con los nombres reales (programas, datos, a mano, fase 1, copias…). El diagnóstico queda a caballo de la línea: es nuestro trabajo y es tuyo. Al final la línea baja hasta el fondo y toda la red queda en claro: a tu nombre.</dd>
+      <dt>Qué hace el movimiento</dt>
+      <dd>Cada paso avanza la panorámica una estación (el primer tercio del tramo) y después dibuja su trozo de red con el scroll (trazo que se traza, cajas que se cierran, rótulos que aparecen). En 05 un pulso recorre la fase 1 y solo después baja el pago cruzando la línea. En 06 la línea desciende: lo que estaba en lima sobre oscuro se vuelve tinta sobre claro sin redibujar nada (dos copias de la red recortadas por la misma línea).</dd>
+      <dt>Coste en el Next</dt>
+      <dd>Medio-bajo. Sin dependencias nuevas: SVG en el HTML (se ve sin JS), <code>stroke-dashoffset</code> y un <code>translate</code> desde el <code>onUpdate</code> del pin <code>proceso</code>. Respeta la spec 002 (sin WebGL). Lo que cuesta es el dibujo: unos 40 trazos medidos a mano y los rótulos en Kode Mono. Un día y medio. La banda clara dentro de una página oscura es la excepción de marca que ya hace la portada (arriba claro, abajo oscuro).</dd>
+      <dt>Riesgo en móvil</dt>
+      <dd>Bajo. Un SVG de unos 60 nodos, se anima solo <code>transform</code> y <code>stroke-dashoffset</code>. La panorámica es más ancha que la pantalla, así que en 390 px cada estación ocupa 1,7 pantallas: el texto de arriba se lee entero porque va al centro de cada estación. Comprobar que la fuente variable no pesa al escalar el SVG.</dd>
+    </dl>
+  </div>
+  <div class="recorrido" data-boceto="b" style="--pantallas: 7">
+    <div class="escenario esc-b" id="esc-b">
+      <svg id="svg-b" viewBox="0 0 5600 1000" aria-hidden="true"></svg>
+    </div>
+  </div>
+  <div class="container tabla-caja" data-tabla></div>
+</section>
+
+<!-- ═══════════════════════════ C · Tu lado ═════════════════════════════ -->
+<section class="boceto" id="c">
+  <div class="container boceto-cabeza">
+    <p class="etiqueta">Boceto C · «Tu lado» · DOM, sin dependencias</p>
+    <h2 class="titular"><span>Lo que cruza la línea,</span> <em>y lo que se queda en tu lado.</em></h2>
+    <dl class="ficha">
+      <dt>Concepto</dt>
+      <dd>Una línea lima vertical en medio: a la izquierda, Undertactics; a la derecha, tú. El proceso es qué cruza la línea y en qué sentido. Tu formulario viene hacia nosotros; una sonda mira tu lado; el diagnóstico va a tu lado y se queda; cada fase va a tu lado como una losa física; el pago solo cruza hacia nosotros después de la comprobación; al final la pila lleva una placa a tu nombre y, si tiras de ella, se va entera por la derecha. En nuestro lado solo quedan tu formulario y los pagos.</dd>
+      <dt>Qué hace el movimiento</dt>
+      <dd>Piezas del DOM que se trasladan con el scroll (solo <code>transform</code>). Las losas se levantan un poco al cruzar y se apilan; la comprobación es una línea que barre la losa; el pago es un cuadrado que cruza hacia la izquierda después, nunca antes. En 06 aparece la placa, un cable nos une a la pila y en el último tramo la pila se va hacia la derecha, el cable se estira y se corta.</dd>
+      <dt>Coste en el Next</dt>
+      <dd>Bajo. Un componente cliente con quince elementos y una función <code>estado(progreso)</code> enganchada al pin <code>proceso</code>. Sin dependencias, sin SVG complejo; respeta la spec 002. Medio día. Es el más fácil de ajustar en copy (cada pieza lleva su rótulo).</dd>
+      <dt>Riesgo en móvil</dt>
+      <dd>Muy bajo: quince traslaciones. En pantallas estrechas las piezas se escalan al ancho (factor 0,45 a 390 px) y la pila cabe; el texto del paso va debajo de la escena, no encima.</dd>
+    </dl>
+  </div>
+  <div class="recorrido" data-boceto="c" style="--pantallas: 7">
+    <div class="escenario esc-c" id="esc-c">
+      <div class="escena" id="escena-c" aria-hidden="true">
+        <span class="lado izq">Undertactics</span>
+        <span class="lado der">Tú</span>
+        <div class="linea"></div>
+      </div>
+      <div class="texto"><ol class="pasos" data-pasos></ol></div>
+    </div>
+  </div>
+  <div class="container tabla-caja" data-tabla></div>
+</section>
+
+<footer class="pie">
+  <div class="container">
+    <h2>Común a los tres</h2>
+    <ul>
+      <li>Con <code>prefers-reduced-motion</code> (o el botón de arriba): sin anclaje, el fotograma final quieto, los seis pasos a la vista y la tabla de la web debajo. Sin JS, la tabla.</li>
+      <li>Sin WebGL, el boceto A pasa al SVG con el mismo reloj; B y C no lo necesitan.</li>
+      <li>Colores de Three.js escritos en sRGB (<code>new Color('#hex')</code>); sin transmission, RectAreaLight ni bloom; sombra VSM que solo se recalcula al pintar; DPR tope 1,5 con bajada automática.</li>
+      <li>Titulares propuestos para cada boceto; el actual («Un sondeo, de la superficie al fondo.») es del testigo y no encaja con ninguno.</li>
+    </ul>
+  </div>
+</footer>
+
+<script type="module">
+/* ─────────────────────────────── Datos ─────────────────────────────── */
+const pasos = [
+  { numero: "01", titulo: "Nos cuentas", descripcion: "Cinco minutos de formulario, con tus palabras: a qué te dedicas y qué te gustaría quitarte de encima. Lo que no sepas, déjalo en blanco.", dato: "5 min", vesTu: "Un formulario corto", debajo: "Leemos lo que nos cuentas y preparamos las preguntas" },
+  { numero: "02", titulo: "Miramos", descripcion: "Hablamos contigo y vemos cómo trabajas: qué programas usas, qué se hace a mano y dónde se van las horas cada semana, en horas y en euros.", dato: "horas y euros", vesTu: "Una conversación, y sigues con lo tuyo", debajo: "Tus procesos por dentro: programas, datos y tareas a mano" },
+  { numero: "03", titulo: "Te lo contamos", descripcion: "El diagnóstico es tuyo, gratis y sin compromiso: qué montaríamos, en qué orden y por cuánto, por escrito. Si con eso te apañas solo, perfecto.", dato: "gratis", vesTu: "El diagnóstico, tuyo", debajo: "Qué montaríamos, en qué orden y por cuánto" },
+  { numero: "04", titulo: "Construimos", descripcion: "Por fases, empezando por lo que más horas te quita. Lo primero que funciona llega en semanas y el resto se va sumando, con el precio de cada fase por escrito antes de empezarla.", dato: "por fases", vesTu: "Lo primero, funcionando en semanas", debajo: "Conectamos tus programas y montamos la primera fase" },
+  { numero: "05", titulo: "Lo ves funcionando", descripcion: "Cada fase la pruebas con tus datos de verdad antes de pagarla. Si no hace lo que esperabas, se ajusta antes de seguir.", dato: "antes de cada pago", vesTu: "Lo pruebas con tus datos", debajo: "Pruebas, registro de lo que hace y límites a la IA" },
+  { numero: "06", titulo: "Lo mantenemos", descripcion: "Sigue funcionando, se actualiza y crece contigo. Y como todo está a tu nombre, si un día te vas, te lo llevas entero.", dato: "a tu nombre", vesTu: "Crece contigo", debajo: "Copias, actualizaciones y vigilancia de caídas" },
+];
+
+/* ─────────────────────────── Utilidades ────────────────────────────── */
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const io = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const out = (t) => 1 - Math.pow(1 - t, 3);
+/** Progreso local del paso i (0 antes, 0…1 durante, 1 después). */
+const tramo = (p, i) => clamp(p * 6 - i, 0, 1);
+const pasoDe = (p) => Math.min(5, Math.floor(p * 6));
+/** Reescala t al intervalo [a, b]. */
+const ventana = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const params = new URLSearchParams(location.search);
+const html = document.documentElement;
+const mqReducido = matchMedia("(prefers-reduced-motion: reduce)");
+const reducido = () => mqReducido.matches || html.classList.contains("forzar-reducido");
+
+/* Los pasos (A y C) y la tabla de respaldo (los tres). */
+for (const ol of document.querySelectorAll("[data-pasos]")) {
+  ol.innerHTML = pasos.map((p, i) => `<li class="paso${i === 0 ? " es-activo" : ""}" data-i="${i}"><span class="paso-num">${p.numero}</span><h3>${p.titulo}</h3><p>${p.descripcion}</p><p class="paso-dato">${p.dato}</p></li>`).join("");
+}
+for (const caja of document.querySelectorAll("[data-tabla]")) {
+  caja.innerHTML = `<table class="tabla"><caption class="sr-only">El proceso, paso a paso</caption><thead><tr><th>Paso</th><th>Lo que ves tú</th><th>Lo que hacemos por debajo</th><th>Dato</th></tr></thead><tbody>${pasos.map((p) => `<tr><th scope="row">${p.numero} · ${p.titulo}</th><td>${p.vesTu}</td><td>${p.debajo}</td><td class="dato">${p.dato}</td></tr>`).join("")}</tbody></table>`;
+}
+function encender(escenario, i) {
+  const lis = escenario.querySelectorAll(".paso");
+  if (escenario.dataset.activo === String(i)) return;
+  escenario.dataset.activo = String(i);
+  lis.forEach((li, k) => li.classList.toggle("es-activo", k === i));
+}
+
+/* ─────────────────── El scroll manda: un solo oyente ───────────────── */
+const recorridos = [];
+let pedido = 0;
+function medirTodos() {
+  pedido = 0;
+  const alto = innerHeight;
+  for (const r of recorridos) {
+    let p = 1;
+    if (!reducido()) {
+      const rect = r.el.getBoundingClientRect();
+      const total = rect.height - alto;
+      p = total > 0 ? clamp(-rect.top / total, 0, 1) : 1;
+      // Fuera de pantalla no se pinta nada.
+      if (rect.bottom < 0 || rect.top > alto) continue;
+    }
+    if (p !== r.p || r.sucio) { r.p = p; r.sucio = false; r.pintar(p); }
+  }
+}
+const pedirMedida = () => { if (!pedido) pedido = requestAnimationFrame(medirTodos); };
+addEventListener("scroll", pedirMedida, { passive: true });
+addEventListener("resize", () => { recorridos.forEach((r) => (r.sucio = true)); pedirMedida(); });
+mqReducido.addEventListener("change", () => { aplicarReducido(); });
+function registrar(el, pintar) { recorridos.push({ el, pintar, p: -1, sucio: true }); }
+
+/* Mando del documento. */
+const btnReducido = document.getElementById("btn-reducido");
+const btnPlanB = document.getElementById("btn-planb");
+function aplicarReducido() {
+  const forzado = btnReducido.getAttribute("aria-pressed") === "true";
+  html.classList.toggle("forzar-reducido", forzado);
+  html.classList.toggle("reducido", forzado || mqReducido.matches);
+  recorridos.forEach((r) => (r.sucio = true));
+  pedirMedida();
+}
+btnReducido.addEventListener("click", () => {
+  const on = btnReducido.getAttribute("aria-pressed") !== "true";
+  btnReducido.setAttribute("aria-pressed", String(on));
+  btnReducido.textContent = `movimiento reducido: ${on ? "sí" : "no"}`;
+  aplicarReducido();
+});
+if (params.has("reducido")) btnReducido.click(); else aplicarReducido();
+
+/* ═══════════════════════════ A · El bloque ═══════════════════════════ */
+const escA = document.getElementById("esc-a");
+const rotuloA = document.getElementById("rotulo-a");
+/** Medidas del bloque (en metros de escena; el pozo mide 1,9 × 1,6 × 0,75). */
+const BX = 1.6, BZ = 0.55, H = 0.215, GAP = 0.03, Y0 = -1.555, ZC = -0.375;
+const CURSOS = [1, 2, 3, 2, 3, 1];
+const TOPE = Y0 + 6 * H + 5 * GAP; // la cara de arriba del bloque
+const ALZA_Y = 1.8, ALZA_Z = 1.0;
+const ESTRATOS = ["#2a4844", "#233f3b", "#1e3633", "#192e2c", "#152725", "#111f1f"];
+
+/** Piezas: posición final, tamaño, de dónde entran y en qué momento de la obra (0…1). */
+const piezasA = (() => {
+  const lista = [];
+  const fase = [0, 0, 1, 1, 2, 2];
+  CURSOS.forEach((n, c) => {
+    const y = Y0 + H / 2 + c * (H + GAP);
+    const w = (BX - (n - 1) * 0.02) / n;
+    for (let k = 0; k < n; k++) {
+      const x = -BX / 2 + w / 2 + k * (w + 0.02);
+      const desde = n === 1 || (n === 3 && k === 1) ? [0, 0, -1.3] : k === 0 ? [-1.6, 0, 0] : [1.6, 0, 0];
+      lista.push({ x, y, z: ZC, w, desde, c, fase: fase[c] });
+    }
+  });
+  // Momento de cada pieza: tres tandas (por fases) y, dentro de cada una, de abajo arriba.
+  for (let f = 0; f < 3; f++) {
+    const deFase = lista.filter((p) => p.fase === f);
+    deFase.forEach((p, m) => (p.t = f * 0.32 + (m / deFase.length) * 0.22));
+  }
+  return lista;
+})();
+
+/** El reloj del boceto A: de un progreso 0…1 sale el estado de cada cosa. Lo leen el 3D y el SVG. */
+function estadoA(p) {
+  const s1 = tramo(p, 1), s2 = tramo(p, 2), s3 = tramo(p, 3), s4 = tramo(p, 4), s5 = tramo(p, 5);
+  return {
+    i: pasoDe(p),
+    excavado: io(tramo(p, 0)),                          // 0 → 1: el tapón baja
+    sondas: [0, 1, 2].map((j) => out(ventana(s1, j * 0.2, j * 0.2 + 0.6))),
+    sondasOp: 1 - out(s2),                               // se van mientras se dibuja el alambre
+    alambre: out(s2),                                    // el alambre sube del fondo
+    obra: s3,                                            // las piezas entran
+    scan: ventana(s4, 0.05, 0.8),                        // el plano de luz sube
+    scanVisible: s4 > 0.05 && s4 < 0.82,
+    alza: io(ventana(s5, 0, 0.55)),                      // el bloque sale
+    punta: out(ventana(s5, 0.55, 0.9)),                  // la punta se posa
+    camara: p,
+  };
+}
+
+/* ── A, en Three.js ── */
+async function montarA3D(lienzo) {
+  const THREE = await import("three");
+  const renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: true, powerPreference: "high-performance" });
+  renderer.setClearColor(new THREE.Color("#0e1b1e"));
+  renderer.toneMapping = THREE.NoToneMapping;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.VSMShadowMap;
+  renderer.shadowMap.autoUpdate = false;
+  renderer.localClippingEnabled = true;
+  let nitidez = Math.min(devicePixelRatio || 1, 1.5);
+  renderer.setPixelRatio(nitidez);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog("#0e1b1e", 7, 15);
+  const cam = new THREE.PerspectiveCamera(30, 1, 0.1, 40);
+
+  // Luz: una direccional con sombra (solo se recalcula al pintar) y un rebote de cielo.
+  const sol = new THREE.DirectionalLight("#ffffff", 1.9);
+  sol.position.set(3, 4.5, 3.5);
+  sol.target.position.set(0, -0.8, -0.5);
+  sol.castShadow = true;
+  const movil = innerWidth < 700;
+  sol.shadow.mapSize.set(movil ? 512 : 1024, movil ? 512 : 1024);
+  sol.shadow.radius = 5;
+  sol.shadow.blurSamples = 8;
+  sol.shadow.bias = -0.0004;
+  Object.assign(sol.shadow.camera, { left: -3.2, right: 3.2, top: 3.2, bottom: -3.2, near: 0.5, far: 14 });
+  scene.add(sol, sol.target, new THREE.HemisphereLight("#6f8a86", "#0a1416", 0.75));
+
+  // Los estratos: una textura de seis bandas en las caras verticales del terreno.
+  const cv = document.createElement("canvas");
+  cv.width = 4; cv.height = 192;
+  const g = cv.getContext("2d");
+  ESTRATOS.forEach((c, k) => { g.fillStyle = c; g.fillRect(0, k * 32, 4, 32); });
+  const tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.magFilter = tex.minFilter = THREE.NearestFilter;
+  tex.generateMipmaps = false;
+  const lado = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95, metalness: 0 });
+  const tapa = new THREE.MeshStandardMaterial({ color: "#2a4844", roughness: 0.95 });
+  const fondo = new THREE.MeshStandardMaterial({ color: "#111f1f", roughness: 1 });
+  const terreno = [lado, lado, tapa, fondo, lado, lado];
+  const caja = (w, h, d, x, y, z, mats) => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats);
+    m.position.set(x, y, z);
+    m.castShadow = m.receiveShadow = true;
+    scene.add(m);
+    return m;
+  };
+  caja(6.05, 1.6, 4, -3.975, -0.8, -2, terreno);
+  caja(6.05, 1.6, 4, 3.975, -0.8, -2, terreno);
+  caja(1.9, 1.6, 3.25, 0, -0.8, -2.375, terreno);
+  caja(1.9, 0.04, 0.75, 0, -1.58, -0.375, fondo);
+  // El tapón del pozo: el mismo terreno, recortado por un plano que baja (excavación).
+  const planoExc = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+  const ladoT = lado.clone(), tapaT = tapa.clone();
+  for (const m of [ladoT, tapaT]) { m.clippingPlanes = [planoExc]; m.clipShadows = true; }
+  caja(1.9, 1.6, 0.75, 0, -0.8, -0.375, [ladoT, ladoT, tapaT, fondo, ladoT, ladoT]);
+
+  // La superficie: la línea lima del símbolo, que sigue el perfil del corte (y baja con el pozo).
+  const lima = new THREE.LineBasicMaterial({ color: "#c9f24d" });
+  const perfilGeo = new THREE.BufferGeometry();
+  const perfilPos = new Float32Array(6 * 3);
+  perfilGeo.setAttribute("position", new THREE.BufferAttribute(perfilPos, 3));
+  scene.add(new THREE.Line(perfilGeo, lima));
+  const ponerPerfil = (c) => {
+    const pts = [[-7, 0], [-0.95, 0], [-0.95, c], [0.95, c], [0.95, 0], [7, 0]];
+    pts.forEach(([x, y], k) => perfilPos.set([x, y + 0.003, 0.004], k * 3));
+    perfilGeo.attributes.position.needsUpdate = true;
+  };
+
+  // Las sondas: tres líneas que bajan a distinta profundidad, con su tick.
+  const limaSonda = new THREE.LineBasicMaterial({ color: "#c9f24d", transparent: true, opacity: 1 });
+  const sondas = [[-0.5, -0.9], [0, -1.3], [0.5, -1.1]].map(([x, fondoY]) => {
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(4 * 3);
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    const l = new THREE.LineSegments(geo, limaSonda);
+    scene.add(l);
+    return { x, fondoY, pos, geo, l };
+  });
+
+  // La obra: alambre (dos copias: tenue y viva), piezas instanciadas y el plano de luz.
+  const obra = new THREE.Group();
+  scene.add(obra);
+  const aristas = [];
+  CURSOS.forEach((n, c) => {
+    const y = Y0 + H / 2 + c * (H + GAP);
+    const e = new THREE.EdgesGeometry(new THREE.BoxGeometry(BX, H, BZ));
+    const a = e.attributes.position.array;
+    for (let k = 0; k < a.length; k += 3) aristas.push(a[k], a[k + 1] + y, a[k + 2] + ZC);
+  });
+  const alambreGeo = new THREE.BufferGeometry();
+  alambreGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(aristas), 3));
+  const planoAlambre = new THREE.Plane(new THREE.Vector3(0, -1, 0), -1.6);
+  const planoScan = new THREE.Plane(new THREE.Vector3(0, -1, 0), -1.6);
+  const alambreTenue = new THREE.LineSegments(alambreGeo, new THREE.LineBasicMaterial({ color: "#c9f24d", transparent: true, opacity: 0.4, clippingPlanes: [planoAlambre] }));
+  const alambreVivo = new THREE.LineSegments(alambreGeo, new THREE.LineBasicMaterial({ color: "#c9f24d", clippingPlanes: [planoScan] }));
+  obra.add(alambreTenue, alambreVivo);
+
+  const uObra = { value: 0 };
+  const conObra = (mat) => {
+    mat.onBeforeCompile = (sh) => {
+      sh.uniforms.uObra = uObra;
+      sh.vertexShader = "attribute float aT;\nattribute vec3 aDesde;\nuniform float uObra;\n" + sh.vertexShader.replace("#include <begin_vertex>", `#include <begin_vertex>
+  float kO = clamp((uObra - aT) / 0.12, 0.0, 1.0);
+  kO = 1.0 - pow(1.0 - kO, 3.0);
+  transformed += aDesde * (1.0 - kO);`);
+    };
+    mat.customProgramCacheKey = () => "obra-" + mat.type;
+    return mat;
+  };
+  const geoPieza = new THREE.BoxGeometry(1, 1, 1);
+  const aT = new Float32Array(piezasA.length), aDesde = new Float32Array(piezasA.length * 3);
+  piezasA.forEach((p, k) => {
+    aT[k] = p.t;
+    // El desplazamiento se aplica antes de la matriz de instancia (que escala): se compensa.
+    aDesde.set([p.desde[0] / p.w, p.desde[1] / H, p.desde[2] / BZ], k * 3);
+  });
+  geoPieza.setAttribute("aT", new THREE.InstancedBufferAttribute(aT, 1));
+  geoPieza.setAttribute("aDesde", new THREE.InstancedBufferAttribute(aDesde, 3));
+  const piezas = new THREE.InstancedMesh(geoPieza, conObra(new THREE.MeshStandardMaterial({ color: "#8a9099", roughness: 0.7, metalness: 0.05 })), piezasA.length);
+  piezas.customDepthMaterial = conObra(new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking }));
+  piezas.castShadow = piezas.receiveShadow = true;
+  const m4 = new THREE.Matrix4();
+  piezasA.forEach((p, k) => { m4.compose(new THREE.Vector3(p.x, p.y, p.z), new THREE.Quaternion(), new THREE.Vector3(p.w, H, BZ)); piezas.setMatrixAt(k, m4); });
+  piezas.instanceMatrix.needsUpdate = true;
+  obra.add(piezas);
+
+  const scan = new THREE.Mesh(new THREE.BoxGeometry(BX + 0.12, 0.006, BZ + 0.12), new THREE.MeshBasicMaterial({ color: "#c9f24d", toneMapped: false }));
+  scan.position.set(0, Y0, ZC);
+  scan.visible = false;
+  obra.add(scan);
+
+  // La punta blanca del símbolo: un prisma que se posa sobre el bloque al final.
+  const forma = new THREE.Shape([new THREE.Vector2(-0.8, 0), new THREE.Vector2(0.8, 0), new THREE.Vector2(0.22, 0.5)]);
+  const punta = new THREE.Mesh(new THREE.ExtrudeGeometry(forma, { depth: BZ, bevelEnabled: false }), new THREE.MeshStandardMaterial({ color: "#e4ece8", roughness: 0.6 }));
+  punta.castShadow = punta.receiveShadow = true;
+  punta.visible = false;
+  scene.add(punta);
+
+  // Pintar solo cuando algo cambia, y medir los fotogramas seguidos (como Balda).
+  const fpsCaja = document.getElementById("fps-a");
+  if (params.has("fps")) fpsCaja.classList.add("es-visible");
+  let pendiente = false, ultimoPaint = 0, calidad = 0;
+  const tiempos = [];
+  const medir = (ahora) => {
+    if (ultimoPaint && ahora - ultimoPaint < 100) tiempos.push(ahora - ultimoPaint);
+    ultimoPaint = ahora;
+    if (tiempos.length < 20) return;
+    const orden = [...tiempos].sort((a, b) => a - b);
+    const mediana = orden[orden.length >> 1];
+    tiempos.length = 0;
+    if (mediana > 24 && calidad < 3) {
+      calidad++;
+      if (calidad === 1) nitidez = Math.min(1, nitidez);
+      if (calidad === 2) nitidez = 0.8;
+      renderer.setPixelRatio(nitidez);
+      if (calidad === 3) { renderer.shadowMap.enabled = false; scene.traverse((o) => { if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => (m.needsUpdate = true)); }); }
+      ajustar();
+    }
+    fpsCaja.textContent = `${Math.round(1000 / mediana)} fps · ${mediana.toFixed(1)} ms · nitidez ${nitidez} · calidad ${calidad}`;
+  };
+  const pintar = () => {
+    if (pendiente) return;
+    pendiente = true;
+    requestAnimationFrame((ahora) => {
+      pendiente = false;
+      renderer.shadowMap.needsUpdate = true;
+      renderer.render(scene, cam);
+      medir(ahora);
+    });
+  };
+  const ajustar = () => {
+    const w = lienzo.clientWidth, h = lienzo.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    cam.aspect = w / h;
+    cam.updateProjectionMatrix();
+    pintar();
+  };
+  new ResizeObserver(ajustar).observe(lienzo);
+
+  const objetivo = new THREE.Vector3();
+  return (p) => {
+    const e = estadoA(p);
+    const c = -1.6 * e.excavado;
+    planoExc.constant = c;
+    ponerPerfil(c);
+    sondas.forEach((s, j) => {
+      const y = s.fondoY * e.sondas[j];
+      s.pos.set([s.x, 0, -0.3, s.x, y, -0.3, s.x - 0.06, y, -0.3, s.x + 0.06, y, -0.3]);
+      s.geo.attributes.position.needsUpdate = true;
+      s.l.visible = e.sondas[j] > 0 && e.sondasOp > 0.01;
+    });
+    limaSonda.opacity = e.sondasOp;
+    planoAlambre.constant = e.alambre >= 1 ? 10 : Y0 - 0.05 + (TOPE - Y0 + 0.1) * e.alambre;
+    uObra.value = e.obra;
+    scan.visible = e.scanVisible;
+    scan.position.y = Y0 - 0.02 + (TOPE - Y0 + 0.04) * e.scan;
+    planoScan.constant = e.scan >= 1 ? 10 : e.scan > 0 ? scan.position.y : -1.7;
+    obra.position.set(0, ALZA_Y * e.alza, ALZA_Z * e.alza);
+    punta.visible = e.punta > 0;
+    punta.position.set(0, TOPE + ALZA_Y + 2.2 * (1 - e.punta), ZC + ALZA_Z - BZ / 2);
+    rotuloA.classList.toggle("es-visible", e.punta >= 1);
+    // Cámara: rodea despacio, y al final se aleja y sigue al bloque.
+    const az = -0.5 + 0.85 * p, el = 0.24 + 0.08 * e.alza;
+    let r = (5.4 + 1.0 * e.alza) * (cam.aspect < 1 ? 1.55 : 1);
+    objetivo.set(0, -0.75 + 1.3 * e.alza, -0.3 + 0.9 * e.alza);
+    cam.position.set(objetivo.x + r * Math.sin(az) * Math.cos(el), objetivo.y + r * Math.sin(el), objetivo.z + r * Math.cos(az) * Math.cos(el));
+    cam.lookAt(objetivo);
+    pintar();
+  };
+}
+
+/* ── A, plan B en SVG (vista frontal, el mismo reloj) ── */
+function montarA2D(svg) {
+  const ns = (tag, attrs = {}) => { const el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; };
+  const L = 200, F = 560, PX0 = 395, PX1 = 605, ALTO = F - L;
+  const franjas = (x, w, op = 1) => { const g = ns("g", { opacity: op }); ESTRATOS.forEach((c, k) => g.appendChild(ns("rect", { x, y: L + k * 60, width: w, height: 60, fill: c }))); return g; };
+  svg.appendChild(franjas(0, PX0));
+  svg.appendChild(franjas(PX1, 1000 - PX1));
+  svg.appendChild(franjas(PX0, PX1 - PX0, 0.55)); // la pared del fondo del pozo
+  const clipT = ns("clipPath", { id: "clip-tapon" }); const rT = ns("rect", { x: PX0, y: L, width: PX1 - PX0, height: ALTO }); clipT.appendChild(rT);
+  const defs = ns("defs"); defs.appendChild(clipT); svg.appendChild(defs);
+  const tapon = franjas(PX0, PX1 - PX0); tapon.setAttribute("clip-path", "url(#clip-tapon)"); svg.appendChild(tapon);
+  const perfil = ns("polyline", { fill: "none", stroke: "#c9f24d", "stroke-width": 2 }); svg.appendChild(perfil);
+  const sondas = [450, 500, 550].map((x) => { const l = ns("path", { stroke: "#c9f24d", "stroke-width": 2, fill: "none" }); svg.appendChild(l); return { x, l }; });
+  // El bloque: cursos (alambre tenue y vivo) y piezas, en un grupo que se alza.
+  const grupo = ns("g"); svg.appendChild(grupo);
+  const esc = 200 / BX; // px por metro (el bloque, 1,6 m, son 320 px)
+  const yPx = (y) => F - 4 - (y - Y0) * esc;
+  const clipA = ns("clipPath", { id: "clip-alambre" }); const rA = ns("rect", { x: 0, y: 0, width: 1000, height: 0 }); clipA.appendChild(rA); defs.appendChild(clipA);
+  const clipS = ns("clipPath", { id: "clip-scan" }); const rS = ns("rect", { x: 0, y: 0, width: 1000, height: 0 }); clipS.appendChild(rS); defs.appendChild(clipS);
+  const alambreTenue = ns("g", { "clip-path": "url(#clip-alambre)", opacity: 0.4 }), alambreVivo = ns("g", { "clip-path": "url(#clip-scan)" });
+  CURSOS.forEach((n, c) => {
+    const y = Y0 + c * (H + GAP);
+    for (const g of [alambreTenue, alambreVivo]) g.appendChild(ns("rect", { x: 500 - 100, y: yPx(y + H), width: 200, height: H * esc, fill: "none", stroke: "#c9f24d", "stroke-width": 1.5 }));
+  });
+  const piezas = piezasA.map((p) => { const r = ns("rect", { x: 500 + (p.x - p.w / 2) * esc, y: yPx(p.y + H / 2), width: p.w * esc, height: H * esc, fill: "#8a9099" }); grupo.appendChild(r); return { p, r }; });
+  grupo.appendChild(alambreTenue); grupo.appendChild(alambreVivo);
+  const scan = ns("rect", { x: 390, width: 220, height: 2, fill: "#c9f24d" }); grupo.appendChild(scan);
+  const punta = ns("polygon", { fill: "#e4ece8" }); svg.appendChild(punta);
+  return (p) => {
+    const e = estadoA(p);
+    const yc = L + ALTO * e.excavado;
+    rT.setAttribute("y", yc); rT.setAttribute("height", Math.max(0, F - yc));
+    perfil.setAttribute("points", `0,${L} ${PX0},${L} ${PX0},${yc} ${PX1},${yc} ${PX1},${L} 1000,${L}`);
+    sondas.forEach((s, j) => { const d = [0.9, 1.3, 1.1][j] * esc * e.sondas[j]; s.l.setAttribute("d", `M${s.x},${L} v${d} m-8,0 h16`); s.l.setAttribute("opacity", e.sondasOp); });
+    const yAl = yPx(Y0) - (TOPE - Y0 + 0.1) * esc * e.alambre;
+    rA.setAttribute("y", yAl); rA.setAttribute("height", F - yAl);
+    piezas.forEach(({ p, r }) => { const k = 1 - Math.pow(1 - clamp((e.obra - p.t) / 0.12, 0, 1), 3); const dx = (p.desde[0] || p.desde[2]) * esc * (1 - k); r.setAttribute("transform", `translate(${dx},0)`); r.setAttribute("opacity", p.desde[2] ? k : 1); });
+    const ySc = yPx(Y0) - (TOPE - Y0 + 0.04) * esc * e.scan;
+    scan.setAttribute("y", ySc); scan.setAttribute("opacity", e.scanVisible ? 1 : 0);
+    rS.setAttribute("y", e.scan > 0 ? ySc : F); rS.setAttribute("height", Math.max(0, F - (e.scan > 0 ? ySc : F)));
+    const dy = -ALZA_Y * esc * e.alza;
+    grupo.setAttribute("transform", `translate(0,${dy})`);
+    const yTope = yPx(TOPE) + dy, yP = yTope - 2.2 * esc * (1 - e.punta);
+    punta.setAttribute("points", `${500 - 100},${yP} ${500 + 100},${yP} ${500 + 27},${yP - 0.5 * esc}`);
+    punta.setAttribute("opacity", e.punta > 0 ? 1 : 0);
+    rotuloA.classList.toggle("es-visible", e.punta >= 1);
+  };
+}
+
+{
+  const planB = params.has("planb");
+  btnPlanB.setAttribute("aria-pressed", String(planB));
+  btnPlanB.textContent = `boceto A en plan B 2D: ${planB ? "sí" : "no"}`;
+  btnPlanB.addEventListener("click", () => { const u = new URL(location.href); if (planB) u.searchParams.delete("planb"); else u.searchParams.set("planb", ""); location.href = u.toString().replace(/\?$/, ""); });
+  const pintar2D = montarA2D(document.getElementById("planb-a"));
+  let pintar3D = null;
+  const usar2D = () => { escA.classList.add("es-planb"); };
+  if (planB) usar2D();
+  const registro = () => registrar(escA.closest(".recorrido"), (p) => { encender(escA, pasoDe(p)); if (pintar3D && !escA.classList.contains("es-planb")) pintar3D(p); else pintar2D(p); });
+  if (!planB) {
+    montarA3D(document.getElementById("lienzo-a")).then((f) => { pintar3D = f; registro(); pedirMedida(); }, (err) => { console.warn("Sin WebGL o sin three: plan B", err); usar2D(); registro(); pedirMedida(); });
+  } else { registro(); }
+}
+
+/* ═══════════════════════════ B · Corte ═══════════════════════════════ */
+{
+  const svg = document.getElementById("svg-b");
+  const escB = document.getElementById("esc-b");
+  const W = 800, L0 = 420, ALTO = 1000, ANCHO = 7 * W;
+  const cx = (k) => (k + 1) * W;
+  const ns = (tag, attrs = {}) => { const el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; };
+  const rect = (x, y, w, h) => `M${x},${y} h${w} v${h} h${-w} Z`;
+
+  /* La red: trazos (path), rótulos (text) y cajas, con su estación k y su ventana [a, b]. */
+  const trazos = [], rotulos = [];
+  const trazo = (k, a, b, d, extra = {}) => trazos.push({ k, a, b, d, extra });
+  const rotulo = (k, a, b, x, y, txt, tam = 22, anchor = "middle") => rotulos.push({ k, a, b, x, y, txt, tam, anchor });
+  const cajaRed = (k, a, b, x, y, w, h, txt) => { trazo(k, a, b, rect(x, y, w, h), { caja: 1 }); if (txt) rotulo(k, b - 0.1, Math.min(1, b + 0.15), x + w / 2, y + h / 2 + 8, txt); };
+  // 01 · Nos cuentas
+  let c = cx(0);
+  trazo(0, 0, 0.35, `M${c},${L0} V560`);
+  cajaRed(0, 0.3, 0.75, c - 150, 560, 300, 90, "leemos y preparamos preguntas");
+  // 02 · Miramos: tronco, tres cajas con lo que miramos, y sus sondas desde arriba
+  const c1 = cx(1);
+  trazo(1, 0, 0.25, `M${cx(0) + 150},605 H${c1 - 330}`);
+  trazo(1, 0.2, 0.5, `M${c1 - 330},605 V670 H${c1 - 300}`);
+  trazo(1, 0.25, 0.55, `M${c1 - 330},605 H${c1 - 140} V760 H${c1 - 110}`);
+  trazo(1, 0.3, 0.6, `M${c1 - 140},605 H${c1 + 60} V670 H${c1 + 90}`);
+  cajaRed(1, 0.45, 0.75, c1 - 300, 640, 150, 60, "programas");
+  cajaRed(1, 0.5, 0.8, c1 - 110, 730, 150, 60, "datos");
+  cajaRed(1, 0.55, 0.85, c1 + 90, 640, 150, 60, "a mano");
+  trazo(1, 0.65, 0.95, `M${c1 - 225},${L0} V640`);
+  trazo(1, 0.7, 1, `M${c1 - 35},${L0} V730`);
+  trazo(1, 0.75, 1, `M${c1 + 165},${L0} V640`);
+  // 03 · Te lo contamos: el diagnóstico, a caballo de la línea
+  const c2 = cx(2);
+  trazo(2, 0, 0.3, `M${c1 + 240},670 H${c2 - 180} V520 H${c2 - 110}`);
+  cajaRed(2, 0.25, 0.6, c2 - 110, 300, 220, 280, null);
+  trazo(2, 0.55, 0.7, `M${c2 - 80},356 h160`); rotulo(2, 0.6, 0.75, c2 - 80, 345, "qué montaríamos", 22, "start");
+  trazo(2, 0.65, 0.8, `M${c2 - 80},436 h160`); rotulo(2, 0.7, 0.85, c2 - 80, 425, "en qué orden", 22, "start");
+  trazo(2, 0.75, 0.9, `M${c2 - 80},516 h160`); rotulo(2, 0.8, 0.95, c2 - 80, 505, "por cuánto", 22, "start");
+  rotulo(2, 0.85, 1, c2, 560, "por escrito", 20);
+  // 04 · Construimos: la fase 1 conecta las tres cajas y el diagnóstico, y sube a la superficie
+  const c3 = cx(3);
+  trazo(3, 0, 0.3, `M${c1 + 240},670 H${c3 - 200} V660 H${c3 - 160}`);
+  trazo(3, 0.1, 0.4, `M${c2 + 110},540 H${c3 - 240} V700 H${c3 - 160}`);
+  cajaRed(3, 0.3, 0.65, c3 - 160, 600, 320, 130, "fase 1");
+  trazo(3, 0.6, 0.85, `M${c3},600 V${L0}`);
+  trazo(3, 0.8, 1, `M${c3 - 70},${L0 - 50} h140`); rotulo(3, 0.85, 1, c3, L0 - 64, "funcionando, en semanas", 22);
+  // 05 · Lo ves funcionando: el pulso, y después el pago cruza hacia abajo; empieza la fase 2
+  const c4 = cx(4);
+  const pulsoD = `M${c3 - 160},660 H${c3 - 240} V540 H${c2 + 110} M${c3 - 160},700 H${c3 - 200} V670 H${c1 + 240} M${c3 - 160},600 h320 v130 h-320 Z M${c3},600 V${L0} M${c3 - 70},${L0 - 50} h140`;
+  trazo(4, 0, 0.42, pulsoD, { pulso: 1 });
+  trazo(4, 0.45, 0.65, `M${c4 - 160},${L0 - 120} V640`);
+  rotulo(4, 0.5, 0.65, c4 - 130, L0 - 90, "pago", 22, "start");
+  trazo(4, 0.5, 0.9, `M${c4 - 174},${L0 - 134} h28 v28 h-28 Z`, { ficha: 1, y0: L0 - 134, y1: 612 });
+  trazo(4, 0.7, 0.9, `M${c3 + 160},665 H${c4 - 160}`);
+  cajaRed(4, 0.8, 1, c4 - 160, 640, 320, 130, "fase 2");
+  // 06 · Lo mantenemos: copias, actualizaciones, vigilancia, en bucle; y la línea baja
+  const c5 = cx(5);
+  trazo(5, 0, 0.2, `M${c4 + 160},705 H${c5 - 200}`);
+  cajaRed(5, 0.12, 0.35, c5 - 200, 600, 180, 60, "copias");
+  cajaRed(5, 0.2, 0.45, c5 - 200, 690, 260, 60, "actualizaciones");
+  cajaRed(5, 0.28, 0.52, c5 - 200, 780, 300, 60, "vigilancia de caídas");
+  trazo(5, 0.45, 0.65, `M${c5 + 100},810 H${c5 + 180} V630 H${c5 - 20}`);
+  trazo(5, 0.5, 0.68, `M${c5 - 200},630 H${c5 - 260} V720 H${c5 - 200}`);
+  rotulo(5, 0.86, 1, c5, 920, "a tu nombre", 40);
+
+  /* Dibujar el SVG. */
+  const defs = ns("defs");
+  const red = ns("g", { id: "red", fill: "none", "stroke-width": 3, "stroke-linecap": "square", "stroke-linejoin": "miter" });
+  const nodosTrazo = trazos.map((t) => {
+    const p = ns("path", { d: t.d });
+    if (t.extra.caja) p.setAttribute("fill", "var(--relleno)");
+    if (t.extra.ficha) p.setAttribute("fill", "var(--relleno)");
+    p.setAttribute("stroke", "currentColor");
+    red.appendChild(p);
+    return p;
+  });
+  const nodosRotulo = rotulos.map((r) => { const t = ns("text", { x: r.x, y: r.y, "text-anchor": r.anchor, "font-size": r.tam, fill: "currentColor", opacity: 0 }); t.textContent = r.txt; red.appendChild(t); return t; });
+  defs.appendChild(red);
+  const clipArriba = ns("clipPath", { id: "clip-arriba" }); const rArriba = ns("rect", { x: 0, y: 0, width: ANCHO, height: L0 }); clipArriba.appendChild(rArriba);
+  const clipAbajo = ns("clipPath", { id: "clip-abajo" }); const rAbajo = ns("rect", { x: 0, y: L0, width: ANCHO, height: ALTO }); clipAbajo.appendChild(rAbajo);
+  defs.appendChild(clipArriba); defs.appendChild(clipAbajo);
+  svg.appendChild(defs);
+  const bandaArriba = ns("rect", { x: 0, y: 0, width: ANCHO, height: L0, fill: "#f1eee6" });
+  const bandaAbajo = ns("rect", { x: 0, y: L0, width: ANCHO, height: ALTO, fill: "#0e1b1e" });
+  svg.appendChild(bandaArriba); svg.appendChild(bandaAbajo);
+  const gAbajo = ns("g", { "clip-path": "url(#clip-abajo)", style: "color:#c9f24d;--relleno:#233f3b" }); gAbajo.appendChild(ns("use", { href: "#red" }));
+  const gArriba = ns("g", { "clip-path": "url(#clip-arriba)", style: "color:#15181a;--relleno:#fbfaf6" }); gArriba.appendChild(ns("use", { href: "#red" }));
+  svg.appendChild(gAbajo); svg.appendChild(gArriba);
+  const linea = ns("line", { x1: 0, x2: ANCHO, y1: L0, y2: L0, stroke: "#c9f24d", "stroke-width": 3 }); svg.appendChild(linea);
+  // Las cotas de la superficie (el dato de cada paso), pegadas a la línea.
+  const cotas = pasos.map((p, k) => { const g = ns("g"); const t = ns("text", { x: cx(k) + 190, y: L0 - 14, "text-anchor": "end", "font-size": 22, fill: "#15181a" }); t.textContent = p.dato; const tick = ns("line", { x1: cx(k) + 200, x2: cx(k) + 200, y1: L0 - 36, y2: L0, stroke: "#15181a", "stroke-width": 2 }); g.appendChild(t); g.appendChild(tick); svg.appendChild(g); return g; });
+  // El texto de cada estación, en la banda clara.
+  pasos.forEach((p, k) => {
+    const fo = ns("foreignObject", { x: cx(k) - 320, y: 50, width: 640, height: 360 });
+    fo.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" class="estacion"><p class="num">${p.numero}</p><h3>${p.titulo}</h3><p class="ves">${p.vesTu}</p><p>${p.descripcion}</p></div>`;
+    svg.appendChild(fo);
+  });
+  // Longitudes para el trazado.
+  const largos = nodosTrazo.map((n) => n.getTotalLength());
+  nodosTrazo.forEach((n, j) => { if (!trazos[j].extra.pulso) { n.style.strokeDasharray = `${largos[j]}`; n.style.strokeDashoffset = `${largos[j]}`; } else { n.style.strokeDasharray = `90 ${largos[j]}`; n.style.strokeDashoffset = `${largos[j]}`; n.style.opacity = 0; n.setAttribute("stroke-width", 6); } });
+
+  registrar(escB.closest(".recorrido"), (p) => {
+    const i = pasoDe(p), t = tramo(p, i);
+    // Panorámica: en el primer tercio de cada paso; el dibujo, en el resto.
+    const s = i < 5 ? i + io(ventana(t, 0, 0.35)) : 5;
+    const h = escB.clientHeight, w = escB.clientWidth, k = h / ALTO;
+    const x = clamp(w / 2 - (s + 1) * W * k, w - ANCHO * k, 0);
+    svg.style.transform = `translateX(${x.toFixed(1)}px)`;
+    const local = (kk) => (kk < i ? 1 : kk > i ? 0 : ventana(t, 0.3, 1));
+    nodosTrazo.forEach((n, j) => {
+      const tr = trazos[j], tl = ventana(local(tr.k), tr.a, tr.b);
+      if (tr.extra.pulso) { n.style.opacity = tl > 0 && tl < 1 ? 1 : 0; n.style.strokeDashoffset = `${largos[j] * (1 - tl) + 90}`; return; }
+      n.style.strokeDashoffset = `${largos[j] * (1 - tl)}`;
+      if (tr.extra.ficha) n.setAttribute("transform", `translate(0,${(tr.extra.y1 - tr.extra.y0) * io(ventana(local(tr.k), 0.62, 0.9))})`);
+    });
+    nodosRotulo.forEach((n, j) => { const r = rotulos[j]; n.setAttribute("opacity", ventana(local(r.k), r.a, r.b)); });
+    // La línea baja al final: todo lo de abajo pasa a claro.
+    const Ly = L0 + 720 * io(ventana(i === 5 ? t : 0, 0.6, 1));
+    rArriba.setAttribute("height", Ly); rAbajo.setAttribute("y", Ly); bandaArriba.setAttribute("height", Ly); bandaAbajo.setAttribute("y", Ly);
+    linea.setAttribute("y1", Ly); linea.setAttribute("y2", Ly);
+    cotas.forEach((g) => g.setAttribute("transform", `translate(0,${Ly - L0})`));
+  });
+}
+
+/* ═══════════════════════════ C · Tu lado ═════════════════════════════ */
+{
+  const escena = document.getElementById("escena-c");
+  const escC = document.getElementById("esc-c");
+  const mk = (cls, html, w, h) => { const d = document.createElement("div"); d.className = `pieza ${cls}`; d.innerHTML = html; d.dataset.w = w; d.dataset.h = h; escena.appendChild(d); return d; };
+  const ficha = mk("ficha", `<b>formulario</b><i></i><i style="width:70%"></i><i style="width:85%"></i><i style="width:40%"></i>`, 150, 100);
+  const sonda = mk("sonda", `<span class="marca">horas y euros</span>`, 1, 2);
+  const hoja = mk("hoja", `<span>qué montaríamos</span><span>en qué orden</span><span>por cuánto</span>`, 170, 160);
+  const fases = [1, 2, 3].map((n) => mk("fase", `fase ${n}`, 260, 54));
+  const chequeo = mk("chequeo", "", 290, 3);
+  const pagos = [1, 2].map((n) => mk("pago", `pago`, 40, 40));
+  const placa = mk("placa", "a tu nombre", 150, 30);
+  const cable = mk("cable", "", 1, 2);
+  const piezas = [ficha, sonda, hoja, ...fases, chequeo, ...pagos, placa, cable];
+
+  /** Coloca una pieza por su centro (fracciones del escenario) y la escala s. */
+  let W = 1, Hh = 1, s = 1;
+  const poner = (el, fx, fy, extra = "") => {
+    const w = +el.dataset.w * s, h = +el.dataset.h * s;
+    el.style.width = `${w}px`; el.style.height = `${h}px`;
+    el.style.transform = `translate(${(fx * W - w / 2).toFixed(1)}px,${(fy * Hh - h / 2).toFixed(1)}px) ${extra}`;
+  };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  /** Cruce con elevación: de (x0,y0) a (x1,y1) subiendo un poco a mitad de camino. */
+  const cruce = (el, t, x0, y0, x1, y1, arco = 0.06) => poner(el, lerp(x0, x1, io(t)), lerp(y0, y1, io(t)) - arco * Math.sin(Math.PI * t));
+
+  const estadoC = (p) => {
+    const t0 = tramo(p, 0), t1 = tramo(p, 1), t2 = tramo(p, 2), t3 = tramo(p, 3), t4 = tramo(p, 4), t5 = tramo(p, 5);
+    W = escena.clientWidth; Hh = escena.clientHeight; s = clamp(W / 1000, 0.42, 1.15);
+    // Sitios: nuestro lado (x < 0,5) y el tuyo (x > 0,5).
+    const salida = 0.22 * io(ventana(t5, 0.78, 1)); // al final, la pila se va por la derecha
+    const PILA_X = 0.78 + salida, BASE = 0.82, PASO = (54 + 12) * s / Hh;
+    // 01 · tu formulario viene a nuestro lado
+    cruce(ficha, t0, 0.88, 0.3, 0.18, 0.3, 0.04);
+    // 02 · una sonda mira tu lado (sale y vuelve)
+    const largoSonda = (t1 < 0.6 ? out(ventana(t1, 0, 0.6)) : 1 - io(ventana(t2, 0, 0.5))) * 0.5 * W;
+    sonda.style.transform = `translate(${0.22 * W}px,${0.52 * Hh}px) scaleX(${Math.max(0.001, largoSonda)})`;
+    sonda.querySelector(".marca").style.opacity = t1 > 0.55 && t2 < 0.05 ? 1 : 0;
+    sonda.querySelector(".marca").style.transform = `translate(10px,-50%) scaleX(${1 / Math.max(0.001, largoSonda)})`;
+    // 03 · el diagnóstico va a tu lado y se queda
+    cruce(hoja, t2, 0.14, 0.34, 0.62 + salida, 0.34, 0.05);
+    // 04 · fase 1 cruza y se posa; 05 · chequeo, pago, fase 2, chequeo; 06 · pago, fase 3
+    cruce(fases[0], t3, 0.14, BASE, PILA_X, BASE);
+    cruce(fases[1], ventana(t4, 0.55, 0.85), 0.14, BASE - PASO, PILA_X, BASE - PASO);
+    cruce(fases[2], ventana(t5, 0.2, 0.45), 0.14, BASE - 2 * PASO, PILA_X, BASE - 2 * PASO);
+    const ch1 = ventana(t4, 0, 0.3), ch2 = ventana(t4, 0.85, 1), ch3 = ventana(t5, 0.45, 0.6);
+    const ch = ch1 < 1 ? [ch1, BASE] : ch2 < 1 ? [ch2, BASE - PASO] : [ch3, BASE - 2 * PASO];
+    poner(chequeo, PILA_X, ch[1] - PASO * 0.4 + PASO * 0.8 * ch[0]);
+    chequeo.style.opacity = ch[0] > 0 && ch[0] < 1 ? 1 : 0;
+    cruce(pagos[0], ventana(t4, 0.3, 0.55), 0.66, 0.78, 0.22, 0.78, 0.03);
+    cruce(pagos[1], ventana(t5, 0, 0.2), 0.66, 0.78, 0.29, 0.78, 0.03);
+    pagos[0].style.opacity = t4 > 0.3 ? 1 : 0; pagos[1].style.opacity = t5 > 0 ? 1 : 0;
+    // la placa a tu nombre, encima de la pila
+    const tp = ventana(t5, 0.6, 0.72);
+    poner(placa, PILA_X, BASE - 2 * PASO - (54 / 2 + 24) * s / Hh - 0.08 * (1 - out(tp)));
+    placa.style.opacity = tp;
+    // el cable que nos une a la pila: aparece, se estira con la salida y se corta
+    const tc = ventana(t5, 0.72, 0.8), corte = t5 > 0.93;
+    const xIni = 0.26 * W, xFin = (PILA_X - 130 * s / W) * W;
+    cable.style.transform = `translate(${xIni}px,${(BASE - PASO) * Hh}px) scaleX(${corte ? 0.001 : Math.max(0.001, (xFin - xIni) * out(tc))})`;
+    cable.style.opacity = tc > 0 && !corte ? 1 : 0;
+    // Lo que aún no ha entrado en escena, fuera de la vista.
+    hoja.style.opacity = t2 > 0 ? 1 : 0; fases[1].style.opacity = t4 > 0.55 ? 1 : 0; fases[2].style.opacity = t5 > 0.2 ? 1 : 0;
+  };
+  registrar(escC.closest(".recorrido"), (p) => { encender(escC, pasoDe(p)); estadoC(p); });
+}
+
+pedirMedida();
+</script>
+</body>
+</html>
