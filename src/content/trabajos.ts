@@ -7,8 +7,8 @@
  * - `encargo`: una web hecha para un negocio real, con su nombre y su dirección.
  * - `estudio`: un proyecto propio, sin cliente. Su negocio es inventado y la web lo dice.
  *
- * El orden es el de la lista y se decide por calidad, no por origen: un estudio puede ir
- * antes que un encargo. Cuando entre otro cliente, se añade a esta lista y ya sale.
+ * El orden es el de la lista y lo decide Álvaro, no el origen: hoy van primero los estudios
+ * propios y después los encargos. Cuando entre otro cliente, se añade a esta lista y ya sale.
  *
  * Sin imports, para que los tests de Node lo carguen tal cual.
  */
@@ -41,44 +41,6 @@ export const etiquetaTipo: Record<TipoTrabajo, string> = {
 };
 
 export const trabajos: Trabajo[] = [
-  {
-    slug: "marina-spa",
-    imagen: "marina-spa",
-    negocio: "Marina Spa",
-    ciudad: "Zafra",
-    sector: "Centro de estética",
-    tipo: "encargo",
-    estado: "Nueva versión",
-    concepto:
-      "«Bóveda»: el centro está bajo bóvedas de ladrillo y su marca es un loto dorado; la web es entrar ahí.",
-    movimiento:
-      "El loto de su logo se dibuja, se enciende y vuela al arco de la portada; las fotos entran en arcos de medio punto que se trazan mientras se enfocan.",
-    url: "https://alvarotaiagu.github.io/marina-spa-zafra-web/",
-  },
-  {
-    slug: "pazo-do-souto",
-    imagen: "pazo-do-souto",
-    negocio: "Pazo do Souto",
-    ciudad: "Sísamo, Carballo",
-    sector: "Hotel y celebraciones",
-    tipo: "encargo",
-    concepto: "«Sello y portón»: el logo se traza como un sello y la entrada es un portón que se abre.",
-    movimiento:
-      "Un sello que se dibuja y un portón en 3D que se abre y deja ver la finca del siglo XVII.",
-    url: "https://pazodosouto.es",
-  },
-  {
-    slug: "apartamentos-el-sotano",
-    imagen: "apartamentos-el-sotano",
-    negocio: "Apartamentos El Sótano",
-    ciudad: "Badajoz",
-    sector: "Apartamentos turísticos",
-    tipo: "encargo",
-    concepto: "«Los cuatro listones»: el marco de madera de su rótulo ordena toda la web.",
-    movimiento:
-      "Una placa que se abre como ventana sobre el patio, y un radar de Badajoz a pie con las distancias medidas sobre el callejero real. En castellano y portugués.",
-    url: "https://apartamentoselsotano.es",
-  },
   {
     slug: "balda",
     imagen: "balda",
@@ -128,6 +90,44 @@ export const trabajos: Trabajo[] = [
     movimiento:
       "Misma escena con el 3D simplificado: sombras a menor ritmo y árboles lejanos sencillos. Se abre con `?ligera`.",
     url: "https://alvarotaiagu.github.io/plantilla-casa-rural-mundo-web/?ligera",
+  },
+  {
+    slug: "marina-spa",
+    imagen: "marina-spa",
+    negocio: "Marina Spa",
+    ciudad: "Zafra",
+    sector: "Centro de estética",
+    tipo: "encargo",
+    estado: "Nueva versión",
+    concepto:
+      "«Bóveda»: el centro está bajo bóvedas de ladrillo y su marca es un loto dorado; la web es entrar ahí.",
+    movimiento:
+      "El loto de su logo se dibuja, se enciende y vuela al arco de la portada; las fotos entran en arcos de medio punto que se trazan mientras se enfocan.",
+    url: "https://alvarotaiagu.github.io/marina-spa-zafra-web/",
+  },
+  {
+    slug: "pazo-do-souto",
+    imagen: "pazo-do-souto",
+    negocio: "Pazo do Souto",
+    ciudad: "Sísamo, Carballo",
+    sector: "Hotel y celebraciones",
+    tipo: "encargo",
+    concepto: "«Sello y portón»: el logo se traza como un sello y la entrada es un portón que se abre.",
+    movimiento:
+      "Un sello que se dibuja y un portón en 3D que se abre y deja ver la finca del siglo XVII.",
+    url: "https://pazodosouto.es",
+  },
+  {
+    slug: "apartamentos-el-sotano",
+    imagen: "apartamentos-el-sotano",
+    negocio: "Apartamentos El Sótano",
+    ciudad: "Badajoz",
+    sector: "Apartamentos turísticos",
+    tipo: "encargo",
+    concepto: "«Los cuatro listones»: el marco de madera de su rótulo ordena toda la web.",
+    movimiento:
+      "Una placa que se abre como ventana sobre el patio, y un radar de Badajoz a pie con las distancias medidas sobre el callejero real. En castellano y portugués.",
+    url: "https://apartamentoselsotano.es",
   },
 ];
 
