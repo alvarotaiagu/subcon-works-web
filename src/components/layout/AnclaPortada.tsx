@@ -11,8 +11,8 @@ import { irAAncla } from "@/lib/irAAncla";
  * Llegar a la portada con un ancla del corte (`/#proceso`, `/#equipo`…), desde una
  * interior o recargando (spec 002 §3.5 y §6).
  *
- * El navegador (o el router) salta al ancla en cuanto hay HTML, pero después los pins de
- * Plantillas y Proceso meten su recorrido y las letras cambian los altos: lo de debajo
+ * El navegador (o el router) salta al ancla en cuanto hay HTML, pero después el pin de
+ * Proceso mete su recorrido y las letras cambian los altos: lo de debajo
  * del primer pin se queda miles de píxeles más abajo. Aquí se repite el salto cuando ya
  * está todo medido: tras la cortina, las letras y un `ScrollTrigger.refresh()`, con
  * Lenis. Va el último en `page.tsx`, así sus efectos corren después de los de las

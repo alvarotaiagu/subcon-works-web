@@ -27,21 +27,21 @@ export function Resultado({
   sector,
   respuestas,
   contexto,
-  hayPlantillas,
+  hayTrabajos,
   tituloRef,
   onCambiar,
 }: {
   sector: Sector;
   respuestas: Respuestas;
   contexto: Contexto;
-  hayPlantillas: boolean;
+  hayTrabajos: boolean;
   tituloRef: Ref<HTMLHeadingElement>;
   /** «Cambiar respuestas»: vuelve a la primera pregunta con todo marcado. */
   onCambiar: () => void;
 }) {
   const mejoras = useMemo(
-    () => diagnosticar(sector, respuestas, contexto, { hayPlantillas }),
-    [sector, respuestas, contexto, hayPlantillas]
+    () => diagnosticar(sector, respuestas, contexto, { hayTrabajos }),
+    [sector, respuestas, contexto, hayTrabajos]
   );
   const query = codificar(sector, respuestas);
 

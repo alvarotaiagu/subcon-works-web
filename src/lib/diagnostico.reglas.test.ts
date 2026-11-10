@@ -107,18 +107,18 @@ test("ningún texto de las preguntas lleva el número de preguntas", () => {
 
 // ── T03 · Mejoras, reglas, relleno y diagnosticar ──────────────────────────
 
-/** El bloque de plantillas existe en las páginas de estos sectores (spec §3.8). */
-const conPlantillas = (s: Sector): boolean => s === "rural" || s === "despachos";
+/** El bloque de trabajos existe en las páginas de estos sectores (spec §3.8). */
+const conTrabajos = (s: Sector): boolean => s === "rural";
 
 const IDS_HERRAMIENTAS = new Set(herramientas.map((h) => h.id));
 
 /** Lista blanca de enlaces de la spec §7. */
-function enlacePermitido(enlace: string, contexto: Contexto, hayPlantillas: boolean): boolean {
-  if (["/plantillas/", "/auditoria/", "/#servicios"].includes(enlace)) return true;
+function enlacePermitido(enlace: string, contexto: Contexto, hayTrabajos: boolean): boolean {
+  if (["/#trabajos", "/auditoria/", "/#servicios"].includes(enlace)) return true;
   const herramienta = /^\/herramientas\/#([a-z-]+)$/.exec(enlace);
   if (herramienta) return IDS_HERRAMIENTAS.has(herramienta[1]);
   if (enlace === "#asistente") return contexto === "sector";
-  if (enlace === "#plantillas-sector") return contexto === "sector" && hayPlantillas;
+  if (enlace === "#trabajos-sector") return contexto === "sector" && hayTrabajos;
   return false;
 }
 
@@ -163,10 +163,10 @@ test("recorrido exhaustivo: de 3 a 5 mejoras, sin repetir, aplicables y con porq
 
   for (const [contexto, sectores] of recorridos) {
     for (const sector of sectores) {
-      const hayPlantillas = conPlantillas(sector);
+      const hayTrabajos = conTrabajos(sector);
       for (const respuestas of combinaciones(sector)) {
         casos++;
-        const resultado = diagnosticar(sector, respuestas, contexto, { hayPlantillas });
+        const resultado = diagnosticar(sector, respuestas, contexto, { hayTrabajos });
         const problemas: string[] = [];
         if (resultado.length < MIN_MEJORAS || resultado.length > MAX_MEJORAS) {
           problemas.push(`${resultado.length} mejoras`);
@@ -183,7 +183,7 @@ test("recorrido exhaustivo: de 3 a 5 mejoras, sin repetir, aplicables y con porq
           if (!m.porque.trim() || !m.titulo.trim() || !m.queResuelve.trim()) {
             problemas.push(`${m.id} con texto vacío`);
           }
-          if (m.enlace !== undefined && !enlacePermitido(m.enlace, contexto, hayPlantillas)) {
+          if (m.enlace !== undefined && !enlacePermitido(m.enlace, contexto, hayTrabajos)) {
             problemas.push(`${m.id} enlaza a ${m.enlace}`);
           }
         }
@@ -209,8 +209,8 @@ test("diagnosticar es pura y ordena por prioridad", () => {
     resenas: "nunca",
     dolor: "cobros",
   };
-  const a = diagnosticar("dental", respuestas, "portada", { hayPlantillas: false });
-  const b = diagnosticar("dental", structuredClone(respuestas), "portada", { hayPlantillas: false });
+  const a = diagnosticar("dental", respuestas, "portada", { hayTrabajos: false });
+  const b = diagnosticar("dental", structuredClone(respuestas), "portada", { hayTrabajos: false });
   assert.deepEqual(a, b);
   assert.deepEqual(
     a.map((m) => m.id),
@@ -283,11 +283,11 @@ test("enlaces: todos dentro de la lista blanca, en los dos contextos", () => {
       }
     }
   }
-  const plantillas = { portada: "/plantillas/", sector: "plantillas-sector" };
-  assert.equal(resolverEnlace(plantillas, "sector", true), "#plantillas-sector");
-  assert.equal(resolverEnlace(plantillas, "sector", false), "/plantillas/");
-  assert.equal(resolverEnlace(plantillas, "portada", true), "/plantillas/");
-  assert.equal(resolverEnlace({ portada: "plantillas-sector" }, "portada", true), "/plantillas/");
+  const trabajos = { portada: "/#trabajos", sector: "trabajos-sector" };
+  assert.equal(resolverEnlace(trabajos, "sector", true), "#trabajos-sector");
+  assert.equal(resolverEnlace(trabajos, "sector", false), "/#trabajos");
+  assert.equal(resolverEnlace(trabajos, "portada", true), "/#trabajos");
+  assert.equal(resolverEnlace({ portada: "trabajos-sector" }, "portada", true), "/#trabajos");
   assert.equal(resolverEnlace(undefined, "sector", true), undefined);
   assert.equal(resolverEnlace({ portada: "/#servicios" }, "sector", true), undefined);
 });
@@ -304,7 +304,7 @@ test("no-se, no-se y siempre, sin canales que disparen: sale el relleno", () => 
       resenas: "siempre",
       dolor: "cobros",
     };
-    const resultado = diagnosticar(sector, respuestas, "portada", { hayPlantillas: false });
+    const resultado = diagnosticar(sector, respuestas, "portada", { hayTrabajos: false });
     assert.equal(resultado.length, MIN_MEJORAS, sector);
     assert.equal(resultado[0].id, "cobros");
     // `reserva=online` excluye las mejoras de reservar: el relleno se las salta.
@@ -325,9 +325,9 @@ test("dolor=agenda con reserva=sin-cita no dispara nada", () => {
     web: "no-se",
     resenas: "siempre",
   };
-  const sinDolor = diagnosticar("dental", base, "portada", { hayPlantillas: false });
+  const sinDolor = diagnosticar("dental", base, "portada", { hayTrabajos: false });
   const conAgenda = diagnosticar("dental", { ...base, dolor: "agenda" }, "portada", {
-    hayPlantillas: false,
+    hayTrabajos: false,
   });
   assert.deepEqual(conAgenda, sinDolor);
 });
@@ -345,7 +345,7 @@ test("reserva=online o sin-cita: nunca se propone pedir cita sin llamar, aunque 
         resenas: "siempre",
         dolor,
       };
-      const ids = diagnosticar(sector, respuestas, "portada", { hayPlantillas: false }).map((m) => m.id);
+      const ids = diagnosticar(sector, respuestas, "portada", { hayTrabajos: false }).map((m) => m.id);
       for (const id of reservar) assert.ok(!ids.includes(id), `${sector}/${reserva}: ${id}`);
     }
   }

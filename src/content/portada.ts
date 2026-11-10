@@ -24,7 +24,7 @@ export const cortePortada: readonly EntradaCorte[] = [
   { id: "servicios", cota: "−1 · Lo que montamos", shrp: 25, fondo: "hondo" },
   { id: "soluciones", cota: "−2 · Soluciones en acción", shrp: 40, fondo: "estrato" },
   { id: "proceso", cota: "−3 · El proceso", shrp: 55, fondo: "hondo" },
-  { id: "plantillas", cota: "−4 · Proyectos y demostraciones", shrp: 70, fondo: "estrato" },
+  { id: "trabajos", cota: "−4 · Proyectos y demostraciones", shrp: 70, fondo: "estrato" },
   { id: "equipo", cota: "−5 · Quién está debajo", shrp: 82, fondo: "hondo" },
   { id: "faq", cota: "−6 · Dudas", shrp: 92, fondo: "estrato" },
   { id: "contacto", cota: "Fondo · Contacto", shrp: 100, fondo: "roca" },

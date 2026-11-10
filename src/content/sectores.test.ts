@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { mejoras } from "./diagnostico.ts";
-import { plantillas } from "./plantillas.ts";
+import { trabajos } from "./trabajos.ts";
 import { sectores, sectorPorSlug } from "./sectores.ts";
 
 test("tres páginas, con los slugs de D-009 exactos", () => {
@@ -19,13 +19,14 @@ test("tres páginas, con los slugs de D-009 exactos", () => {
   assert.equal(sectorPorSlug("__proto__"), undefined);
 });
 
-test("todo slug de plantilla existe en plantillas.ts", () => {
-  const slugs = new Set(plantillas.map((p) => p.slug));
+test("todo slug de trabajo existe en trabajos.ts", () => {
+  const slugs = new Set(trabajos.map((t) => t.slug));
   for (const s of sectores) {
-    for (const slug of s.plantillas) assert.ok(slugs.has(slug), `${s.codigo}: no existe la plantilla «${slug}»`);
+    for (const slug of s.trabajos) assert.ok(slugs.has(slug), `${s.codigo}: no existe el trabajo «${slug}»`);
   }
-  // D-007, P-01: dental aún sin plantilla.
-  assert.deepEqual(sectores.find((s) => s.codigo === "dental")?.plantillas, []);
+  // D-007, P-01: dental y despachos aún sin trabajo propio.
+  assert.deepEqual(sectores.find((s) => s.codigo === "dental")?.trabajos, []);
+  assert.deepEqual(sectores.find((s) => s.codigo === "despachos")?.trabajos, []);
 });
 
 test("toda mejora existe en el catálogo y aplica al sector, de 4 a 6 sin repetir", () => {

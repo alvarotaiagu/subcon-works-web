@@ -27,13 +27,13 @@ export default function NotFound() {
         <div className="mt-8 grid items-start gap-12 md:grid-cols-[1fr_auto] md:gap-20">
           <div>
             <p className="max-w-md text-lg text-apagado-abajo">
-              La página que buscas no existe o ha cambiado de sitio. Vuelve al principio o mira las
-              plantillas.
+              La página que buscas no existe o ha cambiado de sitio. Vuelve al principio o mira lo que
+              hemos construido.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Boton href="/">Ir al inicio</Boton>
-              <Boton href="/plantillas/" variante="secundario">
-                Ver plantillas
+              <Boton href="/#trabajos" variante="secundario">
+                Ver trabajos
               </Boton>
             </div>
           </div>

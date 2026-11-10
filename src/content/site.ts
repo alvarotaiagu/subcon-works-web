@@ -14,7 +14,7 @@ export const site = {
   nav: [
     { label: "Servicios", href: "/#servicios" },
     { label: "Soluciones", href: "/#soluciones" },
-    { label: "Proyectos", href: "/#plantillas" },
+    { label: "Proyectos", href: "/#trabajos" },
     { label: "Herramientas", href: "/herramientas/" },
     { label: "Proceso", href: "/#proceso" },
     { label: "Contacto", href: "/#contacto" },

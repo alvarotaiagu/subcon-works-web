@@ -21,7 +21,7 @@ export function PageTransition() {
   const isFirst = useRef(true);
 
   useEffect(() => {
-    // Proceso y Plantillas usan ScrollTrigger con pin:true, que envuelve la
+    // Proceso usa ScrollTrigger con pin:true, que envuelve la
     // sección en un pin-spacer y la reparenta. Al navegar a otra ruta, React
     // desmonta toda la home en un único commit; si el pin todavía no se ha
     // revertido cuando le toca a esa sección, su nodo ya no cuelga de <main>

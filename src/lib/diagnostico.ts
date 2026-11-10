@@ -7,7 +7,7 @@
 
 import {
   DOLOR_AGENDA,
-  ENLACE_PLANTILLAS_SECTOR,
+  ENLACE_TRABAJOS_SECTOR,
   exclusiones,
   frasesPrerrelleno,
   INICIO_CANALES,
@@ -179,18 +179,18 @@ export function tituloResultado(sector: Sector): string {
 }
 
 /**
- * El destino de un enlace de mejora según el contexto. `"plantillas-sector"`
- * va al bloque de plantillas de la página si lo tiene y, si no (o en la
- * portada), a `/plantillas/`.
+ * El destino de un enlace de mejora según el contexto. `"trabajos-sector"`
+ * va al bloque de trabajos de la página si lo tiene y, si no (o en la
+ * portada), a `/#trabajos`.
  */
 export function resolverEnlace(
   enlace: EnlaceMejora | undefined,
   contexto: Contexto,
-  hayPlantillas: boolean,
+  hayTrabajos: boolean,
 ): string | undefined {
   const destino = contexto === "sector" ? enlace?.sector : enlace?.portada;
-  if (destino === ENLACE_PLANTILLAS_SECTOR) {
-    return contexto === "sector" && hayPlantillas ? "#plantillas-sector" : "/plantillas/";
+  if (destino === ENLACE_TRABAJOS_SECTOR) {
+    return contexto === "sector" && hayTrabajos ? "#trabajos-sector" : "/#trabajos";
   }
   return destino;
 }
@@ -237,7 +237,7 @@ export function diagnosticar(
   sector: Sector,
   respuestas: Respuestas,
   contexto: Contexto,
-  { hayPlantillas }: { hayPlantillas: boolean },
+  { hayTrabajos }: { hayTrabajos: boolean },
 ): MejoraDiagnosticada[] {
   const excluidas = excluidasPor(respuestas);
   const ganadoras = new Map<IdMejora, { mejora: Mejora; regla: Regla; orden: number }>();
@@ -252,7 +252,7 @@ export function diagnosticar(
   });
 
   const vistaDe = (mejora: Mejora, porque: string): MejoraDiagnosticada => {
-    const enlace = resolverEnlace(mejora.enlace, contexto, hayPlantillas);
+    const enlace = resolverEnlace(mejora.enlace, contexto, hayTrabajos);
     return {
       id: mejora.id,
       titulo: textoPara(mejora.titulo, sector),

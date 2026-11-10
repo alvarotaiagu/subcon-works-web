@@ -2,14 +2,12 @@ import Link from "next/link";
 import { Glifo } from "@/components/ui/Glifo";
 import { BrowserMockup } from "@/components/ui/BrowserMockup";
 import { MovilMockup } from "@/components/ui/MovilMockup";
-import { Boton } from "@/components/ui/Boton";
 import { Seccion } from "@/components/ui/Seccion";
-import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
+import { TarjetaTrabajo } from "@/components/ui/TarjetaTrabajo";
 import { Titular } from "@/components/ui/Titular";
 import { proyectos, type CategoriaProyectos } from "@/content/consultora";
 import { herramientas } from "@/content/herramientas";
-import { plantillas } from "@/content/plantillas";
-import { conDorsal } from "@/lib/dorsales";
+import { trabajos } from "@/content/trabajos";
 
 const capturas = (id: string) => herramientas.find((h) => h.id === id)?.capturas ?? [];
 
@@ -33,19 +31,18 @@ function Filas({ categoria }: { categoria: CategoriaProyectos }) {
 }
 
 /**
- * «−4 · Proyectos y demostraciones»: lo que hay en el repo, en tres bandas. Las plantillas
- * son webs de negocios inventados (hay aviso); las herramientas son software propio con
- * datos de ejemplo. Ni una sola pieza se presenta como trabajo de cliente. Se queda con el
- * `id` `plantillas` para que los enlaces `/#plantillas` de las demás páginas sigan valiendo.
+ * «−4 · Proyectos y demostraciones», en tres bandas. La A son las webs de `trabajos.ts`:
+ * encargos de clientes reales y estudios propios, cada tarjeta con su etiqueta (D-036). Las
+ * herramientas son software propio con datos de ejemplo. Su `id` es `trabajos`: los
+ * enlaces `/#trabajos` de las demás páginas llegan aquí.
  */
 export function Proyectos() {
-  const titulares = conDorsal(plantillas).filter((x) => x.plantilla.destacada);
   const [webs, auto, soft] = proyectos.categorias;
   const informe = capturas("informe")[0];
   const [escaparate, panelMovil] = capturas("tiendas");
 
   return (
-    <Seccion id="plantillas" aria-labelledby="proyectos-titulo" className="py-[var(--space-section)]">
+    <Seccion id="trabajos" aria-labelledby="proyectos-titulo" className="py-[var(--space-section)]">
       <div className="container-max">
         <Titular
           nivel={2}
@@ -65,18 +62,15 @@ export function Proyectos() {
             <h3 className="banda-titulo">{webs.titulo}</h3>
             <p className="banda-intro">{webs.intro}</p>
           </header>
-          <ol className="lista-titulares">
-            {titulares.map(({ plantilla, dorsal }) => (
-              <li key={plantilla.slug}>
-                <TarjetaPlantilla plantilla={plantilla} variante="corte" dorsal={dorsal} />
+          <ul className="lista-titulares">
+            {trabajos.map((trabajo) => (
+              <li key={trabajo.slug}>
+                <TarjetaTrabajo trabajo={trabajo} />
               </li>
             ))}
-          </ol>
+          </ul>
           <div className="banda-pie">
             <Filas categoria={webs} />
-            <Boton href="/plantillas/" variante="secundario">
-              Ver las {plantillas.length} plantillas
-            </Boton>
           </div>
         </div>
 
@@ -91,7 +85,7 @@ export function Proyectos() {
             {informe && (
               <div className="banda-captura">
                 <BrowserMockup src={informe.src} alt={informe.alt} />
-                <p className="font-mono-label mt-3 text-[10px]">Informe de ejemplo sobre una plantilla</p>
+                <p className="font-mono-label mt-3 text-[10px]">Informe de ejemplo sobre una web de muestra</p>
               </div>
             )}
           </div>

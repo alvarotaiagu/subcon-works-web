@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { site } from "@/content/site";
-import { plantillas } from "@/content/plantillas";
 import { Logo } from "@/components/ui/Logo";
 import { Boton } from "@/components/ui/Boton";
 
@@ -65,8 +64,8 @@ export function Footer() {
           <p className="font-mono-label mb-4 mt-8 text-xs">Secciones</p>
           <ul className="space-y-2 text-apagado-abajo">
             <li>
-              <Link href="/plantillas/" className="link-underline">
-                Las {plantillas.length} plantillas
+              <Link href="/#trabajos" className="link-underline">
+                Trabajos
               </Link>
             </li>
             <li>
@@ -111,7 +110,7 @@ export function Footer() {
           © {year} {site.nombre}. Todos los derechos reservados.
         </span>
         <span>
-          Los negocios de las plantillas son ficticios. Diseñado y construido por {site.nombre}.
+          Los negocios de los estudios propios son ficticios. Diseñado y construido por {site.nombre}.
         </span>
       </div>
     </footer>

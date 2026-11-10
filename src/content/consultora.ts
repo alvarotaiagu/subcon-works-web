@@ -4,8 +4,8 @@
  *
  * Reglas que se mantienen de la web vigente: nada de clientes, cifras de ahorro, plazos
  * ni precios inventados; los ejemplos van siempre rotulados «Ejemplo» (D-019); lo que se
- * enseña en «Proyectos» es lo que existe de verdad en este repo (plantillas ficticias y
- * herramientas propias de `herramientas.ts`).
+ * enseña en «Proyectos» es lo que existe de verdad: webs de `trabajos.ts` (encargos reales
+ * y estudios propios, cada uno rotulado) y herramientas propias de `herramientas.ts`.
  */
 
 export const hero = {
@@ -98,7 +98,7 @@ export const servicios = {
       descripcion:
         "Una web escrita a mano para tu negocio, no un tema comprado con tu logo encima. Rápida, tuya y preparada para que te encuentren en Google a dos calles de distancia.",
       incluye: ["Diseño propio, sin constructores", "Tienda online", "Ficha de Google y SEO local", "Formularios y reservas", "Mantenimiento"],
-      enlace: { href: "/plantillas/", label: "Ver plantillas" },
+      enlace: { href: "/#trabajos", label: "Ver trabajos" },
     },
   ],
 } as const;
@@ -162,8 +162,8 @@ export interface CategoriaProyectos {
   clave: "webs" | "automatizacion" | "software";
   titulo: string;
   intro: string;
-  /** Solo la de webs: las plantillas salen de `plantillas.ts`. */
-  conPlantillas?: boolean;
+  /** Solo la de webs: las tarjetas salen de `trabajos.ts`. */
+  conTrabajos?: boolean;
   items: Proyecto[];
 }
 
@@ -171,13 +171,13 @@ export const proyectos = {
   titulo: "Ideas que se convierten",
   em: "en soluciones.",
   aviso:
-    "Nada de esto es un trabajo de cliente. Las plantillas son webs de negocios inventados y las herramientas son software propio del estudio, que se enseña funcionando con datos de ejemplo.",
+    "Cada web dice si es un encargo (de un negocio real) o un estudio propio (sin cliente, con un negocio inventado). Las herramientas son software propio del estudio, que se enseña funcionando con datos de ejemplo.",
   categorias: [
     {
       clave: "webs",
       titulo: "Webs y ecommerce",
-      intro: "Plantillas de web terminadas, con contenido de verdad, para ver cómo queda un negocio de tu sector.",
-      conPlantillas: true,
+      intro: "Webs terminadas y abiertas: las de clientes y las que hacemos por nuestra cuenta para probar hasta dónde se puede llegar.",
+      conTrabajos: true,
       items: [
         {
           nombre: "Formularios de contacto propios",

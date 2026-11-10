@@ -1,7 +1,7 @@
 /* Servidor estático de `out/` (spec 002 §3.15, plan PD-2). Resuelve como GitHub Pages:
      /                         → out/index.html
-     /plantillas/              → out/plantillas/index.html (trailingSlash)
-     /plantillas               → 301 a /plantillas/
+     /estudio/                 → out/estudio/index.html (trailingSlash)
+     /estudio                  → 301 a /estudio/
      lo que no existe          → out/404.html con estado 404
    Con `--base /subcon-works-web` (build con GITHUB_ACTIONS=true) solo sirve lo que cuelga
    de esa base, como Pages; lo demás da 404.

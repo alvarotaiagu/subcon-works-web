@@ -1,4 +1,4 @@
-import { plantillas } from "./plantillas.ts";
+import { trabajos } from "./trabajos.ts";
 
 export interface Cifra {
   valor: number;
@@ -9,15 +9,15 @@ export interface Cifra {
 /**
  * Cifras del taller, no de una cartera de clientes.
  *
- * Todas son comprobables hoy: el catálogo de plantillas vivas, el plazo con el
+ * Todas son comprobables hoy: las webs enseñadas en Trabajos, el plazo con el
  * que se trabaja, el número de preguntas de la auditoría y lo que cuesta. No se
  * publica ningún "X clientes satisfechos" mientras no haya clientes.
  *
- * La de plantillas sale del catálogo (spec 002 §3.5): si cambia `plantillas.ts`, cambia
+ * La de trabajos sale de la lista (spec 002 §3.5): si cambia `trabajos.ts`, cambia
  * sola. Import relativo con extensión, para que los tests de Node lo carguen.
  */
 export const cifras: Cifra[] = [
-  { valor: plantillas.length, sufijo: "", etiqueta: "Plantillas propias publicadas y en línea" },
+  { valor: trabajos.length, sufijo: "", etiqueta: "Webs propias y de clientes, en línea y abiertas" },
   { valor: 2, sufijo: " sem.", etiqueta: "Desde que dices que sí hasta que está en línea" },
   { valor: 36, sufijo: "", etiqueta: "Preguntas de la auditoría, y las contestas en 10 minutos" },
   { valor: 0, sufijo: " €", etiqueta: "Lo que cuesta la auditoría y el presupuesto" },
