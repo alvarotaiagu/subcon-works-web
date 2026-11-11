@@ -8,7 +8,7 @@ import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
 import { estado, hayWebGL, leerColores } from "./proceso/reloj";
 import { montarPlanB } from "./proceso/planb";
-import type { Escena3D } from "./proceso/escena3d";
+import type { Escena3D, FaseMontaje } from "./proceso/escena3d";
 
 /** Recorrido del pin (D-037: unas 6 pantallas), en altos de la ventana. */
 const PANTALLAS = 6;
@@ -58,8 +58,9 @@ const escenaStore = {
  *   de GSAP de unas 6 pantallas (también en móvil). El `onUpdate` del pin pasa el progreso
  *   al reloj (`proceso/reloj.ts`) y este mueve la vista que esté: el plan B en SVG
  *   (`proceso/planb.ts`, desde el principio) y, cuando llega, la escena en Three.js
- *   (`proceso/escena3d.ts`), que se pide con `import()` al acercarse la sección y nunca
- *   va en el JS inicial. Sin WebGL, con `?planb` o si el chunk no llega, se queda el SVG.
+ *   (`proceso/escena3d.ts`): su chunk se pide con `import()` en reposo tras la carga (nunca
+ *   va en el JS inicial) y se monta en tareas cortas a dos pantallas de la sección. Sin
+ *   WebGL, con `?planb` o si el chunk no llega, se queda el SVG.
  *   Cada sexto del recorrido enciende su paso (`.es-activo`).
  * - Lo anclado es la escena (el bloque y el paso), no la sección: la cota y el titular
  *   pasan de largo y el pin ocupa la pantalla entera. Ningún ancestro lleva `transform`,
@@ -108,80 +109,153 @@ export function Proceso() {
     };
     pintar(0);
 
-    // Con `?fps`, la tarea larga más larga desde que se pide el 3D (lo que la D-037 mide
-    // contra el tope de 300 ms de la D-031) y cuánto tarda en estar a la vista.
+    // Con `?fps`, la tarea larga más larga del 3D (lo que la D-037 mide contra el tope de
+    // 300 ms de la D-031), cuánto tarda en montarse y la tarea más larga de cada fase: chunk
+    // (descargar y evaluar `three`), montar, compilar, sombra y el primer fotograma. Solo
+    // cuentan las tareas del 3D: las de la ventana del chunk (de pedirlo a que llega) y las
+    // del montaje (de empezar a estar listo). Entre medias el chunk espera en memoria y lo
+    // que pase (GSAP, el scroll, otras secciones) no es suyo.
     const tareas = {
       desde: 0,
-      max: 0,
+      chunk: -1,
+      montaje: -1,
       listo: -1,
+      largas: [] as { inicio: number; fin: number }[],
+      fases: {} as Partial<Record<FaseMontaje, string>>,
       observador: null as PerformanceObserver | null,
       escribir() {
         const caja = tareaRef.current;
-        if (!caja) return;
-        const listo = this.listo >= 0 ? ` · 3D a la vista en ${Math.round(this.listo)} ms` : "";
-        caja.textContent = `tarea más larga ${Math.round(this.max)} ms (tope 300)${listo}`;
+        if (!caja || !this.desde) return;
+        const ahora = performance.now();
+        const enVentana = (a: number, b: number) => this.largas.filter((l) => l.fin >= a && l.inicio <= b).map((l) => l.fin - l.inicio);
+        // La evaluación del chunk no se puede medir desde dentro: es la tarea larga más larga
+        // entre que se pide y que llega (si no hay ninguna, duró menos de 50 ms).
+        const delChunk = enVentana(this.desde, this.chunk >= 0 ? this.chunk : ahora);
+        const delMontaje = this.montaje >= 0 ? enVentana(this.montaje, this.listo >= 0 ? this.listo : ahora) : [];
+        const max = Math.max(0, ...delChunk, ...delMontaje);
+        const trozos = [`tarea más larga ${Math.round(max)} ms (tope 300)`];
+        if (this.listo >= 0) trozos.push(`3D listo en ${Math.round(this.listo - this.montaje)} ms`);
+        if (this.chunk >= 0) trozos.push(`chunk ${delChunk.length ? Math.round(Math.max(...delChunk)) : "<50"}`);
+        for (const [fase, nombre] of [
+          ["montar", "montar"],
+          ["compilar", "compilar"],
+          ["sombra", "sombra"],
+          ["fotograma", "1.er fotograma"],
+        ] as const) {
+          const v = this.fases[fase];
+          if (v) trozos.push(`${nombre} ${v}`);
+        }
+        caja.textContent = trozos.join(" · ");
       },
     };
     const medirTareas = () => {
-      if (!params.has("fps") || !PerformanceObserver.supportedEntryTypes?.includes("longtask")) return;
+      if (!params.has("fps") || tareas.desde) return;
       tareas.desde = performance.now();
+      if (!PerformanceObserver.supportedEntryTypes?.includes("longtask")) return tareas.escribir();
       tareas.observador = new PerformanceObserver((lista) => {
-        for (const t of lista.getEntries()) tareas.max = Math.max(tareas.max, t.duration);
+        for (const t of lista.getEntries()) {
+          tareas.largas.push({ inicio: t.startTime, fin: t.startTime + t.duration });
+        }
         tareas.escribir();
       });
       tareas.observador.observe({ type: "longtask" });
       tareas.escribir();
     };
 
-    // El 3D llega con `import()` cuando la sección está a una pantalla (D-037). Hasta
-    // entonces (y sin WebGL, con `?planb` o si el chunk falla) se ve el plan B.
+    // El 3D en dos tiempos (D-037, nunca en el JS inicial, D-028):
+    // 1. el chunk de `three` se pide en reposo tras la carga (o antes, si la sección se
+    //    acerca): evaluarlo es una tarea que no se puede partir y así no cae en el scroll;
+    // 2. la escena se monta, en tareas cortas, cuando la sección está a dos pantallas, y
+    //    acaba antes de llegar. Hasta entonces (y sin WebGL, con `?planb` o si el chunk
+    //    falla) se ve el plan B.
     let vivo = true;
     let cerca: IntersectionObserver | null = null;
+    let cancelarReposo = () => {};
+    let esperaCarga: (() => void) | null = null;
+    const corte = new AbortController();
     if (!params.has("planb") && hayWebGL()) {
+      let chunk: Promise<typeof import("./proceso/escena3d")> | null = null;
+      const pedir = () => {
+        if (chunk) return chunk;
+        medirTareas();
+        chunk = import("./proceso/escena3d");
+        chunk.then(
+          () => {
+            tareas.chunk = performance.now();
+            tareas.escribir();
+          },
+          () => {},
+        );
+        return chunk;
+      };
+      const enReposo = () => {
+        esperaCarga = null;
+        if (!vivo) return;
+        // Con Ahorro de datos o una conexión lenta no se adelanta: se pide al acercarse.
+        const red = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+        if (red?.saveData || /(^|-)2g$/.test(red?.effectiveType ?? "")) return;
+        const ya = () => void pedir().catch(() => {});
+        if ("requestIdleCallback" in window) {
+          const id = requestIdleCallback(ya, { timeout: 4000 });
+          cancelarReposo = () => cancelIdleCallback(id);
+        } else {
+          const id = globalThis.setTimeout(ya, 2000);
+          cancelarReposo = () => clearTimeout(id);
+        }
+      };
+      if (document.readyState === "complete") enReposo();
+      else {
+        esperaCarga = enReposo;
+        window.addEventListener("load", enReposo, { once: true });
+      }
+
       cerca = new IntersectionObserver(
         ([entrada]) => {
           if (!entrada.isIntersecting) return;
           cerca?.disconnect();
           cerca = null;
-          medirTareas();
-          import("./proceso/escena3d")
-            .then(({ montarEscena3D }) => {
-              if (!vivo) return;
-              let perdido = false;
-              const esc: Escena3D = montarEscena3D({
+          pedir()
+            .then((m) => {
+              tareas.montaje = performance.now();
+              return m;
+            })
+            .then(({ montarEscena3D }) =>
+              montarEscena3D({
                 lienzo,
                 colores: leerColores(),
+                estado: () => estado(ultimoP),
                 fps: params.has("fps") ? fpsTextoRef.current : null,
+                senal: corte.signal,
+                alMedir: (fase, ms, extra) => {
+                  tareas.fases[fase] = `${Math.round(ms)}${extra ? ` (${extra})` : ""}`;
+                  tareas.escribir();
+                },
                 // El navegador perdió el contexto WebGL: se suelta el 3D y vuelve el plan B.
                 alPerder: () => {
-                  perdido = true;
-                  if (tres !== esc) return;
+                  const esc = tres;
+                  if (!esc) return;
                   tres = null;
                   esc.destruir();
                   setEn3d(false);
                   planB.pintar(estado(ultimoP));
                 },
-              });
-              // El plan B sigue a la vista hasta que los shaders están compilados.
-              return esc.listo.then(
-                () => {
-                  // Desmontado, o sin contexto mientras compilaba: se queda el plan B.
-                  if (!vivo || perdido) return esc.destruir();
-                  tres = esc;
-                  esc.pintar(estado(ultimoP));
-                  setEn3d(true);
-                  tareas.listo = performance.now() - tareas.desde;
-                  tareas.escribir();
-                },
-                (e: unknown) => {
-                  esc.destruir();
-                  throw e;
-                },
-              );
+              }),
+            )
+            .then((esc) => {
+              // Desmontado mientras se montaba: se queda el plan B.
+              if (!vivo) return esc.destruir();
+              tres = esc;
+              esc.pintar(estado(ultimoP));
+              setEn3d(true);
+              tareas.listo = performance.now();
+              tareas.escribir();
             })
-            .catch((e: unknown) => console.warn("Proceso: sin 3D, se queda el plan B", e));
+            .catch((e: unknown) => {
+              if (e instanceof DOMException && e.name === "AbortError") return;
+              console.warn("Proceso: sin 3D, se queda el plan B", e);
+            });
         },
-        { rootMargin: "100% 0px" },
+        { rootMargin: "200% 0px" },
       );
       cerca.observe(escena);
     }
@@ -256,7 +330,10 @@ export function Proceso() {
     return () => {
       vivo = false;
       quitar();
+      corte.abort();
       cerca?.disconnect();
+      if (esperaCarga) window.removeEventListener("load", esperaCarga);
+      cancelarReposo();
       tareas.observador?.disconnect();
       tres?.destruir();
       tres = null;

@@ -58,9 +58,18 @@
       align-items: center;
       column-gap: 4vw;
     }
+    /* La cabecera es fija y se queda encima de lo anclado (`h-20` y su borde, Nav.tsx): el
+       paso se centra en lo que queda debajo de ella, no en la pantalla entera. Con la
+       ventana baja (569 px) el número y el titular quedaban tapados. `safe`: si aun así
+       no cabe, se pega arriba (bajo la cabecera) y no se sale por los dos lados. */
     .proceso-texto {
       order: 0;
-      padding-block: 0;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      justify-content: safe center;
+      padding-block: calc(5rem + 1px + 1rem) 1.5rem;
     }
     .proceso-bloque {
       order: 1;
@@ -200,6 +209,16 @@
     line-height: 1.05;
     letter-spacing: -0.03em;
     color: var(--hueso);
+  }
+  /* Escritorio con poca altura (ventana baja): el número y el titular se encogen con ella
+     para que el paso quepa bajo la cabecera. */
+  @media (min-width: 768px) {
+    .proceso-paso-num {
+      font-size: min(var(--paso-tam), 20svh);
+    }
+    .proceso-paso-titulo {
+      font-size: min(clamp(1.6rem, 3.6vw, 3rem), 7.5svh);
+    }
   }
   .proceso-paso-texto {
     max-width: 46ch;
