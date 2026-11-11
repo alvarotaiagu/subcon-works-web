@@ -25,6 +25,8 @@
  *
  * Sin React: recibe el lienzo y devuelve `pintar(estado)` y `destruir()`.
  */
+// Antes que `three`: marca el momento en que empieza a evaluarse (ver `marca.ts`).
+import { antesDeThree } from "./marca";
 import {
   BoxGeometry,
   BufferAttribute,
@@ -64,6 +66,9 @@ import {
   type Object3D,
 } from "three";
 import { ALZA_Y, ALZA_Z, BX, BZ, CURSOS, GAP, H, piezas as PIEZAS, SONDAS, TOPE, Y0, ZC, type Colores, type Estado } from "./reloj";
+
+/** Lo que ha costado evaluar `three` (ms), medido sin la API de tareas largas (`?fps`). */
+export const evaluarThree = performance.now() - antesDeThree;
 
 export interface Escena3D {
   /** Pinta el estado (en el siguiente fotograma; varias llamadas seguidas pintan una vez). */

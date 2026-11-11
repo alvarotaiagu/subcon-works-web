@@ -122,6 +122,10 @@ export function Proceso() {
       listo: -1,
       largas: [] as { inicio: number; fin: number }[],
       fases: {} as Partial<Record<FaseMontaje, string>>,
+      /** Lo mismo en número, y lo que costó evaluar `three` medido a mano (`marca.ts`). */
+      propias: {} as Partial<Record<FaseMontaje | "chunk", number>>,
+      /** Safari (todo iOS) no tiene la API de tareas largas: entonces se tira de lo medido a mano. */
+      conApi: false,
       observador: null as PerformanceObserver | null,
       escribir() {
         const caja = tareaRef.current;
@@ -132,10 +136,15 @@ export function Proceso() {
         // entre que se pide y que llega (si no hay ninguna, duró menos de 50 ms).
         const delChunk = enVentana(this.desde, this.chunk >= 0 ? this.chunk : ahora);
         const delMontaje = this.montaje >= 0 ? enVentana(this.montaje, this.listo >= 0 ? this.listo : ahora) : [];
-        const max = Math.max(0, ...delChunk, ...delMontaje);
-        const trozos = [`tarea más larga ${Math.round(max)} ms (tope 300)`];
+        const aMano = Object.values(this.propias);
+        const max = this.conApi ? Math.max(0, ...delChunk, ...delMontaje) : Math.max(0, ...aMano);
+        const trozos = [`tarea más larga ${Math.round(max)} ms (tope 300${this.conApi ? "" : ", sin API de tareas largas: por fases"})`];
         if (this.listo >= 0) trozos.push(`3D listo en ${Math.round(this.listo - this.montaje)} ms`);
-        if (this.chunk >= 0) trozos.push(`chunk ${delChunk.length ? Math.round(Math.max(...delChunk)) : "<50"}`);
+        if (this.chunk >= 0) {
+          const evaluar = this.propias.chunk ?? 0;
+          const largo = delChunk.length ? Math.max(...delChunk) : 0;
+          trozos.push(`chunk ${this.conApi && largo ? Math.round(Math.max(largo, evaluar)) : Math.round(evaluar)}`);
+        }
         for (const [fase, nombre] of [
           ["montar", "montar"],
           ["compilar", "compilar"],
@@ -151,7 +160,8 @@ export function Proceso() {
     const medirTareas = () => {
       if (!params.has("fps") || tareas.desde) return;
       tareas.desde = performance.now();
-      if (!PerformanceObserver.supportedEntryTypes?.includes("longtask")) return tareas.escribir();
+      tareas.conApi = typeof PerformanceObserver !== "undefined" && (PerformanceObserver.supportedEntryTypes?.includes("longtask") ?? false);
+      if (!tareas.conApi) return tareas.escribir();
       tareas.observador = new PerformanceObserver((lista) => {
         for (const t of lista.getEntries()) {
           tareas.largas.push({ inicio: t.startTime, fin: t.startTime + t.duration });
@@ -180,8 +190,9 @@ export function Proceso() {
         medirTareas();
         chunk = import("./proceso/escena3d");
         chunk.then(
-          () => {
+          (m) => {
             tareas.chunk = performance.now();
+            tareas.propias.chunk = m.evaluarThree;
             tareas.escribir();
           },
           () => {},
@@ -228,6 +239,7 @@ export function Proceso() {
                 senal: corte.signal,
                 alMedir: (fase, ms, extra) => {
                   tareas.fases[fase] = `${Math.round(ms)}${extra ? ` (${extra})` : ""}`;
+                  tareas.propias[fase] = ms;
                   tareas.escribir();
                 },
                 // El navegador perdió el contexto WebGL: se suelta el 3D y vuelve el plan B.
