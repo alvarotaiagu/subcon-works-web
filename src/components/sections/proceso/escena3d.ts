@@ -20,8 +20,14 @@ import { ALZA_Y, ALZA_Z, BX, BZ, CURSOS, GAP, H, piezas as PIEZAS, SONDAS, TOPE,
 export interface Escena3D {
   /** Pinta el estado (en el siguiente fotograma; varias llamadas seguidas pintan una vez). */
   pintar(e: Estado): void;
-  /** Suelta el contexto WebGL y todo lo creado. */
+  /** Suelta todo lo creado (el contexto se queda: el lienzo se reutiliza). */
   destruir(): void;
+  /**
+   * Se resuelve cuando los shaders están compilados (`compileAsync`, con
+   * `KHR_parallel_shader_compile` si lo hay). Hasta entonces no se pinta nada: así la
+   * compilación no cae en una tarea larga en mitad del scroll (D-031). Rechaza si falla.
+   */
+  listo: Promise<void>;
 }
 
 export interface OpcionesEscena {
@@ -29,6 +35,8 @@ export interface OpcionesEscena {
   colores: Colores;
   /** Donde escribir «N fps · …» (`?fps`); `null` para no medir en pantalla. */
   fps?: HTMLElement | null;
+  /** Se llama si el navegador pierde el contexto WebGL (GPU reiniciada, poca memoria): el que llama vuelve al plan B. */
+  alPerder?: () => void;
 }
 
 /** Fotogramas seguidos por encima de esto (mediana de 20) bajan la calidad un peldaño. */
@@ -38,7 +46,7 @@ const DPR_TOPE = 1.5;
 /** Las tres sondas: x y hasta dónde bajan. */
 const SONDAS_X = [-0.5, 0, 0.5];
 
-export function montarEscena3D({ lienzo, colores, fps = null }: OpcionesEscena): Escena3D {
+export function montarEscena3D({ lienzo, colores, fps = null, alPerder }: OpcionesEscena): Escena3D {
   const color = (hex: string) => new THREE.Color(hex);
 
   const renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: true, powerPreference: "high-performance" });
@@ -119,7 +127,11 @@ export function montarEscena3D({ lienzo, colores, fps = null }: OpcionesEscena):
   const perfilGeo = guardar(new THREE.BufferGeometry());
   const perfilPos = new Float32Array(6 * 3);
   perfilGeo.setAttribute("position", new THREE.BufferAttribute(perfilPos, 3));
-  scene.add(new THREE.Line(perfilGeo, lima));
+  const perfilLinea = new THREE.Line(perfilGeo, lima);
+  // La geometría cambia en cada fotograma y three calcula su esfera una sola vez: sin esto
+  // se recortaría con la esfera del primer estado.
+  perfilLinea.frustumCulled = false;
+  scene.add(perfilLinea);
   const ponerPerfil = (c: number) => {
     const pts = [
       [-7, 0],
@@ -140,6 +152,7 @@ export function montarEscena3D({ lienzo, colores, fps = null }: OpcionesEscena):
     const pos = new Float32Array(4 * 3);
     geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const l = new THREE.LineSegments(geo, limaSonda);
+    l.frustumCulled = false; // baja con el scroll: su esfera del primer fotograma se queda corta
     scene.add(l);
     return { x, fondoY: -SONDAS[j], pos, geo, l };
   });
@@ -263,8 +276,9 @@ export function montarEscena3D({ lienzo, colores, fps = null }: OpcionesEscena):
     }
     if (fps) fps.textContent = `${Math.round(1000 / mediana)} fps · ${mediana.toFixed(1)} ms · nitidez ${nitidez} · calidad ${calidad}`;
   };
+  let compilado = false;
   const pintar = () => {
-    if (pendiente || !vivo) return;
+    if (pendiente || !vivo || !compilado) return;
     pendiente = requestAnimationFrame((ahora) => {
       pendiente = 0;
       if (!vivo) return;
@@ -284,10 +298,26 @@ export function montarEscena3D({ lienzo, colores, fps = null }: OpcionesEscena):
   };
   const tamano = new ResizeObserver(ajustar);
   tamano.observe(lienzo);
+  // Contexto perdido: sin esto el lienzo se queda en blanco con el plan B ya escondido.
+  const perdido = (ev: Event) => {
+    ev.preventDefault();
+    alPerder?.();
+  };
+  lienzo.addEventListener("webglcontextlost", perdido);
   ajustar();
+
+  // Los shaders, antes del primer fotograma. Lo que empieza escondido (el plano de luz y la
+  // punta) se enseña mientras compila para que no compile tarde, al llegar a su paso. Las
+  // sombras (el material de profundidad de las piezas) compilan en el primer fotograma.
+  scan.visible = punta.visible = true;
+  const listo = renderer.compileAsync(scene, cam).then(() => {
+    scan.visible = punta.visible = false;
+    compilado = true;
+  });
 
   const objetivo = new THREE.Vector3();
   return {
+    listo,
     pintar(e) {
       const c = -1.6 * e.excavado;
       planoExc.constant = c;
@@ -321,9 +351,12 @@ export function montarEscena3D({ lienzo, colores, fps = null }: OpcionesEscena):
       vivo = false;
       cancelAnimationFrame(pendiente);
       tamano.disconnect();
+      lienzo.removeEventListener("webglcontextlost", perdido);
       sol.shadow.dispose();
       for (const x of porSoltar) x.dispose();
-      renderer.forceContextLoss();
+      // Sin `forceContextLoss()`: el lienzo es el mismo cuando la escena vuelve a montarse
+      // (Sobria y vuelta, movimiento reducido y vuelta) y `getContext` le devolvería el
+      // contexto ya perdido, es decir, un lienzo negro con el plan B escondido.
     },
   };
 }

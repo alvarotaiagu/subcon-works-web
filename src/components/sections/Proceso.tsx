@@ -119,10 +119,35 @@ export function Proceso() {
           import("./proceso/escena3d")
             .then(({ montarEscena3D }) => {
               if (!vivo) return;
-              const esc = montarEscena3D({ lienzo, colores: leerColores(), fps: params.has("fps") ? fpsRef.current : null });
-              tres = esc;
-              esc.pintar(estado(ultimoP));
-              setEn3d(true);
+              let perdido = false;
+              const esc: Escena3D = montarEscena3D({
+                lienzo,
+                colores: leerColores(),
+                fps: params.has("fps") ? fpsRef.current : null,
+                // El navegador perdió el contexto WebGL: se suelta el 3D y vuelve el plan B.
+                alPerder: () => {
+                  perdido = true;
+                  if (tres !== esc) return;
+                  tres = null;
+                  esc.destruir();
+                  setEn3d(false);
+                  planB.pintar(estado(ultimoP));
+                },
+              });
+              // El plan B sigue a la vista hasta que los shaders están compilados.
+              return esc.listo.then(
+                () => {
+                  // Desmontado, o sin contexto mientras compilaba: se queda el plan B.
+                  if (!vivo || perdido) return esc.destruir();
+                  tres = esc;
+                  esc.pintar(estado(ultimoP));
+                  setEn3d(true);
+                },
+                (e: unknown) => {
+                  esc.destruir();
+                  throw e;
+                },
+              );
             })
             .catch((e: unknown) => console.warn("Proceso: sin 3D, se queda el plan B", e));
         },
