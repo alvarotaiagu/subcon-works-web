@@ -150,6 +150,9 @@
   .proceso-fps.es-visible {
     display: block;
   }
+  .proceso-fps span {
+    display: block;
+  }
 
   /* El paso encendido: los seis en la misma celda, solo se ve el del tramo. El alto es
      el del más largo, así el texto no salta al cambiar de paso. */

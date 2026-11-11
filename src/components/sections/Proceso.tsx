@@ -75,6 +75,8 @@ export function Proceso() {
   const planbRef = useRef<SVGSVGElement>(null);
   const rotuloRef = useRef<HTMLParagraphElement>(null);
   const fpsRef = useRef<HTMLDivElement>(null);
+  const fpsTextoRef = useRef<HTMLSpanElement>(null);
+  const tareaRef = useRef<HTMLSpanElement>(null);
   const conEscena = useSyncExternalStore(escenaStore.suscribir, escenaStore.leer, escenaStore.leerServidor);
   const [activo, setActivo] = useState(0);
   const [en3d, setEn3d] = useState(false);
@@ -106,6 +108,31 @@ export function Proceso() {
     };
     pintar(0);
 
+    // Con `?fps`, la tarea larga más larga desde que se pide el 3D (lo que la D-037 mide
+    // contra el tope de 300 ms de la D-031) y cuánto tarda en estar a la vista.
+    const tareas = {
+      desde: 0,
+      max: 0,
+      listo: -1,
+      observador: null as PerformanceObserver | null,
+      escribir() {
+        const caja = tareaRef.current;
+        if (!caja) return;
+        const listo = this.listo >= 0 ? ` · 3D a la vista en ${Math.round(this.listo)} ms` : "";
+        caja.textContent = `tarea más larga ${Math.round(this.max)} ms (tope 300)${listo}`;
+      },
+    };
+    const medirTareas = () => {
+      if (!params.has("fps") || !PerformanceObserver.supportedEntryTypes?.includes("longtask")) return;
+      tareas.desde = performance.now();
+      tareas.observador = new PerformanceObserver((lista) => {
+        for (const t of lista.getEntries()) tareas.max = Math.max(tareas.max, t.duration);
+        tareas.escribir();
+      });
+      tareas.observador.observe({ type: "longtask" });
+      tareas.escribir();
+    };
+
     // El 3D llega con `import()` cuando la sección está a una pantalla (D-037). Hasta
     // entonces (y sin WebGL, con `?planb` o si el chunk falla) se ve el plan B.
     let vivo = true;
@@ -116,6 +143,7 @@ export function Proceso() {
           if (!entrada.isIntersecting) return;
           cerca?.disconnect();
           cerca = null;
+          medirTareas();
           import("./proceso/escena3d")
             .then(({ montarEscena3D }) => {
               if (!vivo) return;
@@ -123,7 +151,7 @@ export function Proceso() {
               const esc: Escena3D = montarEscena3D({
                 lienzo,
                 colores: leerColores(),
-                fps: params.has("fps") ? fpsRef.current : null,
+                fps: params.has("fps") ? fpsTextoRef.current : null,
                 // El navegador perdió el contexto WebGL: se suelta el 3D y vuelve el plan B.
                 alPerder: () => {
                   perdido = true;
@@ -142,6 +170,8 @@ export function Proceso() {
                   tres = esc;
                   esc.pintar(estado(ultimoP));
                   setEn3d(true);
+                  tareas.listo = performance.now() - tareas.desde;
+                  tareas.escribir();
                 },
                 (e: unknown) => {
                   esc.destruir();
@@ -227,6 +257,7 @@ export function Proceso() {
       vivo = false;
       quitar();
       cerca?.disconnect();
+      tareas.observador?.disconnect();
       tres?.destruir();
       tres = null;
       planB.destruir();
@@ -266,7 +297,10 @@ export function Proceso() {
             <p ref={rotuloRef} className="proceso-rotulo">
               a tu nombre
             </p>
-            <div ref={fpsRef} className="proceso-fps" />
+            <div ref={fpsRef} className="proceso-fps">
+              <span ref={fpsTextoRef} />
+              <span ref={tareaRef} />
+            </div>
           </div>
         </div>
       </div>
