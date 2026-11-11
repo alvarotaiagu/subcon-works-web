@@ -389,8 +389,15 @@ function apariciones(ficheros, re, excepciones = [], { soloSrc = false } = {}) {
     if (libres.has(f.fichero) || (soloSrc && !f.esSrc)) continue;
     const filas = porFila.filter((e) => e.fichero === f.fichero);
     for (const m of f.texto.matchAll(global)) {
-      const alrededor = (n) => f.texto.slice(Math.max(0, m.index - n), m.index + m[0].length + n);
-      if (filas.some((e) => alrededor(e.texto.length).includes(e.texto))) continue;
+      // La aparición queda exonerada solo si cae DENTRO de una copia del texto de la fila aprobada.
+      const dentro = (e) => {
+        const desde = Math.max(0, m.index + m[0].length - e.texto.length);
+        for (let i = f.texto.indexOf(e.texto, desde); i !== -1 && i <= m.index; i = f.texto.indexOf(e.texto, i + 1)) {
+          if (i + e.texto.length >= m.index + m[0].length) return true;
+        }
+        return false;
+      };
+      if (filas.some(dentro)) continue;
       const ctx = f.texto.slice(Math.max(0, m.index - 30), m.index + m[0].length + 30);
       res.push(`${f.fichero} · …${ctx}…`);
     }
