@@ -30,11 +30,15 @@
     background: var(--hondo);
   }
 
-  /* Móvil: la escena arriba (poco más de media pantalla) y el paso debajo. */
+  /* Móvil: la escena arriba (poco más de media pantalla) y el paso debajo.
+     La cabecera es fija y se queda encima de lo anclado (`h-16`, `md:h-20` y su borde,
+     Nav.tsx): la escena empieza debajo de ella y no detrás, así la cámara encuadra solo
+     lo que se ve (la punta y «a tu nombre» quedaban tapados). */
   .proceso-escena-dentro {
+    --alto-cabecera: calc(4rem + 1px);
     height: 100%;
     display: grid;
-    grid-template-rows: minmax(0, 52svh) minmax(0, 1fr);
+    grid-template-rows: minmax(0, calc(var(--alto-cabecera) + 44svh)) minmax(0, 1fr);
   }
   .proceso-texto {
     order: 1;
@@ -48,19 +52,20 @@
     min-height: 0;
     /* Que la escena llegue al borde derecho: el contenedor pone el gutter y aquí se
        devuelve. El izquierdo se queda: es el canal del hilo (§3.10). */
+    margin-top: var(--alto-cabecera);
     margin-inline: 0 calc(-1 * var(--gutter));
   }
-  /* Escritorio: el paso a la izquierda, la escena a la derecha, a toda la altura. */
+  /* Escritorio: el paso a la izquierda, la escena a la derecha, a toda la altura bajo la cabecera. */
   @media (min-width: 768px) {
     .proceso-escena-dentro {
+      --alto-cabecera: calc(5rem + 1px);
       grid-template-rows: none;
       grid-template-columns: minmax(19rem, 30rem) minmax(0, 1fr);
       align-items: center;
       column-gap: 4vw;
     }
-    /* La cabecera es fija y se queda encima de lo anclado (`h-20` y su borde, Nav.tsx): el
-       paso se centra en lo que queda debajo de ella, no en la pantalla entera. Con la
-       ventana baja (569 px) el número y el titular quedaban tapados. `safe`: si aun así
+    /* El paso se centra en lo que queda bajo la cabecera, no en la pantalla entera: con
+       la ventana baja (569 px) el número y el titular quedaban tapados. `safe`: si aun así
        no cabe, se pega arriba (bajo la cabecera) y no se sale por los dos lados. */
     .proceso-texto {
       order: 0;
@@ -69,12 +74,11 @@
       flex-direction: column;
       justify-content: center;
       justify-content: safe center;
-      padding-block: calc(5rem + 1px + 1rem) 1.5rem;
+      padding-block: calc(var(--alto-cabecera) + 1rem) 1.5rem;
     }
     .proceso-bloque {
       order: 1;
-      height: 100%;
-      margin-inline: 0 calc(-1 * var(--gutter));
+      align-self: stretch;
     }
   }
 
