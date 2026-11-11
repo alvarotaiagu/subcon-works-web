@@ -68,26 +68,31 @@ const FRASES_C = [
 ];
 
 /**
- * CA-3 · Excepciones por frase de nivel C: `{ id, fichero, motivo }` (`id` del Anexo de la frase;
- * `fichero` relativo a la raíz y con «/»). La frase aparece, pero no como lo que el Anexo marca
- * como C (T10, 2026-11-02). Una excepción nueva lleva motivo y la ve T12.
+ * CA-3 · Excepciones por frase de nivel C: `{ id, fichero, contiene, motivo }` (`id` del Anexo de
+ * la frase; `fichero` relativo a la raíz y con «/»). La frase aparece, pero no como lo que el Anexo
+ * marca como C (T10, 2026-11-02). `contiene` es el texto de la fila aprobada: la excepción solo
+ * exonera las apariciones que lo llevan alrededor, no el fichero entero, así que otra fila del mismo
+ * fichero con la misma frase sigue fallando. Una excepción nueva lleva motivo y la ve T12.
  */
 const EXCEPCIONES_NIVEL_C = [
   {
     id: "A14",
     fichero: "src/content/diagnostico.ts",
+    contiene: "de cuadrar huecos al teléfono",
     motivo:
       "Filas aprobadas (A61, B) de `mejoras[reservas-online].queResuelve`: «dejas de cuadrar huecos al teléfono» describe lo que el calendario le quita al cliente; no dice que Undertactics atienda el teléfono ni que lo haga el asistente (A14, C).",
   },
   {
     id: "A21",
     fichero: "src/content/consultora.ts",
+    contiene: "Foto, vídeo y redes",
     motivo:
       "Fila aprobada `quien.personas.Yanin.rol` «Foto, vídeo y redes» (A40 corregida, D-035): es el oficio de una persona del estudio, no el vídeo como servicio (A21, C), que salió de la web.",
   },
   {
     id: "A21",
     fichero: "src/content/estudio.ts",
+    contiene: "Foto, vídeo y redes",
     motivo: "Fila aprobada `personas[1].rol` «Foto, vídeo y redes» (A40 corregida, D-035): rol de Yanin, no vídeo como servicio (A21, C).",
   },
 ];
@@ -130,7 +135,8 @@ const NOMBRES = [
 ];
 
 /**
- * CA-8 · Cifras permitidas: `{ texto, anexo, magnitud? }`. `{n}` = cualquier número. Una entrada
+ * CA-8 · Cifras permitidas: `{ texto, anexo, magnitud? }`. `{n}` = cualquier número (en la página
+ * pintada, solo dígitos: una `{expresión}` sin pintar no cuenta). Una entrada
  * sin `anexo` no vale. Una misma `magnitud` (p. ej. «tiempo-formulario») tiene un solo valor en
  * todo el sitio. Las fechas legales (A10) también son entradas. Lo llena T05.
  */
@@ -369,15 +375,22 @@ function validarExcepciones(lista, nombre) {
   }
 }
 
-/** Todas las apariciones de `re` en el corpus, menos las de ficheros con excepción: «fichero · …contexto…». */
+/**
+ * Todas las apariciones de `re` en el corpus: «fichero · …contexto…». Una excepción sin `contiene`
+ * exonera el fichero entero; con `contiene`, solo las apariciones que llevan ese texto alrededor.
+ */
 function apariciones(ficheros, re, excepciones = [], { soloSrc = false } = {}) {
   validarExcepciones(excepciones, "excepciones");
-  const libres = new Set(excepciones.map((e) => e.fichero));
+  const libres = new Set(excepciones.filter((e) => !e.contiene).map((e) => e.fichero));
+  const porFila = excepciones.filter((e) => e.contiene).map((e) => ({ fichero: e.fichero, texto: norm(e.contiene) }));
   const global = new RegExp(re.source, re.flags.includes("g") ? re.flags : re.flags + "g");
   const res = [];
   for (const f of ficheros) {
     if (libres.has(f.fichero) || (soloSrc && !f.esSrc)) continue;
+    const filas = porFila.filter((e) => e.fichero === f.fichero);
     for (const m of f.texto.matchAll(global)) {
+      const alrededor = (n) => f.texto.slice(Math.max(0, m.index - n), m.index + m[0].length + n);
+      if (filas.some((e) => alrededor(e.texto.length).includes(e.texto))) continue;
       const ctx = f.texto.slice(Math.max(0, m.index - 30), m.index + m[0].length + 30);
       res.push(`${f.fichero} · …${ctx}…`);
     }
@@ -434,14 +447,15 @@ const APROBADA = new Set(["aprobada", "corregida"]);
 /**
  * `{n}` es una variable: un número cualquiera o, en el código, la expresión que la pinta
  * (`{plantillas.length}`, `${descripcion}`, `{datos.nombre}`); lo demás se compara tal cual,
- * normalizado.
+ * normalizado. En la página ya pintada (CA-8) no hay expresiones, solo lo que llegó al lector:
+ * con `soloNumeros`, `{n}` es un número y un `{…}` sin pintar deja de valer como cifra.
  */
-function regExpDeTexto(t) {
+function regExpDeTexto(t, { soloNumeros = false } = {}) {
   return new RegExp(
     norm(t)
       .split(/\{n\}/)
       .map(esc)
-      .join("(?:[\\d.,]+|\\$?\\{[^{}]+\\})"),
+      .join(soloNumeros ? "[\\d.,]+" : "(?:[\\d.,]+|\\$?\\{[^{}]+\\})"),
   );
 }
 
@@ -731,7 +745,7 @@ const comprobaciones = [
       exigirLista(CIFRAS, "CIFRAS");
       const sinAnexo = CIFRAS.filter((c) => !c.anexo);
       if (sinAnexo.length) throw new Error(`CIFRAS: entradas sin id del Anexo${lista(sinAnexo.map((c) => c.texto))}`);
-      const entradas = CIFRAS.map((c) => ({ ...c, re: new RegExp(regExpDeTexto(c.texto).source, "g") }));
+      const entradas = CIFRAS.map((c) => ({ ...c, re: new RegExp(regExpDeTexto(c.texto, { soloNumeros: true }).source, "g") }));
       const sueltas = [];
       const vistas = new Map(); // magnitud → textos de CIFRAS que salen en el sitio
       for (const ruta of paginasDelExport()) {

@@ -21,9 +21,3 @@ export const cifras: Cifra[] = [
   { valor: plantillas.length, sufijo: "", etiqueta: "Plantillas publicadas, con su demo entera" },
   { valor: 36, sufijo: "", etiqueta: "Preguntas de la auditoría" },
 ];
-
-/** El plazo («2 sem.»): ya no hay cifra de plazo (A32), así que es `undefined`. Lo lee `Plantillas`, de la portada vigente. */
-export const plazo = cifras.find((c) => c.sufijo.trim() === "sem.");
-
-/** «semana» o «semanas» según el número. */
-export const palabraSemanas = (n: number) => (n === 1 ? "semana" : "semanas");

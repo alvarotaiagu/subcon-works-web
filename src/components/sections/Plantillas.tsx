@@ -3,7 +3,7 @@ import { Boton } from "@/components/ui/Boton";
 import { Seccion } from "@/components/ui/Seccion";
 import { TarjetaPlantilla } from "@/components/ui/TarjetaPlantilla";
 import { Titular } from "@/components/ui/Titular";
-import { cifras, palabraSemanas, plazo } from "@/content/cifras";
+import { cifras } from "@/content/cifras";
 import { plantillas, sectoresPlantillas } from "@/content/plantillas";
 import { conDorsal } from "@/lib/dorsales";
 
@@ -66,14 +66,6 @@ export function Plantillas() {
           <span>
             <b>{plantillas.length}</b> bases
           </span>
-          {plazo && (
-            <>
-              <span aria-hidden="true"> · </span>
-              <span>
-                <b>{plazo.valor}</b> {palabraSemanas(plazo.valor)}
-              </span>
-            </>
-          )}
         </p>
 
         <div className="mt-16 flex flex-wrap items-center justify-between gap-x-10 gap-y-6 border-t border-conducto pt-8">
