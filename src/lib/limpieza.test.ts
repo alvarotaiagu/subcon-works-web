@@ -124,8 +124,11 @@ const CURSOR_VALIDO =
 test("§2 · Bajas", () => {
   const fallos: string[] = [];
   for (const nombre of IDENTIFICADORES) fallos.push(...buscar(new RegExp(`\\b${nombre}\\b`), undefined, { codigo: true }));
-  // Rutas de import y ficheros de baja.
-  fallos.push(...buscar(/from\s+["'](?:three|motion)(?:\/[^"']*)?["']/));
+  // Rutas de import y ficheros de baja. D-037 readmite `three` solo en la escena del
+  // proceso (`components/sections/proceso/`): fuera de ahí sigue de baja.
+  const enProceso = (f: string) => /[\\/]components[\\/]sections[\\/]proceso[\\/]/.test(f);
+  fallos.push(...buscar(/from\s+["']three(?:\/[^"']*)?["']/, (f) => !enProceso(f)));
+  fallos.push(...buscar(/from\s+["']motion(?:\/[^"']*)?["']/));
   fallos.push(...buscar(/["'][^"']*\/(?:engranaje|gearPath|three\/[^"']*)(?:\.tsx?)?["']/));
   for (const f of ["lib/engranaje.ts", "lib/gearPath.ts", "components/three"]) {
     if (existsSync(join(SRC, f))) fallos.push(`src/${f} sigue existiendo`);
@@ -150,7 +153,8 @@ test("§2 · Bajas", () => {
   fallos.push(...buscar(/(?<![\w-])\.cursor-[\w-]+/, (f) => f.endsWith(".css")));
 
   const pkg = JSON.parse(readFileSync(join(RAIZ, "package.json"), "utf8"));
-  for (const dep of ["three", "@types/three", "motion"]) {
+  // `three` y sus tipos vuelven con D-037 (solo para la escena del proceso); `motion` sigue de baja.
+  for (const dep of ["motion"]) {
     if (pkg.dependencies?.[dep] || pkg.devDependencies?.[dep]) fallos.push(`package.json lleva ${dep}`);
   }
   assert.equal(fallos.length, 0, `quedan bajas del §2:${lista([...new Set(fallos)])}`);

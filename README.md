@@ -5,7 +5,8 @@ para negocios pequeños de Galicia.
 
 Next.js 16 con `output: "export"`, publicada como *project site* de GitHub Pages
 en `alvarotaiagu.github.io/subcon-works-web/`. Movimiento con GSAP + Lenis, sin
-canvas ni WebGL. Diseño: dirección **«Por debajo»** (spec 002): la línea lima del
+canvas ni WebGL salvo la escena del proceso (Three.js en su chunk, cargado al
+acercarse; D-037). Diseño: dirección **«Por debajo»** (spec 002): la línea lima del
 logo es la superficie; arriba, en claro, lo que ve el cliente del negocio; debajo,
 en oscuro, la instalación que lo hace funcionar.
 
@@ -35,7 +36,7 @@ margen izquierdo uniéndolas hasta el botón de la auditoría.
 | Superficie | Hero (`#inicio`) | «Lo de arriba vende. Lo de abajo trabaja.» partido por la superficie. Arriba, cuatro cosas que ve el cliente (un WhatsApp, un pago con Bizum, una reseña en Google, un reel); debajo de cada una, su pozo con tres paradas que son servicios reales de `servicios.ts`. Se encienden al tocarlas (y solas, una vuelta, tras 5 s sin tocar nada, con «Pausar ejemplos»). El tirador de la derecha sube la superficie para ver más instalación |
 | 0 · Lo que montamos | Servicios (`#servicios`) | Los diez servicios de `servicios.ts`, cada uno con su pozo: lo que incluye, como paradas |
 | −1 · La plantilla | La plantilla (`#plantillas`) | Las destacadas, con dorsal del 1 al 10, en tarjetas de corte (portada arriba, concepto debajo), y «¿Tu sector no está?» con un correo ya escrito. Las 30 están en `/plantillas/` |
-| −2 · El proceso | Proceso (`#proceso`) | Sección anclada con un testigo de sondeo: una broca baja por seis estratos y cada uno enciende su paso. Con movimiento reducido (y en Sobria), la tabla «Lo que ves tú / Lo que hacemos por debajo» |
+| −2 · El proceso | Proceso (`#proceso`) | Sección anclada con «El bloque» (D-037): un corte del terreno en Three.js donde se excava un pozo, bajan las sondas, se dibuja el alambre, entran las piezas por fases, un plano de luz las comprueba y el bloque sale entero con su punta. Cada sexto del recorrido enciende su paso. Sin WebGL, el mismo reloj en SVG; con movimiento reducido (y en Sobria), la tabla «Lo que ves tú / Lo que hacemos por debajo» |
 | −3 · Quién está debajo | Equipo y compromisos (`#equipo`) | Las personas del estudio, el enlace a `/estudio/` y los compromisos como paradas de un pozo |
 | −4 · Diagnóstico | Diagnóstico rápido (`#diagnostico`) | El diagnóstico de un minuto de la spec 001 |
 | Fondo · Auditoría | Fondo (`#auditoria`) | Lo que recibes con la auditoría gratuita, «36 preguntas» y «0 €», y el botón «Empezar la auditoría», donde acaba el hilo y se dibuja el iceberg del logo |
@@ -62,10 +63,11 @@ Lo que pide el §5 bis del PLIEGO (D-021), aplicado a esta web:
     superficie de su bloque (el `<h1>` del hero no, por el LCP);
   - máscaras que se abren con el scroll: cada sección se descubre desde una
     línea que baja;
-  - sección anclada con scrub: el testigo del proceso (vertical, no galería
+  - sección anclada con scrub: el bloque del proceso (vertical, no galería
     horizontal);
   - hero propio del concepto, en SVG en vez de canvas o WebGL (excepción de
-    D-022 por el presupuesto de rendimiento).
+    D-022 por el presupuesto de rendimiento). El único WebGL de la web es la
+    escena del proceso (D-037), que no va en el JS inicial.
 - **Gesto táctil**: el tirador del hero (arrastrar con el dedo o el ratón; con
   el teclado, flechas).
 - **Final del objeto**: el Fondo. Cuando el botón de la auditoría cruza el 66 %

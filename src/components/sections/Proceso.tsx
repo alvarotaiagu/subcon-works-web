@@ -6,14 +6,13 @@ import { proceso } from "@/content/proceso";
 import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
+import { estado, hayWebGL, leerColores } from "./proceso/reloj";
+import { montarPlanB } from "./proceso/planb";
+import type { Escena3D } from "./proceso/escena3d";
 
-/** Recorrido del pin (§3.9: unas 4,4 pantallas), en altos de la ventana. */
-const PANTALLAS = 4.4;
+/** Recorrido del pin (D-037: unas 6 pantallas), en altos de la ventana. */
+const PANTALLAS = 6;
 const RECORRIDO = `+=${PANTALLAS * 100}%`;
-/** Alto de la broca (px): su borde de abajo es la punta que marca el estrato. */
-const BROCA = 3;
-/** El paso que lleva el pulso (§3.9: el 05). */
-const PASO_PULSO = 4;
 /** GSAP ha fallado al crear el pin: el proceso se queda como tabla (§6). */
 let gsapRoto = false;
 const avisos = new Set<() => void>();
@@ -21,11 +20,11 @@ let consultaReducido: MediaQueryList | null = null;
 const reducido = () => (consultaReducido ??= window.matchMedia("(prefers-reduced-motion: reduce)"));
 
 /**
- * ¿Se monta el testigo? Con JS, movimiento permitido, fuera de la densidad sobria (§3.16)
+ * ¿Se monta la escena? Con JS, movimiento permitido, fuera de la densidad sobria (§3.16)
  * y si GSAP funciona. Se vuelve a mirar al cambiar el movimiento reducido y la clase de
  * <html> (el mando de maqueta pasa a Sobria y vuelve).
  */
-const testigoStore = {
+const escenaStore = {
   leer: () =>
     !gsapRoto &&
     !reducido().matches &&
@@ -50,66 +49,101 @@ const testigoStore = {
 };
 
 /**
- * Proceso, «−2 · El proceso» (spec 002 §3.9).
+ * Proceso, «El proceso» (spec 002 §3.9 y D-037, «El bloque»).
  *
  * - **La tabla está en el HTML**: dos columnas, «Lo que ves tú» y «Lo que hacemos por
  *   debajo», una fila por paso con su dato. Es lo que se ve sin JS, con movimiento
  *   reducido, en la densidad sobria y si GSAP falla (§6, §3.17).
- * - **El testigo se monta encima solo con JS** y movimiento permitido: una columna de
- *   seis estratos (`--estrato-1…6`) por la que baja una broca con el scroll, anclada con
- *   un pin de GSAP de unas 4,4 pantallas (también en móvil). Cada estrato que pasa
- *   enciende su paso; en el 05 baja un pulso. En la versión «consultora» no va el «2 semanas»
- *   bajo el 04: se trabaja por fases y el plazo no se promete (decidido el 2026-10-31).
- * - Lo anclado es la escena (el testigo y el paso), no la sección: la cota y el titular
+ * - **La escena se monta encima solo con JS** y movimiento permitido, anclada con un pin
+ *   de GSAP de unas 6 pantallas (también en móvil). El `onUpdate` del pin pasa el progreso
+ *   al reloj (`proceso/reloj.ts`) y este mueve la vista que esté: el plan B en SVG
+ *   (`proceso/planb.ts`, desde el principio) y, cuando llega, la escena en Three.js
+ *   (`proceso/escena3d.ts`), que se pide con `import()` al acercarse la sección y nunca
+ *   va en el JS inicial. Sin WebGL, con `?planb` o si el chunk no llega, se queda el SVG.
+ *   Cada sexto del recorrido enciende su paso (`.es-activo`).
+ * - Lo anclado es la escena (el bloque y el paso), no la sección: la cota y el titular
  *   pasan de largo y el pin ocupa la pantalla entera. Ningún ancestro lleva `transform`,
  *   `filter`, `will-change` ni `clip-path` mientras dura (la máscara de entrada de
  *   `Seccion` se quita al terminar).
  * - El pin se llama `proceso` (`ScrollTrigger.getById("proceso")`): de sus `start`/`end`
  *   toma el hilo las anclas mientras dura (§3.10).
+ * - `?fps` enseña el contador de fotogramas del 3D (abajo a la izquierda de la escena).
  */
 export function Proceso() {
   const escenaRef = useRef<HTMLDivElement>(null);
-  const estratosRef = useRef<HTMLOListElement>(null);
-  const brocaRef = useRef<HTMLDivElement>(null);
-  const testigo = useSyncExternalStore(testigoStore.suscribir, testigoStore.leer, testigoStore.leerServidor);
+  const lienzoRef = useRef<HTMLCanvasElement>(null);
+  const planbRef = useRef<SVGSVGElement>(null);
+  const rotuloRef = useRef<HTMLParagraphElement>(null);
+  const fpsRef = useRef<HTMLDivElement>(null);
+  const conEscena = useSyncExternalStore(escenaStore.suscribir, escenaStore.leer, escenaStore.leerServidor);
   const [activo, setActivo] = useState(0);
+  const [en3d, setEn3d] = useState(false);
 
-  // El pin. Va sobre la escena, que siempre está en el DOM (con el testigo apagado se
+  // El pin. Va sobre la escena, que siempre está en el DOM (con la escena apagada se
   // esconde con CSS): así React nunca quita un nodo que GSAP haya metido en su pin-spacer.
   useEffect(() => {
     const escena = escenaRef.current;
-    const estratos = estratosRef.current;
-    const broca = brocaRef.current;
+    const lienzo = lienzoRef.current;
+    const svg = planbRef.current;
+    const rotulo = rotuloRef.current;
     const main = document.querySelector("main");
-    if (!testigo || !escena || !estratos || !broca || !main) return;
+    if (!conEscena || !escena || !lienzo || !svg || !rotulo || !main) return;
 
-    let alto = estratos.clientHeight;
-    let ultimo = -1;
+    const params = new URLSearchParams(window.location.search);
+    const planB = montarPlanB(svg);
+    let tres: Escena3D | null = null;
+    let ultimoP = 0;
+    let ultimoPaso = -1;
     const pintar = (progreso: number) => {
-      // La punta (el borde de abajo de la broca) baja de 3 px al fondo del testigo; el
-      // paso encendido es el del estrato en el que está la punta.
-      const punta = Math.max(BROCA, progreso * alto);
-      broca.style.transform = `translateY(${(punta - BROCA).toFixed(1)}px)`;
-      const i = Math.min(proceso.length - 1, Math.floor(punta / (alto / proceso.length)));
-      if (i !== ultimo) {
-        ultimo = i;
-        setActivo(i);
+      ultimoP = progreso;
+      const e = estado(progreso);
+      if (e.i !== ultimoPaso) {
+        ultimoPaso = e.i;
+        setActivo(e.i);
       }
+      rotulo.classList.toggle("es-visible", e.punta >= 1);
+      (tres ?? planB).pintar(e);
     };
+    pintar(0);
 
-    // GSAP llega con `import()` tras hidratar (D-028). Mientras tanto el testigo está
-    // pintado en reposo por CSS (broca arriba, paso 01) y el recorrido del pin se reserva
-    // ya, al hidratar, como hacía el pin: lo de debajo no salta cuando llega, y al recargar
-    // a mitad de página el navegador devuelve el scroll sobre la página con su alto final.
-    escena.style.marginBottom = `${Math.round(PANTALLAS * window.innerHeight)}px`;
+    // El 3D llega con `import()` cuando la sección está a una pantalla (D-037). Hasta
+    // entonces (y sin WebGL, con `?planb` o si el chunk falla) se ve el plan B.
     let vivo = true;
+    let cerca: IntersectionObserver | null = null;
+    if (!params.has("planb") && hayWebGL()) {
+      cerca = new IntersectionObserver(
+        ([entrada]) => {
+          if (!entrada.isIntersecting) return;
+          cerca?.disconnect();
+          cerca = null;
+          import("./proceso/escena3d")
+            .then(({ montarEscena3D }) => {
+              if (!vivo) return;
+              const esc = montarEscena3D({ lienzo, colores: leerColores(), fps: params.has("fps") ? fpsRef.current : null });
+              tres = esc;
+              esc.pintar(estado(ultimoP));
+              setEn3d(true);
+            })
+            .catch((e: unknown) => console.warn("Proceso: sin 3D, se queda el plan B", e));
+        },
+        { rootMargin: "100% 0px" },
+      );
+      cerca.observe(escena);
+    }
+    if (params.has("fps")) fpsRef.current?.classList.add("es-visible");
+
+    // GSAP llega con `import()` tras hidratar (D-028). Mientras tanto la escena está
+    // pintada en reposo (plan B en 0, paso 01) y el recorrido del pin se reserva ya, al
+    // hidratar, como hacía el pin: lo de debajo no salta cuando llega, y al recargar a
+    // mitad de página el navegador devuelve el scroll sobre la página con su alto final.
+    escena.style.marginBottom = `${Math.round(PANTALLAS * window.innerHeight)}px`;
     let quitar = () => {};
     const anclar = ({ ScrollTrigger }: Movimiento) => {
       if (!vivo) return;
       let pin: ReturnType<typeof ScrollTrigger.create>;
       // El pin-spacer ocupa ahora el sitio reservado (en la misma tarea: no se pinta entre
       // medias). Sin anclaje de scroll mientras dura el cambio: ScrollTrigger mide con la
-      // reserva ya quitada, y el navegador compensaría ese hueco subiendo la vista 4,4
+      // reserva ya quitada, y el navegador compensaría ese hueco subiendo la vista 6
       // pantallas (con la página por debajo del proceso, la dejaba dentro del pin).
       const raiz = document.documentElement;
       const anclaje = raiz.style.overflowAnchor;
@@ -124,15 +158,12 @@ export function Proceso() {
           start: "top top",
           end: RECORRIDO,
           pin: true,
-          onRefresh: (self) => {
-            alto = estratos.clientHeight;
-            pintar(self.progress);
-          },
+          onRefresh: (self) => pintar(self.progress),
           onUpdate: (self) => pintar(self.progress),
         });
       } catch {
         // Sin GSAP: el proceso se queda como tabla (§6).
-        testigoStore.romper();
+        escenaStore.romper();
         return;
       } finally {
         // Una medida con el pin-spacer ya puesto, y el anclaje vuelve.
@@ -161,59 +192,61 @@ export function Proceso() {
         observador.disconnect();
         cancelAnimationFrame(pedido);
         pin.kill();
-        // Sin el pin-spacer la página encoge 4,4 pantallas: que los demás triggers lo sepan.
+        // Sin el pin-spacer la página encoge 6 pantallas: que los demás triggers lo sepan.
         ScrollTrigger.refresh();
       };
     };
-    cargarGsap().then(anclar, () => vivo && testigoStore.romper());
+    cargarGsap().then(anclar, () => vivo && escenaStore.romper());
 
     return () => {
       vivo = false;
       quitar();
+      cerca?.disconnect();
+      tres?.destruir();
+      tres = null;
+      planB.destruir();
       escena.style.removeProperty("margin-bottom");
-      broca.style.removeProperty("transform");
+      rotulo.classList.remove("es-visible");
+      setEn3d(false);
       setActivo(0);
     };
-  }, [testigo]);
+  }, [conEscena]);
 
   return (
-    <Seccion id="proceso" className={cn("proceso", testigo && "es-con-testigo")}>
+    <Seccion id="proceso" className={cn("proceso", conEscena && "es-con-escena")}>
       <div className="container-max">
-        <Titular nivel={2} arriba="Un sondeo," em="de la superficie al fondo." className="max-w-4xl" />
+        <Titular nivel={2} arriba="Lo montamos por debajo," em="y te lo llevas entero." className="max-w-4xl" />
       </div>
 
-      {/* El testigo: solo con JS (lo enciende `es-con-testigo`). */}
+      {/* La escena: solo con JS (la enciende `es-con-escena`). */}
       <div ref={escenaRef} className="proceso-escena">
         <div className="container-max proceso-escena-dentro">
-          <div className={cn("proceso-testigo", activo === PASO_PULSO && "es-pulso")} aria-hidden="true">
-            <ol ref={estratosRef} className="proceso-estratos">
+          <div className="proceso-texto">
+            <ol className="proceso-pasos">
               {proceso.map((paso, i) => (
-                <li key={paso.numero} data-estrato="" className={cn(i <= activo && "es-pasado")}>
-                  <span className="proceso-estrato-dato">{paso.dato}</span>
-                  <span className="proceso-estrato-num">{paso.numero}</span>
+                <li key={paso.numero} data-paso="" className={cn("proceso-paso", i === activo && "es-activo")}>
+                  <span className="proceso-paso-num">{paso.numero}</span>
+                  <h3 className="proceso-paso-titulo">{paso.titulo}</h3>
+                  <p className="proceso-paso-texto">{paso.descripcion}</p>
+                  <p className="proceso-paso-dato">{paso.dato}</p>
                 </li>
               ))}
             </ol>
-            <div className="proceso-pulso">
-              <span />
-            </div>
-            <div ref={brocaRef} data-broca="" className="proceso-broca" />
           </div>
 
-          <ol className="proceso-pasos">
-            {proceso.map((paso, i) => (
-              <li key={paso.numero} data-paso="" className={cn("proceso-paso", i === activo && "es-activo")}>
-                <span className="proceso-paso-num">{paso.numero}</span>
-                <h3 className="proceso-paso-titulo">{paso.titulo}</h3>
-                <p className="proceso-paso-texto">{paso.descripcion}</p>
-                <p className="proceso-paso-dato">{paso.dato}</p>
-              </li>
-            ))}
-          </ol>
+          {/* El bloque: el lienzo del 3D y, debajo, el SVG del plan B (el mismo reloj). */}
+          <div className={cn("proceso-bloque", en3d && "es-3d")} aria-hidden="true">
+            <canvas ref={lienzoRef} data-lienzo="" className="proceso-lienzo" />
+            <svg ref={planbRef} data-planb="" className="proceso-planb" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" />
+            <p ref={rotuloRef} className="proceso-rotulo">
+              a tu nombre
+            </p>
+            <div ref={fpsRef} className="proceso-fps" />
+          </div>
         </div>
       </div>
 
-      {/* La tabla: siempre en el HTML; se esconde cuando el testigo está montado. */}
+      {/* La tabla: siempre en el HTML; se esconde cuando la escena está montada. */}
       <div className="container-max proceso-tabla-caja">
         {/* Roles explícitos: en móvil las filas pasan a grid y WebKit quitaría la semántica. */}
         <table className="proceso-tabla" role="table">

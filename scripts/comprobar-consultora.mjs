@@ -190,9 +190,9 @@ try {
         null,
         { timeout: 8000 },
       );
-      // El testigo del proceso va anclado (pin de GSAP): se baja con la rueda, como una
+      // La escena del proceso va anclada (pin de GSAP): se baja con la rueda, como una
       // persona, hasta que el paso encendido es el 06.
-      await page.waitForSelector("#proceso.es-con-testigo", { timeout: 8000 });
+      await page.waitForSelector("#proceso.es-con-escena", { timeout: 8000 });
       await page.mouse.move(640, 400);
       const enElSeis = () =>
         page.evaluate(() => document.querySelector("#proceso .proceso-paso.es-activo .proceso-paso-num")?.textContent === "06");

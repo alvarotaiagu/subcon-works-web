@@ -24,7 +24,7 @@ export const viewport: Viewport = {
  * comparar con la vigente). Nueve secciones, de la superficie al fondo; sus `id`, cotas,
  * nitidez y fondos salen de `cortePortada` (`src/content/portada.ts`) y los textos de
  * `src/content/consultora.ts`. De la portada anterior se quedan los pozos de Servicios
- * (con las cuatro líneas), el Proceso con su testigo y los compromisos en «Quién».
+ * (con las cuatro líneas), el Proceso con su bloque y los compromisos en «Quién».
  */
 export default function Home() {
   return (
