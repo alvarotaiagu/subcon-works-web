@@ -84,7 +84,7 @@ function trazo(x: number, y: number) {
  *   verdad, así que hay uno por fotograma mientras se mueve) y cuando se mueve la
  *   superficie. Con la pestaña oculta o el trazo fuera de pantalla no pinta nada: lo
  *   deja pendiente para cuando vuelva.
- * - **El pin del proceso**: mientras dura, el recorrido lo hace la broca del testigo. El
+ * - **El pin del proceso**: mientras dura, el recorrido lo hace el bloque de la escena. El
  *   trazo se corta a la altura de la escena anclada (de `start` a `end` + su alto, de
  *   ScrollTrigger, no del `getBoundingClientRect` del pin), así que la cabeza no avanza
  *   de la cota «−2» hasta que el pin se suelta y la escena se va.

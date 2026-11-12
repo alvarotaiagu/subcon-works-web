@@ -3,7 +3,7 @@
    La Sobria es una clase en <html> (`densidad-sobria`, la pone el script del <head> con
    `?revision=sobria` y la cambia layout/Mando.tsx) y este bloque de CSS: no son dos webs.
    Se queda la superficie y el pozo activo del hero. Salen el conducto principal, los
-   pozos de las tarjetas y de Servicios (quedan como lista), el testigo dibujado. Gana el proceso como tabla (lo decide Proceso.tsx).
+   pozos de las tarjetas y de Servicios (quedan como lista), la escena del proceso. Gana el proceso como tabla (lo decide Proceso.tsx).
 
    Fuera de capa a propósito: las zonas del hero y de Servicios van en
    `@layer components`, y esto tiene que ganarles sin `!important`. */

@@ -524,6 +524,13 @@ Préstamo de B. Título: «Una plantilla de 30.» El número sale de
 
 ### 3.9 Proceso («−2 · El proceso»)
 
+> **D-037 (2026-11-11)**: el testigo y la broca se sustituyen por «El bloque»
+> (boceto A de `public/bocetos/proceso.html`): una escena en Three.js, cargada
+> con `import()` al acercarse, con el plan B en SVG y la tabla en el HTML. El pin
+> pasa a unas 6 pantallas y el titular a «Lo montamos por debajo, y te lo llevas
+> entero.». Lo demás de este apartado (pin `proceso`, paso encendido, tabla,
+> `ignoreMobileResize`) sigue.
+
 Sección anclada (pin de GSAP, unas 4,4 pantallas de recorrido) con un **testigo
 de sondeo**: una columna de seis estratos (de `--estrato-1` a `--estrato-6`).
 Una broca baja por el testigo con el scroll y cada estrato que pasa enciende su
@@ -742,7 +749,9 @@ Las cifras **medidas** se escriben en una tabla «Presupuesto» del `README.md`.
 | Tareas largas tras `document.fonts.ready` | mediana de la tarea más larga por carga ≤ 300 ms con CPU ×4 (D-031; antes «ninguna > 200 ms») | `longtask`, control lanzado con `setTimeout` |
 
 - Sin canvas ni WebGL en ninguna parte (sale `three`). Pozos, hilo y testigo
-  son SVG y CSS.
+  son SVG y CSS. **D-037 (2026-11-11)** readmite `three` solo para la escena
+  del proceso, cargada con `import()` al acercarse y fuera del JS inicial; el
+  tope de tareas largas (D-031) se mantiene y se mide antes y después.
 - El bucle de animación del hero y del hilo se para fuera de pantalla y con la
   pestaña oculta.
 - **Bajada de calidad automática**: el hero mide los fotogramas reales; si van

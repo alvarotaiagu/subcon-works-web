@@ -1,7 +1,8 @@
-/* Zona «proceso» (spec 002 §3.9, PD-3, PD-5): la tabla, que está en el HTML, y el
-   testigo de sondeo, que se monta encima solo con JS y movimiento permitido (la clase
-   `es-con-testigo` la pone Proceso.tsx). Lima solo como línea o como texto sobre oscuro;
-   nada de opacidad para apagar texto (§3.1). */
+/* Zona «proceso» (spec 002 §3.9, D-037 «El bloque»): la tabla, que está en el HTML, y la
+   escena, que se monta encima solo con JS y movimiento permitido (la clase
+   `es-con-escena` la pone Proceso.tsx). Rejilla del boceto A: en escritorio el paso a la
+   izquierda y la escena a la derecha; en móvil la escena arriba y el paso debajo. Lima
+   solo como línea o como texto sobre oscuro; nada de opacidad para apagar texto (§3.1). */
 
 @layer components {
   .proceso {
@@ -11,172 +12,162 @@
     margin-bottom: 3rem;
   }
 
-  /* ── El testigo ───────────────────────────────────────────────────────────── */
+  /* ── La escena ────────────────────────────────────────────────────────────── */
 
   .proceso-escena {
     display: none;
   }
-  .proceso.es-con-testigo {
+  .proceso.es-con-escena {
     padding-bottom: 0;
   }
-  .proceso.es-con-testigo .proceso-tabla-caja {
+  .proceso.es-con-escena .proceso-tabla-caja {
     display: none;
   }
   /* Lo anclado: una pantalla entera. `svh`, nunca el alto de la ventana en JS. */
-  .proceso.es-con-testigo .proceso-escena {
+  .proceso.es-con-escena .proceso-escena {
     display: block;
     height: 100svh;
+    background: var(--hondo);
   }
 
+  /* Móvil: la escena arriba (poco más de media pantalla) y el paso debajo.
+     La cabecera es fija y se queda encima de lo anclado (`h-16`, `md:h-20` y su borde,
+     Nav.tsx): la escena empieza debajo de ella y no detrás, así la cámara encuadra solo
+     lo que se ve (la punta y «a tu nombre» quedaban tapados). */
   .proceso-escena-dentro {
-    --testigo-izq: 0px; /* sitio para los datos, a la izquierda de los estratos */
+    --alto-cabecera: calc(4rem + 1px);
     height: 100%;
     display: grid;
-    /* Móvil: el testigo estrecho (unos 56 px) tras el canal del hilo y el paso a su derecha. */
-    grid-template-columns: 56px minmax(0, 1fr);
-    align-items: center;
-    gap: 1rem;
+    grid-template-rows: minmax(0, calc(var(--alto-cabecera) + 44svh)) minmax(0, 1fr);
   }
+  .proceso-texto {
+    order: 1;
+    align-self: center;
+    min-height: 0;
+    padding-block: 1rem 1.5rem;
+  }
+  .proceso-bloque {
+    position: relative;
+    order: 0;
+    min-height: 0;
+    /* Que la escena llegue al borde derecho: el contenedor pone el gutter y aquí se
+       devuelve. El izquierdo se queda: es el canal del hilo (§3.10). */
+    margin-top: var(--alto-cabecera);
+    margin-inline: 0 calc(-1 * var(--gutter));
+  }
+  /* Escritorio: el paso a la izquierda, la escena a la derecha, a toda la altura bajo la cabecera. */
   @media (min-width: 768px) {
     .proceso-escena-dentro {
-      --testigo-izq: 9.5rem;
-      grid-template-columns: minmax(19rem, 24rem) minmax(0, 1fr);
-      gap: 6vw;
+      --alto-cabecera: calc(5rem + 1px);
+      grid-template-rows: none;
+      grid-template-columns: minmax(19rem, 30rem) minmax(0, 1fr);
+      align-items: center;
+      column-gap: 4vw;
+    }
+    /* El paso se centra en lo que queda bajo la cabecera, no en la pantalla entera: con
+       la ventana baja (569 px) el número y el titular quedaban tapados. `safe`: si aun así
+       no cabe, se pega arriba (bajo la cabecera) y no se sale por los dos lados. */
+    .proceso-texto {
+      order: 0;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      justify-content: safe center;
+      padding-block: calc(var(--alto-cabecera) + 1rem) 1.5rem;
+    }
+    .proceso-bloque {
+      order: 1;
+      align-self: stretch;
     }
   }
 
-  .proceso-testigo {
-    position: relative;
-    height: 70svh;
-    padding-left: var(--testigo-izq);
-  }
-  @media (min-width: 768px) {
-    .proceso-testigo {
-      height: 76svh;
-    }
-  }
-
-  /* Seis estratos, de --estrato-1 (arriba) a --estrato-6 (el fondo), con el corte
-     redondeado de una cata. */
-  .proceso-estratos {
+  /* El lienzo del 3D y el SVG del plan B, uno encima del otro; se ve uno de los dos. Con
+     `visibility` y no `display`: el lienzo tiene tamaño antes de enseñarse y el primer
+     fotograma del 3D ya sale a su medida. */
+  .proceso-lienzo,
+  .proceso-planb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    display: grid;
-    grid-template-rows: repeat(6, minmax(0, 1fr));
+    display: block;
   }
-  .proceso-estratos li {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--letra-kode);
-  }
-  .proceso-estratos li:first-child {
-    border-radius: 30px 30px 0 0 / 10px 10px 0 0;
-  }
-  .proceso-estratos li:last-child {
-    border-radius: 0 0 30px 30px / 0 0 10px 10px;
-  }
-  @media (min-width: 768px) {
-    .proceso-estratos li:first-child {
-      border-radius: 46px 46px 0 0 / 14px 14px 0 0;
-    }
-    .proceso-estratos li:last-child {
-      border-radius: 0 0 46px 46px / 0 0 14px 14px;
-    }
-  }
-  .proceso-estratos li:nth-child(1) { background: var(--estrato-1); }
-  .proceso-estratos li:nth-child(2) { background: var(--estrato-2); }
-  .proceso-estratos li:nth-child(3) { background: var(--estrato-3); }
-  .proceso-estratos li:nth-child(4) { background: var(--estrato-4); }
-  .proceso-estratos li:nth-child(5) { background: var(--estrato-5); }
-  .proceso-estratos li:nth-child(6) { background: var(--estrato-6); }
-
-  /* El número, sobre el estrato: --hueso en reposo (--apagado-abajo no llega a 4,5:1 sobre
-     --estrato-1, §3.1 regla 5) y lima cuando la broca ya ha pasado. */
-  .proceso-estrato-num {
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: var(--hueso);
-    transition: color 0.4s var(--ease-out);
-  }
-  .proceso-estratos li.es-pasado .proceso-estrato-num {
-    color: var(--superficie);
-  }
-  /* El dato, a la izquierda del estrato (sobre el fondo de la sección): solo en escritorio. */
-  .proceso-estrato-dato {
-    display: none;
-  }
-  @media (min-width: 768px) {
-    .proceso-estrato-dato {
-      display: block;
-      position: absolute;
-      right: calc(100% + 0.9rem);
-      font-size: 0.74rem;
-      white-space: nowrap;
-      text-align: right;
-      color: var(--apagado-abajo);
-      transition: color 0.4s var(--ease-out);
-    }
-    .proceso-estratos li.es-pasado .proceso-estrato-dato {
-      color: var(--hueso);
-    }
-  }
-
-  /* La broca: una línea lima de 3 px que baja con el scroll (solo `transform`) y una punta
-     a su izquierda. Su borde de abajo es el que marca el estrato. */
-  .proceso-broca {
-    position: absolute;
-    top: 0;
-    left: var(--testigo-izq);
-    right: 0;
-    height: 3px;
-    background: var(--superficie);
-    pointer-events: none;
-  }
-  .proceso-broca::before {
-    content: "";
-    position: absolute;
-    left: -12px;
-    top: -6px;
-    border: 7px solid transparent;
-    border-left: 10px solid var(--superficie);
-    border-right-width: 0;
-  }
-
-  /* El pulso del paso 05: un tramo de luz que baja por el centro del testigo. */
-  .proceso-pulso {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--testigo-izq);
-    right: 0;
-    overflow: clip;
-    pointer-events: none;
-  }
-  .proceso-pulso span {
-    position: absolute;
-    top: 0;
-    left: calc(50% - 1px);
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent 0, var(--superficie) 12%, transparent 16%);
-    transform: translateY(-16%);
+  .proceso-lienzo {
     visibility: hidden;
   }
-  .proceso-testigo.es-pulso .proceso-pulso span {
+  .proceso-bloque.es-3d .proceso-lienzo {
     visibility: visible;
-    animation: proceso-pulso 1.4s var(--ease-inout) infinite;
   }
-  @keyframes proceso-pulso {
-    from {
-      transform: translateY(-16%);
-    }
-    to {
-      transform: translateY(100%);
-    }
+  .proceso-bloque.es-3d .proceso-planb {
+    visibility: hidden;
   }
 
-  /* El paso encendido: los seis en la misma celda, solo se ve el de la broca. El alto es
+  /* Los colores del plan B, desde las variables (§3.1); planb.ts no escribe ninguno. */
+  .proceso-planb .pb-estrato-1 { fill: var(--estrato-1); }
+  .proceso-planb .pb-estrato-2 { fill: var(--estrato-2); }
+  .proceso-planb .pb-estrato-3 { fill: var(--estrato-3); }
+  .proceso-planb .pb-estrato-4 { fill: var(--estrato-4); }
+  .proceso-planb .pb-estrato-5 { fill: var(--estrato-5); }
+  .proceso-planb .pb-estrato-6 { fill: var(--estrato-6); }
+  .proceso-planb .pb-pared {
+    opacity: 0.55;
+  }
+  .proceso-planb .pb-lima {
+    stroke: var(--superficie);
+  }
+  .proceso-planb .pb-lima-relleno {
+    fill: var(--superficie);
+  }
+  .proceso-planb .pb-bloque {
+    fill: var(--bloque);
+  }
+  .proceso-planb .pb-hueso {
+    fill: var(--hueso);
+  }
+
+  /* «a tu nombre», sobre la escena, cuando la punta ya se ha posado (paso 06). */
+  .proceso-rotulo {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    font-family: var(--letra-kode);
+    font-size: var(--dato-tam-max);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--superficie);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+  }
+  .proceso-rotulo.es-visible {
+    opacity: 1;
+  }
+
+  /* El contador de fotogramas del 3D (`?fps`). */
+  .proceso-fps {
+    display: none;
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    font-family: var(--letra-kode);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--superficie);
+    background: var(--roca);
+    pointer-events: none;
+  }
+  .proceso-fps.es-visible {
+    display: block;
+  }
+  .proceso-fps span {
+    display: block;
+  }
+
+  /* El paso encendido: los seis en la misma celda, solo se ve el del tramo. El alto es
      el del más largo, así el texto no salta al cambiar de paso. */
   .proceso-pasos {
     display: grid;
@@ -208,6 +199,12 @@
     font-variation-settings: "SHRP" 100;
     color: var(--superficie);
   }
+  /* En móvil el paso comparte la pantalla con la escena: el número, más contenido. */
+  @media (max-width: 767px) {
+    .proceso-paso-num {
+      font-size: clamp(3.5rem, 14vw, 4.5rem);
+    }
+  }
   .proceso-paso-titulo {
     margin: 1rem 0 0.75rem;
     font-family: var(--letra-geologica);
@@ -216,6 +213,16 @@
     line-height: 1.05;
     letter-spacing: -0.03em;
     color: var(--hueso);
+  }
+  /* Escritorio con poca altura (ventana baja): el número y el titular se encogen con ella
+     para que el paso quepa bajo la cabecera. */
+  @media (min-width: 768px) {
+    .proceso-paso-num {
+      font-size: min(var(--paso-tam), 20svh);
+    }
+    .proceso-paso-titulo {
+      font-size: min(clamp(1.6rem, 3.6vw, 3rem), 7.5svh);
+    }
   }
   .proceso-paso-texto {
     max-width: 46ch;

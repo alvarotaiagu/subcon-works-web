@@ -100,8 +100,8 @@ const SEL = {
   lecturaAuto: "[data-hero] [data-lectura-auto]", // T07: la lectura sin aria-live (cambios automáticos)
   tirador: 'button[aria-label="Bajar la superficie para ver más instalación"]', // T07/T08
   lineaCortina: "[data-cortina] [data-cortina-superficie]", // T09: la línea de la cortina
-  testigoBroca: "#proceso [data-broca]", // T12
-  testigoEstratos: "#proceso [data-estrato]", // T12: los seis, de arriba abajo
+  lienzoProceso: "#proceso canvas[data-lienzo]", // T12: el lienzo del 3D (D-037); existe, no se pinta en Playwright
+  planbProceso: "#proceso svg[data-planb]", // T12: el plan B en SVG, con el mismo reloj; es lo que se ve sin WebGL
   pasosProceso: "#proceso [data-paso]", // T12: los seis; encendido = .es-activo
   tablaProceso: "#proceso table", // T12: la tabla de dos columnas (está en el HTML)
   hiloTrazo: "[data-hilo-trazo]", // T14: los <path> del conducto en reposo (uno por trozo: el pin del proceso lo corta)
@@ -132,11 +132,20 @@ const igualColor = (a, b, tol = 3) => a && b && a.slice(0, 3).every((v, i) => Ma
  * primer fotograma, y si durante 2 s algún fotograma pintó una capa a pantalla completa con
  * los colores de la cortina.
  */
-function enganche({ claveCookies, claveCortina, cortina }) {
+function enganche({ claveCookies, claveCortina, cortina, webgl }) {
   try {
     localStorage.setItem(claveCookies, new Date().toISOString());
     if (!cortina) sessionStorage.setItem(claveCortina, "1");
   } catch {}
+  // Sin WebGL (salvo que la prueba lo pida): el 3D del proceso no se prueba con Playwright
+  // (lo pinta la CPU y satura el PC); la escena se queda en el plan B en SVG, que sí se mira.
+  if (!webgl) {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (tipo, ...resto) {
+      if (typeof tipo === "string" && tipo.startsWith("webgl")) return null;
+      return original.call(this, tipo, ...resto);
+    };
+  }
   const g = (window.__gancho = {
     cortinaVista: false,
     clasesDCL: null,
@@ -343,7 +352,8 @@ function crearAyudas(nav, urlBase) {
      * @param {string} ruta  relativa a la base («», «plantillas/»…)
      * @param {object} o  ancho (1440), alto, cortina (false: la sesión ya la vio),
      *   js (true), reducedMotion, forcedColors, hasTouch, isMobile, espera ("load"),
-     *   antes(page) para enganchar rutas antes de ir, permisos
+     *   antes(page) para enganchar rutas antes de ir, permisos, webgl (false: el 3D del
+     *   proceso no se pinta en Playwright, queda el plan B)
      */
     async abrir(ruta = "", o = {}) {
       const ancho = o.ancho ?? 1440;
@@ -357,7 +367,7 @@ function crearAyudas(nav, urlBase) {
         permissions: o.permisos ?? [],
       });
       contextos.push(ctx);
-      await ctx.addInitScript(enganche, { claveCookies: CLAVE_COOKIES, claveCortina: CLAVE_CORTINA, cortina: o.cortina ?? false });
+      await ctx.addInitScript(enganche, { claveCookies: CLAVE_COOKIES, claveCortina: CLAVE_CORTINA, cortina: o.cortina ?? false, webgl: o.webgl ?? false });
       const page = await ctx.newPage();
       page.on("pageerror", (e) => (page.__errores ??= []).push(e.message));
       if (o.antes) await o.antes(page);
@@ -1122,39 +1132,68 @@ const comprobaciones = [
     },
   },
   {
-    id: "§7 · Proceso · broca y pasos; tabla con movimiento reducido",
+    id: "§7 · Proceso · el bloque (plan B) avanza con el scroll y enciende los pasos; tabla con movimiento reducido",
     tarea: "T12",
     pendiente: false,
     async fn(h) {
+      // El 3D (D-037) no se prueba aquí: sin WebGL (el enganche lo quita) la escena se queda
+      // en el plan B en SVG, que lleva el mismo reloj. Se mira que el lienzo existe, que el
+      // SVG se ve y avanza con el scroll (el tapón del pozo baja, el bloque se alza) y que
+      // cada sexto del recorrido enciende su paso, en orden y de uno en uno.
       for (const ancho of [390, 1440]) {
         const page = await h.abrir("", { ancho });
         await h.ruedaHasta(page, "#proceso", 0);
-        const vistos = new Set();
-        for (let paso = 0; paso < 80 && vistos.size < 6; paso++) {
+        const antes = await page.evaluate(
+          ({ lienzo, planb }) => {
+            const c = document.querySelector(lienzo);
+            const s = document.querySelector(planb);
+            return {
+              lienzo: !!c,
+              lienzoVisible: !!c && getComputedStyle(c).visibility === "visible",
+              planb: !!s && __c.visible(s) && getComputedStyle(s).visibility === "visible",
+              nodos: s ? s.querySelectorAll("rect, path, polyline, polygon").length : 0,
+            };
+          },
+          { lienzo: SEL.lienzoProceso, planb: SEL.planbProceso },
+        );
+        assert.ok(antes.lienzo, `${ancho} px: no hay lienzo del 3D (${SEL.lienzoProceso})`);
+        assert.ok(!antes.lienzoVisible, `${ancho} px: sin WebGL el lienzo del 3D está visible`);
+        assert.ok(antes.planb, `${ancho} px: sin WebGL no se ve el plan B (${SEL.planbProceso})`);
+        assert.ok(antes.nodos >= 30, `${ancho} px: el plan B solo tiene ${antes.nodos} nodos (¿no se ha montado?)`);
+        const vistos = [];
+        const fotogramas = [];
+        for (let paso = 0; paso < 120 && vistos.length < 6; paso++) {
           const r = await page.evaluate(
-            ({ broca, estratos, pasos }) => {
-              const b = document.querySelector(broca);
-              const es = [...document.querySelectorAll(estratos)];
+            ({ planb, pasos }) => {
+              const s = document.querySelector(planb);
               const ps = [...document.querySelectorAll(pasos)];
-              if (!b || es.length !== 6 || ps.length !== 6) return { error: `broca ${!!b}, ${es.length} estratos, ${ps.length} pasos` };
-              const rb = b.getBoundingClientRect();
-              const punta = rb.bottom;
-              const i = es.findIndex((e) => {
-                const q = e.getBoundingClientRect();
-                return punta >= q.top + 2 && punta <= q.bottom - 2;
-              });
-              return { i, activos: ps.map((p, k) => (p.classList.contains("es-activo") ? k : -1)).filter((k) => k >= 0) };
+              if (!s || ps.length !== 6) return { error: `plan B ${!!s}, ${ps.length} pasos` };
+              // El tapón del pozo (primer clipPath) y el grupo del bloque (el que se traslada).
+              const tapon = s.querySelector("clipPath rect");
+              const grupo = [...s.querySelectorAll(":scope > g")].find((g) => g.getAttribute("transform"));
+              return {
+                tapon: tapon ? Number(tapon.getAttribute("y")) : null,
+                alza: grupo ? grupo.getAttribute("transform") : null,
+                activos: ps.map((p, k) => (p.classList.contains("es-activo") ? k : -1)).filter((k) => k >= 0),
+              };
             },
-            { broca: SEL.testigoBroca, estratos: SEL.testigoEstratos, pasos: SEL.pasosProceso },
+            { planb: SEL.planbProceso, pasos: SEL.pasosProceso },
           );
           assert.ok(!r.error, `${ancho} px: ${r.error}`);
-          if (r.i >= 0) {
-            assert.deepEqual(r.activos, [r.i], `${ancho} px: con la broca en el estrato ${r.i + 1}, los pasos encendidos son ${r.activos.map((k) => k + 1).join(", ") || "ninguno"}`);
-            vistos.add(r.i);
+          assert.equal(r.activos.length, 1, `${ancho} px: hay ${r.activos.length} pasos encendidos a la vez (${r.activos.map((k) => k + 1).join(", ") || "ninguno"})`);
+          const i = r.activos[0];
+          if (vistos.at(-1) !== i) {
+            assert.equal(i, vistos.length, `${ancho} px: tras el paso ${vistos.length} se enciende el ${i + 1}`);
+            vistos.push(i);
           }
-          await h.rueda(page, 120, { pasos: 1, pausa: 30 });
+          fotogramas.push({ tapon: r.tapon, alza: r.alza });
+          await h.rueda(page, 160, { pasos: 1, pausa: 30 });
         }
-        assert.equal(vistos.size, 6, `${ancho} px: la broca solo pasa por ${vistos.size} estratos`);
+        assert.equal(vistos.length, 6, `${ancho} px: solo se encienden ${vistos.length} pasos bajando con la rueda`);
+        const tapones = new Set(fotogramas.map((f) => f.tapon));
+        const alzas = new Set(fotogramas.map((f) => f.alza));
+        assert.ok(tapones.size >= 3, `${ancho} px: el tapón del pozo no baja con el scroll (${[...tapones].join(", ")})`);
+        assert.ok(alzas.size >= 2, `${ancho} px: el bloque no se alza al final (${[...alzas].join(" | ")})`);
         const red = await h.abrir("", { ancho, reducedMotion: "reduce" });
         await tablaProcesoVisible(red, `${ancho} px, movimiento reducido`);
       }
@@ -1250,15 +1289,15 @@ const comprobaciones = [
           }
           // Con la escena del proceso anclada de verdad, lo recorrido no cambia.
           const anclado = await page.evaluate(
-            ({ broca, vivo }) => {
-              const escena = document.querySelector(broca)?.closest(".proceso-escena");
+            ({ lienzo, vivo }) => {
+              const escena = document.querySelector(lienzo)?.closest(".proceso-escena");
               if (!escena || getComputedStyle(escena).position !== "fixed") return null;
               return [...document.querySelectorAll(vivo)].reduce(
                 (s, p) => s + parseFloat(getComputedStyle(p).strokeDasharray) - parseFloat(getComputedStyle(p).strokeDashoffset),
                 0,
               );
             },
-            { broca: SEL.testigoBroca, vivo: SEL.hiloVivo },
+            { lienzo: SEL.lienzoProceso, vivo: SEL.hiloVivo },
           );
           if (anclado !== null) recorridoEnPin.push(anclado);
           const fin = await page.evaluate(() => innerHeight + scrollY >= document.documentElement.scrollHeight - 2);
@@ -1636,12 +1675,12 @@ const comprobaciones = [
             h1: __c.visible(document.querySelector("h1")),
             h2Ocultos: h2.filter((x) => !__c.visible(x)).map((x) => x.textContent.trim().slice(0, 40)),
             lenis: document.documentElement.classList.contains("lenis"),
-            testigo: !!document.querySelector("#proceso.es-con-testigo"),
+            escena: !!document.querySelector("#proceso.es-con-escena"),
           };
         });
         assert.ok(r.h1, `${ancho} px: sin GSAP no se ve el titular`);
         assert.ok(!r.lenis, `${ancho} px: sin chunks de Lenis, <html> lleva la clase lenis`);
-        assert.ok(!r.testigo, `${ancho} px: sin GSAP sigue montado el testigo (tenía que quedarse la tabla)`);
+        assert.ok(!r.escena, `${ancho} px: sin GSAP sigue montada la escena del proceso (tenía que quedarse la tabla)`);
         // Todo el contenido visible: los titulares entran al bajar, sin GSAP también.
         await h.ruedaHasta(page, "#auditoria", 0);
         await page.waitForTimeout(800);
