@@ -91,6 +91,13 @@ export interface OpcionesEscena {
   alMedir?: (fase: FaseMontaje, ms: number, extra?: string) => void;
   /** Se llama si el navegador pierde el contexto WebGL ya montada la escena: el que llama vuelve al plan B. */
   alPerder?: () => void;
+  /**
+   * Tope (ms) de cada tarea del montaje: si una lo pasa, el aparato es lento para el 3D y el
+   * montaje se corta con un error `Lento` (el que llama se queda con el plan B). Sin tope, no se corta.
+   */
+  topeTarea?: number;
+  /** Ya montada, sigue por debajo de 25 fps en la calidad más baja: el que llama vuelve al plan B. */
+  alLento?: (motivo: string) => void;
   /** Corta el montaje a medias (la sección se desmonta): la promesa rechaza con `AbortError`. */
   senal?: AbortSignal;
 }
@@ -120,7 +127,20 @@ const ceder = (): Promise<void> => {
 type Dibujable = Mesh | Line;
 const esDibujable = (o: Object3D): o is Dibujable => (o as Mesh).isMesh === true || (o as Line).isLine === true;
 
-export async function montarEscena3D({ lienzo, colores, estado: estadoAhora, fps = null, alMedir, alPerder, senal }: OpcionesEscena): Promise<Escena3D> {
+/** El aparato es lento para el 3D (`topeTarea`): el mensaje dice qué fase y cuánto. */
+const lento = (motivo: string) => Object.assign(new Error(motivo), { name: "Lento" });
+
+export async function montarEscena3D({
+  lienzo,
+  colores,
+  estado: estadoAhora,
+  fps = null,
+  alMedir,
+  alPerder,
+  topeTarea,
+  alLento,
+  senal,
+}: OpcionesEscena): Promise<Escena3D> {
   // Lo que se va creando, para soltarlo si el montaje se corta a medias.
   const porSoltar: { dispose(): void }[] = [];
   const guardar = <T extends { dispose(): void }>(x: T) => {
@@ -172,6 +192,8 @@ export async function montarEscena3D({ lienzo, colores, estado: estadoAhora, fps
     const ms = Math.max(largas[fase] ?? 0, performance.now() - t0);
     largas[fase] = ms;
     alMedir?.(fase, ms, extra);
+    // Una tarea ya ha pasado del tope: no se sigue montando (cada fase más sería otra).
+    if (topeTarea && ms > topeTarea) cortar(lento(`${fase} ${Math.round(ms)} ms`));
     fase = null;
   };
   const empezar = async (f: FaseMontaje) => {
@@ -418,6 +440,7 @@ export async function montarEscena3D({ lienzo, colores, estado: estadoAhora, fps
     let pendiente = 0;
     let ultimoPaint = 0;
     let calidad = 0;
+    let avisado = false;
     const tiempos: number[] = [];
     const medirFotograma = (ahora: number) => {
       if (ultimoPaint && ahora - ultimoPaint < 100) tiempos.push(ahora - ultimoPaint);
@@ -426,7 +449,11 @@ export async function montarEscena3D({ lienzo, colores, estado: estadoAhora, fps
       const orden = [...tiempos].sort((a, b) => a - b);
       const mediana = orden[orden.length >> 1];
       tiempos.length = 0;
-      if (mediana > LENTO_MS && calidad < 3) {
+      if (mediana > LENTO_MS && calidad >= 3 && !avisado) {
+        // Ni con todo bajado llega a 25 fps: mejor el plan B, que va fluido.
+        avisado = true;
+        alLento?.(`${Math.round(1000 / mediana)} fps en calidad 3`);
+      } else if (mediana > LENTO_MS && calidad < 3) {
         calidad++;
         if (calidad === 1) nitidez = Math.min(1, nitidez);
         if (calidad === 2) nitidez = 0.8;

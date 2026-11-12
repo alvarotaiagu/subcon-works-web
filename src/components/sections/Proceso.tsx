@@ -6,13 +6,36 @@ import { proceso } from "@/content/proceso";
 import { Seccion } from "@/components/ui/Seccion";
 import { Titular } from "@/components/ui/Titular";
 import { cn } from "@/lib/utils";
-import { estado, hayWebGL, leerColores } from "./proceso/reloj";
+import { estado, leerColores, motivoSin3D } from "./proceso/reloj";
 import { montarPlanB } from "./proceso/planb";
 import type { Escena3D, FaseMontaje } from "./proceso/escena3d";
 
 /** Recorrido del pin (D-037: unas 6 pantallas), en altos de la ventana. */
 const PANTALLAS = 6;
 const RECORRIDO = `+=${PANTALLAS * 100}%`;
+/** Evaluar `three` por encima de esto (ms) dice que el aparato es lento: no se monta el 3D. */
+const TOPE_EVALUAR = 250;
+/** Ninguna tarea del montaje por encima del tope de la D-031: si una lo pasa, se corta. */
+const TOPE_TAREA = 300;
+/**
+ * Clave de `sessionStorage`: en esta visita el 3D ya resultó lento y se queda el plan B (no
+ * se reintenta en cada recarga). Por pestaña: en otra visita se vuelve a medir.
+ */
+const CLAVE_2D = "undertactics:proceso-2d";
+const recordado2D = () => {
+  try {
+    return sessionStorage.getItem(CLAVE_2D);
+  } catch {
+    return null;
+  }
+};
+const recordar2D = (motivo: string) => {
+  try {
+    sessionStorage.setItem(CLAVE_2D, motivo);
+  } catch {
+    // Sin almacenamiento: se volverá a medir en la próxima carga.
+  }
+};
 /** GSAP ha fallado al crear el pin: el proceso se queda como tabla (§6). */
 let gsapRoto = false;
 const avisos = new Set<() => void>();
@@ -59,8 +82,10 @@ const escenaStore = {
  *   al reloj (`proceso/reloj.ts`) y este mueve la vista que esté: el plan B en SVG
  *   (`proceso/planb.ts`, desde el principio) y, cuando llega, la escena en Three.js
  *   (`proceso/escena3d.ts`): su chunk se pide con `import()` en reposo tras la carga (nunca
- *   va en el JS inicial) y se monta en tareas cortas a dos pantallas de la sección. Sin
- *   WebGL, con `?planb` o si el chunk no llega, se queda el SVG.
+ *   va en el JS inicial) y se monta en tareas cortas a dos pantallas de la sección. Se
+ *   queda el SVG si el aparato no da para el 3D (sin WebGL, WebGL por software, poca
+ *   memoria, Ahorro de datos, o lento al cargar, montar o pintar: D-038), con `?planb` o
+ *   si el chunk no llega.
  *   Cada sexto del recorrido enciende su paso (`.es-activo`).
  * - Lo anclado es la escena (el bloque y el paso), no la sección: la cota y el titular
  *   pasan de largo y el pin ocupa la pantalla entera. Ningún ancestro lleva `transform`,
@@ -126,10 +151,16 @@ export function Proceso() {
       propias: {} as Partial<Record<FaseMontaje | "chunk", number>>,
       /** Safari (todo iOS) no tiene la API de tareas largas: entonces se tira de lo medido a mano. */
       conApi: false,
+      /** Por qué se ve el plan B (`?fps`). */
+      motivo: "",
       observador: null as PerformanceObserver | null,
       escribir() {
         const caja = tareaRef.current;
-        if (!caja || !this.desde) return;
+        if (!caja) return;
+        if (!this.desde) {
+          caja.textContent = this.motivo ? `plan B: ${this.motivo}` : "";
+          return;
+        }
         const ahora = performance.now();
         const enVentana = (a: number, b: number) => this.largas.filter((l) => l.fin >= a && l.inicio <= b).map((l) => l.fin - l.inicio);
         // La evaluación del chunk no se puede medir desde dentro: es la tarea larga más larga
@@ -154,6 +185,7 @@ export function Proceso() {
           const v = this.fases[fase];
           if (v) trozos.push(`${nombre} ${v}`);
         }
+        if (this.motivo) trozos.push(`plan B: ${this.motivo}`);
         caja.textContent = trozos.join(" · ");
       },
     };
@@ -176,14 +208,40 @@ export function Proceso() {
     // 1. el chunk de `three` se pide en reposo tras la carga (o antes, si la sección se
     //    acerca): evaluarlo es una tarea que no se puede partir y así no cae en el scroll;
     // 2. la escena se monta, en tareas cortas, cuando la sección está a dos pantallas, y
-    //    acaba antes de llegar. Hasta entonces (y sin WebGL, con `?planb` o si el chunk
-    //    falla) se ve el plan B.
+    //    acaba antes de llegar. Hasta entonces se ve el plan B.
+    // Y se queda el plan B si el aparato no da para el 3D: antes de pedir nada
+    // (`motivoSin3D`: sin WebGL, WebGL por software, poca memoria, Ahorro de datos), al
+    // evaluar `three` (más de `TOPE_EVALUAR`), al montar (una tarea de más de `TOPE_TAREA`)
+    // o ya pintando (menos de 25 fps en la calidad más baja). Lo lento se recuerda en la
+    // visita (`CLAVE_2D`). Con `?planb`, siempre el plan B; con `?3d` (pruebas), el 3D
+    // siempre que haya WebGL, sin recordar ni cortar.
     let vivo = true;
     let cerca: IntersectionObserver | null = null;
     let cancelarReposo = () => {};
     let esperaCarga: (() => void) | null = null;
     const corte = new AbortController();
-    if (!params.has("planb") && hayWebGL()) {
+    const forzar3D = params.has("3d");
+    // Vuelve al plan B (contexto perdido o aparato lento); lo lento se recuerda.
+    const pasarA2D = (motivo: string, recordar: boolean) => {
+      tareas.motivo = motivo;
+      tareas.escribir();
+      if (recordar && !forzar3D) recordar2D(motivo);
+      const esc = tres;
+      if (!esc) return;
+      tres = null;
+      esc.destruir();
+      setEn3d(false);
+      planB.pintar(estado(ultimoP));
+    };
+    const motivo = params.has("planb")
+      ? "?planb"
+      : forzar3D
+        ? motivoSin3D({ soloWebGL: true })
+        : (recordado2D() ?? motivoSin3D());
+    if (motivo) {
+      tareas.motivo = motivo;
+      tareas.escribir();
+    } else {
       let chunk: Promise<typeof import("./proceso/escena3d")> | null = null;
       const pedir = () => {
         if (chunk) return chunk;
@@ -202,9 +260,10 @@ export function Proceso() {
       const enReposo = () => {
         esperaCarga = null;
         if (!vivo) return;
-        // Con Ahorro de datos o una conexión lenta no se adelanta: se pide al acercarse.
-        const red = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-        if (red?.saveData || /(^|-)2g$/.test(red?.effectiveType ?? "")) return;
+        // Con una conexión lenta no se adelanta: se pide al acercarse. (Con Ahorro de datos
+        // ni se pide: `motivoSin3D`.)
+        const red = (navigator as Navigator & { connection?: { effectiveType?: string } }).connection;
+        if (/(^|-)2g$/.test(red?.effectiveType ?? "")) return;
         const ya = () => void pedir().catch(() => {});
         if ("requestIdleCallback" in window) {
           const id = requestIdleCallback(ya, { timeout: 4000 });
@@ -228,6 +287,9 @@ export function Proceso() {
           pedir()
             .then((m) => {
               tareas.montaje = performance.now();
+              if (!forzar3D && m.evaluarThree > TOPE_EVALUAR) {
+                throw Object.assign(new Error(`cargar three ${Math.round(m.evaluarThree)} ms`), { name: "Lento" });
+              }
               return m;
             })
             .then(({ montarEscena3D }) =>
@@ -237,20 +299,16 @@ export function Proceso() {
                 estado: () => estado(ultimoP),
                 fps: params.has("fps") ? fpsTextoRef.current : null,
                 senal: corte.signal,
+                topeTarea: forzar3D ? undefined : TOPE_TAREA,
+                alLento: (m) => pasarA2D(m, true),
                 alMedir: (fase, ms, extra) => {
                   tareas.fases[fase] = `${Math.round(ms)}${extra ? ` (${extra})` : ""}`;
                   tareas.propias[fase] = ms;
                   tareas.escribir();
                 },
-                // El navegador perdió el contexto WebGL: se suelta el 3D y vuelve el plan B.
-                alPerder: () => {
-                  const esc = tres;
-                  if (!esc) return;
-                  tres = null;
-                  esc.destruir();
-                  setEn3d(false);
-                  planB.pintar(estado(ultimoP));
-                },
+                // El navegador perdió el contexto WebGL: vuelve el plan B (sin recordarlo:
+                // no dice que el aparato sea lento).
+                alPerder: () => pasarA2D("contexto WebGL perdido", false),
               }),
             )
             .then((esc) => {
@@ -264,6 +322,9 @@ export function Proceso() {
             })
             .catch((e: unknown) => {
               if (e instanceof DOMException && e.name === "AbortError") return;
+              if (e instanceof Error && e.name === "Lento") return pasarA2D(e.message, true);
+              tareas.motivo = "el 3D falló";
+              tareas.escribir();
               console.warn("Proceso: sin 3D, se queda el plan B", e);
             });
         },

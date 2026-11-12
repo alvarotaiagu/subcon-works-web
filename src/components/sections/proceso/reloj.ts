@@ -122,17 +122,39 @@ export function estado(p: number): Estado {
   };
 }
 
-/** ¿Hay WebGL? Se mira antes de pedir el chunk de `three`: sin WebGL, el plan B. */
-export function hayWebGL(): boolean {
+/**
+ * ¿Por qué no se monta el 3D en este aparato? `null` si se puede. Se mira antes de pedir
+ * el chunk de `three`, con señales baratas y fiables; no por modelo de móvil (iOS no lo
+ * dice y una lista de móviles «lentos» se queda vieja). Lo que no se ve aquí lo frena la
+ * medición mientras se monta y mientras pinta (`escena3d.ts`).
+ * - sin WebGL;
+ * - WebGL por software (SwiftShader, llvmpipe, Microsoft Basic Render Driver): pinta con
+ *   la CPU y siempre va lento;
+ * - poca memoria: `deviceMemory` de 2 GB o menos (solo lo dan Chrome y Edge);
+ * - Ahorro de datos: el chunk son 142 KB gz que el usuario ha pedido no gastar.
+ * Con `soloWebGL` (el `?3d` de las pruebas) solo se mira que haya WebGL.
+ */
+export function motivoSin3D({ soloWebGL = false } = {}): string | null {
+  const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+  if (!soloWebGL && nav.connection?.saveData) return "ahorro de datos";
+  if (!soloWebGL && typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2) return `memoria ${nav.deviceMemory} GB`;
   try {
     const c = document.createElement("canvas");
-    const gl = c.getContext("webgl2") || c.getContext("webgl");
-    if (!gl) return false;
+    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
+    if (!gl) return "sin WebGL";
+    // Chrome enmascara RENDERER («WebKit WebGL») y da el nombre real con la extensión;
+    // Firefox lo da ya en RENDERER y avisa si se pide la extensión.
+    let gpu = String(gl.getParameter(gl.RENDERER) ?? "");
+    if (/^webkit webgl$/i.test(gpu)) {
+      const ext = gl.getExtension("WEBGL_debug_renderer_info");
+      if (ext) gpu = String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) ?? "");
+    }
     // El contexto de la prueba se suelta: el navegador limita cuántos puede haber vivos.
-    (gl as WebGLRenderingContext).getExtension("WEBGL_lose_context")?.loseContext();
-    return true;
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    if (!soloWebGL && /swiftshader|llvmpipe|softpipe|software|basic render/i.test(gpu)) return "WebGL por software";
+    return null;
   } catch {
-    return false;
+    return "sin WebGL";
   }
 }
 
